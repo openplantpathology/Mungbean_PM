@@ -1,0 +1,8 @@
+---
+title: "Powdery Milder yield loss mitigation strategies in Mungbean a Meta-analysis"
+author: "Paul Melloy, Emerson Del Ponte and Adam H. Sparks"
+date: "19/06/2019"
+output:
+  bookdown::html_book:
+    theme: united
+---
