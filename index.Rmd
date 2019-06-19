@@ -6,3 +6,16 @@ output:
   bookdown::html_book:
     theme: united
 ---
+
+
+# Research questions
+
+What is the length of a Mungbean season and how has it varied in this trial
+
+How has the first sign of powdery mildew changed over the seasons and between experimental sites. 
+
+When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yeilds.  
+
+When would the ideal planting time be to make use of powdery mildew defoliation in the final growth of the crop.  
+
+Do infections that occur before flowering increase the probable yield loss?
