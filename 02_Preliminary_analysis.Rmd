@@ -1,11 +1,12 @@
 # Preliminary Analysis
 
-```{r PA_Libraries, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r PA_Libraries}
 library(dplyr)
 library(openxlsx)
 library(kableExtra)
 library(ggplot2)
+library(devtools)
+#source("./getPPD2.R")
 
 ```
 
@@ -58,62 +59,96 @@ The mungbean DSS determines the need to spray on:
    
 Below I am plotting the mean maximum temperures over 7 days during the growing season at each Mungbean trial site. The vertical lines indicate when powdery mildew was first observed in that season. Variation may exist in the sowing date of each trial.
 
+```{r weather1, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+# This chunk has been removed as the get_PPD2 function has stopped working and needs fixing
+# Update: I have included data files instead of seeking the data from the web. 
+# issue has something to do with website certificates not being appropriete.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
 # Need weather data between 2011 and 2017
 
 # function to extract date from the year
 # format should be Universal time format
 year.day <- function(date){
    if(is.na(date) == TRUE){ 
-      print(NA)
+      return(NA)
       } else {
-as.numeric(as.Date(date) - as.Date(paste0(substr(date, start = 1, stop = 4),"-01-01")))
+return(as.numeric(as.Date(date) - as.Date(paste0(substr(date, start = 1, stop = 4),"-01-01"))))
       }
-   }
+}
+
 # Function to generate some of the ggplot grouping colours
 gg_color_hue <- function(n) {
   hues = seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]
 }
 cols1 <- gg_color_hue(4)
-silo_war_Tmax <- getPPD2(station_id = 041525,start = 20110101,end = 20160630, silo.apikey = silo.API, variables = "max_temp,min_temp,daily_rain")
-# retrieve the maximum temperatures from the six yearsd between 2011 and 2017 at weather station 041525 (Hermitage)
-silo_king_Tmax <- getPPD2(lat = -26.58, long = 151.83, start = 20110101, end = 20160630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
-silo_gatton_Tmax <- getPPD2(lat = -27.56, long = 152.32, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
-silo_emerald_Tmax <- getPPD2(lat = -23.54, long = 148.19, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
+
+
+# silo.API <- "YeTZsWlFNC8hvbQLllv8KtbRQWsje4qxic5QQ7mL"
+# # retrieve the maximum temperatures from the six yearsd between 2011 and 2017 at weather station 041525 (Hermitage)
+# silo_war_Tmax <- getPPD2(station_id = 041525,start = 20110101,end = 20160630, silo.apikey = silo.API, variables = "max_temp,min_temp,daily_rain")
+# # retrieve the maximum temperatures from the six yearsd between 2011 and 2017 by location
+# silo_king_Tmax <- getPPD2(lat = -26.58, long = 151.83, start = 20110101, end = 20160630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
+# silo_gatton_Tmax <- getPPD2(lat = -27.56, long = 152.32, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
+# silo_emerald_Tmax <- getPPD2(lat = -23.54, long = 148.19, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
+
+silo_war_Tmax <- read.csv("./data/silo_war_Tmax.csv")
+silo_king_Tmax <- read.csv("./data/silo_king_Tmax.csv")
+silo_gatton_Tmax <- read.csv("./data/silo_gatton_Tmax.csv")
+silo_emerald_Tmax <- read.csv("./data/silo_emerald_Tmax.csv")
+
+
+
 experiment_sites <- data.frame(
    location = c("Hermitage", "Kingaroy research station","Gatton", "Emerald Agricultural College"),
    lat = c(-28.215 ,-26.58,-27.56,-23.54),
    lon = c(152.1003,151.83,152.32,148.19)
 )
-# leaflet() %>%
-#    addProviderTiles("Esri.WorldTopoMap") %>%
-#    addMarkers(lng = experiment_sites$lon, lat = experiment_sites$lat)
+
+
+
+ leaflet() %>%
+    addProviderTiles("Esri.WorldTopoMap") %>%
+    addMarkers(lng = experiment_sites$lon, lat = experiment_sites$lat)
 # head(silo_gatton_Tmax)
 # ______  Kingaroy_______
+
+```
+
+### Kingaroy historical weather
+```{r Kingaroy_weather, include=FALSE}
+
+# Smoothing temperatures by taking a rolling7 day average
 max_T <- vector()
 min_T <- vector()
 for(i in 1:length(silo_king_Tmax[,1])){
    max_T <- c(max_T,mean(silo_king_Tmax$max_temp[i:(i+7)]))
    min_T <- c(min_T,mean(silo_king_Tmax$min_temp[i:(i+7)]))
 }
+
 king_Tm_aver <- data.frame(location = "Kingaroy", date = as.Date(silo_king_Tmax$date), max_T, min_T, daily_rain = silo_king_Tmax$daily_rain)
+
 # Add columns for Year and date to data
 king_Tm_aver <- king_Tm_aver %>%
    mutate(Year = substr(king_Tm_aver$date, start = 1, stop = 4),
           Day = year.day(king_Tm_aver$date)) 
+
+
 # Create data subset of Powdery mildew data means for the first sign of the disease by location
 King_FS <- PM.dat %>%
    group_by(Trial_ref, Location, Year) %>%
-   summarise(First_sign = mean(first_sign_disease, na.rm = T)) %>%
+   summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
    filter(Location == "Kingaroy") %>%
    mutate(Day = year.day(First_sign))
+str(king_Tm_aver)
+str(King_FS)
 ggplot(subset(king_Tm_aver, Year == levels(factor(King_FS$Year))),
               aes(Day))+
    geom_line(aes(y = max_T, colour = Year))+
    #geom_smooth(method = "lm", aes(y = max_T), colour = "darkred")+
-   geom_line(aes(y = min_T, colour=Year))+
+   geom_line(aes(y = min_T, colour = Year))+
    #geom_smooth(method = "lm", aes(y = min_T), colour = "darkblue")+
    labs(x = "Date", y = "Daily maximum temperature averaged over 7 days",
    title = "Maximum and minimum daily temperatures in Kingaroy")+
@@ -128,10 +163,18 @@ ggplot(subset(king_Tm_aver, Year == levels(factor(King_FS$Year))),
    geom_vline(xintercept = King_FS$Day[2], size =1.5, colour = cols1[2], linetype = "dotted")+
    geom_vline(xintercept = King_FS$Day[3], size =1, colour = cols1[3], linetype = "dashed")+
    geom_area(aes(y = daily_rain, fill = Year), alpha = 0.5)+
-   scale_y_continuous(sec.axis = dup_axis(name = "Rainfall (mm)"))+
-   scale_x_continuous(limits = c(1,180),
-                      breaks = c(1,32,(31+29),(31+29+31),(31+29+31+30),(31+29+31+30+31),(31+29+31+30+31+30)),
-                      labels = c("2012-Jan-01","2012-Feb-01","2012-Mar-01","2012-Apr-01","2012-May-01","2012-Jun-01","2012-Jul-01"))
+   scale_y_continuous(sec.axis = dup_axis(name = "Rainfall (mm)"))
+#   scale_x_continuous(limits = c(1,180),
+#                      breaks = c(1,32,(31+29),(31+29+31),(31+29+31+30),(31+29+31+30+31),(31+29+31+30+31+30)),
+#                      labels = c("2012-Jan-01","2012-Feb-01","2012-Mar-01","2012-Apr-01","2012-May-01","2012-Jun-01","2012-Jul-01"))
+
+
+
+```
+
+### Hermitage historical weather
+```{r Hermitage_weather, include=FALSE}
+
 # ______  Hermitage  _______
 max_T <- vector()
 min_T <- vector()
@@ -139,17 +182,24 @@ for(i in 1:length(silo_war_Tmax[,1])){
    max_T <- c(max_T,mean(silo_war_Tmax$max_temp[i:(i+7)]))
    min_T <- c(min_T,mean(silo_war_Tmax$min_temp[i:(i+7)]))
 }
+
+
 war_Tm_aver <- data.frame(location = "Hermitage", date = as.Date(silo_war_Tmax$date), max_T, min_T, daily_rain = silo_war_Tmax$daily_rain)
+
 # Add columns for Year and date to data
 war_Tm_aver <- war_Tm_aver %>%
    mutate(Year = substr(war_Tm_aver$date, start = 1, stop = 4),
           Day = year.day(war_Tm_aver$date)) 
+
+
 # Create data subset of Powdery mildew data means for the first sign of the disease by location
 Herm_FS <- PM.dat %>%
    group_by(Trial_ref, Location, Year) %>%
-   summarise(First_sign = mean(first_sign_disease, na.rm = T)) %>%
+   summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
    filter(Location == "Hermitage") %>%
    mutate(Day = year.day(First_sign))
+
+
 ggplot(subset(war_Tm_aver, Year == levels(factor(Herm_FS$Year))),
               aes(Day))+
    geom_line(aes(y = max_T, colour = Year))+
@@ -173,6 +223,13 @@ ggplot(subset(war_Tm_aver, Year == levels(factor(Herm_FS$Year))),
    scale_x_continuous(limits = c(1,180),
                       breaks = c(1,32,(31+29),(31+29+31),(31+29+31+30),(31+29+31+30+31),(31+29+31+30+31+30)),
                       labels = c("Jan-01","Feb-01","Mar-01","Apr-01","May-01","Jun-01","Jul-01"))
+
+
+```
+
+### Gatton historical weather
+```{r Gatton_weather, include=FALSE}
+
 # ______  Gatton  _______
 max_T <- vector()
 min_T <- vector()
@@ -238,10 +295,10 @@ The data plotted below are from the past field trials (2011 - 2017) described in
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, include= FALSE}
 library(lme4)
-# What row spacing leads to the highest yield penalty
-head(PM_MB_17)
-class(PM_MB_17$Incidence_assessment_date)
-class(PM_MB_17$Incidence)
+
+
+# Which row spacing leads to the highest yield penalty
+
 # `2017-05-11` # last assessment Fogerty
 subset(PM_MB_17, location == "Hermitage")
 ggplot(subset(PM_MB_17, Treatment.No == "T1"||"1"), 
@@ -281,7 +338,9 @@ The following density plots show mean yield saved in relation to how many sprays
 
 ```{r warning=FALSE, echo=FALSE}
 library(ggplot2)
-PM_MB_means <- read.xlsx("C:/Users/U8011054/Documents/GitHub/Mungbean_PM/data/1902 powdery mildew-Mungbean - Collated means.xlsx", detectDates = TRUE)
+PM_MB_means <- read.csv("./data/1902 powdery mildew-Mungbean - Collated means.csv")
+
+
 # Making a table of showing the upper and lower percentiles (95%)
 quant_PMy <- PM_MB_means %>%
    filter(Fungicide != "control") %>%
