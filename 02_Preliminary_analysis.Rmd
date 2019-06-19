@@ -1,24 +1,18 @@
----
-title: "PM Mungbean meta-analysis"
-author: "P. Melloy"
-date: "30 April 2019"
-output: html_document
----
+# Preliminary Analysis
 
-
-```{r include=FALSE}
+```{r PA_Libraries, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+library(openxlsx)
+library(kableExtra)
+library(ggplot2)
+
 ```
 
+## Summary of data  
 
+```{r data_summary, echo=TRUE, message=FALSE, warning=FALSE}
 
-
-## Powdery Mildew analysis 2011 - 2017
-### Summary of data  
-
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-library(openxlsx)
 source("Cleaning historical data.R", echo = FALSE, print.eval = FALSE)
 # ___ Datasets available ___
 # data   Herm_16.DR     - mean powdery mildew Disease rating data and mean Yield from two field trials in 2017, Hermitage and Fogerty
@@ -28,31 +22,34 @@ source("Cleaning historical data.R", echo = FALSE, print.eval = FALSE)
 # data   PM_MB_17       - Full disease ratings and yeild data from Hermitage and Fogerty in 2017
 # data   PM_MB_16       - End of season powdery mildew rating and Yield data from two field trials in 2016, Hermitage and Kingaroy
 # data   PM_MB_means    - Mean disease rating and yeild data, from trial reports
-PM.dat <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/1902 powdery mildew-Mungbean - Collated means.xlsx",
-                    sheet = "Sheet1", startRow = 1, colNames = TRUE, detectDates = TRUE)
-knitr::kable(
-PM.dat %>%
+
+
+PM.dat <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+
+glimpse(PM.dat)
+
+
+kable(PM.dat %>%
    group_by(Trial_ref, Year, Location, trial_design, Replicates, planting_date, emergence_date, first_sign_disease) %>%
-   summarise(Treatments = length(E_treatment))
-)
+   summarise(Treatments = length(E_treatment)),
+   caption = "Description of Experiments") %>%
+   kable_styling(fixed_thead = T, full_width = T) %>%
+   scroll_box(width = "900px", height = "500px")
+
+
+
 PM.dat$Trial_ref <- factor(PM.dat$Trial_ref)
 PM.dat$Location <- factor(PM.dat$Location)
 PM.dat$Year <- factor(PM.dat$Year)
 PM.dat$host_genotype <- factor(PM.dat$host_genotype)
 PM.dat$Fungicide <- factor(PM.dat$Fungicide)
 PM.dat$Trade_name <- factor(PM.dat$Trade_name)
-#glimpse(PM.dat)
-#str(PM.dat)
-first1 <- PM.dat %>%
-   group_by(Trial_ref, Location) %>%
-   summarise(First_sign = mean(first_sign_disease, na.rm = T)) %>%
-   filter(Location == "Kingaroy")
-   
-King_first <- subset(first1, Location == "Kingaroy")$First_sign
+
+
 ```
 
 
-### Plotting weather data
+## Weather data
 
 The mungbean DSS determines the need to spray on:  
    1. The presence of the disease  
@@ -64,7 +61,7 @@ Below I am plotting the mean maximum temperures over 7 days during the growing s
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 # Need weather data between 2011 and 2017
-library(ggplot2)
+
 # function to extract date from the year
 # format should be Universal time format
 year.day <- function(date){
