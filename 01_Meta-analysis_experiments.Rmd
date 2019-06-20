@@ -1,5 +1,15 @@
 # Studies considered in meta-analysis
 
+```{r MEsummary_Libraries}
+library(dplyr)
+library(openxlsx)
+library(kableExtra)
+library(ggplot2)
+library(leaflet)
+#source("./getPPD2.R")
+
+```
+
 * 2001  
    + Bongeen #1  
    + Bongeen #2  
