@@ -6,6 +6,8 @@ library(openxlsx)
 library(kableExtra)
 library(ggplot2)
 library(devtools)
+library(lme4)
+library(theme.usq)
 #source("./getPPD2.R")
 
 ```
@@ -24,40 +26,33 @@ The data plotted below are from the past field trials (2011 - 2017) described in
    6) Final disease rating
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, include= FALSE}
-library(lme4)
+# Import data
+PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
 
 
-# Which row spacing leads to the highest yield penalty
-
-# `2017-05-11` # last assessment Fogerty
-subset(PM_MB_17, location == "Hermitage")
-ggplot(subset(PM_MB_17, Treatment.No == "T1"||"1"), 
-       aes(y = Incidence, x = Incidence_assessment_date, colour = location))+
+# Which row spacing leads to the higher disease severity
+PM_MB_means %>%
+   filter(Year >= 2017)%>%
+   filter(Fungicide == "control") %>%
+ggplot(aes(y = PM_final_severity, x = row_spacing, colour = Location))+
    geom_point()+
    geom_smooth()+
-   scale_y_continuous(limits = c(-5,15))
-# PM_MB_means <- subset(PM_MB_means, Fungicide != "control")   
-# PM_MB_means$Fungicide <- factor(PM_MB_means$Fungicide, levels = c("Sulphur", "Amistar", "propiconazole", "Tebeconazole"))
-PM_MB_means$Fungicide <- factor(PM_MB_means$Fungicide, levels = c("control", "Sulphur", "Amistar", "propiconazole", "Tebeconazole"))
-yield_lmer1 <- lmer(`yield_gain` ~ factor(total_Fungicide) + Fungicide + factor(Year) + (factor(Year)|Location), 
-                    data = PM_MB_means, na.action = na.omit, REML = F)
-# removed the Year interaction with location
-yield_lmer2 <- lmer(`yield_gain` ~ factor(total_Fungicide) + Fungicide + factor(Year) + (1|Location), 
-                    data = PM_MB_means, na.action = na.omit, REML = F)
-# Removing Fungicide as different fungicides were sprayed a different number of times
-yield_lmer3 <- lmer(`yield_gain` ~ factor(total_Fungicide)  + factor(Year) + (1|Location), 
-                    data = PM_MB_means, na.action = na.omit, REML = F)
-# Removing Fungicide as different fungicides were sprayed a different number of times
-yield_lmer4 <- lmer(`yield_gain` ~ factor(total_Fungicide)  + factor(Year) + (1|Location) + (1|Fungicide), 
-                    data = PM_MB_means, na.action = na.omit, REML = T)
-ranef(yield_lmer4)
-anova(yield_lmer1, yield_lmer2) # P = 0.8943  # removed random intercept 'Year' for each random slope 'Location' # Keep simpler model 
-anova(yield_lmer2, yield_lmer3) # P = 0.8005  # Removed (FE) Fungicide     #     Fungicide showed not to be significant in protecting yield
-anova(yield_lmer3, yield_lmer4) # P = 1       # Added Fungicide as a random effect #     Fungicide showed not to contribute to variation and 
-yield_lmer <- lmer(`yield_gain` ~ factor(total_Fungicide) + factor(Year) + (1|Location), 
-                    data = PM_MB_means, na.action = na.omit)
-summary(yield_lmer)
-ranef(yield_lmer)
+   scale_y_continuous(limits = c(-5,15))+
+   theme_usq()
+
+
+# Which row spacing leads to the higher yeild potential
+PM_MB_means %>%
+   filter(Year >= 2017)%>%
+#   filter(Fungicide == "control") %>%
+ggplot(aes(y = as.numeric(grain_yield.t.ha.), x = row_spacing, colour = Location))+
+   geom_jitter(width = 0.01)+
+   geom_smooth()+
+#   scale_y_continuous(limits = c(-5,15))+
+   theme_usq()
+
+
+
 ```
 
 
