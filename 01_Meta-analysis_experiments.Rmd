@@ -70,3 +70,22 @@ knitr::kable(
 )
 ```
 
+## Experimental locations
+```{r Experiment_locations}
+
+experiment_sites <- data.frame(
+   location = c("Hermitage", "Kingaroy research station","Gatton", "Emerald Agricultural College"),
+   lat = c(-28.215 ,-26.58,-27.56,-23.54),
+   lon = c(152.1003,151.83,152.32,148.19)
+)
+
+
+
+ leaflet() %>%
+    addProviderTiles("Esri.WorldTopoMap") %>%
+    addMarkers(lng = experiment_sites$lon, lat = experiment_sites$lat)
+# head(silo_gatton_Tmax)
+
+
+```
+
