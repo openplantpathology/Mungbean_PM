@@ -12,7 +12,8 @@ Below I am plotting the mean maximum temperures over 7 days during the growing s
 # Update: I have included data files instead of seeking the data from the web. 
 # issue has something to do with website certificates not being appropriete.
 
-
+# Import dataset
+PM.dat <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
 
 # Need weather data between 2011 and 2017
 
