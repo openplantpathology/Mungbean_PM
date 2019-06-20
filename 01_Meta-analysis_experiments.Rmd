@@ -112,6 +112,7 @@ PM.dat$Trade_name <- factor(PM.dat$Trade_name)
 
 
 ## Experimental locations
+Experimental locations where data was sufficient to include in meta-analysis
 ```{r Experiment_locations}
 
 experiment_sites <- data.frame(
