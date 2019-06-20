@@ -70,6 +70,47 @@ knitr::kable(
 )
 ```
 
+## Summary of data  
+
+```{r data_summary, echo=TRUE, message=FALSE, warning=FALSE}
+
+source("Cleaning historical data.R", echo = FALSE, print.eval = FALSE)
+# ___ Datasets available ___
+# data   Herm_16.DR     - mean powdery mildew Disease rating data and mean Yield from two field trials in 2017, Hermitage and Fogerty
+# data   King_16.DR     - mean powdery mildew Disease rating data and mean Yield from two field trials in 2016, Hermitage and Kingaroy
+# data   Fogerty_17.1   - Full disease ratings and yeild data from Fogerty field trial in 2017
+# data   Herm_17.1      - Full disease ratings and yeild data from Hermitage field trial in 2017
+# data   PM_MB_17       - Full disease ratings and yeild data from Hermitage and Fogerty in 2017
+# data   PM_MB_16       - End of season powdery mildew rating and Yield data from two field trials in 2016, Hermitage and Kingaroy
+# data   PM_MB_means    - Mean disease rating and yeild data, from trial reports
+
+
+PM.dat <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+
+glimpse(PM.dat)
+
+
+kable(PM.dat %>%
+   group_by(Trial_ref, Year, Location, trial_design, Replicates, planting_date, emergence_date, first_sign_disease) %>%
+   summarise(Treatments = length(E_treatment)),
+   caption = "Description of Experiments") %>%
+   kable_styling(fixed_thead = T, full_width = T) %>%
+   scroll_box(width = "900px", height = "500px")
+
+
+
+PM.dat$Trial_ref <- factor(PM.dat$Trial_ref)
+PM.dat$Location <- factor(PM.dat$Location)
+PM.dat$Year <- factor(PM.dat$Year)
+PM.dat$host_genotype <- factor(PM.dat$host_genotype)
+PM.dat$Fungicide <- factor(PM.dat$Fungicide)
+PM.dat$Trade_name <- factor(PM.dat$Trade_name)
+
+
+```
+
+
+
 ## Experimental locations
 ```{r Experiment_locations}
 
