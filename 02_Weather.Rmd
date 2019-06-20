@@ -1,0 +1,224 @@
+# Weather data
+
+The mungbean DSS determines the need to spray on:  
+   1. The presence of the disease  
+   2. The forecasted maximum temperatures in the next seven days  
+   3. The number of days over the next seven days with rainfall  
+   
+Below I am plotting the mean maximum temperures over 7 days during the growing season at each Mungbean trial site. The vertical lines indicate when powdery mildew was first observed in that season. Variation may exist in the sowing date of each trial.
+
+```{r weather1, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+# This chunk has been removed as the get_PPD2 function has stopped working and needs fixing
+# Update: I have included data files instead of seeking the data from the web. 
+# issue has something to do with website certificates not being appropriete.
+
+
+
+# Need weather data between 2011 and 2017
+
+# function to extract date from the year
+# format should be Universal time format
+year.day <- function(date){
+   if(is.na(date) == TRUE){ 
+      return(NA)
+      } else {
+return(as.numeric(as.Date(date) - as.Date(paste0(substr(date, start = 1, stop = 4),"-01-01"))))
+      }
+}
+
+# Function to generate some of the ggplot grouping colours
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+cols1 <- gg_color_hue(4)
+
+
+# silo.API <- "YeTZsWlFNC8hvbQLllv8KtbRQWsje4qxic5QQ7mL"
+# # retrieve the maximum temperatures from the six yearsd between 2011 and 2017 at weather station 041525 (Hermitage)
+# silo_war_Tmax <- getPPD2(station_id = 041525,start = 20110101,end = 20160630, silo.apikey = silo.API, variables = "max_temp,min_temp,daily_rain")
+# # retrieve the maximum temperatures from the six yearsd between 2011 and 2017 by location
+# silo_king_Tmax <- getPPD2(lat = -26.58, long = 151.83, start = 20110101, end = 20160630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
+# silo_gatton_Tmax <- getPPD2(lat = -27.56, long = 152.32, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
+# silo_emerald_Tmax <- getPPD2(lat = -23.54, long = 148.19, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
+
+silo_war_Tmax <- read.csv("./data/silo_war_Tmax.csv")
+silo_king_Tmax <- read.csv("./data/silo_king_Tmax.csv")
+silo_gatton_Tmax <- read.csv("./data/silo_gatton_Tmax.csv")
+silo_emerald_Tmax <- read.csv("./data/silo_emerald_Tmax.csv")
+
+
+
+```
+
+### Kingaroy historical weather
+```{r Kingaroy_weather, include=FALSE}
+
+# Smoothing temperatures by taking a rolling7 day average
+max_T <- vector()
+min_T <- vector()
+for(i in 1:length(silo_king_Tmax[,1])){
+   max_T <- c(max_T,mean(silo_king_Tmax$max_temp[i:(i+7)]))
+   min_T <- c(min_T,mean(silo_king_Tmax$min_temp[i:(i+7)]))
+}
+
+king_Tm_aver <- data.frame(location = "Kingaroy", date = as.Date(silo_king_Tmax$date), max_T, min_T, daily_rain = silo_king_Tmax$daily_rain)
+
+# Add columns for Year and date to data
+king_Tm_aver <- king_Tm_aver %>%
+   mutate(Year = substr(king_Tm_aver$date, start = 1, stop = 4),
+          Day = year.day(king_Tm_aver$date)) 
+
+
+# Create data subset of Powdery mildew data means for the first sign of the disease by location
+King_FS <- PM.dat %>%
+   group_by(Trial_ref, Location, Year) %>%
+   summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
+   filter(Location == "Kingaroy") %>%
+   mutate(Day = year.day(First_sign))
+str(king_Tm_aver)
+str(King_FS)
+ggplot(subset(king_Tm_aver, Year == levels(factor(King_FS$Year))),
+              aes(Day))+
+   geom_line(aes(y = max_T, colour = Year))+
+   #geom_smooth(method = "lm", aes(y = max_T), colour = "darkred")+
+   geom_line(aes(y = min_T, colour = Year))+
+   #geom_smooth(method = "lm", aes(y = min_T), colour = "darkblue")+
+   labs(x = "Date", y = "Daily maximum temperature averaged over 7 days",
+   title = "Maximum and minimum daily temperatures in Kingaroy")+
+   scale_y_continuous(limits = c(0,40))+
+   scale_x_continuous(limits = c(0,200), 
+                      labels = c(subset(king_Tm_aver, Year == 2016)$date[c(1,50,100,150,200)]),
+                      breaks = c(1,50,100,150,200))+
+   theme(panel.grid.major = element_line(colour = "grey80"),
+         panel.grid.minor = element_line(colour = "grey50"),
+         panel.background = element_rect(fill = NA))+
+   geom_vline(xintercept = King_FS$Day[1], size =1, colour = cols1[1], linetype = "dotted")+
+   geom_vline(xintercept = King_FS$Day[2], size =1.5, colour = cols1[2], linetype = "dotted")+
+   geom_vline(xintercept = King_FS$Day[3], size =1, colour = cols1[3], linetype = "dashed")+
+   geom_area(aes(y = daily_rain, fill = Year), alpha = 0.5)+
+   scale_y_continuous(sec.axis = dup_axis(name = "Rainfall (mm)"))
+#   scale_x_continuous(limits = c(1,180),
+#                      breaks = c(1,32,(31+29),(31+29+31),(31+29+31+30),(31+29+31+30+31),(31+29+31+30+31+30)),
+#                      labels = c("2012-Jan-01","2012-Feb-01","2012-Mar-01","2012-Apr-01","2012-May-01","2012-Jun-01","2012-Jul-01"))
+
+
+
+```
+
+### Hermitage historical weather
+```{r Hermitage_weather, include=FALSE}
+
+# ______  Hermitage  _______
+max_T <- vector()
+min_T <- vector()
+for(i in 1:length(silo_war_Tmax[,1])){
+   max_T <- c(max_T,mean(silo_war_Tmax$max_temp[i:(i+7)]))
+   min_T <- c(min_T,mean(silo_war_Tmax$min_temp[i:(i+7)]))
+}
+
+
+war_Tm_aver <- data.frame(location = "Hermitage", date = as.Date(silo_war_Tmax$date), max_T, min_T, daily_rain = silo_war_Tmax$daily_rain)
+
+# Add columns for Year and date to data
+war_Tm_aver <- war_Tm_aver %>%
+   mutate(Year = substr(war_Tm_aver$date, start = 1, stop = 4),
+          Day = year.day(war_Tm_aver$date)) 
+
+
+# Create data subset of Powdery mildew data means for the first sign of the disease by location
+Herm_FS <- PM.dat %>%
+   group_by(Trial_ref, Location, Year) %>%
+   summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
+   filter(Location == "Hermitage") %>%
+   mutate(Day = year.day(First_sign))
+
+
+ggplot(subset(war_Tm_aver, Year == levels(factor(Herm_FS$Year))),
+              aes(Day))+
+   geom_line(aes(y = max_T, colour = Year))+
+   #geom_smooth(method = "lm", aes(y = max_T), colour = "darkred")+
+   geom_line(aes(y = min_T, color = Year))+
+   #geom_smooth(method = "lm", aes(y = min_T), colour = "darkblue")+
+   labs(x = "Date", y = "Daily maximum temperature averaged over 7 days",
+   title = "Maximum and minimum daily temperatures in Hermitage")+
+   scale_y_continuous(limits = c(0,45))+
+   scale_x_continuous(limits = c(0,200), 
+                      labels = c(subset(war_Tm_aver, Year == 2016)$date[c(1,50,100,150,200)]),
+                      breaks = c(1,50,100,150,200))+
+   theme(panel.grid.major = element_line(colour = "grey80"),
+         panel.grid.minor = element_line(colour = "grey50"),
+         panel.background = element_rect(fill = NA))+
+   geom_vline(xintercept = Herm_FS$Day[1], size =1, colour = cols1[1], linetype = "dotted")+
+   geom_vline(xintercept = Herm_FS$Day[2], size =1.5, colour = cols1[2], linetype = "dotted")+
+   geom_vline(xintercept = Herm_FS$Day[3], size =1, colour = cols1[3], linetype = "dashed")+
+      geom_area(aes(y = daily_rain, fill = Year), alpha = 0.5)+
+   scale_y_continuous(sec.axis = dup_axis(name = "Rainfall (mm)"))+
+   scale_x_continuous(limits = c(1,180),
+                      breaks = c(1,32,(31+29),(31+29+31),(31+29+31+30),(31+29+31+30+31),(31+29+31+30+31+30)),
+                      labels = c("Jan-01","Feb-01","Mar-01","Apr-01","May-01","Jun-01","Jul-01"))
+
+
+```
+
+### Gatton historical weather
+```{r Gatton_weather, include=FALSE}
+
+# ______  Gatton  _______
+max_T <- vector()
+min_T <- vector()
+for(i in 1:length(silo_gatton_Tmax[,1])){
+   max_T <- c(max_T,mean(silo_gatton_Tmax$max_temp[i:(i+7)]))
+   min_T <- c(min_T,mean(silo_gatton_Tmax$min_temp[i:(i+7)]))
+}
+
+
+
+# put maximum, minimum temperatures into a dataframe corresponding with thier corresponding date
+Gat_Tm_aver <- data.frame(location = "Gatton", date = as.Date(silo_gatton_Tmax$date), max_T, min_T, daily_rain = silo_gatton_Tmax$daily_rain)
+
+
+
+# Add columns for Year and date to data
+Gat_Tm_aver <- Gat_Tm_aver %>%
+   mutate(Year = substr(Gat_Tm_aver$date, start = 1, stop = 4),
+          Day = year.day(Gat_Tm_aver$date)) 
+
+
+
+# Create data subset of Powdery mildew data means for the first sign of the disease by location
+Gatton_FS <- PM.dat %>%
+   group_by(Trial_ref, Location) %>%
+   summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
+   filter(Location == "Gatton") %>%
+   mutate(Year = factor(substr(First_sign,1,4)),
+          Day = year.day(First_sign))
+
+
+
+
+ggplot(subset(Gat_Tm_aver, Year == 2012),
+               aes(Day))+
+   geom_line(aes(y = max_T, colour = Year))+
+   #geom_smooth(method = "lm", aes(y = max_T), colour = "darkred")+
+   geom_line(aes(y = min_T, colour = Year))+
+   #geom_smooth(method = "lm", aes(y = min_T), colour = "darkblue")+
+   labs(x = "Date", y = "Daily maximum temperature averaged over 7 days",
+   title = "Maximum and minimum daily temperatures in Gatton")+
+   scale_y_continuous(limits = c(0,40))+
+   scale_x_continuous(limits = c(0,200), 
+                      labels = c(subset(Gat_Tm_aver, Year == levels(Gatton_FS$Year))$date[c(1,50,100,150,200)]),
+                      breaks = c(1,50,100,150,200))+
+   theme(panel.grid.major = element_line(colour = "grey80"),
+         panel.grid.minor = element_line(colour = "grey50"),
+         panel.background = element_rect(fill = NA))+
+   geom_vline(xintercept = Gatton_FS$Day, colour = "green", size =1)+
+      geom_area(aes(y = daily_rain, fill = Year), alpha = 0.5)+
+   scale_y_continuous(sec.axis = dup_axis(name = "Rainfall (mm)"))+
+   scale_x_continuous(limits = c(1,180),
+                      breaks = c(1,32,(31+29),(31+29+31),(31+29+31+30),(31+29+31+30+31),(31+29+31+30+31+30)),
+                      labels = c("2012-Jan-01","2012-Feb-01","2012-Mar-01","2012-Apr-01","2012-May-01","2012-Jun-01","2012-Jul-01"))
+#   scale_x_continuous(limits = as.Date(c("2012-01-01","2012-06-01")))
+   
+ 
+```
