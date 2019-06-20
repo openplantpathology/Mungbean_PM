@@ -195,12 +195,92 @@ ggplot(PM_MB_means1, aes(prop_YG))+
 
 
 
-#### Effect of Fungicide on proportional yiTiming of fungicide application
+
+
+
 ```{r}
-PM_MB_means2 <- PM_MB_means1 %>%
-   filter(Fungicide == "Tebeconazole")
-unique(PM_MB_means2$spray_diff)
-ggplot(PM_MB_means2, aes(prop_YG))+
+# removing 2017 and control data
+# this will help look at when the first application of fungicide is applied in relation to when the disease first appeared
+PM_MB_means1 <- PM_MB_means %>%
+   filter(Fungicide != "control") %>%
+   filter(Year != 2017) %>%
+#   filter(total_Fungicide ==1) %>%
+   mutate(days_from_1st = as.numeric(as.Date(Fungicide_application_1) - first_sign_disease))
+colnames(PM_MB_means)
+days_from_fungicid <- function(FSD,F1,F2,F3){
+   dF1 <- as.numeric(as.Date(F1) - as.Date(FSD))
+   dF2 <- as.numeric(as.Date(F2) - as.Date(FSD))
+   dF3 <- as.numeric(as.Date(F3) - as.Date(FSD))
+   if(is.na(dF1)){
+      return(NA)} else{
+   if(between(dF1,lower = -1, upper = 1000)){
+      return(dF1)}else{
+   if(is.na(dF2)){
+      return(dF1)}else{
+      if(between(dF2,lower = dF1, upper = -0.1)){
+            return(dF2)} else{
+               return(dF3)}}
+            }}
+}
+vec1<- vector()
+for(i in 1:dim(PM_MB_means1)[1]){
+   dF1 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_1)[i] - as.Date(PM_MB_means1$first_sign_disease)[i])
+   dF2 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_2)[i] - as.Date(PM_MB_means1$first_sign_disease)[i])
+   dF3 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_3)[i] - as.Date(PM_MB_means1$first_sign_disease)[i])
+   if(is.na(dF1)){
+      vec1 <- c(vec1,dF1)} else{
+         if(between(as.numeric(dF1),-1, 1000)){
+            vec1 <- c(vec1,dF1)}else{
+               if(is.na(dF2)){
+                  vec1 <- c(vec1,dF1)}else{
+                     if(between(as.numeric(dF2),as.numeric(dF1), -1.1)){
+            vec1 <- c(vec1,dF2)} else{
+               if(as.numeric(dF3)>=0){
+                  vec1 <- c(vec1,dF2)} else{
+                     vec1 <- c(vec1,dF3)}}}
+            }}
+}
+PM_MB_means1$spray_diff <- vec1 # gives the 
+PM_MB_means1$days_from_1st
+```
+
+
+
+
+
+
+
+
+
+
+
+
+#### Effect of Fungicide 
+**on proportional yield gain with repect to time of application**
+##### Tebeconazole
+```{r}
+PM_MB_means1 %>%
+   group_by(Fungicide) %>%
+   filter(n() >= 5) %>% # remove any fungicide groups with less than 5 observations
+   summarise(n = length(prop_YG),
+             lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
+             median = median(prop_YG, na.rm = T),
+             mean = mean(prop_YG, na.rm = T),
+             upper_97.5 = quantile(prop_YG, na.rm = T, c(0.975))) %>%
+   kable(caption = "Fungicide effect on proportion of yield gain") %>%
+   kable_styling(fixed_thead = T, full_width = T)
+
+unique(
+PM_MB_means1 %>%
+   group_by(Fungicide) %>%
+   filter(n() >= 5) %>%
+   select(days_from_1st))
+
+
+PM_MB_means1 %>%
+   group_by(Fungicide) %>%
+   filter(n() >= 5) %>%
+ggplot(aes(prop_YG))+
    geom_density(aes(fill = cut(PM_MB_means2$spray_diff, c(-1,2,7,10,12,20))), alpha = 0.5)+
    geom_vline(aes(xintercept = 0), size =0.5)+
    facet_grid(cut(PM_MB_means2$spray_diff, c(1,2,7,10,12,20))~.)+
