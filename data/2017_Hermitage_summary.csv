@@ -1,0 +1,55 @@
+"","Chemical","Chemical.Trt","Row.Spacing.(m)","Manage.Trt","Management","PM_final_severity","Disease_error","grain_yield(t/ha)","Yield_error"
+"1","Custodia® 320 SC",3,0.25,"1","untreated",8,0,0.492199220713927,0.469371733178014
+"2","Custodia® 320 SC",3,0.5,"1","untreated",8,0,0.650352867618493,0.208791317864741
+"3","Custodia® 320 SC",3,1,"1","untreated",8,0,0.379566154502774,0.29803766522786
+"4","Folicur® 430 SC",1,0.25,"1","untreated",8,0,0.737011843540595,0.0844911733167877
+"5","Folicur® 430 SC",1,0.5,"1","untreated",8,0,0.604052503052503,0.0769728874429037
+"6","Folicur® 430 SC",1,1,"1","untreated",8,0,0.553849680170576,0.226859541677868
+"7","Throttle® 500",2,0.25,"1","untreated",8,0,0.370449788545103,0.287882567540757
+"8","Throttle® 500",2,0.5,"1","untreated",8,0,0.746603280389496,0.111851533020068
+"9","Throttle® 500",2,1,"1","untreated",8,0,0.564404826827401,0.13488212943686
+"10","Custodia® 320 SC",3,0.25,"T2","spray one 4 weeks post emergance (1 spray)",7.66666666666667,0.577350269189626,0.724955625100305,0.270846727980258
+"11","Custodia® 320 SC",3,0.5,"T2","spray one 4 weeks post emergance (1 spray)",7.66666666666667,0.577350269189626,0.598045320273632,0.151012683642892
+"12","Custodia® 320 SC",3,1,"T2","spray one 4 weeks post emergance (1 spray)",8,0,0.523680010810446,0.245575405765015
+"13","Folicur® 430 SC",1,0.25,"T2","spray one 4 weeks post emergance (1 spray)",8,0,0.644268564768565,0.0608200420911222
+"14","Folicur® 430 SC",1,0.5,"T2","spray one 4 weeks post emergance (1 spray)",8,0,0.589633703653677,0.176676096785859
+"15","Folicur® 430 SC",1,1,"T2","spray one 4 weeks post emergance (1 spray)",7.66666666666667,0.577350269189626,0.575370107323232,0.127539577008251
+"16","Throttle® 500",2,0.25,"T2","spray one 4 weeks post emergance (1 spray)",8,0,0.427522273373117,0.339736464545207
+"17","Throttle® 500",2,0.5,"T2","spray one 4 weeks post emergance (1 spray)",7.66666666666667,0.577350269189626,0.713230744949495,0.251477801569734
+"18","Throttle® 500",2,1,"T2","spray one 4 weeks post emergance (1 spray)",8,0,0.710955237470863,0.124595657441471
+"19","Custodia® 320 SC",3,0.25,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.620060496794872,0.12276553071649
+"20","Custodia® 320 SC",3,0.5,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.638755884041332,0.130777215954981
+"21","Custodia® 320 SC",3,1,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.503661010558069,0.176202500682937
+"22","Folicur® 430 SC",1,0.25,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.51220578187828,0.404171995779915
+"23","Folicur® 430 SC",1,0.5,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.607614587839787,0.214225883833688
+"24","Folicur® 430 SC",1,1,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.508835875075381,0.144081727516828
+"25","Throttle® 500",2,0.25,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.588960689922599,0.0128853068139954
+"26","Throttle® 500",2,0.5,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.453594627489314,0.281892096679409
+"27","Throttle® 500",2,1,"T3","spray one 5 weeks post emergance + one spray 14 days later (2 sprays)",7,0,0.514517723880597,0.384983904885848
+"28","Custodia® 320 SC",3,0.25,"T4","spray one first sign disease (1 spray)",7.66666666666667,0.577350269189626,0.557934914758444,0.11623643007269
+"29","Custodia® 320 SC",3,0.5,"T4","spray one first sign disease (1 spray)",7.66666666666667,0.577350269189626,0.589706979806848,0.0619858767189343
+"30","Custodia® 320 SC",3,1,"T4","spray one first sign disease (1 spray)",7.66666666666667,0.577350269189626,0.687191530691531,0.156432753829721
+"31","Folicur® 430 SC",1,0.25,"T4","spray one first sign disease (1 spray)",8,0,0.555131641433978,0.555411594382205
+"32","Folicur® 430 SC",1,0.5,"T4","spray one first sign disease (1 spray)",8,0,0.546531590559109,0.224841812571544
+"33","Folicur® 430 SC",1,1,"T4","spray one first sign disease (1 spray)",8,0,0.617149439283768,0.233404169943037
+"34","Throttle® 500",2,0.25,"T4","spray one first sign disease (1 spray)",8,0,0.761183804961378,0.0236739503106869
+"35","Throttle® 500",2,0.5,"T4","spray one first sign disease (1 spray)",8,0,0.710358997926093,0.0292995925660059
+"36","Throttle® 500",2,1,"T4","spray one first sign disease (1 spray)",7.66666666666667,0.577350269189626,0.647483614424791,0.373704149047414
+"37","Custodia® 320 SC",3,0.25,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.410450131567779,0.330212474022715
+"38","Custodia® 320 SC",3,0.5,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.838307189542484,0.227527565143581
+"39","Custodia® 320 SC",3,1,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.666193702108692,0.283995460635565
+"40","Folicur® 430 SC",1,0.25,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.403880913380913,0.303456080313805
+"41","Folicur® 430 SC",1,0.5,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.66075504205939,0.149502977172505
+"42","Folicur® 430 SC",1,1,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.759453914141414,0.201572287414558
+"43","Throttle® 500",2,0.25,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.784376578645235,0.302021231720058
+"44","Throttle® 500",2,0.5,"T5","spray one first sign disease + 14 days latter (2 sprays)",5.33333333333333,2.88675134594813,0.639065478468464,0.10324371152468
+"45","Throttle® 500",2,1,"T5","spray one first sign disease + 14 days latter (2 sprays)",7,0,0.495170437405732,0.276472611479342
+"46","Custodia® 320 SC",3,0.25,"T6","spray one disease 1/3 plant infection (1 spray)",7,0,0.586878007871374,0.478860820285114
+"47","Custodia® 320 SC",3,0.5,"T6","spray one disease 1/3 plant infection (1 spray)",7,0,0.642104948945982,0.0365268159065696
+"48","Custodia® 320 SC",3,1,"T6","spray one disease 1/3 plant infection (1 spray)",7.66666666666667,0.577350269189626,0.717038270187524,0.294601407184666
+"49","Folicur® 430 SC",1,0.25,"T6","spray one disease 1/3 plant infection (1 spray)",7.33333333333333,0.577350269189626,0.62831934079602,0.19171810548693
+"50","Folicur® 430 SC",1,0.5,"T6","spray one disease 1/3 plant infection (1 spray)",7.66666666666667,0.577350269189626,0.584562864219114,0.184413209121222
+"51","Folicur® 430 SC",1,1,"T6","spray one disease 1/3 plant infection (1 spray)",8,0,0.81214740161799,0.258609212891746
+"52","Throttle® 500",2,0.25,"T6","spray one disease 1/3 plant infection (1 spray)",7,0,0.45776148989899,0.377022251091365
+"53","Throttle® 500",2,0.5,"T6","spray one disease 1/3 plant infection (1 spray)",7,0,0.565797032828283,0.220216032383955
+"54","Throttle® 500",2,1,"T6","spray one disease 1/3 plant infection (1 spray)",7,0,0.386661989644343,0.455323283906713
