@@ -205,8 +205,12 @@ PM_MB_means1 <- PM_MB_means %>%
    filter(Fungicide != "control") %>%
    filter(Year != 2017) %>%
 #   filter(total_Fungicide ==1) %>%
-   mutate(days_from_1st = as.numeric(as.Date(Fungicide_application_1) - first_sign_disease))
-colnames(PM_MB_means)
+   mutate(days_from_1st = as.numeric(as.Date(as.character(Fungicide_application_1), format = "%d/%m/%Y") - 
+                                        as.Date(as.character(first_sign_disease), format = "%d/%m/%Y")))
+
+
+
+
 days_from_fungicid <- function(FSD,F1,F2,F3){
    dF1 <- as.numeric(as.Date(F1) - as.Date(FSD))
    dF2 <- as.numeric(as.Date(F2) - as.Date(FSD))
@@ -224,9 +228,12 @@ days_from_fungicid <- function(FSD,F1,F2,F3){
 }
 vec1<- vector()
 for(i in 1:dim(PM_MB_means1)[1]){
-   dF1 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_1)[i] - as.Date(PM_MB_means1$first_sign_disease)[i])
-   dF2 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_2)[i] - as.Date(PM_MB_means1$first_sign_disease)[i])
-   dF3 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_3)[i] - as.Date(PM_MB_means1$first_sign_disease)[i])
+   dF1 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_1, format = "%d/%m/%Y")[i] -
+                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
+   dF2 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_2, format = "%d/%m/%Y")[i] -
+                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
+   dF3 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_3, format = "%d/%m/%Y")[i] -
+                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
    if(is.na(dF1)){
       vec1 <- c(vec1,dF1)} else{
          if(between(as.numeric(dF1),-1, 1000)){
@@ -235,13 +242,17 @@ for(i in 1:dim(PM_MB_means1)[1]){
                   vec1 <- c(vec1,dF1)}else{
                      if(between(as.numeric(dF2),as.numeric(dF1), -1.1)){
             vec1 <- c(vec1,dF2)} else{
+               if(is.na(dF3)){
+                  vec1 <- c(vec1,dF2)}else{
                if(as.numeric(dF3)>=0){
-                  vec1 <- c(vec1,dF2)} else{
-                     vec1 <- c(vec1,dF3)}}}
+                  vec1 <- c(vec1,dF2)}else{
+                     vec1 <- c(vec1,dF3)}}}}
             }}
 }
-PM_MB_means1$spray_diff <- vec1 # gives the 
-PM_MB_means1$days_from_1st
+PM_MB_means1$spray_diff <- vec1 # gives the closest fungicide application date to the first sign of disease
+#PM_MB_means1$days_from_1st
+
+
 ```
 
 
@@ -281,9 +292,9 @@ PM_MB_means1 %>%
    group_by(Fungicide) %>%
    filter(n() >= 5) %>%
 ggplot(aes(prop_YG))+
-   geom_density(aes(fill = cut(PM_MB_means2$spray_diff, c(-1,2,7,10,12,20))), alpha = 0.5)+
+   geom_density(aes(fill = cut(spray_diff, c(-1,2,7,10,12,20))), alpha = 0.5)+
    geom_vline(aes(xintercept = 0), size =0.5)+
-   facet_grid(cut(PM_MB_means2$spray_diff, c(1,2,7,10,12,20))~.)+
+   facet_grid(cut(spray_diff, c(1,2,7,10,12,20))~.)+
    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
    labs(x = "Proportion of grain yeild saved",
    title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen")+
