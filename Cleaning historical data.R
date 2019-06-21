@@ -239,6 +239,11 @@ Herm_17_sum <- Herm_17 %>%
              Yield_error = sd(`Yield.T/Ha`, na.rm =TRUE)
    )
 
+Herm_17_sum <- with(Herm_17_sum,Herm_17_sum[order(Manage.Trt,Chemical, `Row.Spacing.(m)`),])
+
+write.csv(Herm_17_sum, "./data/2017_Hermitage_summary.csv")
+
+
 
 
 
