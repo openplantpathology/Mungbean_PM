@@ -217,11 +217,28 @@ Fogerty_17.1$location <- "Fogerty"
 
 # ____________________________________________________________
 # _____________   Hermitage  2017     ____________
-Herm_17 <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/Hermitage working file 2017 .xlsx", 
-                        sheet = "Data", startRow = 2, colNames = TRUE, detectDates = TRUE)[1:161,]
+Herm_17 <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/2017/Hermitage working file 2017 .xlsx", 
+                        sheet = "Hermitage Trial", rows = 3:165, cols = 1:38, colNames = TRUE, detectDates = TRUE)
+
+str(Herm_17)
+
+# Adjust the Yield to 12% moisture
+Herm_17$`Yield.T/Ha` <- (Herm_17$`Yield.T/Ha`/Herm_17$`Moisture%`)*12 
 
 #dim(Herm_17)   # 162 rows , 43 Columns
 #names(Herm_17)
+
+
+# Create summarised data set for collated means meta-dataset
+# NEXT STEP - sort and copy it to dataset
+Herm_17_sum <- Herm_17 %>%
+   group_by(Chemical, Chemical.Trt, `Row.Spacing.(m)`,Manage.Trt,Management) %>%
+   summarise(PM_final_severity = mean(`I_11/05/2017`, na.rm = TRUE),
+             Disease_error = sd(`I_11/05/2017`, na.rm = TRUE),
+             `grain_yield(t/ha)` = mean(`Yield.T/Ha`, na.rm =TRUE),
+             Yield_error = sd(`Yield.T/Ha`, na.rm =TRUE)
+   )
+
 
 
 
