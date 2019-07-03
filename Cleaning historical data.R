@@ -82,7 +82,7 @@ write.csv(as.data.frame(King_11_m ), "C:/Users/U8011054/OneDrive - USQ/Cloudstor
 # _____________            Hermitage  2015        ____________
 
 # Yeild data from 2016 Hermitage trial with final disease severity
-Herm_15 <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/2015/2015 PMmung Herm/Mugbean powdery mildew 2014-15 inc results v2.xlsx", 
+Herm_15 <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/2015 PMmung Herm/Mugbean powdery mildew 2014-15 inc results v2.xlsx", 
                      sheet = "HRS yield data", startRow = 4, colNames = TRUE, detectDates = TRUE)[1:31,1:9]
 
 
@@ -91,7 +91,7 @@ Herm_15$Year <- 2015
 Herm_15$location <- "Hermitage"
 
 # Disease incidence assessments through the 2016 season
-Herm_15.DR  <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/2015/2015 PMmung Herm/Mugbean powdery mildew 2014-15 inc results v2.xlsx", 
+Herm_15.DR  <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/2015 PMmung Herm/Mugbean powdery mildew 2014-15 inc results v2.xlsx", 
                                     sheet = "HRS ratings & graphs", startRow = 5, colNames = TRUE)[1:31,1:8]
 
 Herm_15$Plot.Length <- as.numeric(Herm_15$Plot.Length)
@@ -248,7 +248,7 @@ write.csv(Herm_17_sum, "./data/2017_Hermitage_summary.csv")
 
 
 # Columns to keep
-Herm_17 <- Herm_17[,c(1,2,4,5,7,10,9,11,12,43,
+Herm_17 <- Herm_17[,c(1,2,4,5,7,10,9,11,12,13,
                       17,19,21,23,25,27,29,
 #                      18,20,22,24,26,28,30,
                       34,36,37,35)]
@@ -264,11 +264,11 @@ Herm_17.1 <- reshape(data = Herm_17, idvar = "Plot", direction = "long",
         timevar = "ass_date"
 )
 
-names(Herm_17.1)[16] <- c("Incidence")
-Herm_17.1$ass_date <- rep(names(Herm_17)[11:17], each= 161) 
-Herm_17.1$X43 <- NA
-Herm_17.1$Total.Grain <- Herm_17.1$Total.Grain/1000
-Herm_17.1$location <- "Hermitage"
+# names(Herm_17.1)[16] <- c("Incidence")
+# Herm_17.1$ass_date <- rep(names(Herm_17)[11:16], each= 161) 
+# Herm_17.1$X43 <- NA
+# Herm_17.1$Total.Grain <- Herm_17.1$Total.Grain/1000
+# Herm_17.1$location <- "Hermitage"
 
 
 
@@ -283,7 +283,7 @@ Herm_17.1$location <- "Hermitage"
 # ______________________________________________________________________________________
 # _____________   Wellcamp yield and disease assessment means         ____________
 
-Well_18 <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/Wellcamp Fungicide x Row Spacing x Plant Population - Experimental Design Fogarty 2018.xlsx", 
+Well_18 <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/2018/Wellcamp Fungicide x Row Spacing x Plant Population - Experimental Design Fogarty 2018.xlsx", 
                      sheet = "Data", startRow = 1, colNames = TRUE)
 
 #dim(Well_18)   # 72 rows , 32 Columns
@@ -374,15 +374,15 @@ col.ident <- function(x1, x2){
 }
 
 # checking that each of the variables are the same as each other
-dat2 <- col.ident(names(Herm_17.1),names(Fogerty_17.1))
-dat2
+# dat2 <- col.ident(names(Herm_17.1),names(Fogerty_17.1))
+# dat2
 
 # Variables are the same: now making the column names the same.
-names(Herm_17.1) <- names(Fogerty_17.1)
+# names(Herm_17.1) <- names(Fogerty_17.1)
 
 
 # Binding both Hermitage data and Fogerty data together in a 2017 Powdery Mildew on Mungbean experiments
-PM_MB_17 <- dplyr::bind_rows(Fogerty_17.1, Herm_17.1)
+# PM_MB_17 <- dplyr::bind_rows(Fogerty_17.1, Herm_17.1)
 
 
 
@@ -406,12 +406,12 @@ PM_MB_17 <- dplyr::bind_rows(Fogerty_17.1, Herm_17.1)
 # ________________
 
 
-col.ident(names(Herm_16),names(King_16))
-
-names(Herm_16)[4] <- names(King_16)[4]
-names(King_16)[5] <- names(Herm_16)[5]
-names(King_16)[6] <- names(Herm_16)[6]
-names(King_16)[7] <- names(Herm_16)[7]  # I am assuming here that plot length and row length are the same thing
+# col.ident(names(Herm_16),names(King_16))
+# 
+# names(Herm_16)[4] <- names(King_16)[4]
+# names(King_16)[5] <- names(Herm_16)[5]
+# names(King_16)[6] <- names(Herm_16)[6]
+# names(King_16)[7] <- names(Herm_16)[7]  # I am assuming here that plot length and row length are the same thing
 
 #PM_MB_16 <- dplyr::bind_rows(Herm_16,King_16)
 
@@ -439,14 +439,14 @@ names(King_16)[7] <- names(Herm_16)[7]  # I am assuming here that plot length an
 # data PM_MB_17 - powdery mildew data from two field trials in 2017, Hermitage and Fogerty
 # data PM_MB_16 - powdery mildew data from two field trials in 2016, Hermitage and Kingaroy
 
-dat3 <- PM_MB_17 %>%
-   group_by(location, Treatment.No, Chem.Trt, `Row.Spacing.(m)`,Incidence_assessment_date) %>%
-   summarise(Incidence = mean(Incidence), Yield = mean(`Yield.t/ha`)) %>%
-   filter(location == "Fogerty") %>%
-   filter(Incidence_assessment_date == "2017-04-18")
-
-write.csv(dat3,"C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/2017 Fogerty final mean incidence.csv")
-
+# dat3 <- PM_MB_17 %>%
+#    group_by(location, Treatment.No, Chem.Trt, `Row.Spacing.(m)`,Incidence_assessment_date) %>%
+#    summarise(Incidence = mean(Incidence), Yield = mean(`Yield.t/ha`)) %>%
+#    filter(location == "Fogerty") %>%
+#    filter(Incidence_assessment_date == "2017-04-18")
+# 
+# write.csv(dat3,"C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/2017 Fogerty final mean incidence.csv")
+# 
 
 
 
@@ -454,17 +454,17 @@ write.csv(dat3,"C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/2017 Fogerty
 # ______ And for Hermitage ___________
 
 
-dat4 <- PM_MB_17 %>%
-   group_by(location, Treatment.No, Chem.Trt, `Row.Spacing.(m)`,Incidence_assessment_date) %>%
-   summarise(Incidence = mean(Incidence), Yield = mean(`Yield.t/ha`)) %>%
-   filter(location == "Hermitage") %>%
-   filter(Incidence_assessment_date == "2017-05-11")
+# dat4 <- PM_MB_17 %>%
+#    group_by(location, Treatment.No, Chem.Trt, `Row.Spacing.(m)`,Incidence_assessment_date) %>%
+#    summarise(Incidence = mean(Incidence), Yield = mean(`Yield.t/ha`)) %>%
+#    filter(location == "Hermitage") %>%
+#    filter(Incidence_assessment_date == "2017-05-11")
+# 
+# write.csv(dat4,"C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/2017 Hermitage final mean incidence.csv")
 
-write.csv(dat4,"C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/2017 Hermitage final mean incidence.csv")
 
 
-
-PM_MB_means <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/1902 powdery mildew-Mungbean - Collated means.xlsx", detectDates = TRUE)
+# PM_MB_means <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/1902 powdery mildew-Mungbean - Collated means.xlsx", detectDates = TRUE)
 
 
 
@@ -475,7 +475,7 @@ PM_MB_means <- read.xlsx("C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/19
 # ___________________________________________________
 # ______ And for Wellcamp 2018 ___________
 
-head(Well_18.1)
+# head(Well_18.1)
 
 dat5 <- Well_18.1 %>%
    group_by(factor(Row.Spacing), Fungicide, Assessment_date, Plant.Pop) %>%

@@ -84,7 +84,7 @@ knitr::kable(
 
 ```{r data_summary, echo=TRUE, message=FALSE, warning=FALSE}
 
-source("Cleaning historical data.R", echo = FALSE, print.eval = FALSE)
+# source("Cleaning historical data.R", echo = FALSE, print.eval = FALSE)
 # ___ Datasets available ___
 # data   Herm_16.DR     - mean powdery mildew Disease rating data and mean Yield from two field trials in 2017, Hermitage and Fogerty
 # data   King_16.DR     - mean powdery mildew Disease rating data and mean Yield from two field trials in 2016, Hermitage and Kingaroy
