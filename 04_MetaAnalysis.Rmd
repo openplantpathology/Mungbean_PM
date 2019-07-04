@@ -1,0 +1,59 @@
+---
+title: "Meta-analysis"
+author: "P. Melloy"
+date: "04/07/2019"
+output: html_document
+---
+
+# Meta-analysis
+
+## Data-wrangling
+
+```{r}
+PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+str(PM_MB_means)
+```
+
+
+When investigating previous studies into Powdery Mildew Fungicide efficacy on Mungbean `r length(unique(PM_MB_means$Trial_ref))` trials were found, however only eleven Tebeconazol were used for the following meta-analysis, followed by the next common Fungicide Propiconazole. Sulphur was disregarded due to it's inconsistancy in efficacy.
+
+```{r Fungicides}
+unique(PM_MB_means$Fungicide)
+PM_MB_means %>%
+   group_by(Fungicide,Trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Trials = n) %>%
+   kable()
+
+```
+
+### Fungicide Doses
+All trials that used Tebeconazole used approimately the same dose. dose of the active ingredient ranged from 62.35 grams per hectare to 60 grams per hectare. 
+```{r Tebe_dose}
+PM_MB_means %>%
+   filter(Fungicide == "Tebeconazole") %>%
+   select(Trial_ref, Year, Location, first_sign_disease, Dose.ai.ha., total_Fungicide) %>%
+   kable()
+```
+
+### Row spacing
+
+Some experiments were designed to investigate the effect of row spacing and plant density on Powdery Mildew disease and crop yield. The results showed that shorter distances between rows increase crop yields and mitigated the yield impact of the disease.
+
+```{r row_spacing}
+PM_MB_means %>%
+   filter(Fungicide == "Tebeconazole") %>%
+   group_by(row_spacing,Trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Treatments = n) %>%
+   kable()
+
+
+```
+
+
+
+
+
