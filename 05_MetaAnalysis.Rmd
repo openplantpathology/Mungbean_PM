@@ -39,7 +39,8 @@ PM_MB_means %>%
 
 ### Row spacing
 
-Some experiments were designed to investigate the effect of row spacing and plant density on Powdery Mildew disease and crop yield. The results showed that shorter distances between rows increase crop yields and mitigated the yield impact of the disease.
+Some experiments were designed to investigate the effect of row spacing and plant density on Powdery Mildew disease and crop yield. The results showed that shorter distances between rows increase crop yields and mitigated the yield impact of the disease.  
+Seven trials used a row spacing of 0.75 meters.
 
 ```{r row_spacing}
 PM_MB_means %>%
@@ -50,10 +51,22 @@ PM_MB_means %>%
    rename(Treatments = n) %>%
    kable()
 
-
 ```
 
 
+### standardising the type of variance  
+
+The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
+
+```{r variance}
+PM_MB_means %>%
+   filter(Fungicide == "Tebeconazole",
+          row_spacing == 0.75) %>%
+   group_by(Y_error.type) %>%
+   summarise(n = length(Y_error.type))
+   
+   
+```
 
 
 
