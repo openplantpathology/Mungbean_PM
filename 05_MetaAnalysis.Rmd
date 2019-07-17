@@ -99,7 +99,7 @@ MSW <- (LSD/Tcrit)^2/(1/n.A + 1/n.B)
 SSquares <- MSW * DFw
 
 Stdev <- sqrt(
-   (1/(PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates[1])) * 
+   (1/(PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates[1]-1)) * 
       SSquares)
 
 ```
