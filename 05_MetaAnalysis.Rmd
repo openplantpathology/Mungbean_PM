@@ -9,8 +9,9 @@ output: html_document
 
 ## Data-wrangling
 
-```{r}
+```{r Meta_dataImport}
 PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+
 str(PM_MB_means)
 ```
 
@@ -51,6 +52,11 @@ PM_MB_means %>%
    rename(Treatments = n) %>%
    kable()
 
+
+PM_MB_means %>%
+   filter(Fungicide == "Tebeconazole",
+          row_spacing == 0.75) 
+
 ```
 
 
@@ -68,5 +74,34 @@ PM_MB_means %>%
    
 ```
 
+```{r LSD_2_SD}
+# Formula and modifications based off information found at https://www.statisticshowto.datasciencecentral.com/how-to-calculate-the-least-significant-difference-lsd/
+colnames(PM_MB_means)
+
+Tcrit <- 1.697  # 0.05 and DFw = 30 # T critical value for which there is significant difference between two groups
+DFw <- sum(PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates) - 
+   length(PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates) # degrees of freedom within groups
+n.A <- PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates[1]
+n.B <- PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates[1]
+LSD <- PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Yield_error[1]
+
+
+# SSwithin <- #unknown
+# MSW <- SSwithin / DFw # mean square within (SS within / DF within)
+
+
+#  LSD = (Tcrit) * sqrt(MSW * (1/n.A + 1/n.B))
+#  (LSD/Tcrit) = sqrt(MSW * (1/n.A + 1/n.B))
+#  (LSD/Tcrit)^2 = MSW * (1/n.A + 1/n.B)
+#  (LSD/Tcrit)^2/(1/n.A + 1/n.B) = MSW
+MSW <- (LSD/Tcrit)^2/(1/n.A + 1/n.B)
+
+SSquares <- MSW * DFw
+
+Stdev <- sqrt(
+   (1/(PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates[1] - 1)) * 
+      SSquares)
+
+```
 
 
