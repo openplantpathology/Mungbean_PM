@@ -74,11 +74,10 @@ PM_MB_means %>%
    
 ```
 
-The trial, `mung1112/02` uses Least squre differences to describe the variation within the experiment. The following code attempts to convert this to sampling variance as per the method in 
+The trial, `mung1112/02` uses Least squre differences to describe the variation within the experiment. The following code attempts to convert this to sampling variance as per the method in [Nugugi et.al (2011)](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221). Ideas for using a T-critical value of 1.697 came from reading a [statisics-how-to website](https://www.statisticshowto.datasciencecentral.com/how-to-calculate-the-least-significant-difference-lsd/). A [table of T-critical values](https://www.statisticshowto.datasciencecentral.com/tables/t-distribution-table/) was consulted where 30 degrees of freedom within expeiment was used to find the 'T-crit' value of 1.697.
 
 ```{r LSD_2_MSE}
 # Formula and modifications based off information found at https://www.statisticshowto.datasciencecentral.com/how-to-calculate-the-least-significant-difference-lsd/
-colnames(PM_MB_means)
 
 Tcrit <- 1.697  # 0.05 and DFw = 30 # T critical value for which there is significant difference between two groups
 DFw <- sum(PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates) - 
@@ -96,11 +95,11 @@ LSD <- PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Yield_error[1]
 #  (LSD/Tcrit) = sqrt(MSW * (1/n.A + 1/n.B))
 #  (LSD/Tcrit)^2 = MSW * (1/n.A + 1/n.B)
 #  (LSD/Tcrit)^2/(1/n.A + 1/n.B) = MSW
-MSE <- (LSD/Tcrit)^2/(1/n.A + 1/n.B)
+#  MSE <- (LSD/Tcrit)^2/(1/n.A + 1/n.B) # This formula was abandon in favor for the formula in Nugugi et. at (2011)
 MSE <- PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates[1]*(LSD/Tcrit)^2/2 # method for finding variance in Nugugi et.al (2011) DOI: 10.1094/phyto-08-10-0221
 
 ```
-![calculating sampling variance from mean squared error Paul et. al. (2008)](Paul_etal_2008.PNG)
+![Calculating sampling variance from mean squared error Paul et. al. (2008)](Paul_etal_2008.PNG)
 
 ```{r sampling_variance}
 for(j in seq_along(PM_MB_means[PM_MB_means$Trial_ref == "mung1112/02",]$Replicates)){
@@ -160,4 +159,20 @@ PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Yield_error <- Sv
 PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Y_error.type <- "SamplingVariance"
 
 ```
+
+
+Now for the trickier part creating 'Sampling Variance from NAs.
+```{r}
+Trials <- PM_MB_means %>%
+   filter(Fungicide == "Tebeconazole",
+          row_spacing == 0.75,
+          Y_error.type == NA)%>%
+   select(Trial_ref)%>%
+   distinct()
+```
+
+
+
+
+
 
