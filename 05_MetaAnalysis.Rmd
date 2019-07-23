@@ -60,6 +60,22 @@ PM_MB_means %>%
 
 ```
 
+### Host genotypes
+Host genotype may have to be analysed to determine the effect.  
+```{r Host_genotype}
+PM_MB_means %>%
+   filter(Fungicide == "Tebeconazole",
+          row_spacing == 0.75) %>% 
+   group_by(host_genotype) %>%
+   summarise(n = length(host_genotype))
+   
+```
+In general the mungbean varieties have the following resistance to powdery mildew.  
+   - Berken: Highly susceptible  
+   - Crystal: Susceptible  
+   - Jade: Moderatly susceptible  
+   
+
 
 ### standardising the type of variance  
 
@@ -83,7 +99,6 @@ Trials <- PM_MB_means %>%
           Y_error.type == "lsd (P=0.05)")%>%
    select(Trial_ref)%>%
    distinct()
-
 
 ```
 
@@ -177,16 +192,34 @@ PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Y_error.type <- "Sampl
 ```
 
 
-Now for the trickier part creating 'Sampling Variance from NAs.
+Now for the trickier part creating 'Sampling Variance' for treatments where only mean yeild is recorded.  
+The trial which does not report any type of variance also reports that there is no significant difference between the means.
 ```{r}
-Trials <- PM_MB_means %>%
+PM_MB_means %>%
    filter(Fungicide == "Tebeconazole",
           row_spacing == 0.75,
-          is.na(Y_error.type)) 
-
+          is.na(Y_error.type)) %>%
+   select(Trial_ref)%>%
    distinct()
 ```
 
+A single trial `mung1516/03` within the current scope od the meta-analysis fails to report a varience statistic. According to [Machado F. et. al (2017)](http://apsjournals.apsnet.org/doi/10.1094/PDIS-03-17-0340-RE) [Paul et. al. (2007)](https://apsjournals.apsnet.org/doi/pdfplus/10.1094/PHYTO-97-2-0211) uses linear regression model to estimate sampling variance.  
+
+```{r na2Sampling_variance}
+
+for(i in PM_MB_means$Trial_ref){
+
+log(V)[i] = a + b * log(
+   mean(subset(PM_MB_means$grain_yield.t.ha.[i], Fungicide == "control"),
+        subset(PM_MB_means$grain_yield.t.ha.[i], Fungicide == "Tebeconazole")))
+# need to know what parameters a and b are here
+# I am guessing they represent prediction parameters for each "study" for each of the treatments, "control" and Tebeconazole"
+
+}
+
+
+
+```
 
 
 
