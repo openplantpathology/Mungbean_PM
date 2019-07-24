@@ -1,10 +1,28 @@
 ---
 title: Meta-analysis of Fungicide Application Trials for the Management of Powdery Mildew
   in Mungbean.
-author: "P. Melloy; E. M. Del Ponte; C. T. Gray; A. H. Sparks;"
-date: "24/07/2019"
-output: word_document
+author:
+  - P. Melloy:
+      email: paul.melloy@usq.edu.au
+      institute: USQ
+      correspondence: true
+  - name: E. M. Del Ponte
+    institute: UFVR
+  - name: C. T. Gray
+    institute: LaTrobe
+  - name: A. H. Sparks
+    institute: USQ
+institute:
+  - USQ: University of Southern Queensland, Centre for Crop Health, Toowoomba, Queensland 4350, Australia
+  - LaTrobe: Charles's affiliation here
+  - UFVR: Universidade Federal de Viçosa, Viçosa, Brazil
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  bookdown::word_document2:
+    toc: no
+    pandoc_args:
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
 ---
 
 Current commercially available mungbean varieties lack adequate powdery mildew (_Podosphaera xanthii_) resistance to protect crop yields in the presence of high disease pressure. Growers therefore manage severe epidemics by applying fungicide and sowing early in the growing season to avoid the cooler temperatures, which are associated with powdery mildew infestations. Since 2001 twenty-four field trials have assessed the timing and frequency of fungicide application on powdery mildew disease incidence and mungbean yield in the northern grains region. Results from these trials have advised the best practice for managing the disease is through a fungicide application at first sign of disease followed by a second spray two weeks later if necessary. However, the outcomes of these trials have occasionally lacked certainty when analysed in isolation. This meta-analysis aims to use the combined power of multiple studies to increase certainty for the ideal fungicide spray window for minimising yield loss due to powdery mildew and maximise disease control. This meta-analysis also associates environmental variables to the first sighting of disease that can be used to inform agronomists and growers when to begin scouting their crop for the first signs of powdery mildew. The outcomes of this research can be used to refine decision support system (DSS) tools like PowderyMildewMBM to boost accuracy and add functionality such as disease alerts.  
-
