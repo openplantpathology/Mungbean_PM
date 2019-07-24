@@ -1,0 +1,10 @@
+---
+title: Meta-analysis of the fungicide application for management of Powdery Mildew
+  in Mungbean.
+author: "P. Melloy"
+date: "24/07/2019"
+output: word_document
+---
+
+Commercially available Mungbean varieties lack adequate powdery mildew resistance to protect crop yields. Growers, therefore, manage severe epidemics by applying fungicide and sowing early in the growing season to avoid the cooler temperatures which are associated with Powdery Mildew infestations. Since 2001 twenty-four field trials have assessed the timing and frequency of fungicide application on Powdery Mildew disease incidence and Mungbean yield. Results from these trials have advised the best practice for managing the disease through fungicide application at first sign of disease, and a second spray two weeks later if necessary. However, the outcomes of these trials sometimes lacked certainty when analysed in isolation. This meta-analysis aims to use the combined power of multiple studies to increase certainty for the ideal fungicide spray window for minimising yield loss due to powdery mildew and maximise disease control. This meta-analysis also associates environmental variables to the first sighting of disease and can be used to inform growers when to begin scouting their crop for powdery mildew. The outcomes of this research can be used to refine decision support system (DSS) tools to boost accuracy and add functionality such as disease alerts.  
+

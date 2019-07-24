@@ -12,7 +12,6 @@ output: html_document
 ```{r Meta_dataImport}
 PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv", stringsAsFactors = FALSE)
 
-
 #str(PM_MB_means)
 ```
 
@@ -66,8 +65,20 @@ Host genotype may have to be analysed to determine the effect.
 PM_MB_means %>%
    filter(Fungicide == "Tebeconazole",
           row_spacing == 0.75) %>% 
-   group_by(host_genotype) %>%
-   summarise(n = length(host_genotype))
+   group_by(host_genotype, Trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Treatments = n) %>%
+   kable()
+
+
+PM_MB_means %>%
+   filter(Fungicide == "Tebeconazole") %>%
+   group_by(row_spacing,Trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Treatments = n) %>%
+   kable()
    
 ```
 In general the mungbean varieties have the following resistance to powdery mildew.  
@@ -87,7 +98,7 @@ PM_MB_means %>%
           row_spacing == 0.75) %>%
    group_by(Y_error.type) %>%
    summarise(n = length(Y_error.type))
-   
+
    
 ```
 
