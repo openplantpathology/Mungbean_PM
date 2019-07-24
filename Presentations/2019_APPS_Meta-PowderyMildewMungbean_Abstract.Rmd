@@ -1,7 +1,7 @@
 ---
 title: Meta-analysis of the fungicide application for management of Powdery Mildew
   in Mungbean.
-author: "P. Melloy"
+author: "P. Melloy; E. M.Del Ponte; Charles; A. H. Sparks;"
 date: "24/07/2019"
 output: word_document
 ---
