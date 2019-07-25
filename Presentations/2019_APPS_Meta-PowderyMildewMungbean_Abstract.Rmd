@@ -14,7 +14,7 @@ author:
     institute: USQ
 institute:
   - USQ: University of Southern Queensland, Centre for Crop Health, Toowoomba, Queensland 4350, Australia
-  - LaTrobe: Charles's affiliation here
+  - LaTrobe: La Trobe University, Melbourne, Victoria 3086, Australia
   - UFVR: Universidade Federal de Viçosa, Viçosa, Brazil
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
