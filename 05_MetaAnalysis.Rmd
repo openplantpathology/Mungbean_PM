@@ -5,6 +5,16 @@ date: "04/07/2019"
 output: html_document
 ---
 
+```{r MEsummary_Libraries}
+library(dplyr)
+library(openxlsx)
+library(kableExtra)
+library(ggplot2)
+library(leaflet)
+#source("./getPPD2.R")
+
+```
+
 # Meta-analysis
 
 ## Data-wrangling
@@ -12,6 +22,7 @@ output: html_document
 ```{r Meta_dataImport}
 PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv", stringsAsFactors = FALSE)
 
+library(dplyr)
 #str(PM_MB_means)
 ```
 
@@ -60,7 +71,7 @@ PM_MB_means %>%
 ```
 
 ### Host genotypes
-Host genotype may have to be analysed to determine the effect.  
+Host genotype may need to be analysed to determine the effect.  
 ```{r Host_genotype}
 PM_MB_means %>%
    filter(Fungicide == "Tebeconazole",
@@ -71,20 +82,11 @@ PM_MB_means %>%
    rename(Treatments = n) %>%
    kable()
 
-
-PM_MB_means %>%
-   filter(Fungicide == "Tebeconazole") %>%
-   group_by(row_spacing,Trial_ref) %>%
-   summarise() %>%
-   count() %>%
-   rename(Treatments = n) %>%
-   kable()
-   
 ```
 In general the mungbean varieties have the following resistance to powdery mildew.  
    - Berken: Highly susceptible  
    - Crystal: Susceptible  
-   - Jade: Moderatly susceptible  
+   - Jade: Moderatley susceptible  
    
 
 
@@ -225,10 +227,38 @@ log(V)[i] = a + b * log(
         subset(PM_MB_means$grain_yield.t.ha.[i], Fungicide == "Tebeconazole")))
 # need to know what parameters a and b are here
 # I am guessing they represent prediction parameters for each "study" for each of the treatments, "control" and Tebeconazole"
-
 }
 
 
+# method as described by Emerson
+levels(factor(PM_MB_means$Y_error.type))
+
+PM_MB_train <- PM_MB_means %>%
+   filter(Y_error.type == "SamplingVariance")
+
+PM_MB_train$Trial_ref <- as.factor(PM_MB_train$Trial_ref)
+
+plot(PM_MB_train$Yield_error, log(as.numeric(PM_MB_train$`grain_yield.t.ha.`)))
+
+
+library(lme4)
+
+PM_MB_trianLMER <- lmer(log(as.numeric(`grain_yield.t.ha.`)) ~ Yield_error + 
+         (1|Trial_ref), data = PM_MB_train)
+
+paramA <- (summary(PM_MB_trianLMER)$coef)[2,1]
+InterC <- (summary(PM_MB_trianLMER)$coef)[1,1]
+
+ggplot(PM_MB_train, aes(y = log(as.numeric(`grain_yield.t.ha.`)), x = Yield_error, colour = Trial_ref))+
+   geom_point()+
+   geom_abline(intercept = InterC, slope = paramA)
+
+
+exp((log(as.numeric(PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$`grain_yield.t.ha.`)) * paramA)+InterC)
+# PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$Yield_error
+hist(PM_MB_train$Yield_error)
+hist(as.numeric(PM_MB_train$`grain_yield.t.ha.`))
+hist(log(as.numeric(PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$`grain_yield.t.ha.`)))
 
 ```
 
