@@ -21,7 +21,7 @@ library(leaflet)
 
 ```{r Meta_dataImport}
 PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv", stringsAsFactors = FALSE)
-
+PM_MB_means$grain_yield.t.ha. <- as.numeric(PM_MB_means$grain_yield.t.ha.)
 library(dplyr)
 #str(PM_MB_means)
 ```
@@ -95,13 +95,11 @@ In general the mungbean varieties have the following resistance to powdery milde
 The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
 
 ```{r variance}
-PM_MB_means %>%
+   PM_MB_means %>%
    filter(Fungicide == "Tebeconazole",
           row_spacing == 0.75) %>%
-   group_by(Y_error.type) %>%
-   summarise(n = length(Y_error.type))
-
-   
+   group_by(Trial_ref, Y_error.type) %>%
+   summarise(Tebe_Treatments = length(Y_error.type))
 ```
 
 
@@ -238,31 +236,75 @@ PM_MB_train <- PM_MB_means %>%
 
 PM_MB_train$Trial_ref <- as.factor(PM_MB_train$Trial_ref)
 
-plot(PM_MB_train$Yield_error, log(as.numeric(PM_MB_train$`grain_yield.t.ha.`)))
+plot(PM_MB_train$Yield_error, log(PM_MB_train$`grain_yield.t.ha.`))
 
 
 library(lme4)
 
-PM_MB_trianLMER <- lmer(log(as.numeric(`grain_yield.t.ha.`)) ~ Yield_error + 
+# Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
+PM_MB_trianLMER <- lmer(log(`grain_yield.t.ha.`) ~ Yield_error + 
          (1|Trial_ref), data = PM_MB_train)
 
-paramA <- (summary(PM_MB_trianLMER)$coef)[2,1]
-InterC <- (summary(PM_MB_trianLMER)$coef)[1,1]
+paramA <- (summary(PM_MB_trianLMER)$coef)[2,1] # Extract the Slope to predict Yield error
+InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the intercept to predict Yield error
 
-ggplot(PM_MB_train, aes(y = log(as.numeric(`grain_yield.t.ha.`)), x = Yield_error, colour = Trial_ref))+
-   geom_point()+
-   geom_abline(intercept = InterC, slope = paramA)
+lmer.coef <- coef(PM_MB_trianLMER)
+
+# plot of the mixed effect model, Black line shows the mean lmer regression line
+ggplot(PM_MB_train)+
+   geom_point(aes(y = log(`grain_yield.t.ha.`), x = Yield_error, colour = Trial_ref))+
+   geom_abline(intercept = c(InterC,lmer.coef$Trial_ref[,1]), 
+               slope = c(paramA,lmer.coef$Trial_ref[,2]),
+               size = 1.5,
+               colour = c("Black",hue_pal()(6)))
+   geom_point(aes(y = log(PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$`grain_yield.t.ha.`),
+                  x = rep(0,length(log(PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$`grain_yield.t.ha.`)))
+                  ),colour = "Black")
 
 
-exp((log(as.numeric(PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$`grain_yield.t.ha.`)) * paramA)+InterC)
+library(scales)
+
+
+
+Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$`grain_yield.t.ha.`) - InterC)/ paramA
+
 # PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$Yield_error
 hist(PM_MB_train$Yield_error)
-hist(as.numeric(PM_MB_train$`grain_yield.t.ha.`))
+hist(PM_MB_train$`grain_yield.t.ha.`)
 hist(log(as.numeric(PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$`grain_yield.t.ha.`)))
+
+
+PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$Yield_error <- Sv
+PM_MB_means[PM_MB_means$Trial_ref == "mung1516/03",]$Y_error.type <- "SamplingVariance"
 
 ```
 
+Just for kicks lets look at the linear regression model as a Random effects model where `Yield_error` is set as a random slope to the random intercept `Trial_ref`.  
+The model fits better as shown by an anova comparison. But now to determine how to impute from this model ....
+```{r random_slope_model}
 
+# Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
+PM_MB_trianLMERx <- lmer(log(`grain_yield.t.ha.`) ~ 1 + 
+         (Yield_error|Trial_ref), data = PM_MB_train)
+
+anova(PM_MB_trianLMER,PM_MB_trianLMERx) # random slope model signigicantly better
+
+summary(PM_MB_trianLMERx)
+
+InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the intercept to predict Yield error
+
+lmer.coef <- coef(PM_MB_trianLMERx)
+
+# plot of the mixed effect model, Black line shows the mean lmer regression line
+ggplot(PM_MB_train)+
+   geom_point(aes(y = log(`grain_yield.t.ha.`), x = Yield_error, colour = Trial_ref))+
+   geom_abline(intercept = lmer.coef$Trial_ref[,2], 
+               slope = lmer.coef$Trial_ref[,1],
+               size = 1.5,
+               colour = hue_pal()(6))
+   
+
+```
 
 
 
