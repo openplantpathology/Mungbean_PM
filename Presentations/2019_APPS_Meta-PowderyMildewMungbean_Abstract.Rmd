@@ -7,7 +7,7 @@ author:
       institute: USQ
       correspondence: true
   - name: E. M. Del Ponte
-    institute: UFVR
+    institute: UFV
   - name: C. T. Gray
     institute: LaTrobe
   - name: A. H. Sparks
@@ -15,7 +15,7 @@ author:
 institute:
   - USQ: University of Southern Queensland, Centre for Crop Health, Toowoomba, Queensland 4350, Australia
   - LaTrobe: La Trobe University, Melbourne, Victoria 3086, Australia
-  - UFVR: Universidade Federal de Viçosa, Viçosa, Brazil
+  - UFV: Universidade Federal de Viçosa, Viçosa, Brazil
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   bookdown::word_document2:
