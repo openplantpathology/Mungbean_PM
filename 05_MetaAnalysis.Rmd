@@ -251,63 +251,152 @@ plot(PM_MB_train$Yield_error, log(PM_MB_train$`grain_yield.t.ha.`))
 
 library(lme4)
 library(scales)
-# Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
-PM_MB_trianLMER <- lmer(log(Yield_error) ~ `grain_yield.t.ha.`+ 
+# Run a linear model with Grain_yield as a fixed effect predictor and Trial as a random intercept
+PM_MB_trianLMER <- lmer(Yield_error ~ `grain_yield.t.ha.`+ 
          (1|Trial_ref), data = PM_MB_train)
-
 summary(PM_MB_trianLMER)
 
-paramA <- (summary(PM_MB_trianLMER)$coef)[2,1] # Extract the Slope to predict Yield error
-InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the intercept to predict Yield error
+# grain yeild is a significant predictor for yeild error (t value = -2.757)
+# does log transformation improve the model
 
-lmer.coef <- coef(PM_MB_trianLMER)
+PM_MB_trianLMER.1 <- lmer(log(Yield_error) ~ `grain_yield.t.ha.`+ 
+         (1|Trial_ref), data = PM_MB_train)
+summary(PM_MB_trianLMER.1) # grain yeild is not a significant predictor of log(yeild error)
+anova(PM_MB_trianLMER, PM_MB_trianLMER.1) # no significant difference between the models
+
+
+PM_MB_trianLMER.2 <- lmer(Yield_error ~ log(`grain_yield.t.ha.`)+ 
+         (1|Trial_ref), data = PM_MB_train)
+summary(PM_MB_trianLMER.2) # log(grain yeild) is a significant predictor of yeild error
+anova(PM_MB_trianLMER, PM_MB_trianLMER.2) # no significant difference between the models
+
+
+#log transforming the response or predictor variables did not improve the model therefore I will leave it untransformed
+# I will be using the first model PM_MB_trianLMER for further analyses beyond this point
+
+paramA <- (summary(PM_MB_trianLMER)$coef)[2,1] # Extract the overall mean Slope to predict Yield error
+InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the overall mean intercept to predict Yield error
+
+lmer.coef <- coef(PM_MB_trianLMER) # extracting the mean random intercept for each of trial variables
 
 # plot of the mixed effect model, Black line shows the mean lmer regression line
 ggplot(PM_MB_train)+
-   geom_point(aes(y = log(`grain_yield.t.ha.`), x = Yield_error, colour = Trial_ref))+
+   geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = Trial_ref))+
    geom_abline(intercept = c(InterC,lmer.coef$Trial_ref[,1]), 
                slope = c(paramA,lmer.coef$Trial_ref[,2]),
                size = 1.5,
-               colour = c("Black",hue_pal()(6)))
-
+               colour = c("Black",hue_pal()(6)))+
+   coord_cartesian(xlim = c(0.8, 1.2))
 
 
 
 
 for(i in NATrials$Trial_ref){
-Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.`) - InterC)/ paramA
+#Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
+
+Sv <- (PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.` * paramA) + InterC
 
 PM_MB_means[PM_MB_means$Trial_ref == i,]$Yield_error <- Sv
 PM_MB_means[PM_MB_means$Trial_ref == i,]$Y_error.type <- "SamplingVariance"
-print(Sv)
+
 
 }
 ```
 
-Just for kicks lets look at the linear regression model as a Random effects model where `Yield_error` is set as a random slope to the random intercept `Trial_ref`.  
+Just for kicks lets look at the linear regression model as a Random effects model where `grain_yield.t.ha.` is set as a random slope to the random intercept `Trial_ref`.  
 The model fits better as shown by an anova comparison. But now to determine how to impute from this model ....
 ```{r random_slope_model}
 
 # Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
-PM_MB_trianLMERx <- lmer(log(`grain_yield.t.ha.`) ~ 1 + 
-         (Yield_error|Trial_ref), data = PM_MB_train)
+PM_MB_trianLMERx <- lmer(Yield_error ~ 1 + 
+         (`grain_yield.t.ha.`|Trial_ref), data = PM_MB_train)
 
-anova(PM_MB_trianLMER,PM_MB_trianLMERx) # random slope model signigicantly better
+anova(PM_MB_trianLMER,PM_MB_trianLMERx) # random slope model significantly better # P = 0.00378
 
 summary(PM_MB_trianLMERx)
 
-InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the intercept to predict Yield error
+InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the overall mean intercept 
 
-lmer.coef <- coef(PM_MB_trianLMERx)
+lmer.coefx <- coef(PM_MB_trianLMERx)
 
 # plot of the mixed effect model, Black line shows the mean lmer regression line
 ggplot(PM_MB_train)+
-   geom_point(aes(y = log(`grain_yield.t.ha.`), x = Yield_error, colour = Trial_ref))+
-   geom_abline(intercept = lmer.coef$Trial_ref[,2], 
-               slope = lmer.coef$Trial_ref[,1],
+   geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = Trial_ref))+
+   geom_abline(intercept = lmer.coefx$Trial_ref[,2], 
+               slope = lmer.coefx$Trial_ref[,1],
                size = 1.5,
-               colour = hue_pal()(6))
+               colour = hue_pal()(6))+
+   coord_cartesian(xlim = c(0, 3))
    
+```
+
+What is interesting about this model is the slopes all converge and pass through a specific point.
+We can use this to predict the slope of the trials we don't know the specific slope for and get a better prediction of the errors.
+
+```{r imputing_from_randomModel}
+ggplot(PM_MB_train)+
+   geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = Trial_ref))+
+   geom_abline(intercept = lmer.coefx$Trial_ref[,2], 
+               slope = lmer.coefx$Trial_ref[,1],
+               size = 1.5,
+               colour = hue_pal()(6))+
+   coord_cartesian(xlim = c(2.85, 2.875), ylim = c(0.0048,0.0049))
+
+# let us find the value of this point
+# what are the slopes and intercepts for each random grouping factor (Trial_ref)
+randomS_coefs <- lmer.coefx$Trial_ref
+
+
+
+# lets write a funcion to generate a sequence of predicted Y (yield error) values
+slope_generator <- function(slope,intercept, x_minimum = 0.8, x_maximum = 1.2, increment = 0.00000001){
+   Xi <- seq(from = x_minimum, to = x_maximum, by = increment)
+   (Xi * slope) + intercept
+}
+
+
+
+
+# generate a vector of predicted values for each of the trial slopes, returned as a matrix
+tmp2 <- apply(randomS_coefs,1,FUN = function(x) {
+   slope_generator(slope = x[1], intercept = x[2],x_minimum = 2.86135, x_maximum = 2.8614)
+                      })
+head(tmp2)
+
+
+
+
+# find which X predictor gives the lowest variation between trials and therefore the closest to the point at which the slopes converge
+tmp3 <- apply(tmp2,1,sd)
+plot(tmp3)
+min(tmp3)
+x_3252 <- which(tmp3 == min(tmp3))
+
+
+
+# zooming in on the X predictor by increasing resolution
+seq(from = 2.85,to = 2.875, by =0.0001)[115]
+seq(from = 2.85,to = 2.875, by =0.00001)[1139]
+x_point <- seq(from = 2.86135,to = 2.8614, by =0.00000001)[x_3252]
+
+
+
+
+# predict the y (yeild error) at the x predictor (grain.yield) for each trial group
+tmp4 <- apply(randomS_coefs,1,FUN = function(x){
+   (x_point * x[1]) + x[2]
+})
+
+
+
+
+# they are all the same value but lets take the mean to be more precise
+y_point <- mean(tmp4)
+
+
+
+# here is my 'good-enough' prediction of the convergence point
+common_S_coordinate <- c(x_point, y_point)
 
 ```
 
