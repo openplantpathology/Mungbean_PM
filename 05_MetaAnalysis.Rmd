@@ -21,8 +21,8 @@ library(leaflet)
 
 ```{r Meta_dataImport}
 PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv", stringsAsFactors = FALSE)
-PM_MB_means$grain_yield.t.ha. <- as.numeric(PM_MB_means$grain_yield.t.ha.)
-library(dplyr)
+PM_MB_means$grain_yield.t.ha. <- as.numeric(PM_MB_means$grain_yield.t.ha.) # NAs produced due to some cells having text description to why there is no specific data
+
 #str(PM_MB_means)
 ```
 
@@ -38,7 +38,13 @@ PM_MB_means %>%
    rename(Trials = n) %>%
    kable()
 
+# How many trials do we have if Tebe and Propi are pooled?
+
 ```
+Tebeconazole and propiconazole might be able to be pooled as a 'Triazole' fungicide treatment. Amistar is a combination of Azoxistrobin and Cyproconazole. Perhaps Amistar and 200 g/l Tebuconazole + 120 g/l Azoxystrobin might be able to be pooled given they both contain strobins and triazole, however they contain differening dose ratio (inverted).  
+
+Perhaps best way forward is to do an analysis of only the Triazoles. Then do another including Amistar as a comparison.
+
 
 ### Fungicide Doses
 All trials that used Tebeconazole used approimately the same dose. dose of the active ingredient ranged from 62.35 grams per hectare to 60 grams per hectare. 
@@ -47,6 +53,7 @@ PM_MB_means %>%
    filter(Fungicide == "Tebeconazole") %>%
    select(Trial_ref, Year, Location, first_sign_disease, Dose.ai.ha., total_Fungicide) %>%
    kable()
+# why are there zeros
 ```
 
 ### Row spacing
@@ -60,7 +67,7 @@ PM_MB_means %>%
    group_by(row_spacing,Trial_ref) %>%
    summarise() %>%
    count() %>%
-   rename(Treatments = n) %>%
+   rename(Trials = n) %>%
    kable()
 
 
@@ -69,6 +76,9 @@ PM_MB_means %>%
           row_spacing == 0.75) 
 
 ```
+Were there any statistical diference between all row spacing or only some?  
+Can we pool certain row spacings that have no significant difference?
+
 
 ### Host genotypes
 Host genotype may need to be analysed to determine the effect.  
@@ -218,14 +228,14 @@ A single trial `mung1516/03` within the current scope od the meta-analysis fails
 
 ```{r na2Sampling_variance}
 
-for(i in PM_MB_means$Trial_ref){
-
-log(V)[i] = a + b * log(
-   mean(subset(PM_MB_means$grain_yield.t.ha.[i], Fungicide == "control"),
-        subset(PM_MB_means$grain_yield.t.ha.[i], Fungicide == "Tebeconazole")))
-# need to know what parameters a and b are here
-# I am guessing they represent prediction parameters for each "study" for each of the treatments, "control" and Tebeconazole"
-}
+# for(i in PM_MB_means$Trial_ref){
+# 
+# log(V)[i] = a + b * log(
+#    mean(subset(PM_MB_means$grain_yield.t.ha.[i], Fungicide == "control"),
+#         subset(PM_MB_means$grain_yield.t.ha.[i], Fungicide == "Tebeconazole")))
+# # need to know what parameters a and b are here
+# # I am guessing they represent prediction parameters for each "study" for each of the treatments, "control" and Tebeconazole"
+# }
 
 
 # method as described by Emerson
@@ -240,10 +250,12 @@ plot(PM_MB_train$Yield_error, log(PM_MB_train$`grain_yield.t.ha.`))
 
 
 library(lme4)
-
+library(scales)
 # Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
-PM_MB_trianLMER <- lmer(log(`grain_yield.t.ha.`) ~ Yield_error + 
+PM_MB_trianLMER <- lmer(log(Yield_error) ~ `grain_yield.t.ha.`+ 
          (1|Trial_ref), data = PM_MB_train)
+
+summary(PM_MB_trianLMER)
 
 paramA <- (summary(PM_MB_trianLMER)$coef)[2,1] # Extract the Slope to predict Yield error
 InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the intercept to predict Yield error
@@ -259,7 +271,7 @@ ggplot(PM_MB_train)+
                colour = c("Black",hue_pal()(6)))
 
 
-library(scales)
+
 
 
 for(i in NATrials$Trial_ref){
@@ -267,6 +279,8 @@ Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.`) - Inter
 
 PM_MB_means[PM_MB_means$Trial_ref == i,]$Yield_error <- Sv
 PM_MB_means[PM_MB_means$Trial_ref == i,]$Y_error.type <- "SamplingVariance"
+print(Sv)
+
 }
 ```
 

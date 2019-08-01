@@ -21,7 +21,7 @@ The data plotted below are from the past field trials (2011 - 2017) described in
    1) Fungicide type
    2) Fungicide dose
    3) row spacing
-   4) Host cultivars
+   4) Host cultivars (probably is a covariate with season due to changing cultivars over time)
    5) Experiment location
    6) Final disease rating
 
