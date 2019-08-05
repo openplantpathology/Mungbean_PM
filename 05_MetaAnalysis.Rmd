@@ -285,7 +285,7 @@ ggplot(PM_MB_train)+
    geom_abline(intercept = c(InterC,lmer.coef$Trial_ref[,1]), 
                slope = c(paramA,lmer.coef$Trial_ref[,2]),
                size = 1.5,
-               colour = c("Black",hue_pal()(6)))+
+               colour = c("Black",hue_pal()(5)))
    coord_cartesian(xlim = c(0.8, 1.2))
 
 
@@ -325,13 +325,15 @@ ggplot(PM_MB_train)+
    geom_abline(intercept = lmer.coefx$Trial_ref[,2], 
                slope = lmer.coefx$Trial_ref[,1],
                size = 1.5,
-               colour = hue_pal()(6))+
+               colour = hue_pal()(5))+
    coord_cartesian(xlim = c(0, 3))
    
+
+
 ```
 
 What is interesting about this model is the slopes all converge and pass through a specific point.
-We can use this to predict the slope of the trials we don't know the specific slope for and get a better prediction of the errors.
+Perhaps can use this to predict the slope of the trials we don't know the specific slope for and get a better prediction of the errors.
 
 ```{r imputing_from_randomModel}
 ggplot(PM_MB_train)+
@@ -399,6 +401,8 @@ y_point <- mean(tmp4)
 common_S_coordinate <- c(x_point, y_point)
 
 ```
+After much deliberation I don't think this is possible to use the model with grain yield/ha as a random slope. Even though we know the grain yields and the mean in the grain yeilds we still can't predict the effect of the random intercept trial on the yield error.  
+I also re-ran the model without including the trial which we used LSD to interprete the sampling variance and the model lost a lot of significance.  
 
 
 
