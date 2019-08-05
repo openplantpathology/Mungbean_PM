@@ -37,7 +37,11 @@ PM_MB_means$Fungicide_application_5[as.character(PM_MB_means$Fungicide_applicati
 PM_MB_means$Fungicide_application_6[as.character(PM_MB_means$Fungicide_application_6) == ""] <- NA
 PM_MB_means$Fungicide_application_7[as.character(PM_MB_means$Fungicide_application_7) == ""] <- NA
 
+# Rewrite all variations of sulphur treatments as just sulphur
+PM_MB_means$Fungicide[PM_MB_means$Fungicide == "Sulphur"| PM_MB_means$Fungicide == "Sulphur (SC)" | PM_MB_means$Fungicide == "Sulphur (Ultra SC)" | PM_MB_means$Fungicide == "Sulphur (WP)"] <- "Sulphur"
+```
 
+```{r row_spacing}
 
 # Which row spacing leads to the higher disease severity
 PM_MB_means %>%
@@ -63,6 +67,150 @@ ggplot(aes(y = as.numeric(grain_yield.t.ha.), x = row_spacing, colour = Location
 
 
 ```
+
+
+
+
+#### Effect of Fungicide 
+**on proportional yield gain with repect to time of application**
+First lets look at the quantiles for each fungicide irrespective of other factors.
+We will focus on proportional yield gain, compared to no treatment control, as this should partially correct for some spatial and seasonal effects.  
+```{r}
+PM_MB_means %>%
+   group_by(Fungicide) %>%
+   summarise(n = length(prop_YG),
+             lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
+             median = median(prop_YG, na.rm = T),
+             mean = mean(prop_YG, na.rm = T),
+             upper_97.5 = quantile(prop_YG, na.rm = T, c(0.975))) %>%
+   filter(n >= 5) %>% # remove any fungicide groups with less than 5 observations
+   arrange(desc(median)) %>%
+   kable(caption = "Fungicide effect on proportion of yield gain") %>%
+   kable_styling(fixed_thead = T, full_width = T)
+
+
+# plot table as a density plot
+
+
+
+ggplot(PM_MB_means, aes(prop_YG))+
+   geom_density(aes(fill = cut(PM_MB_means2$spray_diff, c(-30,-19,-15,-10,-1,2,7,10,12,21))), alpha = 0.5)+
+   geom_vline(aes(xintercept = 0), size =0.5)+
+   facet_grid(cut(PM_MB_means2$spray_diff, c(-30,-19,-15,-10,-1,2,7,10,12,21))~.)+
+   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
+   labs(x = "Proportion of grain yeild saved",
+   title = "Grain yield proportion saved grouped by\nwhen the first Sulphur fungicide application was made\nrelative to when Powdery Mildew was first seen")+
+   theme(panel.grid.major = element_line(colour = "grey80"),
+         panel.grid.minor = element_line(colour = "grey50"),
+         panel.background = element_rect(fill = NA))+
+   guides(fill=guide_legend(title="Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease"))+
+   scale_x_continuous(limits = c(-0.3,0.6))
+
+```
+
+
+
+```{r}
+
+
+# unique(
+# PM_MB_means1 %>%
+#    group_by(Fungicide) %>%
+#    filter(n() >= 5) %>%
+#    select(days_from_1st))
+# 
+# 
+# PM_MB_means1 %>%
+#    group_by(Fungicide) %>%
+#    filter(n() >= 5) %>%
+# ggplot(aes(prop_YG))+
+#    geom_density(aes(fill = cut(spray_diff, c(-1,2,7,10,12,20))), alpha = 0.5)+
+#    geom_vline(aes(xintercept = 0), size =0.5)+
+#    facet_grid(rows = vars(cut(spray_diff, c(1,2,7,10,12,20))), cols = vars(Fungicide))+
+#    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
+#    labs(x = "Proportion of grain yeild saved",
+#    title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen")+
+#    theme(panel.grid.major = element_line(colour = "grey80"),
+#          panel.grid.minor = element_line(colour = "grey50"),
+#          panel.background = element_rect(fill = NA))+
+#    guides(fill=guide_legend(title="Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease"))+
+#    scale_x_continuous(limits = c(-0.2,0.55))
+# 
+# 
+
+#__________________________________________________________________________________________________________
+# levels(factor(PM_MB_means$Fungicide))
+
+
+# combine Sulphur treatments
+PM_MB_means2 <- PM_MB_means1 %>%
+   filter(Fungicide == "Sulphur" |
+             Fungicide == "Sulphur (SC)" |
+             Fungicide == "Sulphur (Ultra SC)" |
+             Fungicide == "Sulphur (WP)")
+
+
+unique(PM_MB_means2$spray_diff)
+
+
+ggplot(PM_MB_means2, aes(prop_YG))+
+   geom_density(aes(fill = cut(PM_MB_means2$spray_diff, c(-30,-19,-15,-10,-1,2,7,10,12,21))), alpha = 0.5)+
+   geom_vline(aes(xintercept = 0), size =0.5)+
+   facet_grid(cut(PM_MB_means2$spray_diff, c(-30,-19,-15,-10,-1,2,7,10,12,21))~.)+
+   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
+   labs(x = "Proportion of grain yeild saved",
+   title = "Grain yield proportion saved grouped by\nwhen the first Sulphur fungicide application was made\nrelative to when Powdery Mildew was first seen")+
+   theme(panel.grid.major = element_line(colour = "grey80"),
+         panel.grid.minor = element_line(colour = "grey50"),
+         panel.background = element_rect(fill = NA))+
+   guides(fill=guide_legend(title="Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease"))+
+   scale_x_continuous(limits = c(-0.3,0.6))
+
+```
+This plot shows that there is not a good probability that Sulphur will help save yield, even when it is sprayed at the ideal time.
+
+```{r each_fungicide}
+Chemical <- c("Amistar","Carbendazim","Tebeconazole", "propiconazole")
+levels(factor(PM_MB_means$Fungicide))
+
+# Generates multiple plots for each type of fungicide tested
+for(Chem in Chemical){
+PM_MB_means2 <- PM_MB_means1 %>%
+   filter(Fungicide == Chem)
+
+cat(Chem)
+
+# the following code 'spray_group' sets the spray_diff groupings that are used in the plots
+spray_group <- c(min(unique(PM_MB_means2$spray_diff))-1,
+      -5, 5,
+      max(unique(PM_MB_means2$spray_diff))+1)
+
+spray_group < - c(sort(unique(PM_MB_means2$spray_diff)-1), max(unique(PM_MB_means2$spray_diff)))
+
+print(spray_group)
+
+p1 <- ggplot(PM_MB_means2, aes(prop_YG))+
+   geom_density(aes(fill = cut(PM_MB_means2$spray_diff, spray_group)), alpha = 0.5)+
+   geom_vline(aes(xintercept = 0), size =0.5)+
+   facet_grid(cut(PM_MB_means2$spray_diff, spray_group)~.)+
+   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
+   labs(x = "Proportion of grain yeild saved",
+   title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen")+
+   theme(panel.grid.major = element_line(colour = "grey80"),
+         panel.grid.minor = element_line(colour = "grey50"),
+         panel.background = element_rect(fill = NA))+
+   guides(fill=guide_legend(title=paste(Chem,"Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease")))+
+   scale_x_continuous(limits = c(-1,1))
+
+print(p1)
+
+}
+```
+It seems the calculation of spray diff does not elucidate any differences between application dates.
+
+
+
+
 
 
 
@@ -153,9 +301,7 @@ kable(quant_PM,
 The following density plots show mean yield saved (t/Ha) or proportion yield saved in relation to when the first fungicide spray was applied in relation to when powdery mildew was first seen in the mungbean crop.  
 
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
-# removing 2017 and control data
-# this will help look at when the first application of fungicide is applied in relation to when the disease first appeared
-PM_MB_means1 <- PM_MB_means %>%
+PM_MB_means %>%
    filter(Fungicide != "control") %>%
 #   filter(total_Fungicide ==1) %>%
    mutate(days_from_1st = as.numeric(
@@ -262,116 +408,5 @@ PM_MB_means1$spray_diff <- vec1 # gives the closest fungicide application date t
 
 
 
-
-
-#### Effect of Fungicide 
-**on proportional yield gain with repect to time of application**
-##### Tebeconazole
-```{r}
-PM_MB_means1 %>%
-   group_by(Fungicide) %>%
-   filter(n() >= 5) %>% # remove any fungicide groups with less than 5 observations
-   summarise(n = length(prop_YG),
-             lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
-             median = median(prop_YG, na.rm = T),
-             mean = mean(prop_YG, na.rm = T),
-             upper_97.5 = quantile(prop_YG, na.rm = T, c(0.975))) %>%
-   kable(caption = "Fungicide effect on proportion of yield gain") %>%
-   kable_styling(fixed_thead = T, full_width = T)
-
-# unique(
-# PM_MB_means1 %>%
-#    group_by(Fungicide) %>%
-#    filter(n() >= 5) %>%
-#    select(days_from_1st))
-# 
-# 
-# PM_MB_means1 %>%
-#    group_by(Fungicide) %>%
-#    filter(n() >= 5) %>%
-# ggplot(aes(prop_YG))+
-#    geom_density(aes(fill = cut(spray_diff, c(-1,2,7,10,12,20))), alpha = 0.5)+
-#    geom_vline(aes(xintercept = 0), size =0.5)+
-#    facet_grid(rows = vars(cut(spray_diff, c(1,2,7,10,12,20))), cols = vars(Fungicide))+
-#    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-#    labs(x = "Proportion of grain yeild saved",
-#    title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen")+
-#    theme(panel.grid.major = element_line(colour = "grey80"),
-#          panel.grid.minor = element_line(colour = "grey50"),
-#          panel.background = element_rect(fill = NA))+
-#    guides(fill=guide_legend(title="Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease"))+
-#    scale_x_continuous(limits = c(-0.2,0.55))
-# 
-# 
-
-#__________________________________________________________________________________________________________
-# levels(factor(PM_MB_means$Fungicide))
-
-
-# combine Sulphur treatments
-PM_MB_means2 <- PM_MB_means1 %>%
-   filter(Fungicide == "Sulphur" |
-             Fungicide == "Sulphur (SC)" |
-             Fungicide == "Sulphur (Ultra SC)" |
-             Fungicide == "Sulphur (WP)")
-
-
-unique(PM_MB_means2$spray_diff)
-
-
-ggplot(PM_MB_means2, aes(prop_YG))+
-   geom_density(aes(fill = cut(PM_MB_means2$spray_diff, c(-30,-19,-15,-10,-1,2,7,10,12,21))), alpha = 0.5)+
-   geom_vline(aes(xintercept = 0), size =0.5)+
-   facet_grid(cut(PM_MB_means2$spray_diff, c(-30,-19,-15,-10,-1,2,7,10,12,21))~.)+
-   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-   labs(x = "Proportion of grain yeild saved",
-   title = "Grain yield proportion saved grouped by\nwhen the first Sulphur fungicide application was made\nrelative to when Powdery Mildew was first seen")+
-   theme(panel.grid.major = element_line(colour = "grey80"),
-         panel.grid.minor = element_line(colour = "grey50"),
-         panel.background = element_rect(fill = NA))+
-   guides(fill=guide_legend(title="Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease"))+
-   scale_x_continuous(limits = c(-0.3,0.6))
-
-```
-This plot shows that there is not a good probability that Sulphur will help save yield, even when it is sprayed at the ideal time.
-
-```{r each_fungicide}
-Chemical <- c("Amistar","Carbendazim","Tebeconazole", "propiconazole")
-levels(factor(PM_MB_means$Fungicide))
-
-# Generates multiple plots for each type of fungicide tested
-for(Chem in Chemical){
-PM_MB_means2 <- PM_MB_means1 %>%
-   filter(Fungicide == Chem)
-
-cat(Chem)
-
-# the following code 'spray_group' sets the spray_diff groupings that are used in the plots
-spray_group <- c(min(unique(PM_MB_means2$spray_diff))-1,
-      -5, 5,
-      max(unique(PM_MB_means2$spray_diff))+1)
-
-spray_group < - c(sort(unique(PM_MB_means2$spray_diff)-1), max(unique(PM_MB_means2$spray_diff)))
-
-print(spray_group)
-
-p1 <- ggplot(PM_MB_means2, aes(prop_YG))+
-   geom_density(aes(fill = cut(PM_MB_means2$spray_diff, spray_group)), alpha = 0.5)+
-   geom_vline(aes(xintercept = 0), size =0.5)+
-   facet_grid(cut(PM_MB_means2$spray_diff, spray_group)~.)+
-   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-   labs(x = "Proportion of grain yeild saved",
-   title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen")+
-   theme(panel.grid.major = element_line(colour = "grey80"),
-         panel.grid.minor = element_line(colour = "grey50"),
-         panel.background = element_rect(fill = NA))+
-   guides(fill=guide_legend(title=paste(Chem,"Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease")))+
-   scale_x_continuous(limits = c(-1,1))
-
-print(p1)
-
-}
-```
-It seems the calculation of spray diff does not elucidate any differences between application dates.
 
 
