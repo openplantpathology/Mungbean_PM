@@ -507,6 +507,61 @@ write.csv(dat5,"C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past trials/
 
 
 
+# ________________________________________________________________
+# _____________         Hermitage 2019           ________________
+# ________________________________________________________________
+library(data.table)
+
+
+PM_MB_19 <- read.xlsx("C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/1901_Herm_PM/1901 Mungbean powdery mildew disease and yeild data.xlsx",
+                     startRow = 2,
+                     cols = c(1:21))
+
+PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 5)
+PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 6)
+
+
+
+PM19_means <- PM_MB_19 %>%
+   group_by(TOS.NUM, `T/ment.NUM`)%>%
+   summarise(Incidence190423 = mean(`23-4-19.Incedence`, na.rm = TRUE),
+             Inc.sd.190423 = sd(`23-4-19.Incedence`, na.rm = TRUE),
+             Inc.error.190423 = "Stdev",
+             Incidence190501 = mean(`1-5-19.Incedence`, na.rm = TRUE),
+             Inc.sd.190501 = sd(`1-5-19.Incedence`, na.rm = TRUE),
+             Inc.error.190501 = "Stdev",
+             Plot_length = mean(Plot.Lengths, na.rm = TRUE),
+             Yield = mean(Yeild, na.rm = TRUE),
+             Yield_error = sd(Yeild, na.rm = TRUE),
+             AUDPC = mean(AUDPC, na.rm = TRUE)
+   )
+
+library(agricolae)
+?audpc
+colnames(PM_MB_19)
+
+audpc(PM_MB_19[PM_MB_19$TOS.NUM == 2 ,c(5,7,9)],c(70,78,86))
+
+PM_MB_19$AUDPC <- NA
+PM_MB_19[PM_MB_19$TOS.NUM == 1 , "AUDPC"] <- audpc(PM_MB_19[PM_MB_19$TOS.NUM == 1 ,c(5,7)],c(70,78))
+PM_MB_19[PM_MB_19$TOS.NUM == 2 , "AUDPC"] <- audpc(PM_MB_19[PM_MB_19$TOS.NUM == 2 ,c(5,7,9)],c(70,78,86))
+
+boxplot(AUDPC ~ as.factor(`T/ment.NUM`)* as.factor(TOS.NUM) , data = PM_MB_19)
+
+
+as.Date("2019-05-22") - as.Date("2019-02-04")
+as.Date("2019-04-15") - as.Date("2019-02-04")
+as.Date("2019-04-23") - as.Date("2019-02-04")
+as.Date("2019-05-01") - as.Date("2019-02-04")
+
+
+write.csv(PM19_means, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/1901_Herm_PM/2019_PM_Mungbean_treatMeans.csv")
+
+
+
+
+
+
 
 
 
