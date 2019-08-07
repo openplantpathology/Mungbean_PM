@@ -199,10 +199,8 @@ for(j in seq_along(PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Yie
    if(j == 1){Sv <- vector(length = length(PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Yield_error))}
 
 # Equation to convert standard deviation to Sampling Variance 
-   Sv[j] = (PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Yield_error[j]/
-               sqrt(PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Replicates[j]))^2
+   Sv[j] = (PM_MB_means[PM_MB_means$Trial_ref %in% Trials$Trial_ref,]$Yield_error[j])^2
    }
-
 
 
 
