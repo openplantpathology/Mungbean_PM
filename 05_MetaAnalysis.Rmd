@@ -257,13 +257,14 @@ PM_MB_trianLMER <- lmer(Yield_error ~ `grain_yield.t.ha.`+
          (1|Trial_ref), data = PM_MB_train)
 summary(PM_MB_trianLMER)
 
-# grain yeild is not a significant predictor for yeild error (t value = -1.613)
-#  And the variance decreases as the mean increases, counter to expectation
-# does log transformation improve the model
+# grain yeild (in this model) IS a significant predictor for yeild error (t value = 5.826)
+#  And the variance increases as the mean increases
+# does log transformation improve the model?
+
 
 PM_MB_trianLMER.1 <- lmer(log(Yield_error) ~ `grain_yield.t.ha.`+ 
          (1|Trial_ref), data = PM_MB_train)
-summary(PM_MB_trianLMER.1) # grain yeild is not a significant predictor of log(yeild error)
+summary(PM_MB_trianLMER.1) # grain yeild a significant predictor of log(yeild error)
 anova(PM_MB_trianLMER, PM_MB_trianLMER.1) # no significant difference between the models
 
 
@@ -272,10 +273,12 @@ PM_MB_trianLMER.2 <- lmer(Yield_error ~ log(`grain_yield.t.ha.`)+
 summary(PM_MB_trianLMER.2) # log(grain yeild) is a significant predictor of yeild error
 anova(PM_MB_trianLMER, PM_MB_trianLMER.2) # no significant difference between the models
 
+
 PM_MB_trianLMER.3 <- lmer(log(Yield_error) ~ log(`grain_yield.t.ha.`)+ 
          (1|Trial_ref), data = PM_MB_train)
 summary(PM_MB_trianLMER.3) # log(grain yeild) is a significant predictor of log(yeild error)
 anova(PM_MB_trianLMER, PM_MB_trianLMER.3) # no significant difference between the models
+
 
 # Lets try with Fungicide as a fixed effect
 PM_MB_trianLMER.4 <- lmer(Yield_error ~ `grain_yield.t.ha.`+ as.factor(Fungicide) + 
@@ -288,11 +291,11 @@ anova(PM_MB_trianLMER, PM_MB_trianLMER.4) # no significant difference between th
 #log transforming the response or predictor variables did not improve the model therefore I will leave it untransformed
 # I will be using the first model PM_MB_trianLMER for further analyses beyond this point
 
+# Extract the model cooeficients
 paramA <- (summary(PM_MB_trianLMER)$coef)[2,1] # Extract the overall mean Slope to predict Yield error
 InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the overall mean intercept to predict Yield error
-
 lmer.coef <- coef(PM_MB_trianLMER) # extracting the mean random intercept for each of trial variables
-dim(lmer.coef$Trial_ref)
+
 
 # plot of the mixed effect model, Black line shows the mean lmer regression line
 ggplot(PM_MB_train)+
@@ -303,8 +306,8 @@ ggplot(PM_MB_train)+
                colour = c("Black",hue_pal()(11)))+
    coord_cartesian(xlim = c(0, 3))
 
-
-
+```
+```{r na2Sv_formula}
 
 for(i in NATrials$Trial_ref){
 #Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
@@ -313,13 +316,45 @@ Sv <- (PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.` * paramA) + 
 
 PM_MB_means[PM_MB_means$Trial_ref == i,]$Yield_error <- Sv
 PM_MB_means[PM_MB_means$Trial_ref == i,]$Y_error.type <- "SamplingVariance"
-
-
 }
+
 ```
 
+
+Lets look at the model without the trial mung1718/01, as it looks to be adding some skew.
+```{r lmer_remove_mung1718-01}
+# remove from mung1718/01 from training dataset
+PM_MB_train.2 <- PM_MB_train[PM_MB_train$Trial_ref != "mung1718/01",]
+
+
+# Rerun the model
+PM_MB_trianLMER.5 <- lmer(Yield_error ~ `grain_yield.t.ha.`+ 
+         (1|Trial_ref), data = PM_MB_train.2)
+summary(PM_MB_trianLMER.5) # no significant effect of mean grain yield on yeild error
+
+
+# Extract the cooeficients
+paramA <- (summary(PM_MB_trianLMER.5)$coef)[2,1] # Extract the overall mean Slope to predict Yield error
+InterC <- (summary(PM_MB_trianLMER.5)$coef)[1,1] # Extract the overall mean intercept to predict Yield error
+lmer.coef <- coef(PM_MB_trianLMER.5) # extracting the mean random intercept for each of trial variables
+
+
+# plot the data with the predicted slopes overlayed
+ggplot(PM_MB_train.2)+
+   geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = Trial_ref))+
+   geom_abline(intercept = c(InterC,lmer.coef$Trial_ref[,1]), 
+               slope = c(paramA,lmer.coef$Trial_ref[,2]),
+               size = 1,
+               colour = c("Black",hue_pal()(10)))+
+   coord_cartesian(ylim = c(0, 0.33))
+
+```
+
+
+
+
 Just for kicks lets look at the linear regression model as a Random effects model where `grain_yield.t.ha.` is set as a random slope to the random intercept `Trial_ref`.  
-The model fits better as shown by an anova comparison. But now to determine how to impute from this model ....
+The model fits better as shown by an anova comparison. But how to impute from this model if mean variance for a trial is unknown....
 ```{r random_slope_model}
 
 # Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
