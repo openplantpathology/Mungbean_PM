@@ -254,7 +254,8 @@ PM_MB_trianLMER <- lmer(Yield_error ~ `grain_yield.t.ha.`+
          (1|Trial_ref), data = PM_MB_train)
 summary(PM_MB_trianLMER)
 
-# grain yeild is a significant predictor for yeild error (t value = -2.757)
+# grain yeild is not a significant predictor for yeild error (t value = -1.613)
+#  And the variance decreases as the mean increases, counter to expectation
 # does log transformation improve the model
 
 PM_MB_trianLMER.1 <- lmer(log(Yield_error) ~ `grain_yield.t.ha.`+ 
@@ -267,6 +268,11 @@ PM_MB_trianLMER.2 <- lmer(Yield_error ~ log(`grain_yield.t.ha.`)+
          (1|Trial_ref), data = PM_MB_train)
 summary(PM_MB_trianLMER.2) # log(grain yeild) is a significant predictor of yeild error
 anova(PM_MB_trianLMER, PM_MB_trianLMER.2) # no significant difference between the models
+
+PM_MB_trianLMER.3 <- lmer(log(Yield_error) ~ log(`grain_yield.t.ha.`)+ 
+         (1|Trial_ref), data = PM_MB_train)
+summary(PM_MB_trianLMER.3) # log(grain yeild) is a significant predictor of log(yeild error)
+anova(PM_MB_trianLMER, PM_MB_trianLMER.3) # no significant difference between the models
 
 
 #log transforming the response or predictor variables did not improve the model therefore I will leave it untransformed
@@ -282,8 +288,8 @@ ggplot(PM_MB_train)+
    geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = Trial_ref))+
    geom_abline(intercept = c(InterC,lmer.coef$Trial_ref[,1]), 
                slope = c(paramA,lmer.coef$Trial_ref[,2]),
-               size = 1.5,
-               colour = c("Black",hue_pal()(5)))
+               size = 1,
+               colour = c("Black",hue_pal()(6)))
    coord_cartesian(xlim = c(0.8, 1.2))
 
 
@@ -309,7 +315,7 @@ The model fits better as shown by an anova comparison. But now to determine how 
 PM_MB_trianLMERx <- lmer(Yield_error ~ 1 + 
          (`grain_yield.t.ha.`|Trial_ref), data = PM_MB_train)
 
-anova(PM_MB_trianLMER,PM_MB_trianLMERx) # random slope model significantly better # P = 0.00378
+anova(PM_MB_trianLMER,PM_MB_trianLMERx) # random slope model NOT significantly better # P = 0.6677
 
 summary(PM_MB_trianLMERx)
 
@@ -323,7 +329,7 @@ ggplot(PM_MB_train)+
    geom_abline(intercept = lmer.coefx$Trial_ref[,2], 
                slope = lmer.coefx$Trial_ref[,1],
                size = 1.5,
-               colour = hue_pal()(5))+
+               colour = hue_pal()(6))+
    coord_cartesian(xlim = c(0, 3))
    
 
