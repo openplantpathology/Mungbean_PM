@@ -51,7 +51,7 @@ PM_MB_means %>%
    filter(Fungicide == "control") %>%
 ggplot(aes(y = PM_final_severity, x = row_spacing, colour = Location))+
    geom_point()+
-   geom_smooth()+
+ #  geom_smooth()+
    scale_y_continuous(limits = c(-5,15))+
    theme_usq()
 
@@ -91,9 +91,11 @@ PM_MB_means %>%
    kable_styling(fixed_thead = T, full_width = T)
 
 
+levels(as.factor(PM_MB_means$Fungicide))
 # plot table as a box plot
-
-ggplot(PM_MB_means, aes(y = prop_YG, x = Fungicide))+
+PM_MB_means %>%
+   filter(Fungicide == c("200 g/l  Tebuconazole + 120 g/l  Azoxystrobin" , "Amistar","Tebeconazole","propiconazole"))%>%
+ggplot(aes(y = prop_YG, x = Fungicide))+
    geom_boxplot()+
    geom_hline(aes(yintercept = 0), size =0.5)+
    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
@@ -104,7 +106,7 @@ ggplot(PM_MB_means, aes(y = prop_YG, x = Fungicide))+
          panel.background = element_rect(fill = NA))+
    guides(fill=guide_legend(title="Fungicide"))+
    coord_cartesian()+
-   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))
+   theme(axis.text.x = element_text(angle = 30, hjust =.51, vjust = 0.3))
    #scale_x_continuous(limits = c(-0.3,0.6))
 
 ```
@@ -158,7 +160,7 @@ PM_MB_means$Fungicide <- factor(PM_MB_means$Fungicide, levels = c("control","pro
                                                         "Sulphur", "Sulphur (SC)","Sulphur (Ultra SC)","Sulphur (WP)"
                                                         ))
 
-PM_MB_lmer.1 <- lmer(prop_YG ~ Fungicide + as.factor(total_Fungicide) + row_spacing + (1|Trial_ref), 
+PM_MB_lmer.1 <- lmer(prop_YG ~ Fungicide * as.factor(total_Fungicide) + row_spacing + (1|Trial_ref), 
      data = subset(PM_MB_means, total_Fungicide == 1 | total_Fungicide == 2))
 
 summary(PM_MB_lmer.1)
