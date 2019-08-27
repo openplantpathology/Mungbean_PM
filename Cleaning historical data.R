@@ -79,9 +79,12 @@ write.csv(as.data.frame(King_11_m ), "C:/Users/U8011054/OneDrive - USQ/Cloudstor
 
 # ____________________________________________________________
 # _____________                2013               ____________
+# ____________________________________________________________
 
 
+# Goolhi
 
+# Import final disease survey
 Goolhi.13 <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx",
           sheet = "33DAT1", range = "A15:AG75", col_names = TRUE))
 head(Goolhi.13)
@@ -100,6 +103,7 @@ for(i in 7:33){
 
 incidence1 <- vector(mode = "numeric",length = length(Goolhi.13[,1]))
 
+# Convert disease survey data to 1-9 Incidence rating scale
 for(i in seq_along(incidence1)){
 
    # incidence = 1
@@ -244,11 +248,55 @@ for(i in seq_along(incidence1)){
    
    }
 
+# check data to make sure there are no zeros
 incidence1
 length(Goolhi.13[incidence1 == 0,1])
 Goolhi.13[incidence1 == 0,]
-
 hist(incidence1)
+
+# Re-format data-frame
+Goolhi.13$Incidence <- incidence1
+Goolhi.13D <- Goolhi.13[,c("Treat", "Rep", "Run", "Plot", "Incidence")]
+
+
+ Goolhi.13D <- Goolhi.13D %>%
+   group_by(Treat) %>%
+   summarise(M.inc = mean(Incidence, na.rm = TRUE),
+             sd.inc = sd(Incidence, na.rm = TRUE))
+write.csv(Goolhi.13D, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305-Goolhi-Disease_means.csv")
+
+
+
+
+
+
+
+# Read in Harvest data
+Goolhi.13Y <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx",
+                                     sheet = "Yield", range = "A15:F79", col_names = TRUE))
+head(Goolhi.13Y)
+
+Goolhi.13Y <- Goolhi.13Y %>%
+   group_by(Treat) %>%
+   summarise(M.Yield = mean(`Yield Kg/ha`, na.rm = TRUE),
+             sd.Yield = sd(`Yield Kg/ha`, na.rm = TRUE))
+write.csv(Goolhi.13Y, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305-Goolhi-Yield_means.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
