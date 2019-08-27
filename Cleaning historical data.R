@@ -143,7 +143,7 @@ for(i in seq_along(incidence1)){
       next()
    }
    
-   
+
    # incidence = 5
    if(all(Goolhi.13[i,c(13:15, 22:24, 31:33)] == 0) &&
       sum(Goolhi.13[i,c(10:12, 19:21, 28:30)] != 0) > 3 &&
@@ -154,14 +154,15 @@ for(i in seq_along(incidence1)){
       next()
    }
    
-   
+
    # incidence = 6
    if(all(Goolhi.13[i,c(13:15, 22:24, 31:33)] == 0) &&
       all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0)){
       incidence1[i] <- 6
       next()
    }
-   
+
+
    # incidence = 7
    if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) <= 3 &&
       all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0)){
@@ -169,26 +170,27 @@ for(i in seq_along(incidence1)){
       next()
    }
    
-   
+
    # incidence = 8
-   if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+   if((sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 |
+      sum(Goolhi.13[i,c(13:15, 22:24, 31:33)]) <= 200) &&
       all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) &&
       (sum(Goolhi.13[i,7:33] > 0)/
           length(Goolhi.13[i,7:33]) > 0.75) &&
-      sum(Goolhi.13[i,7:33] <= 2000))
-      {
+      sum(Goolhi.13[i,7:33]) <= 2000){
+      
       incidence1[i] <- 8
       next()
    }
-   
-   
+
+
    # incidence = 9
    if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
       all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) &&
       (sum(Goolhi.13[i,7:33] > 0)/
        length(Goolhi.13[i,7:33]) > 0.75) &&
-      sum(Goolhi.13[i,7:33] > 2000))
-   {
+      sum(Goolhi.13[i,7:33]) > 2000){
+      
       incidence1[i] <- 9
       next()
    }
@@ -196,14 +198,48 @@ for(i in seq_along(incidence1)){
    # if not in the lower canopy but small colonies in mid and upper canopy
    if(all(Goolhi.13[i,c(7:9,16:18,25:27)] == 0) &&
       (sum(Goolhi.13[i,c(10:15,19:24,28,33)] > 0)/
-       length(Goolhi.13[i,7:33]) <= 0.5))
-   {
+       length(Goolhi.13[i,7:33]) <= 0.5)){
+      
       incidence1[i] <- 2.5
+      next()
+   }
+   
+   
+   # incidence = 7.5
+   if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+      sum(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) > 10 &&
+      any(Goolhi.13[i,c(7:12,16:21,25:30)] == 0) &&
+      (sum(Goolhi.13[i,7:33] > 0)/
+       length(Goolhi.13[i,7:33]) > 0.7) &&
+      sum(Goolhi.13[i,7:33]) <= 2000){
+      incidence1[i] <- 7.5
+      next()
+   }
+   
+   # incidence = 6.5
+   if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+      sum(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) <= 12 &&
+      sum(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) >= 10 &&
+      (sum(Goolhi.13[i,7:33] > 0)/
+       length(Goolhi.13[i,7:33]) <= 0.75) &&
+      sum(Goolhi.13[i,7:33]) <= 2000){
+      incidence1[i] <- 6.5
+      next()
+   }
+   
+   
+   # incidence = 4.5
+   if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+      sum(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) < 10 &&
+      sum(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) > 5 &&
+      (sum(Goolhi.13[i,7:33] > 0)/
+       length(Goolhi.13[i,7:33]) <= 0.75) &&
+      sum(Goolhi.13[i,7:33]) <= 2000){
+      incidence1[i] <- 4.5
       next()
    }else{
       # If none of the conditions are met give the incidence zero
       incidence1[i] <- 0
-      
    }
    
    }
@@ -211,6 +247,16 @@ for(i in seq_along(incidence1)){
 incidence1
 length(Goolhi.13[incidence1 == 0,1])
 Goolhi.13[incidence1 == 0,]
+
+hist(incidence1)
+
+
+
+
+
+
+
+
 
 
 
