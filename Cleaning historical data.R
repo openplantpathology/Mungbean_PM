@@ -77,6 +77,144 @@ write.csv(as.data.frame(King_11_m ), "C:/Users/U8011054/OneDrive - USQ/Cloudstor
 
 
 
+# ____________________________________________________________
+# _____________                2013               ____________
+
+
+
+Goolhi.13 <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx",
+          sheet = "33DAT1", range = "A15:AG75", col_names = TRUE))
+head(Goolhi.13)
+
+# Replace empty cells / NAs with zeros
+for(i in 7:33){
+   Goolhi.13[is.na(Goolhi.13[,i]),i] <- 0   
+}
+
+
+# Calculate incidence
+#     Sites      1     2     3
+# low canopy  c(7:9, 16:18, 25:27)
+# mid canopy c(10:12, 19:21, 28:30)
+# upp canopy c(13:15, 22:24, 31:33)
+
+incidence1 <- vector(mode = "numeric",length = length(Goolhi.13[,1]))
+
+for(i in seq_along(incidence1)){
+
+   # incidence = 1
+   if(all(Goolhi.13[i,7:33] == 0)){
+      incidence1[i] <- 1
+      next()
+   }
+
+   # incidence = 2
+   if(all(Goolhi.13[i,c(10:15,19:24,28,33)] == 0) &&
+      (sum(Goolhi.13[i,c(7:9,16:18,25:27)] > 0)/
+       length(Goolhi.13[i,c(7:9,16:18,25:27)])) <= 0.75){
+      incidence1[i] <- 2
+      next()
+   }
+   
+
+   # incidence = 3
+   if(all(Goolhi.13[i,c(13:15, 22:24, 31:33)] == 0) &&
+      sum(Goolhi.13[i,c(10:12, 19:21, 28:30)] != 0) <= 3 &&
+      (sum(Goolhi.13[i,c(7:12,16:21,25:30)] > 0)/
+       length(Goolhi.13[i,c(7:12,16:21,25:30)])) > 0.75){
+      incidence1[i] <- 3
+   }else{ # if it is in the lower half of the canopy and in less than 75% of plants then incidence = 2.5
+      if(all(Goolhi.13[i,c(13:15, 22:24, 31:33)] == 0) &&
+            sum(Goolhi.13[i,c(10:12, 19:21, 28:30)] != 0) <= 3 &&
+            (sum(Goolhi.13[i,c(7:12,16:21,25:30)] > 0)/
+             length(Goolhi.13[i,c(7:12,16:21,25:30)])) <= 0.75){
+      incidence1[i] <- 2.5
+      next()
+      }
+   }
+   
+   
+   # incidence = 4
+   if(all(Goolhi.13[i,c(13:15, 22:24, 31:33)] == 0) &&
+      sum(Goolhi.13[i,c(10:12, 19:21, 28:30)] != 0) > 3 &&
+      (sum(Goolhi.13[i,c(7:12,16:21,25:30)] > 0)/
+       length(Goolhi.13[i,c(7:12,16:21,25:30)])) <= 0.75){
+      incidence1[i] <- 4
+      next()
+   }
+   
+   
+   # incidence = 5
+   if(all(Goolhi.13[i,c(13:15, 22:24, 31:33)] == 0) &&
+      sum(Goolhi.13[i,c(10:12, 19:21, 28:30)] != 0) > 3 &&
+      (sum(Goolhi.13[i,c(7:12,16:21,25:30)] > 0)/
+       length(Goolhi.13[i,c(7:12,16:21,25:30)])) > 0.75 &&
+      any(Goolhi.13[i,c(7:12,16:21,25:30)] == 0)){
+      incidence1[i] <- 5
+      next()
+   }
+   
+   
+   # incidence = 6
+   if(all(Goolhi.13[i,c(13:15, 22:24, 31:33)] == 0) &&
+      all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0)){
+      incidence1[i] <- 6
+      next()
+   }
+   
+   # incidence = 7
+   if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) <= 3 &&
+      all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0)){
+      incidence1[i] <- 7
+      next()
+   }
+   
+   
+   # incidence = 8
+   if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+      all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) &&
+      (sum(Goolhi.13[i,7:33] > 0)/
+          length(Goolhi.13[i,7:33]) > 0.75) &&
+      sum(Goolhi.13[i,7:33] <= 2000))
+      {
+      incidence1[i] <- 8
+      next()
+   }
+   
+   
+   # incidence = 9
+   if(sum(Goolhi.13[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+      all(Goolhi.13[i,c(7:12,16:21,25:30)] != 0) &&
+      (sum(Goolhi.13[i,7:33] > 0)/
+       length(Goolhi.13[i,7:33]) > 0.75) &&
+      sum(Goolhi.13[i,7:33] > 2000))
+   {
+      incidence1[i] <- 9
+      next()
+   }
+   
+   # if not in the lower canopy but small colonies in mid and upper canopy
+   if(all(Goolhi.13[i,c(7:9,16:18,25:27)] == 0) &&
+      (sum(Goolhi.13[i,c(10:15,19:24,28,33)] > 0)/
+       length(Goolhi.13[i,7:33]) <= 0.5))
+   {
+      incidence1[i] <- 2.5
+      next()
+   }else{
+      # If none of the conditions are met give the incidence zero
+      incidence1[i] <- 0
+      
+   }
+   
+   }
+
+incidence1
+length(Goolhi.13[incidence1 == 0,1])
+Goolhi.13[incidence1 == 0,]
+
+
+
+
 
 # ____________________________________________________________
 # _____________            Hermitage  2015        ____________
