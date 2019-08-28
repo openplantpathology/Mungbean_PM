@@ -412,9 +412,7 @@ for(i in seq_along(incidence2)){
        sum(MarysM.13D[i,7:56]) <= 150){
        incidence2[i] <- 2.5
        next()
-    }else{
-       # If none of the conditions are met give the incidence zero
-       incidence2[i] <- 0}
+    }
    
     # incidence = 7.5  In the upper canopy with less than 75% plants infected
    if(sum(MarysM.13D[i,58:107] == 3 ) > 0 &&
@@ -445,7 +443,9 @@ for(i in seq_along(incidence2)){
        length(MarysM.13D[i,58:107])) <= 0.75){
       incidence2[i] <- 4.5
       next()
-   }
+   }else{
+      # If none of the conditions are met give the incidence zero
+      incidence2[i] <- 0}
    
    # }else{
    #    # If none of the conditions are met give the incidence zero
@@ -454,6 +454,8 @@ for(i in seq_along(incidence2)){
    
 }
 
+
+# Check for Zeros which indicat the above code could not fit the data into an incidence rating on the 1-9 scale
 incidence2
 MarysM.13D[incidence2 == 0,1:5]
 dim(MarysM.13D[incidence2 == 0,])
@@ -504,7 +506,7 @@ Premer.13D <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Docume
 head(Premer.13D)
 dim(Premer.13D)
 
-# Replace empty cells / NAs with zeros
+# remove Plots not surveyed
 for(i in seq_along(Premer.13D[,1])){
    if(i == 1){plotsRecorded <- vector(length = length(Premer.13D[,1]))}
    
@@ -512,7 +514,7 @@ for(i in seq_along(Premer.13D[,1])){
    
    if(i == length(Premer.13D[,1])){print(!plotsRecorded)}
 }
-
+# remove Plots not surveyed
 Premer.13D <- Premer.13D[!plotsRecorded,]
 
 incidence3 <- vector(mode = "numeric",length = length(Premer.13D[,1]))
@@ -522,33 +524,33 @@ incidence3 <- vector(mode = "numeric",length = length(Premer.13D[,1]))
 for(i in seq_along(incidence3)){
    
    # incidence = 1
-   if(all(MarysM.13D[i,58:107] == 0)){
+   if(all(Premer.13D[i,58:107] == 0)){
       incidence3[i] <- 1
       next()
    }
    
    # incidence = 2
-   if(sum(MarysM.13D[i,58:107] == 2) == 0 &&
-      sum(MarysM.13D[i,58:107] == 1) == 0 &&
-      (sum(MarysM.13D[i,58:107] == 3)/
-       length(MarysM.13D[i,58:107])) <= 0.75){
+   if(sum(Premer.13D[i,58:107] == 2) == 0 &&
+      sum(Premer.13D[i,58:107] == 1) == 0 &&
+      (sum(Premer.13D[i,58:107] == 3)/
+       length(Premer.13D[i,58:107])) <= 0.75){
       incidence3[i] <- 2
       next()
    }
    
    
    # incidence = 3
-   if(sum(MarysM.13D[i,58:107] == 1) == 0 &&
-      sum(MarysM.13D[i,58:107] == 2) <= 8 &&
-      (sum(MarysM.13D[i,58:107] > 0)/
-       length(MarysM.13D[i,58:107])) > 0.75){
+   if(sum(Premer.13D[i,58:107] == 1) == 0 &&
+      sum(Premer.13D[i,58:107] == 2) <= 8 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) > 0.75){
       incidence3[i] <- 3
    }else{ # if it is in the lower half of the canopy and in less than 75% of plants then incidence = 2.5
-      if(sum(MarysM.13D[i,58:107] == 1) == 0 &&
-         sum(MarysM.13D[i,58:107] == 2) <= 8 &&
-         sum(MarysM.13D[i,58:107] == 3) > 0 &&
-         (sum(MarysM.13D[i,58:107] > 0)/
-          length(MarysM.13D[i,58:107])) <= 0.75){
+      if(sum(Premer.13D[i,58:107] == 1) == 0 &&
+         sum(Premer.13D[i,58:107] == 2) <= 8 &&
+         sum(Premer.13D[i,58:107] == 3) > 0 &&
+         (sum(Premer.13D[i,58:107] > 0)/
+          length(Premer.13D[i,58:107])) <= 0.75){
          incidence3[i] <- 2.5
          next()
       }
@@ -556,107 +558,106 @@ for(i in seq_along(incidence3)){
    
    
    # incidence = 4
-   if(sum(MarysM.13D[i,58:107] == 1) == 0 &&
-      sum(MarysM.13D[i,58:107] == 2) > 0 &&
-      (sum(MarysM.13D[i,58:107] > 0)/
-       length(MarysM.13D[i,58:107])) <= 0.75){
+   if(sum(Premer.13D[i,58:107] == 1) == 0 &&
+      sum(Premer.13D[i,58:107] == 2) > 0 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) <= 0.75){
       incidence3[i] <- 4
       next()
    }
    
    
    # incidence = 5
-   if(sum(MarysM.13D[i,58:107] == 1) == 0 &&
-      sum(MarysM.13D[i,58:107] == 2) > 0 &&
-      (sum(MarysM.13D[i,58:107] > 0)/
-       length(MarysM.13D[i,58:107])) > 0.75){
+   if(sum(Premer.13D[i,58:107] == 1) == 0 &&
+      sum(Premer.13D[i,58:107] == 2) > 0 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) > 0.75){
       incidence3[i] <- 5
       next()
    }
    
    
    # incidence = 6
-   if(sum(MarysM.13D[i,58:107] == 1) == 0 &&
-      sum(MarysM.13D[i,58:107] >= 2) > 0 &&
-      (sum(MarysM.13D[i,58:107] > 0)/
-       length(MarysM.13D[i,58:107])) > 0.95){
+   if(sum(Premer.13D[i,58:107] == 1) == 0 &&
+      sum(Premer.13D[i,58:107] >= 2) > 0 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) > 0.95){
       incidence3[i] <- 6
       next()
    }
    
    
    # incidence = 7
-   if(sum(MarysM.13D[i,58:107] == 1) <= 8 &&
-      sum(MarysM.13D[i,58:107] >= 2) > 0 &&
-      (sum(MarysM.13D[i,58:107] > 0)/
-       length(MarysM.13D[i,58:107])) > 0.95){
+   if(sum(Premer.13D[i,58:107] == 1) <= 8 &&
+      sum(Premer.13D[i,58:107] >= 2) > 0 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) > 0.95){
       incidence3[i] <- 7
       next()
    }
    
    
    # incidence = 8
-   if(sum(MarysM.13D[i,58:107] >= 1) > 0 &&
-      (sum(MarysM.13D[i,58:107] > 0)/
-       length(MarysM.13D[i,58:107])) > 0.75){
+   if(sum(Premer.13D[i,58:107] >= 1) > 0 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) > 0.75){
       incidence3[i] <- 8
       next()
    }
    
    
    # incidence = 9
-   if(sum(MarysM.13D[i,58:107] >= 1) > 0 &&
-      sum(MarysM.13D[i,7:56] >= (10*5*100*0.75)) &&  # ten leaves from 5 sample sites with a maximum % leaf area infected with PM of 100% * 0.75 as a threshold for leaf drop
-      (sum(MarysM.13D[i,58:107] > 0)/
-       length(MarysM.13D[i,58:107])) > 0.75){      
+   if(sum(Premer.13D[i,58:107] >= 1) > 0 &&
+      sum(Premer.13D[i,7:56] >= (10*5*100*0.75)) &&  # ten leaves from 5 sample sites with a maximum % leaf area infected with PM of 100% * 0.75 as a threshold for leaf drop
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) > 0.75){      
       incidence3[i] <- 9
+      next()
+   }
+   
+   # if there are few (< 10%) leaves with very small infections in all parts of the canopy OR
+   # if there is a stray colony on a upper leaf in addition to all lower 
+   if(sum(Premer.13D[i,58:107] == 3) >= 1 &&
+      sum(Premer.13D[i,58:107] == 1) <= 2 &&
+      sum(Premer.13D[i,58:107] == 2) <= 2 &&
+      sum(Premer.13D[i,7:56]) <= 150){
+      incidence3[i] <- 2.5
+      next()
+   }
+   
+   # incidence = 7.5  In the upper canopy with less than 75% plants infected
+   if(sum(Premer.13D[i,58:107] == 3 ) > 0 &&
+      sum(Premer.13D[i,58:107] == 2 ) > 0 &&
+      sum(Premer.13D[i,58:107] == 1 ) > 0 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107]) <= 0.75) &&
+      sum(Premer.13D[i,7:56]) >= 2000){
+      incidence3[i] <- 7.5
+      next()
+   }
+   # 
+   # incidence = 6.5
+   if(sum(Premer.13D[i,58:107] == 1) > 3 &&
+      sum(Premer.13D[i,58:107] >= 2) > 0 &&
+      sum(Premer.13D[i,7:56] <= 500)  &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107]) >= 0.65)){
+      incidence3[i] <- 6.5
+      next()
+   }
+   # 
+   # 
+   # incidence = 4.5 If PM is in the the lower and mid-canopy in less than 75% of plants and one or two in the upper canopy
+   if(sum(Premer.13D[i,58:107] == 1) <= 3 &&
+      sum(Premer.13D[i,58:107] >= 2) > 0 &&
+      (sum(Premer.13D[i,58:107] > 0)/
+       length(Premer.13D[i,58:107])) <= 0.75){
+      incidence3[i] <- 4.5
       next()
    }else{
       # If none of the conditions are met give the incidence zero
       incidence3[i] <- 0}
    
-   # # if not in the lower canopy but small colonies in mid and upper canopy
-   # if(all(MarysM.13D[i,c(7:9,16:18,25:27)] == 0) &&
-   #    (sum(MarysM.13D[i,c(10:15,19:24,28,33)] > 0)/
-   #     length(MarysM.13D[i,7:33]) <= 0.5)){
-   #    
-   #    incidence3[i] <- 2.5
-   #    next()
-   # }
-   # 
-   # 
-   # # incidence = 7.5
-   # if(sum(MarysM.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) > 10 &&
-   #    any(MarysM.13D[i,c(7:12,16:21,25:30)] == 0) &&
-   #    (sum(MarysM.13D[i,7:33] > 0)/
-   #     length(MarysM.13D[i,7:33]) > 0.7) &&
-   #    sum(MarysM.13D[i,7:33]) <= 2000){
-   #    incidence3[i] <- 7.5
-   #    next()
-   # }
-   # 
-   # # incidence = 6.5
-   # if(sum(MarysM.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) <= 12 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) >= 10 &&
-   #    (sum(MarysM.13D[i,7:33] > 0)/
-   #     length(MarysM.13D[i,7:33]) <= 0.75) &&
-   #    sum(MarysM.13D[i,7:33]) <= 2000){
-   #    incidence3[i] <- 6.5
-   #    next()
-   # }
-   # 
-   # 
-   # # incidence = 4.5
-   # if(sum(MarysM.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) < 10 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) > 5 &&
-   #    (sum(MarysM.13D[i,7:33] > 0)/
-   #     length(MarysM.13D[i,7:33]) <= 0.75) &&
-   #    sum(MarysM.13D[i,7:33]) <= 2000){
-   #    incidence3[i] <- 4.5
-   #    next()
    # }else{
    #    # If none of the conditions are met give the incidence zero
    #    incidence3[i] <- 0
@@ -664,23 +665,34 @@ for(i in seq_along(incidence3)){
    
 }
 
+incidence2
+MarysM.13D[incidence2 == 0,1:5]
+dim(MarysM.13D[incidence2 == 0,])
+hist(incidence2)
+
 incidence3
+Premer.13D[incidence3 == 0,1:5]
+dim(Premer.13D[incidence3 == 0,])
 hist(incidence3)
 
 
 # Re-format data-frame
-MarysM.13D$Incidence <- incidence3
-MarysM.13D <- MarysM.13D[,c("Treat", "Rep", "Run", "Plot", "Incidence")]
+Premer.13D$Incidence <- incidence3
+Premer.13D <- Premer.13D[,c("Treat", "Rep", "Run", "Plot", "Incidence")]
 
 
-MarysM.13D <- MarysM.13D %>%
+Premer.13D <- Premer.13D %>%
    group_by(Treat) %>%
    summarise(M.inc = mean(Incidence, na.rm = TRUE),
              sd.inc = sd(Incidence, na.rm = TRUE))
-write.csv(MarysM.13D, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MaryMount-Disease_means.csv")
+write.csv(Premer.13D, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1303-Premer-Disease_means.csv")
 
 
 
+
+
+
+# REdo to Premer yield!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # read in yield and format
 MarysM.13Y <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
                                       sheet = "42 DAT1 Yield", range = "A14:F58", col_names = TRUE))
