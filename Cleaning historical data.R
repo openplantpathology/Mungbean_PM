@@ -690,19 +690,264 @@ write.csv(Premer.13D, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Pa
 
 
 
-
-
-# REdo to Premer yield!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # read in yield and format
-MarysM.13Y <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
-                                      sheet = "42 DAT1 Yield", range = "A14:F58", col_names = TRUE))
-head(MarysM.13Y)
+Premer.13Y <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1303 Fungicides for powdery mildew in mungbean - Premer.xlsx",
+                                      sheet = "Yield 18-4-2013", range = "A14:F58", col_names = TRUE))
+head(Premer.13Y)
 
-MarysM.13Y <- MarysM.13Y %>%
+Premer.13Y <- Premer.13Y %>%
    group_by(Treat) %>%
-   summarise(M.Yield = mean(`Yield Kg/ha`, na.rm = TRUE),
-             sd.Yield = sd(`Yield Kg/ha`, na.rm = TRUE))
-write.csv(MarysM.13Y, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MarysMount-Yield_means.csv")
+   summarise(M.Yield = mean(`Yield kg/ha`, na.rm = TRUE),
+             sd.Yield = sd(`Yield kg/ha`, na.rm = TRUE))
+write.csv(Premer.13Y, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-Premer-Yield_means.csv")
+
+
+
+
+
+
+#____________
+# Millmerran
+#_____________
+
+
+# Import final disease survey
+Millm.13D <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/BB1305 Fungicides for powdery mildew in mungbean - Millmerran.xlsx",
+                                      sheet = "Assessment Sheet 24.4.2013", range = "A12:AH56", col_names = TRUE))
+head(Millm.13D)
+dim(Millm.13D)
+
+
+sum(is.na(Millm.13D[,5:34]))
+# replace NAs with zero Plots not surveyed
+for(i in 5:34){
+   for(j in seq_along(Millm.13D[,i])){
+      if(is.na(Millm.13D[j,i])){
+         Millm.13D[j,i] <- 0
+      }
+   }
+}
+
+
+
+incidence4 <- vector(mode = "numeric",length = length(Millm.13D[,1]))
+
+# Calculate incidence
+#     Sites                
+# low canopy  c(5:13)
+# mid canopy c(15:23)
+# upp canopy c(25:33)
+
+
+# Convert disease survey data to 1-9 Incidence rating scale
+for(i in seq_along(incidence4)){
+   
+   # incidence = 1
+   if(all(Millm.13D[i,c(5:13,15:23,25:33)] == 0)){
+      incidence4[i] <- 1
+      next()
+   }
+   
+   # incidence = 2
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      all(Millm.13D[i,15:23] == 0) &&
+      all(Millm.13D[i,25:33] == 0) &&
+      (sum(Millm.13D[i,c(5:13)] > 0)/
+       length(Millm.13D[i,c(5:13)])) <= 0.75){
+      incidence4[i] <- 2
+      next()
+   }
+   
+   
+   # incidence = 3
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) <= 3 &&
+      sum(Millm.13D[i,25:33] == 0) == 0 &&
+      (sum(Millm.13D[i,c(5:13,15:23)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23)])) >= 0.75){
+      incidence4[i] <- 3
+      }else{ # if it is in the lower half of the canopy and in less than 75% of plants then incidence = 2.5
+         if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+            sum(Millm.13D[i,15:23] != 0) <= 3 &&
+            sum(Millm.13D[i,25:33] == 0) == 0 &&
+            (sum(Millm.13D[i,c(5:13,15:23)] > 0)/
+             length(Millm.13D[i,c(5:13,15:23)])) <= 0.75){
+         incidence4[i] <- 2.5
+         next()
+      }
+   }
+   
+   
+   # incidence = 4
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      all(Millm.13D[i,25:33] == 0) &&
+      (sum(Millm.13D[i,c(5:13,15:23)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23)])) <= 0.75){
+      incidence4[i] <- 4
+      next()
+   }
+   
+   
+   # incidence = 5
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      all(Millm.13D[i,25:33] == 0) &&
+      (sum(Millm.13D[i,c(5:13,15:23)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23)])) >= 0.75){
+      incidence4[i] <- 5
+      next()
+   }
+   
+   
+   # incidence = 6
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      all(Millm.13D[i,25:33] == 0) &&
+      (sum(Millm.13D[i,c(5:13,15:23)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23)])) >= 0.90){
+      incidence4[i] <- 6
+      next()
+   }
+   
+   
+   # incidence = 7
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      sum(Millm.13D[i,25:33] != 0) <= 3 &&
+      (sum(Millm.13D[i,c(5:13,15:23)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23)])) >= 0.90){
+      incidence4[i] <- 7
+      next()
+   }
+   
+   
+   # incidence = 8
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      sum(Millm.13D[i,25:33] != 0) >= 1 &&
+      (sum(Millm.13D[i,c(5:13,15:23,25:33)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23,25:33)])) >= 0.75){
+      incidence4[i] <- 8
+      next()
+   }
+   
+   
+   # incidence = 9
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      sum(Millm.13D[i,25:33] != 0) >= 1 &&
+      (sum(Millm.13D[i,c(5:13,15:23,25:33)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23,25:33)])) >= 0.75 &&
+      sum(Millm.13D[i,c(5:13,15:23,25:33)]) > (9*3*100)*0.75){
+      incidence4[i] <- 9
+      next()
+   }
+   
+   
+   # if there are few (< 10%) leaves with very small infections in all parts of the canopy OR
+   # if there is a stray colony on a upper leaf in addition to all lower 
+
+   if(sum(Millm.13D[i,15:23] != 0) <= 3 &&
+      sum(Millm.13D[i,25:33] != 0) <= 3 &&
+      (sum(Millm.13D[i,c(5:13,15:23,25:33)])/
+       length(Millm.13D[i,c(5:13,15:23,25:33)])/100) <= 0.1){
+      
+      incidence4[i] <- 2.5
+      next()
+   }
+   
+   # incidence = 7.5  In the upper canopy with less than 75% plants infected
+   if(sum(Millm.13D[i,5:13] != 0) >= 1 &&
+      sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      sum(Millm.13D[i,25:33] != 0) >= 3 &&
+      (sum(Millm.13D[i,c(5:13,15:23,25:33)] > 0)/
+       length(Millm.13D[i,c(5:13,15:23,25:33)])) <= 0.75){
+      incidence4[i] <- 7.5
+      next()
+   }
+   
+   # if there are few more colonies(< 10%) leaves with very small infections in all parts of the canopy OR
+   # if there is a stray colony on a upper leaf in addition to all lower 
+   
+   if(sum(Millm.13D[i,15:23] != 0) <= 6 &&
+      sum(Millm.13D[i,25:33] != 0) <= 3 &&
+      (sum(Millm.13D[i,c(5:13,15:23,25:33)])/
+       length(Millm.13D[i,c(5:13,15:23,25:33)])/100) <= 0.1){
+      
+      incidence4[i] <- 3.5
+      next()
+   }
+   
+   if(sum(Millm.13D[i,15:23] != 0) >= 1 &&
+      sum(Millm.13D[i,25:33] != 0) <= 3 &&
+      (sum(Millm.13D[i,c(5:13,15:23,25:33)])/
+       length(Millm.13D[i,c(5:13,15:23,25:33)])/100) <= 0.5){
+      
+      incidence4[i] <- 6.5
+      next()
+   }
+   else{
+      # If none of the conditions are met give the incidence zero
+      incidence4[i] <- 0
+   }
+}
+   # if there are few (< 10%) leaves with very small infections in all parts of the canopy OR
+   # if there is a stray colony on a upper leaf in addition to all lower 
+   
+   # if(all(Millm.13D[i,c(7:9,16:18,25:27)] == 0) &&
+   #    (sum(Millm.13D[i,c(10:15,19:24,28,33)] > 0)/
+   #     length(Millm.13D[i,7:33]) <= 0.5)){
+   #    
+   #    incidence4[i] <- 2.5
+   #    next()
+   # }
+   # 
+   # 
+   # # incidence = 7.5
+   # if(sum(Millm.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) > 10 &&
+   #    any(Millm.13D[i,c(7:12,16:21,25:30)] == 0) &&
+   #    (sum(Millm.13D[i,7:33] > 0)/
+   #     length(Millm.13D[i,7:33]) > 0.7) &&
+   #    sum(Millm.13D[i,7:33]) <= 2000){
+   #    incidence4[i] <- 7.5
+   #    next()
+   # }
+   # 
+   # # incidence = 6.5
+   # if(sum(Millm.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) <= 12 &&
+   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) >= 10 &&
+   #    (sum(Millm.13D[i,7:33] > 0)/
+   #     length(Millm.13D[i,7:33]) <= 0.75) &&
+   #    sum(Millm.13D[i,7:33]) <= 2000){
+   #    incidence4[i] <- 6.5
+   #    next()
+   # }
+   # 
+   # 
+   # # incidence = 4.5
+   # if(sum(Millm.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
+   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) < 10 &&
+   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) > 5 &&
+   #    (sum(Millm.13D[i,7:33] > 0)/
+   #     length(Millm.13D[i,7:33]) <= 0.75) &&
+   #    sum(Millm.13D[i,7:33]) <= 2000){
+   #    incidence4[i] <- 4.5
+   #    next()
+   #  }else{
+   #    # If none of the conditions are met give the incidence zero
+   #    incidence4[i] <- 0
+   # }
+   
+
+
+
+incidence4
+dim(Millm.13D[incidence4 == 0,])
+Millm.13D[incidence4 == 0,1:7]
+hist(incidence4)
 
 
 
