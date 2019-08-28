@@ -427,27 +427,26 @@ for(i in seq_along(incidence2)){
       next()
    }
    # 
-   # # incidence = 6.5
-   # if(sum(MarysM.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) <= 12 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) >= 10 &&
-   #    (sum(MarysM.13D[i,7:33] > 0)/
-   #     length(MarysM.13D[i,7:33]) <= 0.75) &&
-   #    sum(MarysM.13D[i,7:33]) <= 2000){
-   #    incidence2[i] <- 6.5
-   #    next()
-   # }
+    # incidence = 6.5
+    if(sum(MarysM.13D[i,58:107] == 1) > 3 &&
+      sum(MarysM.13D[i,58:107] >= 2) > 0 &&
+      sum(MarysM.13D[i,7:56] <= 500)  &&
+       (sum(MarysM.13D[i,58:107] > 0)/
+        length(MarysM.13D[i,58:107]) >= 0.65)){
+       incidence2[i] <- 6.5
+       next()
+    }
    # 
    # 
-   # # incidence = 4.5
-   # if(sum(MarysM.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) < 10 &&
-   #    sum(MarysM.13D[i,c(7:12,16:21,25:30)] != 0) > 5 &&
-   #    (sum(MarysM.13D[i,7:33] > 0)/
-   #     length(MarysM.13D[i,7:33]) <= 0.75) &&
-   #    sum(MarysM.13D[i,7:33]) <= 2000){
-   #    incidence2[i] <- 4.5
-   #    next()
+   # incidence = 4.5 If PM is in the the lower and mid-canopy in less than 75% of plants and one or two in the upper canopy
+   if(sum(MarysM.13D[i,58:107] == 1) <= 3 &&
+      sum(MarysM.13D[i,58:107] >= 2) > 0 &&
+      (sum(MarysM.13D[i,58:107] > 0)/
+       length(MarysM.13D[i,58:107])) <= 0.75){
+      incidence2[i] <- 4.5
+      next()
+   }
+   
    # }else{
    #    # If none of the conditions are met give the incidence zero
    #    incidence2[i] <- 0
