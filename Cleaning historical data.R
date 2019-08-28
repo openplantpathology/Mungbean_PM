@@ -892,55 +892,7 @@ for(i in seq_along(incidence4)){
       incidence4[i] <- 0
    }
 }
-   # if there are few (< 10%) leaves with very small infections in all parts of the canopy OR
-   # if there is a stray colony on a upper leaf in addition to all lower 
-   
-   # if(all(Millm.13D[i,c(7:9,16:18,25:27)] == 0) &&
-   #    (sum(Millm.13D[i,c(10:15,19:24,28,33)] > 0)/
-   #     length(Millm.13D[i,7:33]) <= 0.5)){
-   #    
-   #    incidence4[i] <- 2.5
-   #    next()
-   # }
-   # 
-   # 
-   # # incidence = 7.5
-   # if(sum(Millm.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) > 10 &&
-   #    any(Millm.13D[i,c(7:12,16:21,25:30)] == 0) &&
-   #    (sum(Millm.13D[i,7:33] > 0)/
-   #     length(Millm.13D[i,7:33]) > 0.7) &&
-   #    sum(Millm.13D[i,7:33]) <= 2000){
-   #    incidence4[i] <- 7.5
-   #    next()
-   # }
-   # 
-   # # incidence = 6.5
-   # if(sum(Millm.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) <= 12 &&
-   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) >= 10 &&
-   #    (sum(Millm.13D[i,7:33] > 0)/
-   #     length(Millm.13D[i,7:33]) <= 0.75) &&
-   #    sum(Millm.13D[i,7:33]) <= 2000){
-   #    incidence4[i] <- 6.5
-   #    next()
-   # }
-   # 
-   # 
-   # # incidence = 4.5
-   # if(sum(Millm.13D[i,c(13:15, 22:24, 31:33)] != 0) > 3 &&
-   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) < 10 &&
-   #    sum(Millm.13D[i,c(7:12,16:21,25:30)] != 0) > 5 &&
-   #    (sum(Millm.13D[i,7:33] > 0)/
-   #     length(Millm.13D[i,7:33]) <= 0.75) &&
-   #    sum(Millm.13D[i,7:33]) <= 2000){
-   #    incidence4[i] <- 4.5
-   #    next()
-   #  }else{
-   #    # If none of the conditions are met give the incidence zero
-   #    incidence4[i] <- 0
-   # }
-   
+
 
 
 
@@ -948,6 +900,32 @@ incidence4
 dim(Millm.13D[incidence4 == 0,])
 Millm.13D[incidence4 == 0,1:7]
 hist(incidence4)
+
+# Re-format data-frame
+Millm.13D$Incidence <- incidence4
+Millm.13D <- Millm.13D[,c("Run", "Range", "Treatment","Replicate", "Incidence")]
+
+
+
+Millm.13D <- Millm.13D %>%
+   group_by(Treatment) %>%
+   summarise(M.inc = mean(Incidence, na.rm = TRUE),
+             sd.inc = sd(Incidence, na.rm = TRUE))
+write.csv(Millm.13D, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/BB1305-Millmerran-Disease_means.csv")
+
+
+
+
+# read in yield and format
+Millm.13Y <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/BB1305 Fungicides for powdery mildew in mungbean - Millmerran.xlsx",
+                                      sheet = "Harvest Sheet 6.5.2013", range = "A11:F55", col_names = TRUE))
+head(Millm.13Y)
+
+Millm.13Y <- Millm.13Y %>%
+   group_by(Treatment) %>%
+   summarise(M.Yield = mean(`kg/Ha`, na.rm = TRUE),
+             sd.Yield = sd(`kg/Ha`, na.rm = TRUE))
+write.csv(Millm.13Y, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305-Millmerran-Yield_means.csv")
 
 
 
