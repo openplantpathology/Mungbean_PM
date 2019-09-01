@@ -61,9 +61,9 @@ PM_MB_means %>%
    filter(Year >= 2017)%>%
 #   filter(Fungicide == "control") %>%
 ggplot(aes(y = as.numeric(grain_yield.t.ha.), x = row_spacing, colour = Location))+
+   geom_smooth(method = "gam")+
    geom_jitter(width = 0.01)+
-   geom_smooth()+
-#   scale_y_continuous(limits = c(-5,15))+
+   #   scale_y_continuous(limits = c(-5,15))+
    theme_usq()
 
 
@@ -106,7 +106,8 @@ ggplot(aes(y = prop_YG, x = Fungicide))+
          panel.background = element_rect(fill = NA))+
    guides(fill=guide_legend(title="Fungicide"))+
    coord_cartesian()+
-   theme(axis.text.x = element_text(angle = 30, hjust =.51, vjust = 0.3))
+   coord_flip()
+   #theme(axis.text.x = element_text(angle = 30, hjust =.6, vjust = 0.83))
    #scale_x_continuous(limits = c(-0.3,0.6))
 
 ```
@@ -127,23 +128,27 @@ PM_MB_means %>%
    kable(caption = "Fungicide effect on proportion of yield gain") %>%
    kable_styling(fixed_thead = T, full_width = T)
 
+
+
 PM_MB_means %>%
-   filter(total_Fungicide ==1 |total_Fungicide ==2 ) %>%
+   filter(total_Fungicide ==1 |total_Fungicide ==2) %>% 
+   filter(Fungicide != "Pyrazophos" & Fungicide != "control" & Fungicide != "Benomyl" & Fungicide != "Acibenzolar-S-Methyl" & Fungicide != "200g/L azoxystrobin + 80 g/L cyproconazole + adj" ) %>%
 ggplot(aes(y = prop_YG, x = Fungicide))+
-   facet_grid(cols = vars(total_Fungicide))+
+   facet_grid(rows = vars(total_Fungicide))+
    geom_boxplot(aes(fill = Fungicide, alpha = 0.5))+
    geom_hline(aes(yintercept = 0), size =0.5)+
    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-   labs(x = "Proportion of grain yeild saved",
-   title = "Grain yield proportion saved grouped by\nFungicide type")+
-   theme(panel.grid.major = element_line(colour = "grey80"),
-         panel.grid.minor = element_line(colour = "grey50"),
-         panel.background = element_rect(fill = NA))+
-   guides(fill=guide_legend(title="Fungicide"))+
+   labs(y = "Proportion of grain yeild saved",
+   title = "Grain yield proportion saved\ngrouped by Fungicide type")+
+   theme_usq()+
+   theme(legend.position="none")+
    coord_cartesian()+
-   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))
+   scale_x_discrete(limits = c("200 g/l  Tebuconazole + 120 g/l  Azoxystrobin","propiconazole", "Tebeconazole", "200g/L azoxystrobin + 80 g/L cyproconazole", "Sulphur", "Carbendazim", "Pyraclostrobin","Amistar"))+
+ #  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))+
+   coord_flip()
    #scale_x_continuous(limits = c(-0.3,0.6))
 
+levels(PM_MB_means$Fungicide)
 
 ```
 
@@ -433,7 +438,7 @@ kable(quant_PM,
 #### Timing of Fungicide application
 The following density plots show mean yield saved (t/Ha) or proportion yield saved in relation to when the first fungicide spray was applied in relation to when powdery mildew was first seen in the mungbean crop.  
 
-```{r echo = FALSE, message=FALSE, warning=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 PM_MB_means %>%
    filter(Fungicide != "control") %>%
 #   filter(total_Fungicide ==1) %>%
@@ -441,7 +446,9 @@ PM_MB_means %>%
       as.Date(as.character(Fungicide_application_1), format = "%d/%m/%Y") -
          as.Date(as.character(first_sign_disease), format = "%d/%m/%Y")))
 
+```
 
+```{r spray_timing&PropYield}
 # What range of 
 unique(PM_MB_means1$days_from_1st)
 PM_MB_means1 %>%
