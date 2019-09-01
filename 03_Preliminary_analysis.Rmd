@@ -1,6 +1,6 @@
 # Preliminary Analysis
 
-```{r PA_Libraries}
+```{r PA_Libraries, include=FALSE}
 library(dplyr)
 library(openxlsx)
 library(kableExtra)
@@ -91,7 +91,7 @@ PM_MB_means %>%
    kable_styling(fixed_thead = T, full_width = T)
 
 
-levels(as.factor(PM_MB_means$Fungicide))
+
 # plot table as a box plot
 PM_MB_means %>%
    filter(Fungicide == c("200 g/l  Tebuconazole + 120 g/l  Azoxystrobin" , "Amistar","Tebeconazole","propiconazole"))%>%
@@ -114,7 +114,7 @@ There was some hope groups of fungicide could be combined, ie Propiconazole and 
 
 
 
-```{r Fungicide_x_nSprays}
+```{r Fungicide_x_nSprays, message=FALSE}
 PM_MB_means %>%
    group_by(Fungicide, total_Fungicide) %>%
    summarise(n = length(prop_YG),
@@ -170,7 +170,7 @@ There is no significant difference between Fungicides, except for Sulphur which 
 
 
 How many trials contain all of the most studied fungicides
-```{r}
+```{r Trials_with_top_three_Fungicides}
 Tebe_trials <- unique(PM_MB_means[PM_MB_means$Fungicide == "Tebeconazole",]$Trial_ref)
 Propi_trials <- unique(PM_MB_means[PM_MB_means$Fungicide == "propiconazole",]$Trial_ref)
 Amistar_trials <- unique(PM_MB_means[PM_MB_means$Fungicide == "Amistar",]$Trial_ref)
@@ -186,8 +186,63 @@ intersect(
 
 
 
+```{r Calculate_cuts, echo=FALSE}
+# removing 2017 and control data
+# this will help look at when the first application of fungicide is applied in relation to when the disease first appeared
+PM_MB_means1 <- PM_MB_means %>%
+   filter(Fungicide != "control") %>%
+#   filter(total_Fungicide ==1) %>%
+   mutate(days_from_1st = as.numeric(as.Date(as.character(Fungicide_application_1), format = "%d/%m/%Y") - 
+                                        as.Date(as.character(first_sign_disease), format = "%d/%m/%Y")))
 
-```{r}
+
+
+
+days_from_fungicid <- function(FSD,F1,F2,F3){
+   dF1 <- as.numeric(as.Date(F1) - as.Date(FSD))
+   dF2 <- as.numeric(as.Date(F2) - as.Date(FSD))
+   dF3 <- as.numeric(as.Date(F3) - as.Date(FSD))
+   if(is.na(dF1)){
+      return(NA)} else{
+   if(between(dF1,lower = -1, upper = 1000)){
+      return(dF1)}else{
+   if(is.na(dF2)){
+      return(dF1)}else{
+      if(between(dF2,lower = dF1, upper = -0.1)){
+            return(dF2)} else{
+               return(dF3)}}
+            }}
+}
+vec1<- vector()
+for(i in 1:dim(PM_MB_means1)[1]){
+   dF1 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_1, format = "%d/%m/%Y")[i] -
+                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
+   dF2 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_2, format = "%d/%m/%Y")[i] -
+                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
+   dF3 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_3, format = "%d/%m/%Y")[i] -
+                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
+   if(is.na(dF1)){
+      vec1 <- c(vec1,dF1)} else{
+         if(between(as.numeric(dF1),-1, 1000)){
+            vec1 <- c(vec1,dF1)}else{
+               if(is.na(dF2)){
+                  vec1 <- c(vec1,dF1)}else{
+                     if(between(as.numeric(dF2),as.numeric(dF1), -1.1)){
+            vec1 <- c(vec1,dF2)} else{
+               if(is.na(dF3)){
+                  vec1 <- c(vec1,dF2)}else{
+               if(as.numeric(dF3)>=0){
+                  vec1 <- c(vec1,dF2)}else{
+                     vec1 <- c(vec1,dF3)}}}}
+            }}
+}
+PM_MB_means1$spray_diff <- vec1 # gives the closest fungicide application date to the first sign of disease
+#PM_MB_means1$days_from_1st
+
+
+```
+
+```{r Sulphur_efficacy, echo=FALSE}
 
 
 # unique(
@@ -217,6 +272,7 @@ intersect(
 
 #__________________________________________________________________________________________________________
 # levels(factor(PM_MB_means$Fungicide))
+
 
 
 # combine Sulphur treatments
@@ -419,62 +475,6 @@ ggplot(PM_MB_means1, aes(prop_YG))+
 
 
 
-```{r}
-# removing 2017 and control data
-# this will help look at when the first application of fungicide is applied in relation to when the disease first appeared
-PM_MB_means1 <- PM_MB_means %>%
-   filter(Fungicide != "control") %>%
-   filter(Year != 2017) %>%
-#   filter(total_Fungicide ==1) %>%
-   mutate(days_from_1st = as.numeric(as.Date(as.character(Fungicide_application_1), format = "%d/%m/%Y") - 
-                                        as.Date(as.character(first_sign_disease), format = "%d/%m/%Y")))
-
-
-
-
-days_from_fungicid <- function(FSD,F1,F2,F3){
-   dF1 <- as.numeric(as.Date(F1) - as.Date(FSD))
-   dF2 <- as.numeric(as.Date(F2) - as.Date(FSD))
-   dF3 <- as.numeric(as.Date(F3) - as.Date(FSD))
-   if(is.na(dF1)){
-      return(NA)} else{
-   if(between(dF1,lower = -1, upper = 1000)){
-      return(dF1)}else{
-   if(is.na(dF2)){
-      return(dF1)}else{
-      if(between(dF2,lower = dF1, upper = -0.1)){
-            return(dF2)} else{
-               return(dF3)}}
-            }}
-}
-vec1<- vector()
-for(i in 1:dim(PM_MB_means1)[1]){
-   dF1 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_1, format = "%d/%m/%Y")[i] -
-                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
-   dF2 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_2, format = "%d/%m/%Y")[i] -
-                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
-   dF3 <- as.numeric(as.Date(PM_MB_means1$Fungicide_application_3, format = "%d/%m/%Y")[i] -
-                        as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i])
-   if(is.na(dF1)){
-      vec1 <- c(vec1,dF1)} else{
-         if(between(as.numeric(dF1),-1, 1000)){
-            vec1 <- c(vec1,dF1)}else{
-               if(is.na(dF2)){
-                  vec1 <- c(vec1,dF1)}else{
-                     if(between(as.numeric(dF2),as.numeric(dF1), -1.1)){
-            vec1 <- c(vec1,dF2)} else{
-               if(is.na(dF3)){
-                  vec1 <- c(vec1,dF2)}else{
-               if(as.numeric(dF3)>=0){
-                  vec1 <- c(vec1,dF2)}else{
-                     vec1 <- c(vec1,dF3)}}}}
-            }}
-}
-PM_MB_means1$spray_diff <- vec1 # gives the closest fungicide application date to the first sign of disease
-#PM_MB_means1$days_from_1st
-
-
-```
 
 
 
