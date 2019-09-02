@@ -432,7 +432,14 @@ PM_MB_means_T <- PM_MB_means %>%
              BW_trial_variance = sd(grain_yield.t.ha.,na.rm = TRUE)^2)
 PM_MB_means_T
 
+All_Trials <- unique(PM_MB_means$Trial_ref)
+PM_MB_means$TrialVariance <- NA
 
+for(i in All_Trials){
+   PM_MB_means[PM_MB_means$Trial_ref == i, "TrialVariance"] <- PM_MB_means_T[PM_MB_means_T$Trial_ref == i,"BW_trial_variance"]
+}
+
+PM_MB_means$TrialVariance
 
 summary(lm(BW_trial_variance ~ trial_mean, data = PM_MB_means_T))
 summary(lm(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide == "Tebeconazole")))
@@ -441,10 +448,6 @@ summary(lm(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicid
 
 plot(BW_trial_variance ~ trial_mean, data = PM_MB_means_T)
 abline(-0.01356,0.03076)
-points(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide == "Tebeconazole"),col = "red", pch = 3)
-abline(-0.005162, 0.019892, col = "red")
-points(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide == "propiconazole"),col = "blue", pch = 3)
-abline(-0.03962, 0.05454, col = "blue")
 
 
 
