@@ -427,14 +427,14 @@ PM_MB_means.SV <- PM_MB_means[PM_MB_means$Y_error.type == "SamplingVariance",]
 meta_mean.GY <- mean(PM_MB_means.SV$grain_yield.t.ha.,na.rm = TRUE)
 
 PM_MB_means_T <- PM_MB_means %>%
-   group_by(Trial_ref, Fungicide) %>%
+   group_by(Trial_ref) %>%
    summarise(trial_mean = mean(grain_yield.t.ha.,na.rm = TRUE),
              BW_trial_variance = sd(grain_yield.t.ha.,na.rm = TRUE)^2)
 PM_MB_means_T
 
 
 
-summary(lm(BW_trial_variance ~ trial_mean  Fungicide, data = PM_MB_means_T))
+summary(lm(BW_trial_variance ~ trial_mean, data = PM_MB_means_T))
 summary(lm(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide == "Tebeconazole")))
 summary(lm(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide == "propiconazole")))
 
@@ -447,24 +447,6 @@ points(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide ==
 abline(-0.03962, 0.05454, col = "blue")
 
 
-lm_within <- lm(BW_trial_variance ~ trial_mean * Trial_ref + Fungicide,
-                    data = PM_MB_means_T)
-summary(lm_within) # Not accurate in predicting TrialVariance from trial means
-
-lm_within2 <- lm(BW_trial_variance ~ trial_mean + Trial_ref + Fungicide,
-                    data = PM_MB_means_T)
-summary(lm_within2) # Not accurate in predicting TrialVariance from trial means
-
-lmer_within_1 <- lmer(BW_trial_variance ~ trial_mean + (1|Trial_ref/Fungicide),
-                    data = PM_MB_means_T)
-# unable to nest Fungicide under trial ref
-
-lmer_within_1 <- lmer(BW_trial_variance ~ trial_mean + Fungicide + (1|Trial_ref),
-                    data = PM_MB_means_T)
-# not accurate  for predicting TrialVariance
-
-
-summary(lmer_within_1)
 
 ```
 
