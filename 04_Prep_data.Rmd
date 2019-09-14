@@ -11,40 +11,54 @@ library(leaflet)
 ```
 
 ```{r Calculate_yield-gains}
-PM_MB_means <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv", stringsAsFactors = FALSE)
-PM_MB_means$grain_yield.t.ha. <- as.numeric(PM_MB_means$grain_yield.t.ha.) # NAs produced due to some cells having text description to why there is no specific data
+PM_MB_means <-
+   read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv",
+            stringsAsFactors = FALSE)
+PM_MB_means$grain_yield.t.ha. <-
+   as.numeric(PM_MB_means$grain_yield.t.ha.) # NAs produced due to some cells having text description to why there is no specific data
 
-for(i in levels(as.factor(PM_MB_means$Trial_ref))){
-   dat1 <- PM_MB_means[PM_MB_means$Trial_ref == i,]
+for (i in levels(as.factor(PM_MB_means$Trial_ref))) {
+   dat1 <- PM_MB_means[PM_MB_means$Trial_ref == i, ]
    
-   if(any(is.na(unique(dat1$row_spacing)))){
-      warning(paste(unique(dat1$Trial_ref), "at", unique(dat1$Location), "in year", unique(dat1$Year), "has unknown row.spacing (NA)\n 'yield_gain' and 'proportional yield gain' not calculated\n") )
-      next()}
-   
-   for(j in unique(dat1$row_spacing)){
-   
-      dat2 <- dat1[dat1$row_spacing == j,]
-      controlY <- mean(dat2[dat2$Fungicide == "control","grain_yield.t.ha."])
-   
-      dat2$yield_gain <- dat2$grain_yield.t.ha. - controlY
-      dat2$prop_YG <- dat2$yield_gain/controlY
-   
-      dat2[dat2$Fungicide == "control",c("yield_gain", "prop_YG")] <- NA
-   
-      dat1[dat1$row_spacing == j,] <- dat2
+   if (any(is.na(unique(dat1$row_spacing)))) {
+      warning(
+         paste(
+            unique(dat1$Trial_ref),
+            "at",
+            unique(dat1$Location),
+            "in year",
+            unique(dat1$Year),
+            "has unknown row.spacing (NA)\n 'yield_gain' and 'proportional yield gain' not calculated\n"
+         )
+      )
+      next()
    }
-   PM_MB_means[PM_MB_means$Trial_ref == i,] <- dat1
+   
+   for (j in unique(dat1$row_spacing)) {
+      dat2 <- dat1[dat1$row_spacing == j, ]
+      controlY <-
+         mean(dat2[dat2$Fungicide == "control", "grain_yield.t.ha."])
+      
+      dat2$yield_gain <- dat2$grain_yield.t.ha. - controlY
+      dat2$prop_YG <- dat2$yield_gain  /  controlY
+      
+      dat2[dat2$Fungicide == "control", c("yield_gain", "prop_YG")] <-
+         NA
+      
+      dat1[dat1$row_spacing == j, ] <- dat2
+   }
+   PM_MB_means[PM_MB_means$Trial_ref == i, ] <- dat1
 }
 
 # caluculate yield gain and prop_yield gain for experiments with no row spacing data
-dat1 <- PM_MB_means[PM_MB_means$Trial_ref == "AM1303",]
-controlY <- mean(dat1[dat1$Fungicide == "control","grain_yield.t.ha."])
+dat1 <- PM_MB_means[PM_MB_means$Trial_ref == "AM1303", ]
+controlY <-
+   mean(dat1[dat1$Fungicide == "control", "grain_yield.t.ha."])
 dat1$yield_gain <- dat1$grain_yield.t.ha. - controlY
-dat1$prop_YG <- dat1$yield_gain/controlY
-dat1[dat1$Fungicide == "control",c("yield_gain", "prop_YG")] <- NA
-PM_MB_means[PM_MB_means$Trial_ref == "AM1303",] <- dat1
+dat1$prop_YG <- dat1$yield_gain / controlY
+dat1[dat1$Fungicide == "control", c("yield_gain", "prop_YG")] <- NA
+PM_MB_means[PM_MB_means$Trial_ref == "AM1303", ] <- dat1
 
-write.csv(PM_MB_means, "data/1902 powdery mildew-Mungbean - Collated means.csv")
-
+write.csv(PM_MB_means,
+          "data/1902 powdery mildew-Mungbean - Collated means.csv")
 ```
-
