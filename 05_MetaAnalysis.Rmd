@@ -64,16 +64,17 @@ PM_MB_means %>%
 
 Tebuconazole and propiconazole might be able to be pooled as a 'triazole' fungicide treatment. 
 Amistar Xtra is a combination of azoxystrobin and cyproconazole.
-Perhaps Amistar Xtra and Custodia might be able to be pooled given they both contain strobilurin and triazole, however they contain differing dose ratio (inverted).  
+Custodia is a combination of tebuconazole and azoxystrobin.
+Perhaps Amistar Xtra and Custodia might be able to be pooled given they both contain strobilurin and triazole, however they contain differing dose ratios (inverted).  
 
 Perhaps best way forward is to do an analysis of only the triazoles. Then do another including azoxystrobin as a comparison.
 
-Preliminary analysis of fungicides show there is a difference the effect of fungicide in proportion of yield gained
-
+Preliminary analysis of fungicides show there is a difference the effect of fungicide in proportion of yield saved.
 
 ### Fungicide Doses
+
 All trials that used tebuconazole used approximately the same dose.
-Dose of the active ingredient ranged from 62.35 grams per hectare to 60 grams per hectare. 
+Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare. 
 
 ```{r Tebe_dose}
 PM_MB_means %>%
