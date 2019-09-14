@@ -22,27 +22,25 @@ PM_MB_means <-
    )
 
 # convert coltypes
-
-PM_MB_means <- 
-   PM_MB_means %>% 
-   mutate(year = as.integer(year)) %>% 
-   mutate(replicates = as.integer(replicates)) %>% 
-   mutate(planting_date = as.Date(planting_date)) %>%
-   mutate(emergence_date = as.Date(emergence_date)) %>% 
-   mutate(flowering_date = as.Date(flowering_date)) %>% 
-   mutate(pod_final_date = as.Date(pod_final_date)) %>% 
-   mutate(mid_late_pod_final = as.Date(mid_late_pod_final)) %>% 
-   mutate(first_sign_disease = as.Date(first_sign_disease)) %>% 
-   mutate(fungicide_application_1 = as.Date(fungicide_application_1)) %>% 
-   mutate(fungicide_application_2 = as.Date(fungicide_application_2)) %>% 
-   mutate(fungicide_application_3 = as.Date(fungicide_application_3)) %>%
-   mutate(fungicide_application_4 = as.Date(fungicide_application_4)) %>% 
-   mutate(fungicide_application_5 = as.Date(fungicide_application_5)) %>%
-   mutate(fungicide_application_6 = as.Date(fungicide_application_6)) %>%
-   mutate(fungicide_application_7 = as.Date(fungicide_application_7)) %>% 
-   mutate(harvest_date = as.Date(harvest_date)) %>% 
-   mutate(final_assessment = as.Date(final_assessment))
-
+PM_MB_means <-
+   PM_MB_means %>%
+   mutate(year = as.integer(year)) %>%
+   mutate(replicates = as.integer(replicates)) %>%
+   mutate(planting_date = as.Date(planting_date, format = "%d/%m/%Y")) %>%
+   mutate(emergence_date = as.Date(emergence_date, format = "%d/%m/%Y")) %>%
+   mutate(flowering_date = as.Date(flowering_date, format = "%d/%m/%Y")) %>%
+   mutate(pod_final_date = as.Date(pod_final_date, format = "%d/%m/%Y")) %>%
+   mutate(mid_late_pod_final = as.Date(mid_late_pod_final, format = "%d/%m/%Y")) %>%
+   mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_1 = as.Date(fungicide_application_1, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_2 = as.Date(fungicide_application_2, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_3 = as.Date(fungicide_application_3, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_4 = as.Date(fungicide_application_4, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_5 = as.Date(fungicide_application_5, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_6 = as.Date(fungicide_application_6, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_7 = as.Date(fungicide_application_7, format = "%d/%m/%Y")) %>%
+   mutate(harvest_date = as.Date(harvest_date, format = "%d/%m/%Y")) %>%
+   mutate(final_assessment = as.Date(final_assessment, format = "%d/%m/%Y"))
 ```
 
 ## Investigating data and the number of factors represented in each trial
@@ -187,12 +185,12 @@ for (Trial2012 in Trials$trial_ref) {
    Tcrit <-
       1.697  # 0.05 and DFw = 30 # T critical value for which there is significant difference between two groups; This value is the same for both trials "mung1112/01" and "mung1112/02"
    DFw <-
-      sum(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Replicates) -
-      length(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Replicates) # degrees of freedom within groups
-   # n.A <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$Replicates[1]
-   # n.B <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$Replicates[2]
+      sum(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates) -
+      length(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates) # degrees of freedom within groups
+   # n.A <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$replicates[1]
+   # n.B <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$replicates[2]
    LSD <-
-      PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Yield_error[1]
+      PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$yield_error[1]
    
    
    # SSwithin <- #unknown
@@ -205,30 +203,30 @@ for (Trial2012 in Trials$trial_ref) {
    #  (LSD/Tcrit)^2/(1/n.A + 1/n.B) = MSW
    #  MSE <- (LSD/Tcrit)^2/(1/n.A + 1/n.B) # This formula was abandon in favor for the formula in Nugugi et. at (2011)
    MSE <-
-      PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Replicates[1] * (LSD /
-                                                                           Tcrit) ^ 2 / 2 # method for finding variance in Nugugi et.al (2011) DOI: 10.1094/phyto-08-10-0221
+      PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates[1] * (LSD /
+                                                                            Tcrit) ^ 2 / 2 # method for finding variance in Nugugi et.al (2011) DOI: 10.1094/phyto-08-10-0221
    
    
-   for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Replicates)) {
+   for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates)) {
       if (j == 1) {
          Sv <-
-            vector(length = length(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Replicates))
+            vector(length = length(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates))
       }
-      #  Sv[j]^2 = MSE/(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Replicates[j] *
-      #                   PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$grain_yield.t.ha.[j])
+      #  Sv[j]^2 = MSE/(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$replicates[j] *
+      #                   PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$grain_yield.t.ha[j])
       # Balance equation
       Sv[j] = sqrt(MSE / (
-         PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Replicates[j] *
-            as.numeric(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$grain_yield.t.ha.[j])
+         PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates[j] *
+            as.numeric(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$grain_yield.t.ha[j])
       ))
       
    }
    
    # and replacing the values in the dataset
    
-   PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$Yield_error <-
+   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$yield_error <-
       Sv
-   PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$y_error.type <-
+   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$y_error.type <-
       "SamplingVariance"
    
 }
@@ -255,24 +253,24 @@ Trials <- PM_MB_means %>%
 
 # Therefore
 
-for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref, ]$Yield_error)) {
+for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error)) {
    # create empty vector at first iteration with length of j
    if (j == 1) {
       Sv <-
-         vector(length = length(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref, ]$Yield_error))
+         vector(length = length(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error))
    }
    
    # Equation to convert standard deviation to Sampling Variance
-   Sv[j] = (PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref, ]$Yield_error[j]) ^
+   Sv[j] = (PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error[j]) ^
       2
 }
 
 
 
 # and replacing the values in the dataset
-PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref, ]$Yield_error <-
+PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error <-
    Sv
-PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref, ]$y_error.type <-
+PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$y_error.type <-
    "SamplingVariance"
 
 ```
@@ -298,8 +296,8 @@ library(scales)
 # for(i in PM_MB_means$trial_ref){
 #
 # log(V)[i] = a + b * log(
-#    mean(subset(PM_MB_means$grain_yield.t.ha.[i], fungicide_ai == "control"),
-#         subset(PM_MB_means$grain_yield.t.ha.[i], fungicide_ai == "tebuconazole")))
+#    mean(subset(PM_MB_means$grain_yield.t.ha[i], fungicide_ai == "control"),
+#         subset(PM_MB_means$grain_yield.t.ha[i], fungicide_ai == "tebuconazole")))
 # # need to know what parameters a and b are here
 # # I am guessing they represent prediction parameters for each "study" for each of the treatments, "control" and tebuconazole"
 # }
@@ -311,13 +309,13 @@ PM_MB_train <- PM_MB_means %>%
 
 PM_MB_train$trial_ref <- as.factor(PM_MB_train$trial_ref)
 
-plot(PM_MB_train$Yield_error,
-     log(PM_MB_train$`grain_yield.t.ha.`))
+plot(PM_MB_train$yield_error,
+     log(PM_MB_train$grain_yield.t.ha))
 
 
 
-# Run a linear model with Grain_yield as a fixed effect predictor and Trial as a random intercept
-PM_MB_trianLMER <- lmer(Yield_error ~ `grain_yield.t.ha.` +
+# Run a linear model with grain_yield.t.ha as a fixed effect predictor and trial as a random intercept
+PM_MB_trianLMER <- lmer(yield_error ~ grain_yield.t.ha +
                            (1 | trial_ref), data = PM_MB_train)
 summary(PM_MB_trianLMER)
 
@@ -326,20 +324,20 @@ summary(PM_MB_trianLMER)
 # does log transformation improve the model?
 
 
-PM_MB_trianLMER.1 <- lmer(log(Yield_error) ~ `grain_yield.t.ha.` +
+PM_MB_trianLMER.1 <- lmer(log(yield_error) ~ `grain_yield.t.ha` +
                              (1 | trial_ref), data = PM_MB_train)
 summary(PM_MB_trianLMER.1) # grain yeild a significant predictor of log(yeild error)
 anova(PM_MB_trianLMER, PM_MB_trianLMER.1) # no significant difference between the models
 
 
-PM_MB_trianLMER.2 <- lmer(Yield_error ~ log(`grain_yield.t.ha.`) +
+PM_MB_trianLMER.2 <- lmer(yield_error ~ log(`grain_yield.t.ha`) +
                              (1 | trial_ref), data = PM_MB_train)
 summary(PM_MB_trianLMER.2) # log(grain yeild) is a significant predictor of yeild error
 anova(PM_MB_trianLMER, PM_MB_trianLMER.2) # no significant difference between the models
 
 
 PM_MB_trianLMER.3 <-
-   lmer(log(Yield_error) ~ log(`grain_yield.t.ha.`) +
+   lmer(log(yield_error) ~ log(`grain_yield.t.ha`) +
            (1 | trial_ref),
         data = PM_MB_train)
 summary(PM_MB_trianLMER.3) # log(grain yeild) is a significant predictor of log(yeild error)
@@ -348,7 +346,7 @@ anova(PM_MB_trianLMER, PM_MB_trianLMER.3) # no significant difference between th
 
 # Lets try with Fungicide as a fixed effect
 PM_MB_trianLMER.4 <-
-   lmer(Yield_error ~ `grain_yield.t.ha.` + as.factor(Fungicide) +
+   lmer(yield_error ~ `grain_yield.t.ha` + as.factor(fungicide_ai) +
            (1 | trial_ref),
         data = PM_MB_train)
 summary(PM_MB_trianLMER.4)
@@ -370,7 +368,7 @@ lmer.coef <-
 
 # plot of the mixed effect model, Black line shows the mean lmer regression line
 ggplot(PM_MB_train) +
-   geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = trial_ref)) +
+   geom_point(aes(y = yield_error, x = `grain_yield.t.ha`, colour = trial_ref)) +
    geom_abline(
       intercept = c(InterC, lmer.coef$trial_ref[, 1]),
       slope = c(paramA, lmer.coef$trial_ref[, 2]),
@@ -384,12 +382,12 @@ ggplot(PM_MB_train) +
 
 
 for (i in NATrials$trial_ref) {
-   #Sv <- (log(PM_MB_means[PM_MB_means$trial_ref == i,]$`grain_yield.t.ha.`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
+   #Sv <- (log(PM_MB_means[PM_MB_means$trial_ref == i,]$`grain_yield.t.ha`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
    
    Sv <-
-      (PM_MB_means[PM_MB_means$trial_ref == i,]$`grain_yield.t.ha.` * paramA) + InterC
+      (PM_MB_means[PM_MB_means$trial_ref == i,]$`grain_yield.t.ha` * paramA) + InterC
    
-   PM_MB_means[PM_MB_means$trial_ref == i,]$Yield_error <- Sv
+   PM_MB_means[PM_MB_means$trial_ref == i,]$yield_error <- Sv
    PM_MB_means[PM_MB_means$trial_ref == i,]$y_error.type <-
       "SamplingVariance"
 }
@@ -405,7 +403,7 @@ PM_MB_train.2 <-
 
 
 # Rerun the model
-PM_MB_trianLMER.5 <- lmer(Yield_error ~ `grain_yield.t.ha.` +
+PM_MB_trianLMER.5 <- lmer(yield_error ~ `grain_yield.t.ha` +
                              (1 | trial_ref), data = PM_MB_train.2)
 summary(PM_MB_trianLMER.5) # no significant effect of mean grain yield on yeild error
 
@@ -421,7 +419,7 @@ lmer.coef <-
 
 # plot the data with the predicted slopes overlayed
 ggplot(PM_MB_train.2) +
-   geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = trial_ref)) +
+   geom_point(aes(y = yield_error, x = `grain_yield.t.ha`, colour = trial_ref)) +
    geom_abline(
       intercept = c(InterC, lmer.coef$trial_ref[, 1]),
       slope = c(paramA, lmer.coef$trial_ref[, 2]),
@@ -435,14 +433,14 @@ ggplot(PM_MB_train.2) +
 
 
 
-Just for kicks lets look at the linear regression model as a Random effects model where `grain_yield.t.ha.` is set as a random slope to the random intercept `trial_ref`.  
+Just for kicks lets look at the linear regression model as a Random effects model where `grain_yield.t.ha` is set as a random slope to the random intercept `trial_ref`.  
 The model fits better as shown by an ANOVA comparison. But how to impute from this model if mean variance for a trial is unknown....
 ```{r random_slope_model}
 
 
 # Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
-PM_MB_trianLMERx <- lmer(Yield_error ~ 1 +
-                            (`grain_yield.t.ha.` | trial_ref), data = PM_MB_train)
+PM_MB_trianLMERx <- lmer(yield_error ~ 1 +
+                            (`grain_yield.t.ha` | trial_ref), data = PM_MB_train)
 
 anova(PM_MB_trianLMER, PM_MB_trianLMERx) # random slope model NOT significantly better # P = 0.6677
 
@@ -455,7 +453,7 @@ lmer.coefx <- coef(PM_MB_trianLMERx)
 
 # plot of the mixed effect model, Black line shows the mean lmer regression line
 ggplot(PM_MB_train) +
-   geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = trial_ref)) +
+   geom_point(aes(y = yield_error, x = `grain_yield.t.ha`, colour = trial_ref)) +
    geom_abline(
       intercept = lmer.coefx$trial_ref[, 2],
       slope = lmer.coefx$trial_ref[, 1],
@@ -480,13 +478,13 @@ levels(factor(PM_MB_means$y_error.type))
 PM_MB_means.SV <-
    PM_MB_means[PM_MB_means$y_error.type == "SamplingVariance", ]
 
-meta_mean.GY <- mean(PM_MB_means.SV$grain_yield.t.ha., na.rm = TRUE)
+meta_mean.GY <- mean(PM_MB_means.SV$grain_yield.t.ha, na.rm = TRUE)
 
 PM_MB_means_T <- PM_MB_means %>%
    group_by(trial_ref) %>%
    summarise(
-      trial_mean = mean(grain_yield.t.ha., na.rm = TRUE),
-      BW_trial_variance = sd(grain_yield.t.ha., na.rm = TRUE) ^ 2
+      trial_mean = mean(grain_yield.t.ha, na.rm = TRUE),
+      BW_trial_variance = sd(grain_yield.t.ha, na.rm = TRUE) ^ 2
    )
 PM_MB_means_T
 
