@@ -42,7 +42,7 @@ library(leaflet)
 
 * 2015  
    + Hermitage  
-   + Dalby - Site abandoned due it insuficient/late disease infection  
+   + Dalby - Site abandoned due to insufficient/late disease infection  
    + Emerald  
    
 * 2016  
@@ -51,7 +51,7 @@ library(leaflet)
    + Emerald
    
 * 2017  
-   + Fogerty  
+   + Missen Flats (Fogerty's farm)  
    + Hermitage  
 
 * 2018
@@ -62,20 +62,19 @@ library(leaflet)
 
 
 **2001 - 2004 trials**  
-Trial data were obtained from a non-published manuscript.  
-Ratings for powdery Mildew were on a 1-5 rating scale and can be read in the file "Powdery mildew paper#1.doc".  
-Comparing Trials which have not used the same rating scale wil be done using a percentage change.  
-
-
+Trial data were obtained from a non-published manuscript. 
+Ratings for powdery mildew were on a 1-5 rating scale and can be read in the file "Powdery mildew paper#1.doc". 
+Comparing trials which have not used the same rating scale will be done using a percentage change. 
 
 **2013 Field trials**  
-Fungicide treatments were described in reports in Two letter acronyms. The following is the assumed usage.  
+Fungicide treatments were described in reports in two letter acronyms.
+The following is the assumed usage.  
 
 ```{r}
 knitr::kable(
    cbind(Acronym = c("SF", "Ti", "AX", "Ca"),
          Expected_Fungicide = c("Sulphur", "Tilt", "Amistar Xtra", "Carbendazim"),
-         Active_Ingredient = c("Sulphur", "Propiconazole", "Amistar", "Carbendazim")
+         Active_Ingredient = c("Sulphur", "Propiconazole", "Azoxystrobin and Cyproconazole", "Carbendazim")
    )
 )
 ```
