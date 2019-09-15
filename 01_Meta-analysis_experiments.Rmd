@@ -1,13 +1,11 @@
 # Studies considered in meta-analysis
 
-```{r MEsummary_Libraries}
+```{r MEsummary_Libraries, message=FALSE, echo=FALSE}
 library(dplyr)
-library(openxlsx)
+library(readr)
 library(kableExtra)
-library(ggplot2)
 library(leaflet)
-#source("./getPPD2.R")
-
+source("R/import_data.R")
 ```
 
 * 2001  
@@ -73,8 +71,8 @@ The following is the assumed usage.
 ```{r}
 knitr::kable(cbind(
    Acronym = c("SF", "Ti", "AX", "Ca"),
-   Expected_Fungicide = c("Sulphur", "Tilt", "Amistar Xtra", "Carbendazim"),
-   Active_Ingredient = c(
+   `Expected Fungicide` = c("Sulphur", "Tilt", "Amistar Xtra", "Carbendazim"),
+   `Active Ingredient` = c(
       "Sulphur",
       "Propiconazole",
       "Azoxystrobin and Cyproconazole",
@@ -97,35 +95,28 @@ knitr::kable(cbind(
 # data   PM_MB_16       - End of season powdery mildew rating and Yield data from two field trials in 2016, Hermitage and Kingaroy
 # data   PM_MB_means    - Mean disease rating and yeild data, from trial reports
 
-
-PM.dat <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+PM.dat <- import_data()
 
 glimpse(PM.dat)
 
 kable(
    PM.dat %>%
       group_by(
-         Trial_ref,
-         Year,
-         Location,
+         trial_ref,
+         year,
+         location,
          trial_design,
-         Replicates,
+         replicates,
          planting_date,
          emergence_date,
          first_sign_disease
       ) %>%
-      summarise(Treatments = length(E_treatment)),
+      summarise(treatments = length(e_treatment)),
    caption = "Description of Experiments"
 ) %>%
    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
    scroll_box(width = "900px", height = "500px")
 
-PM.dat$Trial_ref <- factor(PM.dat$Trial_ref)
-PM.dat$Location <- factor(PM.dat$Location)
-PM.dat$Year <- factor(PM.dat$Year)
-PM.dat$host_genotype <- factor(PM.dat$host_genotype)
-PM.dat$Fungicide <- factor(PM.dat$Fungicide)
-PM.dat$Trade_name <- factor(PM.dat$Trade_name)
 ```
 
 ## Experimental locations
@@ -135,7 +126,7 @@ Experimental locations where data was sufficient to include in meta-analysis.
 ```{r Experiment_locations}
 experiment_sites <- data.frame(
    location = c(
-      "Hermitage",
+      "Hermitage Research Station",
       "Kingaroy Research Station",
       "Gatton",
       "Emerald Agricultural College"
