@@ -2,12 +2,7 @@
 
 ```{r}
 library(dplyr)
-library(openxlsx)
-library(kableExtra)
-library(ggplot2)
-library(leaflet)
-#source("./getPPD2.R")
-
+library(readr)
 ```
 
 ```{r Calculate_yield-gains}
