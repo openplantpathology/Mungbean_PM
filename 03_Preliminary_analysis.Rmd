@@ -8,6 +8,7 @@ library(ggplot2)
 library(devtools)
 library(lme4)
 library(theme.usq)
+source("R/import_data.R")
 #source("./getPPD2.R")
 ```
 
@@ -18,40 +19,22 @@ All data are a list of mean values from each treatment applied in each experimen
 Various factors have been studied in the previous experiments which may influence the following results. The following variables were disregarded in the plots below.
 
    1) Fungicide type
+   
    2) Fungicide dose
-   3) row spacing
+   
+   3) Row spacing
+   
    4) Host cultivars (probably is a covariate with season due to changing cultivars over time)
+   
    5) Experiment location
+   
    6) Final disease rating
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, include= FALSE}
 # Import data
-PM_MB_means <-
-   read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+PM_MB_means <- import_data()
 colnames(PM_MB_means)
-PM_MB_means$Fungicide_application_1[as.character(PM_MB_means$Fungicide_application_1) == ""] <-
-   NA
-PM_MB_means$Fungicide_application_2[as.character(PM_MB_means$Fungicide_application_2) == ""] <-
-   NA
-PM_MB_means$Fungicide_application_3[as.character(PM_MB_means$Fungicide_application_3) == ""] <-
-   NA
-PM_MB_means$Fungicide_application_4[as.character(PM_MB_means$Fungicide_application_4) == ""] <-
-   NA
-PM_MB_means$Fungicide_application_5[as.character(PM_MB_means$Fungicide_application_5) == ""] <-
-   NA
-PM_MB_means$Fungicide_application_6[as.character(PM_MB_means$Fungicide_application_6) == ""] <-
-   NA
-PM_MB_means$Fungicide_application_7[as.character(PM_MB_means$Fungicide_application_7) == ""] <-
-   NA
-
-# Rewrite all variations of sulphur treatments as just sulphur
-PM_MB_means$Fungicide[PM_MB_means$Fungicide == "Sulphur" |
-                         PM_MB_means$Fungicide == "Sulphur (SC)" |
-                         PM_MB_means$Fungicide == "Sulphur (Ultra SC)" |
-                         PM_MB_means$Fungicide == "Sulphur (WP)"] <- "Sulphur"
 ```
-
-
 
 ```{r row_spacing}
 
