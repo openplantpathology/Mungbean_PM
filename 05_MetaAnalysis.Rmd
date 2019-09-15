@@ -8,36 +8,13 @@ output: html_document
 ```{r MEsummary_Libraries, message=FALSE}
 library(tidyverse)
 library(theme.usq)
+source("R/import_data.R")
 ```
 
 # Meta-analysis
 
 ```{r data_import, message=FALSE, echo=FALSE}
-PM_MB_means <-
-   read_csv(
-      "data/1902 powdery mildew-Mungbean - Collated means.csv"
-   )
-
-# convert coltypes
-PM_MB_means <-
-   PM_MB_means %>%
-   mutate(year = as.integer(year)) %>%
-   mutate(replicates = as.integer(replicates)) %>%
-   mutate(planting_date = as.Date(planting_date, format = "%d/%m/%Y")) %>%
-   mutate(emergence_date = as.Date(emergence_date, format = "%d/%m/%Y")) %>%
-   mutate(flowering_date = as.Date(flowering_date, format = "%d/%m/%Y")) %>%
-   mutate(pod_final_date = as.Date(pod_final_date, format = "%d/%m/%Y")) %>%
-   mutate(mid_late_pod_final = as.Date(mid_late_pod_final, format = "%d/%m/%Y")) %>%
-   mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_1 = as.Date(fungicide_application_1, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_2 = as.Date(fungicide_application_2, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_3 = as.Date(fungicide_application_3, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_4 = as.Date(fungicide_application_4, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_5 = as.Date(fungicide_application_5, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_6 = as.Date(fungicide_application_6, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_7 = as.Date(fungicide_application_7, format = "%d/%m/%Y")) %>%
-   mutate(harvest_date = as.Date(harvest_date, format = "%d/%m/%Y")) %>%
-   mutate(final_assessment = as.Date(final_assessment, format = "%d/%m/%Y"))
+PM_MB_means <- import_data()
 ```
 
 ## Visualise Data
