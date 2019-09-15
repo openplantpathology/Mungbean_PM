@@ -285,14 +285,11 @@ for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yi
       2
 }
 
-
-
 # and replacing the values in the dataset
 PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error <-
    Sv
 PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$y_error.type <-
    "SamplingVariance"
-
 ```
 
 
@@ -322,7 +319,6 @@ library(scales)
 # # need to know what parameters a and b are here
 # # I am guessing they represent prediction parameters for each "study" for each of the treatments, "control" and tebuconazole"
 # }
-
 
 # method as described by Emerson
 PM_MB_train <- PM_MB_means %>%
@@ -507,7 +503,7 @@ PM_MB_means.SV <-
 
 meta_mean.GY <- mean(PM_MB_means.SV$grain_yield.t.ha, na.rm = TRUE)
 
-PM_MB_means_T <- PM_MB_means %>%
+PM_MB_means_T <- PM_MB_means.SV %>%
    group_by(trial_ref) %>%
    summarise(
       trial_mean = mean(grain_yield.t.ha, na.rm = TRUE),
@@ -529,5 +525,4 @@ summary(lm(
 
 plot(BW_trial_variance ~ trial_mean, data = PM_MB_means)
 abline(-0.01356, 0.03076)
-
 ```
