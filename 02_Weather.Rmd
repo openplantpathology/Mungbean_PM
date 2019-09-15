@@ -15,7 +15,31 @@ Variation may exist in the sowing date of each trial.
 # issue has something to do with website certificates not being appropriate
 
 # Import dataset
-PM.dat <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+PM.dat <-
+   read_csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+PM.dat <- PM.dat %>%
+   mutate(trial_ref = as.factor(trial_ref)) %>%
+   mutate(location = as.factor(location)) %>%
+   mutate(host_genotype = as.factor(host_genotype)) %>%
+   mutate(fungicide_ai = as.factor(fungicide_ai)) %>%
+   mutate(trade_name = as.factor(trade_name)) %>%
+   mutate(year = as.factor(year)) %>%
+   mutate(replicates = as.factor(replicates)) %>%
+   mutate(planting_date = as.Date(planting_date, format = "%d/%m/%Y")) %>%
+   mutate(emergence_date = as.Date(emergence_date, format = "%d/%m/%Y")) %>%
+   mutate(flowering_date = as.Date(flowering_date, format = "%d/%m/%Y")) %>%
+   mutate(pod_final_date = as.Date(pod_final_date, format = "%d/%m/%Y")) %>%
+   mutate(mid_late_pod_final = as.Date(mid_late_pod_final, format = "%d/%m/%Y")) %>%
+   mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_1 = as.Date(fungicide_application_1, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_2 = as.Date(fungicide_application_2, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_3 = as.Date(fungicide_application_3, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_4 = as.Date(fungicide_application_4, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_5 = as.Date(fungicide_application_5, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_6 = as.Date(fungicide_application_6, format = "%d/%m/%Y")) %>%
+   mutate(fungicide_application_7 = as.Date(fungicide_application_7, format = "%d/%m/%Y")) %>%
+   mutate(harvest_date = as.Date(harvest_date, format = "%d/%m/%Y")) %>%
+   mutate(final_assessment = as.Date(final_assessment, format = "%d/%m/%Y"))
 
 # Need weather data between 2011 and 2017
 
@@ -77,21 +101,21 @@ king_Tm_aver <-
 king_Tm_aver <- king_Tm_aver %>%
    mutate(
       Year = substr(king_Tm_aver$date, start = 1, stop = 4),
-      Day = year.day(king_Tm_aver$date)
+      Day = ymd(king_Tm_aver$date)
    )
 
 
 # Create data subset of powdery mildew data means for the first sign of the disease by location
 King_FS <- PM.dat %>%
-   group_by(Trial_ref, Location, Year) %>%
-   summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
-   filter(Location == "Kingaroy") %>%
-   mutate(Day = year.day(First_sign))
+   group_by(trial_ref, location, year) %>%
+   summarise(first_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
+   filter(location == "Kingaroy") %>%
+   mutate(day = ymd(first_sign))
 str(king_Tm_aver)
 str(King_FS)
-ggplot(subset(king_Tm_aver, Year == levels(factor(King_FS$Year))),
-       aes(Day)) +
-   geom_line(aes(y = max_T, colour = Year)) +
+ggplot(subset(king_Tm_aver, year == levels(factor(King_FS$year))),
+       aes(day)) +
+   geom_line(aes(y = max_T, colour = year)) +
    #geom_smooth(method = "lm", aes(y = max_T), colour = "darkred")+
    geom_line(aes(y = min_T, colour = Year)) +
    #geom_smooth(method = "lm", aes(y = min_T), colour = "darkblue")+
@@ -109,13 +133,13 @@ ggplot(subset(king_Tm_aver, Year == levels(factor(King_FS$Year))),
       panel.background = element_rect(fill = NA)
    ) +
    geom_vline(
-      xintercept = King_FS$Day[1],
+      xintercept = King_FS$day[1],
       size = 1,
       colour = cols1[1],
       linetype = "dotted"
    ) +
    geom_vline(
-      xintercept = King_FS$Day[2],
+      xintercept = King_FS$day[2],
       size = 1.5,
       colour = cols1[2],
       linetype = "dotted"
