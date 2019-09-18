@@ -466,11 +466,17 @@ hist(incidence2)
 MarysM.13D$Incidence <- incidence2
 MarysM.13D <- MarysM.13D[,c("Treat", "Rep", "Run", "Plot", "Incidence")]
 
+# Treatment 11 was probably only sprayed twice, effectivley making it an additional rep of treatment 8
+
+MarysM.13D[MarysM.13D$Treat == 11,"Treat"] <- 8
+
 
 MarysM.13D <- MarysM.13D %>%
    group_by(Treat) %>%
    summarise(M.inc = mean(Incidence, na.rm = TRUE),
              sd.inc = sd(Incidence, na.rm = TRUE))
+
+
 write.csv(MarysM.13D, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MaryMount-Disease_means.csv")
 
 
@@ -480,10 +486,16 @@ MarysM.13Y <- as.data.frame(read_xlsx(path = "C:/Users/U8011054/USQ/SCP - Docume
                                       sheet = "42 DAT1 Yield", range = "A14:F58", col_names = TRUE))
 head(MarysM.13Y)
 
+# Removeing treatment 11 as a replicate of treatment 8
+MarysM.13Y[MarysM.13Y$Treat == 11,"Treat"] <- 8
+
 MarysM.13Y <- MarysM.13Y %>%
    group_by(Treat) %>%
    summarise(M.Yield = mean(`Yield Kg/ha`, na.rm = TRUE),
              sd.Yield = sd(`Yield Kg/ha`, na.rm = TRUE))
+
+
+
 write.csv(MarysM.13Y, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MarysMount-Yield_means.csv")
 
 
@@ -495,7 +507,7 @@ write.csv(MarysM.13Y, "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Pa
 
 
 
-#____________
+ #____________
 # Premer
 #_____________
 
