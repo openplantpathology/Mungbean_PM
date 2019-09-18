@@ -148,7 +148,6 @@ ggplot(aes(y = prop_YG, x = Fungicide))+
    coord_flip()
    #scale_x_continuous(limits = c(-0.3,0.6))
 
-levels(PM_MB_means$Fungicide)
 
 ```
 
