@@ -10,6 +10,7 @@ library(dplyr)
 library(openxlsx)
 library(kableExtra)
 library(ggplot2)
+library(lme4)
 library(leaflet)
 #source("./getPPD2.R")
 
@@ -138,7 +139,7 @@ The type of variance needs to be standardised between trials and treatments for 
           row_spacing == 0.75) %>%
    group_by(Trial_ref, Location, Y_error.type) %>%
    summarise(Tebe_Treatments = length(Y_error.type))
-colnames(PM_MB_means)
+
 
 
 ```
@@ -279,7 +280,7 @@ PM_MB_train$Trial_ref <- as.factor(PM_MB_train$Trial_ref)
 
 plot(PM_MB_train$Yield_error, log(PM_MB_train$`grain_yield.t.ha.`))
 
-
+length(unique(PM_MB_train$Trial_ref))
 
 # Run a linear model with Grain_yield as a fixed effect predictor and Trial as a random intercept
 PM_MB_trianLMER <- lmer(Yield_error ~ `grain_yield.t.ha.`+ 
@@ -332,20 +333,22 @@ ggplot(PM_MB_train)+
    geom_abline(intercept = c(InterC,lmer.coef$Trial_ref[,1]), 
                slope = c(paramA,lmer.coef$Trial_ref[,2]),
                size = 1,
-               colour = c("Black",hue_pal()(11)))+
+               colour = c("Black",hue_pal()(length(unique(PM_MB_train$Trial_ref)))))+
    coord_cartesian(xlim = c(0, 3))
 
 ```
 ```{r na2Sv_formula}
 
-for(i in NATrials$Trial_ref){
-#Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
+# commented until a reliable model can be written
 
-Sv <- (PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.` * paramA) + InterC
-
-PM_MB_means[PM_MB_means$Trial_ref == i,]$Yield_error <- Sv
-PM_MB_means[PM_MB_means$Trial_ref == i,]$Y_error.type <- "SamplingVariance"
-}
+# for(i in NATrials$Trial_ref){
+# #Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
+# 
+# Sv <- (PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.` * paramA) + InterC
+# 
+# PM_MB_means[PM_MB_means$Trial_ref == i,]$Yield_error <- Sv
+# PM_MB_means[PM_MB_means$Trial_ref == i,]$Y_error.type <- "SamplingVariance"
+# }
 
 ```
 
@@ -374,7 +377,7 @@ ggplot(PM_MB_train.2)+
    geom_abline(intercept = c(InterC,lmer.coef$Trial_ref[,1]), 
                slope = c(paramA,lmer.coef$Trial_ref[,2]),
                size = 1,
-               colour = c("Black",hue_pal()(10)))+
+               colour = c("Black",hue_pal()(length(unique(PM_MB_train.2$Trial_ref)))))+
    coord_cartesian(ylim = c(0, 0.33))
 
 ```
@@ -384,7 +387,8 @@ ggplot(PM_MB_train.2)+
 
 Just for kicks lets look at the linear regression model as a Random effects model where `grain_yield.t.ha.` is set as a random slope to the random intercept `Trial_ref`.  
 The model fits better as shown by an anova comparison. But how to impute from this model if mean variance for a trial is unknown....
-```{r random_slope_model}
+```{r random_slope_model} 
+# This code chunk broke with the addition of new data, I will re-inspect the data and remodel.
 
 # Run a linear model with Yield error as a fixed effect predictor and Trial as a random intercept
 PM_MB_trianLMERx <- lmer(Yield_error ~ 1 + 
@@ -399,12 +403,12 @@ InterC <- (summary(PM_MB_trianLMER)$coef)[1,1] # Extract the overall mean interc
 lmer.coefx <- coef(PM_MB_trianLMERx)
 
 # plot of the mixed effect model, Black line shows the mean lmer regression line
-ggplot(PM_MB_train)+
+ggplot(PM_MB_train) +
    geom_point(aes(y = Yield_error, x = `grain_yield.t.ha.`, colour = Trial_ref))+
    geom_abline(intercept = lmer.coefx$Trial_ref[,2], 
                slope = lmer.coefx$Trial_ref[,1],
                size = 1,
-               colour = hue_pal()(11))+
+               colour = hue_pal()(length(unique(PM_MB_train$Trial_ref))))+
    coord_cartesian(xlim = c(0, 3),
                    ylim = c(0, 1))
    
@@ -423,31 +427,35 @@ Emerson proposed I look at the between trial variation
 levels(factor(PM_MB_means$Y_error.type))
 
 PM_MB_means.SV <- PM_MB_means[PM_MB_means$Y_error.type == "SamplingVariance",]
-
 meta_mean.GY <- mean(PM_MB_means.SV$grain_yield.t.ha.,na.rm = TRUE)
 
+
+# find the mean and variance of each trial
 PM_MB_means_T <- PM_MB_means %>%
+   filter(Y_error.type == "SamplingVariance") %>%
    group_by(Trial_ref) %>%
    summarise(trial_mean = mean(grain_yield.t.ha.,na.rm = TRUE),
-             BW_trial_variance = sd(grain_yield.t.ha.,na.rm = TRUE)^2)
-PM_MB_means_T
+             Trial_variance = sd(grain_yield.t.ha.,na.rm = TRUE)^2)  # I am not sure I have calculated between trial variance or trial variance// Should I be using a denominator (N-1) or (N), sd by default uses (N-1)
 
-All_Trials <- unique(PM_MB_means$Trial_ref)
+
+
+
+# update the main data set with Trial variance
+SV_Trials <- unique(PM_MB_means_T$Trial_ref)
 PM_MB_means$TrialVariance <- NA
 
-for(i in All_Trials){
-   PM_MB_means[PM_MB_means$Trial_ref == i, "TrialVariance"] <- PM_MB_means_T[PM_MB_means_T$Trial_ref == i,"BW_trial_variance"]
+for(i in SV_Trials){
+   PM_MB_means[PM_MB_means$Trial_ref == i, "TrialVariance"] <- PM_MB_means_T[PM_MB_means_T$Trial_ref == i,"Trial_variance"]
 }
-
 PM_MB_means$TrialVariance
 
-summary(lm(BW_trial_variance ~ trial_mean, data = PM_MB_means_T))
-summary(lm(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide == "Tebeconazole")))
-summary(lm(BW_trial_variance ~ trial_mean, data = subset(PM_MB_means_T, Fungicide == "propiconazole")))
 
 
-plot(BW_trial_variance ~ trial_mean, data = PM_MB_means_T)
-abline(-0.01356,0.03076)
+SV_mod1 <- lm(Trial_variance ~ trial_mean, data = PM_MB_means_T)
+summary(SV_mod1)
+
+plot(Trial_variance ~ trial_mean, data = PM_MB_means_T)
+abline(SV_mod1)
 
 
 
