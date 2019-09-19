@@ -1,7 +1,7 @@
 ---
 title: "Powdery Milder yield loss mitigation strategies in Mungbean a Meta-analysis"
-author: "Paul Melloy, Emerson Del Ponte and Adam H. Sparks"
-date: "19/06/2019"
+author: "Paul Melloy, Emerson Del Ponte, Charles T. Gray and Adam H. Sparks"
+date: "`r Sys.Date()`"
 output:
   bookdown::html_book:
     theme: united
@@ -10,22 +10,22 @@ output:
 
 # Research questions
 
-When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yeilds.  
+When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yields?
 
-How has the first sign of powdery mildew changed over the seasons and between experimental sites.  
+How has the first sign of powdery mildew changed over the seasons and between experimental sites?
 
 
-How has the first sign of powdery mildew changed over the seasons and between experimental sites.  
+How has the first sign of powdery mildew changed over the seasons and between experimental sites?
 
-When would the ideal planting time be to make use of powdery mildew defoliation in the final growth of the crop.  
+When would the ideal planting time be to make use of powdery mildew defoliation in the final growth of the crop?
 
 Do infections that occur before flowering increase the probable yield loss?
 
-What is the length of a Mungbean season and how has it varied in this trial.  
-   - This data has not been collected or is not accuarate enough to be useful to answer this question.  
+What is the length of a mungbean season and how has it varied in this trial?
+   - This data has not been collected or is not accurate enough to be useful to answer this question.  
 
 
-## parts fof analysis that need checking
+## Parts of analysis that need checking
 
 Variability among host genotypes and probable influence of season given that over the years, the genotype studied changed from Berken, Crystal to Jade.  
 
