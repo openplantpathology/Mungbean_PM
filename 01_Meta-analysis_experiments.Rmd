@@ -1,13 +1,11 @@
 # Studies considered in meta-analysis
 
-```{r MEsummary_Libraries}
+```{r MEsummary_Libraries, message=FALSE, echo=FALSE}
 library(dplyr)
-library(openxlsx)
+library(readr)
 library(kableExtra)
-library(ggplot2)
 library(leaflet)
-#source("./getPPD2.R")
-
+source("R/import_data.R")
 ```
 
 * 2001  
@@ -42,7 +40,7 @@ library(leaflet)
 
 * 2015  
    + Hermitage  
-   + Dalby - Site abandoned due it insuficient/late disease infection  
+   + Dalby - Site abandoned due to insufficient/late disease infection  
    + Emerald  
    
 * 2016  
@@ -51,7 +49,7 @@ library(leaflet)
    + Emerald
    
 * 2017  
-   + Fogerty  
+   + Missen Flats (Fogerty's farm)  
    + Hermitage  
 
 * 2018
@@ -62,22 +60,25 @@ library(leaflet)
 
 
 **2001 - 2004 trials**  
-Trial data were obtained from a non-published manuscript.  
-Ratings for powdery Mildew were on a 1-5 rating scale and can be read in the file "Powdery mildew paper#1.doc".  
-Comparing Trials which have not used the same rating scale wil be done using a percentage change.  
-
-
+Trial data were obtained from a non-published manuscript. 
+Ratings for powdery mildew were on a 1-5 rating scale and can be read in the file "Powdery mildew paper#1.doc". 
+Comparing trials which have not used the same rating scale will be done using a percentage change. 
 
 **2013 Field trials**  
-Fungicide treatments were described in reports in Two letter acronyms. The following is the assumed usage.  
+Fungicide treatments were described in reports in two letter acronyms.
+The following is the assumed usage.  
 
 ```{r}
-knitr::kable(
-   cbind(Acronym = c("SF", "Ti", "AX", "Ca"),
-         Expected_Fungicide = c("Sulphur", "Tilt", "Amistar Xtra", "Carbendazim"),
-         Active_Ingredient = c("Sulphur", "Propiconazole", "Amistar", "Carbendazim")
+knitr::kable(cbind(
+   Acronym = c("SF", "Ti", "AX", "Ca"),
+   `Expected Fungicide` = c("Sulphur", "Tilt", "Amistar Xtra", "Carbendazim"),
+   `Active Ingredient` = c(
+      "Sulphur",
+      "Propiconazole",
+      "Azoxystrobin and Cyproconazole",
+      "Carbendazim"
    )
-)
+))
 ```
 
 ## Summary of data  
@@ -94,50 +95,49 @@ knitr::kable(
 # data   PM_MB_16       - End of season powdery mildew rating and Yield data from two field trials in 2016, Hermitage and Kingaroy
 # data   PM_MB_means    - Mean disease rating and yeild data, from trial reports
 
-
-PM.dat <- read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+PM.dat <- import_data()
 
 glimpse(PM.dat)
 
-
-kable(PM.dat %>%
-   group_by(Trial_ref, Year, Location, trial_design, Replicates, planting_date, emergence_date, first_sign_disease) %>%
-   summarise(Treatments = length(E_treatment)),
-   caption = "Description of Experiments") %>%
-   kable_styling(fixed_thead = T, full_width = T) %>%
+kable(
+   PM.dat %>%
+      group_by(
+         trial_ref,
+         year,
+         location,
+         trial_design,
+         replicates,
+         planting_date,
+         emergence_date,
+         first_sign_disease
+      ) %>%
+      summarise(treatments = length(e_treatment)),
+   caption = "Description of Experiments"
+) %>%
+   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
    scroll_box(width = "900px", height = "500px")
-
-
-
-PM.dat$Trial_ref <- factor(PM.dat$Trial_ref)
-PM.dat$Location <- factor(PM.dat$Location)
-PM.dat$Year <- factor(PM.dat$Year)
-PM.dat$host_genotype <- factor(PM.dat$host_genotype)
-PM.dat$Fungicide <- factor(PM.dat$Fungicide)
-PM.dat$Trade_name <- factor(PM.dat$Trade_name)
-
 
 ```
 
-
-
 ## Experimental locations
-Experimental locations where data was sufficient to include in meta-analysis
-```{r Experiment_locations}
 
+Experimental locations where data was sufficient to include in meta-analysis.
+
+```{r Experiment_locations}
 experiment_sites <- data.frame(
-   location = c("Hermitage", "Kingaroy research station","Gatton", "Emerald Agricultural College"),
-   lat = c(-28.215 ,-26.58,-27.56,-23.54),
-   lon = c(152.1003,151.83,152.32,148.19)
+   location = c(
+      "Hermitage Research Station",
+      "Kingaroy Research Station",
+      "Gatton",
+      "Emerald Agricultural College"
+   ),
+   lat = c(-28.215 , -26.58, -27.56, -23.54),
+   lon = c(152.1003, 151.83, 152.32, 148.19)
 )
 
-
-
- leaflet() %>%
-    addProviderTiles("Esri.WorldTopoMap") %>%
-    addMarkers(lng = experiment_sites$lon, lat = experiment_sites$lat)
+leaflet() %>%
+   addProviderTiles("Esri.WorldTopoMap") %>%
+   addMarkers(lng = experiment_sites$lon, lat = experiment_sites$lat)
 # head(silo_gatton_Tmax)
-
-
 ```
 
