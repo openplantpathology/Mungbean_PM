@@ -5,6 +5,7 @@ library(dplyr)
 library(readr)
 library(kableExtra)
 library(leaflet)
+library(htmltools)
 source("R/import_data.R")
 ```
 
@@ -12,13 +13,13 @@ source("R/import_data.R")
    + Bongeen #1  
    + Bongeen #2  
    
-* 2002
+* 2002  
    + Hermitage #1  
    + Hermitage #2  
-   + Kingaroy
+   + Kingaroy  
    
-* 2004
-   + Redvale
+* 2004  
+   + Redvale  
 
 * 2010  
    + Hermitage  
@@ -32,11 +33,11 @@ source("R/import_data.R")
    + Gatton  
    + Kingaroy  
    
-* 2013
-   + Premer; no raw data
-   + Milmerran; no raw data
-   + Mt Mary; no raw data
-   + Goolhi; no raw data
+* 2013  
+   + Premer  
+   + Milmerran   
+   + Mt Mary   
+   + Goolhi  
 
 * 2015  
    + Hermitage  
@@ -46,40 +47,26 @@ source("R/import_data.R")
 * 2016  
    + Hermitage  
    + Kingaroy  
-   + Emerald
+   + Emerald  
    
 * 2017  
    + Missen Flats (Fogerty's farm)  
    + Hermitage  
 
-* 2018
-   + Wellcamp
+* 2018  
+   + Wellcamp  
    
-* 2019
-   + Hermitage
+* 2019  
+   + Hermitage  
 
 
 **2001 - 2004 trials**  
-Trial data were obtained from a non-published manuscript. 
-Ratings for powdery mildew were on a 1-5 rating scale and can be read in the file "Powdery mildew paper#1.doc". 
-Comparing trials which have not used the same rating scale will be done using a percentage change. 
+Trial data were obtained from a non-published manuscript.  
+Ratings for powdery mildew were on a 1-5 rating scale and can be read in the file "Powdery mildew paper#1.doc".  
+Comparing trials which have not used the same rating scale will be done using a percentage change.  
 
 **2013 Field trials**  
-Fungicide treatments were described in reports in two letter acronyms.
-The following is the assumed usage.  
-
-```{r}
-knitr::kable(cbind(
-   Acronym = c("SF", "Ti", "AX", "Ca"),
-   `Expected Fungicide` = c("Sulphur", "Tilt", "Amistar Xtra", "Carbendazim"),
-   `Active Ingredient` = c(
-      "Sulphur",
-      "Propiconazole",
-      "Azoxystrobin and Cyproconazole",
-      "Carbendazim"
-   )
-))
-```
+Trials were conducted by the National Growers Alliance (NGA). The raw data were obtained from Lawrie Price. NGA data were formatted to be compliant with existing data rating and scales in the R script `Cleaning historical data.R`.
 
 ## Summary of data  
 
@@ -97,6 +84,7 @@ knitr::kable(cbind(
 
 PM.dat <- import_data()
 
+
 glimpse(PM.dat)
 
 kable(
@@ -111,11 +99,11 @@ kable(
          emergence_date,
          first_sign_disease
       ) %>%
-      summarise(treatments = length(e_treatment)),
+      summarise(treatments = length(n_treatment)),
    caption = "Description of Experiments"
-) %>%
-   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
-   scroll_box(width = "900px", height = "500px")
+ ) # %>%  #commented as was redering empty, needs a look in
+#    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
+#    scroll_box(width = "900px", height = "500px")
 
 ```
 
@@ -127,17 +115,26 @@ Experimental locations where data was sufficient to include in meta-analysis.
 experiment_sites <- data.frame(
    location = c(
       "Hermitage Research Station",
-      "Kingaroy Research Station",
+      "Red Vale & Kingaroy Research Station",
       "Gatton",
-      "Emerald Agricultural College"
-   ),
-   lat = c(-28.215 , -26.58, -27.56, -23.54),
-   lon = c(152.1003, 151.83, 152.32, 148.19)
+      "Emerald Agricultural College",
+      "Bongeen 1 & 2",
+      "NGA - Premer",
+      "NGA - Millmerran",
+      "NGA - Marys Mount",
+      "NGA - Goolhi",
+      "Missen Flats",
+      "Wellcamp"
+      ),
+   lat = c(-28.215 , -26.58, -27.56, -23.54, -27.51666, -31.43449, -27.923674, -31.0142, -31.00246, -27.905313, -27.564277),
+   lon = c(152.1003, 151.83, 152.32, 148.19, 151.450,150.0052, 151.242706, 150.05018, 149.82507, 151.9772,151.867879)
 )
 
-leaflet() %>%
+leaflet(experiment_sites) %>%
    addProviderTiles("Esri.WorldTopoMap") %>%
-   addMarkers(lng = experiment_sites$lon, lat = experiment_sites$lat)
-# head(silo_gatton_Tmax)
+   setView(lat = -27.31, lng = 150.456,zoom = 5) %>%
+   addMarkers(lng = ~lon, lat = ~lat, popup = ~htmlEscape(location))
+#   addPopups(lng = experiment_sites$lon, lat = experiment_sites$lat, popup = experiment_sites$location)
+
 ```
 
