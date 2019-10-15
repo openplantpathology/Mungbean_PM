@@ -16,6 +16,7 @@ source("R/import_data.R")
 
 ```{r data_import, message=FALSE, echo=FALSE}
 PM_MB_means <- import_data()
+
 ```
 
 ## Visualise Data
@@ -38,6 +39,7 @@ PM_MB_means %>%
    ylab("N Trials") +
    geom_col() +
    scale_fill_usq() +
+   ggtitle(label = "Number of trials in which the\nspecified fungicide was used") +
    scale_colour_usq() +
    theme_usq() +
    coord_flip()
@@ -64,10 +66,11 @@ PM_MB_means %>%
           year,
           location,
           first_sign_disease,
-          dose_ai_f1_g.ha,
+          dose_ai.ha,
           total_fungicide) %>%
-   ggplot(aes(x = as.factor(dose_ai_f1_g.ha))) +
+   ggplot(aes(x = as.factor(dose_ai.ha))) +
    xlab("Dose (g ai/ha)") +
+   ggtitle(label = "Total number of treatments for each respective tebuconazole dose") +
    geom_bar() +
    scale_fill_usq() +
    scale_colour_usq() +
@@ -77,17 +80,17 @@ PM_MB_means %>%
 ### Row spacing
 
 Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease.
-The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows did increase yield significantly, which has been shown by Kerry McKenzie's work as well.
+The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly. This finding has also been shown by Kerry McKenzie's work as well.
 Eight trials used a row spacing of 0.75&nbsp;meters and tebuconazole as an active ingredient (AI).
 
 ```{r row_spacing.m}
 PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole" | fungicide_ai == "propiconazole") %>%
-   group_by(fungicide_ai, row_spacing.m, trial_ref) %>%
+   group_by(fungicide_ai, row_spacing, trial_ref) %>%
    summarise() %>%
    count() %>%
    rename(Trials = n) %>%
-   ggplot(aes(x = as.factor(row_spacing.m), y = Trials)) +
+   ggplot(aes(x = as.factor(row_spacing), y = Trials)) +
    xlab("Row Spacing (m)") +
    ylab("N Trials") +
    ggtitle(label = "Trial row spacings using tebuconazole") +
@@ -98,7 +101,7 @@ PM_MB_means %>%
 
 PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
-         row_spacing.m == 0.75) %>% 
+         row_spacing == 0.75) %>% 
    glimpse()
 ```
 
@@ -114,7 +117,7 @@ Host genotype may need to be analysed to determine the effect.
 ```{r Host_genotype}
 PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
-         row_spacing.m == 0.75) %>%
+         row_spacing == 0.75) %>%
    group_by(host_genotype, trial_ref) %>%
    summarise() %>%
    count() %>%
@@ -142,29 +145,29 @@ In general the mungbean varieties have the following resistance to powdery milde
 The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
 
 ```{r variance}
-
+# PM_MB_means$Y_error_type <- forcats::fct_explicit_na(PM_MB_means$Y_error_type, na_level = NA)
 # Trials using tebuconazole
 PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
-         row_spacing.m == 0.75) %>%
-   group_by(trial_ref, location, y_error.type) %>%
-   summarise(tebuconazole_trts = length(y_error.type))
+         row_spacing == 0.75) %>%
+   group_by(trial_ref, location, Y_error_type) %>%
+   summarise(tebuconazole_trts = length(Y_error_type))
 
 
 # Trials using propiconazole
 PM_MB_means %>%
    filter(fungicide_ai == "propiconazole",
-          row_spacing.m == 0.75) %>%
-   group_by(trial_ref, location, y_error.type) %>%
-   summarise(propiconazole_trts = length(y_error.type))
+          row_spacing == 0.75) %>%
+   group_by(trial_ref, location, Y_error_type) %>%
+   summarise(propiconazole_trts = length(Y_error_type))
 ```
 
 
 ```{r LSD_trials}
 Trials <- PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
-          row_spacing.m == 0.75,
-          y_error.type == "lsd (P=0.05)") %>%
+          row_spacing == 0.75,
+          Y_error_type == "lsd (P=0.05)") %>%
    select(trial_ref) %>%
    distinct()
 Trials
@@ -226,7 +229,7 @@ for (Trial2012 in Trials$trial_ref) {
    
    PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$yield_error <-
       Sv
-   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$y_error.type <-
+   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$Y_error_type <-
       "SamplingVariance"
    
 }
@@ -240,7 +243,7 @@ Now to estimate the variance from the standard deviation
 Trials <- PM_MB_means %>%
    filter(#fungicide_ai == "tebuconazole",
       #row_spacing.m == 0.75,
-      y_error.type == "stdev") %>%
+      Y_error_type == "stdev") %>%
    select(trial_ref) %>%
    distinct()
 
@@ -268,7 +271,7 @@ for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yi
 # and replacing the values in the dataset
 PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error <-
    Sv
-PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$y_error.type <-
+PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$Y_error_type <-
    "SamplingVariance"
 ```
 
@@ -280,7 +283,7 @@ The trial which does not report any type of variance also reports that there is 
 NATrials <- PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
           row_spacing.m == 0.75,
-          is.na(y_error.type)) %>%
+          is.na(Y_error_type)) %>%
    select(trial_ref) %>%
    distinct()
 ```
@@ -302,7 +305,7 @@ library(scales)
 
 # method as described by Emerson
 PM_MB_train <- PM_MB_means %>%
-   filter(y_error.type == "SamplingVariance")
+   filter(Y_error_type == "SamplingVariance")
 
 PM_MB_train$trial_ref <- as.factor(PM_MB_train$trial_ref)
 
@@ -403,7 +406,7 @@ ggplot(PM_MB_train) +
 #       (PM_MB_means[PM_MB_means$trial_ref == i,]$`grain_yield.t.ha` * paramA) + InterC
 #    
 #    PM_MB_means[PM_MB_means$trial_ref == i,]$yield_error <- Sv
-#    PM_MB_means[PM_MB_means$trial_ref == i,]$y_error.type <-
+#    PM_MB_means[PM_MB_means$trial_ref == i,]$Y_error_type <-
 #       "SamplingVariance"
 # }
 
@@ -495,24 +498,27 @@ After much deliberation I don't think this is possible to use the model with gra
 
 I also re-ran the model without including the trial in which we used LSD to interpret the sampling variance and the model lost a lot of significance.  
 
+
+
 ## Between trial variation
 
 Emerson proposed I look at the between trial variation
 ```{r between_trial_variation}
-levels(factor(PM_MB_means$Y_error.type))
+unique(PM_MB_means$Y_error_type)
 
-PM_MB_means.SV <- PM_MB_means[PM_MB_means$Y_error.type == "SamplingVariance",]
+PM_MB_means.SV <- PM_MB_means[PM_MB_means$Y_error_type == "SamplingVariance",]
 meta_mean.GY <- mean(PM_MB_means.SV$grain_yield.t.ha.,na.rm = TRUE)
 
 
 # find the mean and variance of each trial
 PM_MB_means_T <- PM_MB_means %>%
-   filter(Y_error.type == "SamplingVariance") %>%
+   filter(Y_error_type == "SamplingVariance") %>%
    group_by(trial_ref) %>%
-   summarise(trial_mean = mean(grain_yield.t.ha, na.rm = TRUE),
-             BW_trial_variance = sd(grain_yield.t.ha, na.rm = TRUE) ^ 2
+   summarise(trial_mean = mean(grain_yield.t.ha., na.rm = TRUE),
+             BW_trial_variance = sd(grain_yield.t.ha., na.rm = TRUE) ^ 2
              ) # I am not sure I have calculated between trial variance or trial variance// Should I be using a denominator (N-1) or (N), sd by default uses (N-1)
 
+# by excluding the standard deviation of each treatment I have discarded much of the variance. Should I simulate a larger number of samples for each treatment to reflect the sample distribution of each treatment and then take the mean and standard deviation of the whole trial of the simulated data?
 
 
 
@@ -521,7 +527,7 @@ SV_Trials <- unique(PM_MB_means_T$Trial_ref)
 PM_MB_means$TrialVariance <- NA
 
 for(i in SV_Trials){
-   PM_MB_means[PM_MB_means$Trial_ref == i, "TrialVariance"] <- PM_MB_means_T[PM_MB_means_T$Trial_ref == i,"Trial_variance"]
+   PM_MB_means[PM_MB_means$Trial_ref == i, "TrialVariance"] <- PM_MB_means_T[PM_MB_means_T$Trial_ref == i,"BW_trial_variance"]
 }
 PM_MB_means$TrialVariance
 # OR ?

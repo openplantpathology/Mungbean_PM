@@ -22,7 +22,7 @@ import_data <- function() {
    x$fungicide_ai <- as.factor(x$fungicide)
    x$trade_name <- as.factor(x$trade_name)
    x$year <- as.factor(x$year)
-   x$replicates <- as.factor(x$replicates)
+   x$replicates <- as.numeric(x$replicates)
    x$planting_date <- as.Date(x$planting_date, format = "%d/%m/%Y")
    x$emergence_date <- as.Date(x$emergence_date, format = "%d/%m/%Y")
    x$flowering_date <- as.Date(x$flowering_date, format = "%d/%m/%Y")
@@ -38,5 +38,6 @@ import_data <- function() {
    x$fungicide_application_7 <- as.Date(x$fungicide_application_7, format = "%d/%m/%Y")
    x$harvest_date <- as.Date(x$harvest_date, format = "%d/%m/%Y")
    x$final_assessment <- as.Date(x$final_assessment, format = "%d/%m/%Y")
+   x$Y_error_type <- as.character(x$Y_error_type)
    return(x)
 }
