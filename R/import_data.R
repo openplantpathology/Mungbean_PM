@@ -9,9 +9,13 @@
 #'
 #' PM_MB_means <- import_data()
 #'
+source("R/OD_DL_csv.R") # download from oneDrive shared link function.
+
 import_data <- function() {
    x <-
-      read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
+      OD_DL_csv(sharedURL = "https://usqprd-my.sharepoint.com/:x:/g/personal/u8011054_usq_edu_au/ER13jFzyQqNMq_SEZkNW9NoBa1ynkFl48tXlmd0i_ZHr5w?e=FRY4uo",
+                file_name = "1902 powdery mildew-Mungbean - Collated means.csv"
+               )
    x$trial_ref <- as.factor(x$trial_ref)
    x$location <- as.factor(x$location)
    x$host_genotype <- as.factor(x$host_genotype)
