@@ -140,6 +140,83 @@ In general the mungbean varieties have the following resistance to powdery milde
    
    - Jade: Moderately susceptible
 
+#### Genotype yield variability
+
+Host genotype seems to contribute to the variation in yield. Berken shows higher yields compared to crystal and jade.
+```{r}
+source("R/yield_volatility.r") #function to investigate the volatility in yields
+
+yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
+yield_volatility(genotype_by_trial = FALSE, control_only = TRUE)
+yield_volatility(genotype_by_trial = FALSE, control_only = FALSE, location = "Hermitage")
+
+yield_volatility("Crystal",control_only = TRUE)
+yield_volatility("Crystal",control_only = FALSE)
+
+yield_volatility("Jade",control_only = TRUE)
+yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
+
+```
+
+## Yield vs in-season rain
+
+```{r}
+experiment_sites <- read.csv("data/Mungbean_experiment_sites.csv", stringsAsFactors = FALSE)
+
+rain_dat <- PM_MB_means[!is.na(PM_MB_means$planting_date),] # Which locations don't have NA for planting date
+unique(as.character(rain_dat$location)) # locations with recorded planting date
+
+rain_dat_sum <- rain_dat %>%
+   group_by(trial_ref) %>%
+   summarise(location = unique(location),
+             planting_date = unique(as.character(planting_date))[1],
+             grain_yield = mean(grain_yield.t.ha., na.rm = TRUE))
+
+rain_dat_sum <- rain_dat_sum[order(rain_dat_sum$location),] # order them to make adding the lat long easier
+
+rain_dat_sum$lat <- NA
+rain_dat_sum$lon <- NA
+
+# 
+rain_dat_sum[rain_dat_sum$location == "Bongeen_1", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Bongeen 1 & 2",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Hermitage", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Hermitage Research Station",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Gatton", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Gatton",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Kingaroy", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Red Vale & Kingaroy Research Station",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Missen Flats", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Missen Flats",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Premer", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "NGA - Premer",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Emerald", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Emerald Agricultural College",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Redvale", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Red Vale & Kingaroy Research Station",c("lat","lon")]
+
+rain_dat_sum[rain_dat_sum$location == "Wellcamp", c("lat","lon")] <- 
+   experiment_sites[experiment_sites$location == "Wellcamp",c("lat","lon")]
+
+
+source("R/AUS_rainfall_function.r")
+
+
+
+
+# use Bomrang to find the quantaty of rain for the season and do a linear regression
+
+```
+
+
+
 ## Standardising the type of variance  
 
 The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
