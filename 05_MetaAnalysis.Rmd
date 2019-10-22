@@ -9,6 +9,7 @@ output: html_document
 ```{r MEsummary_Libraries, message=FALSE}
 library(tidyverse)
 library(theme.usq)
+library(bomrang)
 source("R/import_data.R")
 ```
 
@@ -143,7 +144,7 @@ In general the mungbean varieties have the following resistance to powdery milde
 #### Genotype yield variability
 
 Host genotype seems to contribute to the variation in yield. Berken shows higher yields compared to crystal and jade.
-```{r}
+```{r yield_vol}
 source("R/yield_volatility.r") #function to investigate the volatility in yields
 
 yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
@@ -160,7 +161,7 @@ yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
 
 ## Yield vs in-season rain
 
-```{r}
+```{r yield_from_rain}
 experiment_sites <- read.csv("data/Mungbean_experiment_sites.csv", stringsAsFactors = FALSE)
 
 rain_dat <- PM_MB_means[!is.na(PM_MB_means$planting_date),] # Which locations don't have NA for planting date
@@ -193,8 +194,10 @@ rain_dat_sum[rain_dat_sum$location == "Kingaroy", c("lat","lon")] <-
 rain_dat_sum[rain_dat_sum$location == "Missen Flats", c("lat","lon")] <- 
    experiment_sites[experiment_sites$location == "Missen Flats",c("lat","lon")]
 
+# sweep_for_stations(latlon = unlist(c(rain_dat_sum[rain_dat_sum$location == "Premer", c("lat","lon")])))[2,c("lon")]
+# closest weather to Premer does not have rain, recoding so it takes the next closest station
 rain_dat_sum[rain_dat_sum$location == "Premer", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "NGA - Premer",c("lat","lon")]
+   sweep_for_stations(latlon = unlist(c(rain_dat_sum[rain_dat_sum$location == "Premer", c("lat","lon")])))[2,c("lat","lon")]
 
 rain_dat_sum[rain_dat_sum$location == "Emerald", c("lat","lon")] <- 
    experiment_sites[experiment_sites$location == "Emerald Agricultural College",c("lat","lon")]
@@ -205,13 +208,78 @@ rain_dat_sum[rain_dat_sum$location == "Redvale", c("lat","lon")] <-
 rain_dat_sum[rain_dat_sum$location == "Wellcamp", c("lat","lon")] <- 
    experiment_sites[experiment_sites$location == "Wellcamp",c("lat","lon")]
 
+rain_dat_sum[rain_dat_sum$location == "Dalby", c("lat","lon")] <- c(-27.168426, 151.264421)
+
+rain_dat_sum$rainfall_sum <- NA
 
 source("R/AUS_rainfall_function.r")
 
 
 
 
+# loop to download and save all the rainfall sum data
+
+for(j in -10:20){
+   if(j == -10){lm_data <- data.frame()}
+   
+   for(i in seq_along(rain_dat_sum$trial_ref)){
+      
+      
+      #ERROR HANDLING
+     # possibleError <- tryCatch(
+         rain_dat_sum$rainfall_sum[i] <- 
+            AUS_rainfall(StartDate = as.Date(rain_dat_sum$planting_date)[i] + 10,
+                         EndDate = as.Date(rain_dat_sum$planting_date)[i] + 90,
+                         lat = rain_dat_sum$lat[i],
+                         long = rain_dat_sum$lon[i])
+         #error=function(e) e
+         #)
+      
+      
+      #if(inherits(possibleError, "error")) {print(possibleError)
+      #   next
+      }
+   }
+   
+   lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
+                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
+   
+   lm_data <- rbind(lm_data,
+                    data.frame(days_from_plant = 10,
+                               estimate = coef(lmod1)[2,1],
+                               P_value = coef(lmod1)[2,4],
+                               r_squared = lmod1$r.squared,
+                               adj_r_squared = lmod1$adj.r.squared,
+                               stringsAsFactors = FALSE)
+                    )
+   
+}
+
+
+
+
+write.csv(lm_data, "data/rainfall_x_Gyield_lmod.csv")
+<- read.csv("data/rainfall_x_Gyield_lmod.csv", stringsAsFactors = FALSE)
+rain_dat_sum[rain_dat_sum$location != "Hermitage",] %>%
+   ggplot(aes(x = rainfall_sum, y = grain_yield )) + 
+   geom_point(aes(colour = location)) +
+   geom_smooth(method = "lm")              
+
 # use Bomrang to find the quantaty of rain for the season and do a linear regression
+
+is.vector(unlist(c(rain_dat_sum[1,5],rain_dat_sum[1,6])))
+
+plot(P_value ~ days_from_plant, data = lm_data)
+plot(r_squared ~ days_from_plant, data = lm_data)
+plot(estimate ~ days_from_plant, data = lm_data)
+
+tmp1 <- read.csv("C:/Users/U8011054/AppData/Local/Temp/RtmpkbEvfL/IDCJAC0009_041359_1800_Data.csv", stringsAsFactors = FALSE)
+
+nchar(tmp1$Bureau.of.Meteorology.station.number[1])
+strsp
+
+head(tmp1)
+message()
 
 ```
 
