@@ -130,6 +130,8 @@ experiment_sites <- data.frame(
    lon = c(152.1003, 151.83, 152.32, 148.19, 151.450,150.0052, 151.242706, 150.05018, 149.82507, 151.9772,151.867879)
 )
 
+write.csv(experiment_sites,"data/Mungbean_experiment_sites.csv", row.names = FALSE)
+
 leaflet(experiment_sites) %>%
    addProviderTiles("Esri.WorldTopoMap") %>%
    setView(lat = -27.31, lng = 150.456,zoom = 5) %>%
