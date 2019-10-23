@@ -217,11 +217,12 @@ rain_dat_sum[rain_dat_sum$location == "Dalby", c("lat","lon")] <- c(-27.168426, 
 
 rain_dat_sum$rainfall_sum <- NA
 
+
+
+
+
+
 source("R/AUS_rainfall_function.r")
-
-
-
-
 # loop to download and save all the rainfall sum data
 
 for(j in -10:20){
@@ -229,23 +230,20 @@ for(j in -10:20){
    
    for(i in seq_along(rain_dat_sum$trial_ref)){
       
-      
-      #ERROR HANDLING
-     # possibleError <- tryCatch(
          rain_dat_sum$rainfall_sum[i] <- 
             AUS_rainfall(StartDate = as.Date(rain_dat_sum$planting_date)[i] + 10,
                          EndDate = as.Date(rain_dat_sum$planting_date)[i] + 90,
                          lat = rain_dat_sum$lat[i],
                          long = rain_dat_sum$lon[i])
-         #error=function(e) e
-         #)
-      
-      
-      #if(inherits(possibleError, "error")) {print(possibleError)
-      #   next
+
       }
    }
    
+
+
+
+
+
    lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
                        data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
    
@@ -258,13 +256,13 @@ for(j in -10:20){
                                stringsAsFactors = FALSE)
                     )
    
-}
 
 
 
 
-write.csv(lm_data, "data/rainfall_x_Gyield_lmod.csv")
-<- read.csv("data/rainfall_x_Gyield_lmod.csv", stringsAsFactors = FALSE)
+
+#write.csv(lm_data, "data/rainfall_x_Gyield_lmod.csv")
+lm_data <- read.csv("data/rainfall_x_Gyield_lmod.csv", stringsAsFactors = FALSE)
 rain_dat_sum[rain_dat_sum$location != "Hermitage",] %>%
    ggplot(aes(x = rainfall_sum, y = grain_yield )) + 
    geom_point(aes(colour = location)) +
