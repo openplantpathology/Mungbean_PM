@@ -45,15 +45,7 @@ PM.dat <- PM.dat %>%
 
 # function to extract date from the year
 # format should be Universal time format
-year.day <- function(date) {
-   if (is.na(date) == TRUE) {
-      return(NA)
-   } else {
-      return(as.numeric(as.Date(date) - as.Date(paste0(
-         substr(date, start = 1, stop = 4), "-01-01"
-      ))))
-   }
-}
+source("R/year2day.r")
 
 
 # Function to generate some of the ggplot grouping colours
@@ -181,7 +173,7 @@ war_Tm_aver <-
 war_Tm_aver <- war_Tm_aver %>%
    mutate(
       Year = substr(war_Tm_aver$date, start = 1, stop = 4),
-      Day = year.day(war_Tm_aver$date)
+      Day = year2day(war_Tm_aver$date)
    )
 
 
@@ -190,7 +182,7 @@ Herm_FS <- PM.dat %>%
    group_by(Trial_ref, Location, Year) %>%
    summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
    filter(Location == "Hermitage") %>%
-   mutate(Day = year.day(First_sign))
+   mutate(Day = year2day(First_sign))
 
 
 ggplot(subset(war_Tm_aver, Year == levels(factor(Herm_FS$Year))),
@@ -284,7 +276,7 @@ Gat_Tm_aver <-
 Gat_Tm_aver <- Gat_Tm_aver %>%
    mutate(
       Year = substr(Gat_Tm_aver$date, start = 1, stop = 4),
-      Day = year.day(Gat_Tm_aver$date)
+      Day = year2day(Gat_Tm_aver$date)
    )
 
 
@@ -295,7 +287,7 @@ Gatton_FS <- PM.dat %>%
    summarise(First_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
    filter(Location == "Gatton") %>%
    mutate(Year = factor(substr(First_sign, 1, 4)),
-          Day = year.day(First_sign))
+          Day = year2day(First_sign))
 
 
 ggplot(subset(Gat_Tm_aver, Year == 2012),
