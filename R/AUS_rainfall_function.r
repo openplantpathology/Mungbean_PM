@@ -6,8 +6,8 @@ AUS_rainfall <- function(StartDate = Sys.Date()-30,
                        ){
    # This function should return the quantity of rainfall between the input dates
    #library(bomrang)
-   #lat <- experiment_sites[experiment_sites$location == "Emerald Agricultural College","lat"]
-   #long <- experiment_sites[experiment_sites$location == "Emerald Agricultural College","lon"]
+   # lat <- experiment_sites[experiment_sites$location == "Missen Flats","lat"]
+   # long <- experiment_sites[experiment_sites$location == "Missen Flats","lon"]
    
 
    StartDate <- as.Date(StartDate)
@@ -47,16 +47,18 @@ AUS_rainfall <- function(StartDate = Sys.Date()-30,
             }
             
             temp_files <- list.files(tempdir())
-            if(sum(temp_files == paste0("IDCJAC0009_",StationID,"_1800_Data.csv"))>0){
+            if(sum(temp_files == paste0("IDCJAC0009_",StationID,"_1800_Data.csv")) > 0){
                rain <- read.csv(paste0(tempdir(),"\\IDCJAC0009_",StationID,"_1800_Data.csv"), stringsAsFactors = FALSE)
-               }else{
+               }
+            if(sum(temp_files == paste0("IDCJAC0009_",StationID,"_1800_Data.csv")) == 0){
                   rain <- as.data.frame(get_historical(latlon = unlist(c(lat,long)) , type = c("rain")))
                }
-            #rain <- as.data.frame(get_historical(latlon = unlist(c(lat,long)) , type = c("rain")))
+            
             }else{
                rain <- as.data.frame(get_historical(latlon = unlist(c(lat,long)) , type = c("rain")))
             }
-         }else{
+         }
+      if(sum(list.files(tempdir()) == "cache_rain.csv") == 0){
             cache_rain <- data.frame()
             rain <- as.data.frame(get_historical(latlon = unlist(c(lat,long)) , type = c("rain")))
          }
@@ -89,18 +91,19 @@ AUS_rainfall <- function(StartDate = Sys.Date()-30,
          cache_rain <- rbind(cache_rain,cache_rain_tmp)
          write.csv(cache_rain, paste0(tempdir(),"\\cache_rain.csv"), row.names = FALSE)
 
-   
+   #StartDate <- as.Date("2017-01-27")-10
+   #EndDate <- as.Date("2017-01-27")+90
    
    season <- as.numeric(as.Date(EndDate) - as.Date(StartDate))
    
    Date1 <- as.numeric(unlist(strsplit(as.character(StartDate),"-")))
    
    
-   row_start <- as.numeric(rownames(rain[rain$year == Date1[1] &
-                   rain$month == Date1[2] &
-                   rain$day == Date1[3], ]))
+   row_start <- as.numeric(rownames(rain[rain$Year == Date1[1] &
+                                            rain$Month == Date1[2] &
+                                            rain$Day == Date1[3], ]))
    
-   rainfall <- sum(rain[row_start:(row_start+season),"rainfall"],na.rm = T)
+   rainfall <- sum(rain[row_start:(row_start + season),"Rainfall.amount..millimetres."],na.rm = T)
    message(paste0("Season days: ",season))
    return(rainfall)                                       
 }
