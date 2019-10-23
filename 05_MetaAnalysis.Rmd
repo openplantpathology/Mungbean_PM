@@ -7,6 +7,11 @@ output: html_document
 
 
 ```{r MEsummary_Libraries, message=FALSE}
+install.packages("tidyverse")
+install.packages("devtools")
+devtools::install_github("https://github.com/PaulMelloy/bomrang")
+devtools::install_github("https://github.com/adamhsparks/theme.usq")
+
 library(tidyverse)
 library(theme.usq)
 library(bomrang)
@@ -280,6 +285,36 @@ strsp
 
 head(tmp1)
 message()
+
+```
+
+
+
+```{r first_incidence}
+# Here I want to build a plot of horizontal lines indicating the season length and
+# place a dot on the line to indicating the day of the year first sign was observed for that trial
+
+FS_dates <- data.frame(first_sign = as.Date(unique(PM_MB_means$first_sign_disease)),
+                       plant.date = as.Date(PM_MB_)
+)
+
+PM_MB_
+
+
+dat1 <- data.frame(First_sign = sort(format(FS_dates, "%b-%d"))[c(5:25,1:4)])
+
+dat1$First_sign <- as.Date(dat1$First_sign)
+
+ggplot(dat1, aes(x = First_sign))+
+   geom_dotplot()+
+   scale_x_date()+
+   coord_flip()
+
+as.character(format(FS_dates, "%b-%d"))
+
+as.Date()
+
+
 
 ```
 
