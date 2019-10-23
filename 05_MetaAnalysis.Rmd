@@ -7,10 +7,11 @@ output: html_document
 
 
 ```{r MEsummary_Libraries, message=FALSE}
-install.packages("tidyverse")
-install.packages("devtools")
-devtools::install_github("https://github.com/PaulMelloy/bomrang")
-devtools::install_github("https://github.com/adamhsparks/theme.usq")
+# install.packages("tidyverse")
+# install.packages("devtools")
+# devtools::install_github("https://github.com/PaulMelloy/bomrang")
+# devtools::install_github("https://github.com/adamhsparks/theme.usq")
+# install.packages("lme4")
 
 library(tidyverse)
 library(theme.usq)
@@ -164,14 +165,20 @@ yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
 
 ```
 
-## Yield vs in-season rain
 
-```{r yield_from_rain}
+## Yield vs in-season rain  
+
+In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate any relationship I will loop a linear model over time periods from 10 days prior to planting, to 100 days after planting.
+
+```{r yield_from_rain_DataRangle}
+# Import the information for each experimental site
 experiment_sites <- read.csv("data/Mungbean_experiment_sites.csv", stringsAsFactors = FALSE)
+
 
 rain_dat <- PM_MB_means[!is.na(PM_MB_means$planting_date),] # Which locations don't have NA for planting date
 unique(as.character(rain_dat$location)) # locations with recorded planting date
 
+# Create data set for which we will input the sum in-crop rainfall
 rain_dat_sum <- rain_dat %>%
    group_by(trial_ref) %>%
    summarise(location = unique(location),
@@ -180,10 +187,12 @@ rain_dat_sum <- rain_dat %>%
 
 rain_dat_sum <- rain_dat_sum[order(rain_dat_sum$location),] # order them to make adding the lat long easier
 
+# add columns for lat and lon
 rain_dat_sum$lat <- NA
 rain_dat_sum$lon <- NA
 
-# 
+
+# Input lat and lon to dataframe for each experimental location
 rain_dat_sum[rain_dat_sum$location == "Bongeen_1", c("lat","lon")] <- 
    experiment_sites[experiment_sites$location == "Bongeen 1 & 2",c("lat","lon")]
 
@@ -214,41 +223,37 @@ rain_dat_sum[rain_dat_sum$location == "Wellcamp", c("lat","lon")] <-
    experiment_sites[experiment_sites$location == "Wellcamp",c("lat","lon")]
 
 rain_dat_sum[rain_dat_sum$location == "Dalby", c("lat","lon")] <- c(-27.168426, 151.264421)
+```
 
+Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall.
+```{r rainfall_sum_Sstart}
+# add column for sum in-crop rainfall
 rain_dat_sum$rainfall_sum <- NA
 
-
-
-
-
-
+# source funtion that uses bomrang get_historical to return the sum rainfall between two dates
 source("R/AUS_rainfall_function.r")
 # loop to download and save all the rainfall sum data
+# this first loop Investigate when is the first day in the season for which in-crop rainfall is important
 
-for(j in -10:20){
-   if(j == -10){lm_data <- data.frame()}
+for(j in -20:20){
+   if(j == -20){lm_data <- data.frame()}
    
    for(i in seq_along(rain_dat_sum$trial_ref)){
       
          rain_dat_sum$rainfall_sum[i] <- 
-            AUS_rainfall(StartDate = as.Date(rain_dat_sum$planting_date)[i] + 10,
-                         EndDate = as.Date(rain_dat_sum$planting_date)[i] + 90,
+            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + j),
+                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 90 ),
                          lat = rain_dat_sum$lat[i],
                          long = rain_dat_sum$lon[i])
 
-      }
    }
-   
-
-
-
-
-
-   lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
+  
+    lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
                        data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
-   
-   lm_data <- rbind(lm_data,
-                    data.frame(days_from_plant = 10,
+ 
+    
+      lm_data <- rbind(lm_data,
+                    data.frame(days_from_plant = j,
                                estimate = coef(lmod1)[2,1],
                                P_value = coef(lmod1)[2,4],
                                r_squared = lmod1$r.squared,
@@ -256,12 +261,63 @@ for(j in -10:20){
                                stringsAsFactors = FALSE)
                     )
    
+   } # If it aborts with an error Error in row_start:(row_start + season) : argument of length 0, just re-run the code
+   
+
+plot(log(P_value) ~ days_from_plant, data = lm_data)
+abline(v = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"])
+plot(r_squared ~ days_from_plant, data = lm_data)
+abline(v = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"])
+plot(estimate ~ days_from_plant, data = lm_data)
+abline(v = 14, h = lm_data[lm_data$r_squared == max(lm_data$r_squared),"estimate"], col = "grey")
+```
+
+```{r rainfall_sum_SEnd}
+
+# Loop to find the last day in the season for which in crop rainfall is important
+for(j in -20:20){
+   if(j == -10){lm_data <- data.frame()}
+   
+   for(i in seq_along(rain_dat_sum$trial_ref)){
+      
+         rain_dat_sum$rainfall_sum[i] <- 
+            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + 11),
+                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 90 + j),
+                         lat = rain_dat_sum$lat[i],
+                         long = rain_dat_sum$lon[i])
+
+   }
+  
+    lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
+                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
+ 
+    
+      lm_data <- rbind(lm_data,
+                    data.frame(days_from_plant = j,
+                               estimate = coef(lmod1)[2,1],
+                               P_value = coef(lmod1)[2,4],
+                               r_squared = lmod1$r.squared,
+                               adj_r_squared = lmod1$adj.r.squared,
+                               stringsAsFactors = FALSE)
+                    )
+   
+   }
 
 
 
+
+plot(P_value ~ days_from_plant, data = lm_data)
+abline(v = -3)
+abline(h = 0.00315, col = "grey")
+plot(r_squared ~ days_from_plant, data = lm_data)
+abline(v = -3)
+abline(h = 0.562, col = "grey")
+plot(estimate ~ days_from_plant, data = lm_data)
+abline(v = -3)
 
 
 #write.csv(lm_data, "data/rainfall_x_Gyield_lmod.csv")
+
 lm_data <- read.csv("data/rainfall_x_Gyield_lmod.csv", stringsAsFactors = FALSE)
 rain_dat_sum[rain_dat_sum$location != "Hermitage",] %>%
    ggplot(aes(x = rainfall_sum, y = grain_yield )) + 
@@ -270,49 +326,82 @@ rain_dat_sum[rain_dat_sum$location != "Hermitage",] %>%
 
 # use Bomrang to find the quantaty of rain for the season and do a linear regression
 
-is.vector(unlist(c(rain_dat_sum[1,5],rain_dat_sum[1,6])))
-
-plot(P_value ~ days_from_plant, data = lm_data)
-plot(r_squared ~ days_from_plant, data = lm_data)
-plot(estimate ~ days_from_plant, data = lm_data)
-
-tmp1 <- read.csv("C:/Users/U8011054/AppData/Local/Temp/RtmpkbEvfL/IDCJAC0009_041359_1800_Data.csv", stringsAsFactors = FALSE)
-
-nchar(tmp1$Bureau.of.Meteorology.station.number[1])
-strsp
-
-head(tmp1)
-message()
 
 ```
-
+The approximate period when in-crop rainfall impacts the most on the mean harvest is bettween 11 - 88 days after planting.
 
 
 ```{r first_incidence}
 # Here I want to build a plot of horizontal lines indicating the season length and
 # place a dot on the line to indicating the day of the year first sign was observed for that trial
 
-FS_dates <- data.frame(first_sign = as.Date(unique(PM_MB_means$first_sign_disease)),
-                       plant.date = as.Date(PM_MB_)
-)
+season_dates <- PM_MB_means %>%
+   group_by(trial_ref)%>%
+   summarise(Planting_date = unique(planting_date),
+             Harvest_date = unique(harvest_date),
+             First_sign_PM = unique(first_sign_disease),
+             season_length = as.integer(as.Date(unique(harvest_date)) - as.Date(unique(planting_date)))
+             )
 
-PM_MB_
+
+# function to extract date from the year
+# format should be Universal time format
+source("R/year2day.r")
+year.day(season_dates$Planting_date[5])
 
 
-dat1 <- data.frame(First_sign = sort(format(FS_dates, "%b-%d"))[c(5:25,1:4)])
+season_dates$Planting_day <- unlist(lapply(season_dates$Planting_date,year2day))
+season_dates$Disease_day <- unlist(lapply(season_dates$First_sign_PM,year2day))
+season_dates$Harvest_day <- season_dates$Planting_day + season_dates$season_length
 
-dat1$First_sign <- as.Date(dat1$First_sign)
+season_dates[1,"Planting_day"] <- year2day(as.Date("2012-02-28")-7) # planted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
 
-ggplot(dat1, aes(x = First_sign))+
-   geom_dotplot()+
-   scale_x_date()+
-   coord_flip()
+
+first_day_month <- c(0, 31, 59, 90, 120, 151, 181, 211, 243, 273)
+axis_labels_date <- c(format(Sys.Date() - year2day(Sys.Date()) + first_day_month[1], "%b-%d"),  # Jan
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[2], "%b-%d"), # Feb
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[3], "%b-%d"), # March
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[4], "%b-%d"), # April
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[5], "%b-%d"), # May
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[6], "%b-%d"), # June
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[7], "%b-%d"), # July
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[8], "%b-%d"), # August
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[9], "%b-%d"), # Sept
+                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[10], "%b-%d") # October
+                         )
+
+# reorder the factors so they will appear in chronilogical order
+# I used First sign because all trials have recorded this
+season_dates$trial_ref <- factor(season_dates$trial_ref, levels = levels(season_dates$trial_ref)[rev(order(season_dates$First_sign_PM))])
+
+
+season_dates %>%
+   ggplot()+
+   geom_pointrange(aes(x = trial_ref, y = Disease_day, ymin = Planting_day, ymax = Harvest_day))+
+   scale_y_continuous(
+      limits = c(0, max(season_dates$Planting_day + 
+                           season_dates$season_length, 
+                        na.rm = TRUE)),
+      labels = axis_labels_date,
+      breaks = first_day_month
+   )+
+   geom_point(aes(x = trial_ref, y = Disease_day))+
+   coord_flip()+
+   ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
+   
+   
+   
+    scale_x_continuous(
+      limits = c(0, 200),
+      labels = c(),
+      breaks = c(1, 50, 100, 150, 200)
+   )
 
 as.character(format(FS_dates, "%b-%d"))
 
 as.Date()
 
-
+head(season_dates)
 
 ```
 
