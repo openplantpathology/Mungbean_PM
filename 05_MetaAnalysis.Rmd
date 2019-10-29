@@ -24,9 +24,14 @@ source("R/import_data.R")
 ```{r data_import, message=FALSE, echo=FALSE}
 PM_MB_means <- import_data()
 
+# see Yield vs in-season rain section on the influence of rain and irrigation on grain yield
+PM_MB_means$irrigation <- NA
+PM_MB_means[PM_MB_means$location == "Hermitage", "irrigation"] <- TRUE
+PM_MB_means[PM_MB_means$location != "Hermitage", "irrigation"] <- FALSE
+
 ```
 
-## Visualise Data
+## Explore and visualise Data
 
 Visualise and inspect the number of factors represented in each trial.
 
@@ -166,7 +171,7 @@ yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
 ```
 
 
-## Yield vs in-season rain  
+### Yield vs in-season rain  
 
 In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate any relationship I will loop a linear model over time periods from 10 days prior to planting, to 100 days after planting.
 
@@ -225,24 +230,146 @@ rain_dat_sum[rain_dat_sum$location == "Wellcamp", c("lat","lon")] <-
 rain_dat_sum[rain_dat_sum$location == "Dalby", c("lat","lon")] <- c(-27.168426, 151.264421)
 ```
 
+#### Best start day for in-crop rainfall
+
 Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall.
+
 ```{r rainfall_sum_Sstart}
 # add column for sum in-crop rainfall
 rain_dat_sum$rainfall_sum <- NA
 
 # source funtion that uses bomrang get_historical to return the sum rainfall between two dates
 source("R/AUS_rainfall_function.r")
+
 # loop to download and save all the rainfall sum data
 # this first loop Investigate when is the first day in the season for which in-crop rainfall is important
 
+# use Bomrang to find the quantaty of rain for the season and do a linear regression
+for(k in -19:20){
+for(j in -9:30){
+   
+   lm_rain <- data.frame(start_day = rep(-20:40, times = length(-30:30)),
+              end_day = rep(-30:30, each = length(-20:40)),
+              lm_pval = NA,
+              lm_rsquared = NA,
+              lm_adj_rsquared = NA
+   )
+   dim(lm_rain)
+   
+
+# for using parRapply   
+#    cl8 <- makeCluster(getOption("cl.cores", 8))
+# clusterExport(cl8, list("rain_dat_sum", "AUS_rainfall", "lm_rain", "get_historical"))
+
+
+   
+   testlist1 <- apply(lm_rain,1,function(x1){
+         for(i in seq_along(rain_dat_sum$trial_ref)){
+      
+         rain_dat_sum$rainfall_sum <- AUS_rainfall(StartDate = as.Date(rain_dat_sum$planting_date)[i] + x1[1],
+                                                   EndDate = as.Date(rain_dat_sum$planting_date[i]) + 80 + x1[2],
+                                                   lat = rain_dat_sum$lat[i],
+                                                   long = rain_dat_sum$lon[i])
+         }
+         lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
+                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
+         
+         pval <- coef(lmod1)[2,4]
+         rsqu <- lmod1$r.squared
+         ADrs <- lmod1$adj.r.squared
+         return(list(pval,rsqu,ADrs))
+         
+         })
+ 
+head(testlist1)   
+lm_rain$lm_pval <- head(bind_rows(testlist1))
+   ?bind_rows
+   
+for(i in seq_along(testlist1)){
+   lm_rain$lm_pval[i] <- testlist1[[i]][[1]]
+   lm_rain$lm_rsquared[i] <- testlist1[[i]][[2]]
+   lm_rain$lm_adj_rsquared[i] <- testlist1[[i]][[3]]
+}
+head(lm_rain)
+
+summary(lm_rain$lm_adj_rsquared)
+
+ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_pval))+
+   geom_contour()
+
+
+   
+   if(k == -19 & j == -19){
+      lm_pval <- matrix(nrow = 40,
+                        ncol = 40)
+      colnames(lm_pval) <- as.character(-19:20) # End date
+      row.names(lm_pval) <- as.character(-9:30) # start date
+      
+      
+      lm_square <- matrix(nrow = 40,
+                          ncol = 40)
+      colnames(lm_square) <- as.character(-19:20) # End date
+      row.names(lm_square) <- as.character(-9:30) # start date
+      }
+   
+   for(i in seq_along(rain_dat_sum$trial_ref)){
+      
+         rain_dat_sum$rainfall_sum[i] <- 
+            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + j),
+                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 80 + k ),
+                         lat = rain_dat_sum$lat[i],
+                         long = rain_dat_sum$lon[i])
+
+   }
+  
+    lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
+                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
+ 
+    
+      lm_pval[j,k] <- coef(lmod1)[2,4]
+      lm_square[j,k] <- lmod1$r.squared
+      
+   
+   }
+   }# If it aborts with an error Error in row_start:(row_start + season) : argument of length 0, just re-run the code
+   
+image(1:ncol(lm_pval), 1:nrow(lm_pval), t(lm_pval), col = terrain.colors(60), axes = TRUE)
+
+image(1:ncol(lm_square), 1:nrow(lm_square), t(lm_square), col = terrain.colors(60), axes = TRUE)
+
+ggplot(lm_pval, aes(x = colnames(lm_pval), y = row.names(lm_pval), z = ))
+
+
+plot(log(P_value) ~ days_from_plant, data = lm_data)
+abline(v = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], col = "grey")
+text(x = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], 
+     y = log(max(lm_data$P_value))/0.95, 
+     labels = paste("pvalue =",round(min(lm_data$P_value),2)),
+     pos = 4)
+plot(r_squared ~ days_from_plant, data = lm_data)
+abline(v = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], col = "grey")
+text(x = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], 
+     y = max(lm_data$r_squared * 0.75), 
+     labels = paste("Rsquared =",round(max(lm_data$r_squared),4)),
+     pos = 2)
+
+plot(estimate ~ days_from_plant, data = lm_data)
+abline(v = 14, h = lm_data[lm_data$r_squared == max(lm_data$r_squared),"estimate"], col = "grey")
+```
+
+#### Best end day for in-crop rainfall
+
+```{r rainfall_sum_SEnd}
+
+# Loop to find the last day in the season for which in crop rainfall is important
 for(j in -20:20){
    if(j == -20){lm_data <- data.frame()}
    
    for(i in seq_along(rain_dat_sum$trial_ref)){
       
          rain_dat_sum$rainfall_sum[i] <- 
-            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + j),
-                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 90 ),
+            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + 14),
+                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 80 + j),
                          lat = rain_dat_sum$lat[i],
                          long = rain_dat_sum$lon[i])
 
@@ -253,47 +380,7 @@ for(j in -20:20){
  
     
       lm_data <- rbind(lm_data,
-                    data.frame(days_from_plant = j,
-                               estimate = coef(lmod1)[2,1],
-                               P_value = coef(lmod1)[2,4],
-                               r_squared = lmod1$r.squared,
-                               adj_r_squared = lmod1$adj.r.squared,
-                               stringsAsFactors = FALSE)
-                    )
-   
-   } # If it aborts with an error Error in row_start:(row_start + season) : argument of length 0, just re-run the code
-   
-
-plot(log(P_value) ~ days_from_plant, data = lm_data)
-abline(v = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"])
-plot(r_squared ~ days_from_plant, data = lm_data)
-abline(v = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"])
-plot(estimate ~ days_from_plant, data = lm_data)
-abline(v = 14, h = lm_data[lm_data$r_squared == max(lm_data$r_squared),"estimate"], col = "grey")
-```
-
-```{r rainfall_sum_SEnd}
-
-# Loop to find the last day in the season for which in crop rainfall is important
-for(j in -20:20){
-   if(j == -10){lm_data <- data.frame()}
-   
-   for(i in seq_along(rain_dat_sum$trial_ref)){
-      
-         rain_dat_sum$rainfall_sum[i] <- 
-            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + 11),
-                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 90 + j),
-                         lat = rain_dat_sum$lat[i],
-                         long = rain_dat_sum$lon[i])
-
-   }
-  
-    lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
-                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
- 
-    
-      lm_data <- rbind(lm_data,
-                    data.frame(days_from_plant = j,
+                    data.frame(days_from_plant = j + 80,
                                estimate = coef(lmod1)[2,1],
                                P_value = coef(lmod1)[2,4],
                                r_squared = lmod1$r.squared,
@@ -306,14 +393,23 @@ for(j in -20:20){
 
 
 
-plot(P_value ~ days_from_plant, data = lm_data)
-abline(v = -3)
-abline(h = 0.00315, col = "grey")
-plot(r_squared ~ days_from_plant, data = lm_data)
-abline(v = -3)
-abline(h = 0.562, col = "grey")
+plot(log(P_value) ~ days_from_plant, data = lm_data, xlab = "End of in-crop rain referenced to 90 days after planting")
+abline(v = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], col = "grey")
+text(x = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], 
+     y = max(log(lm_data$P_value * 0.75)), 
+     labels = paste("pvalue =",round(min(lm_data$P_value),4)),
+     pos = 4)
+
+plot(r_squared ~ days_from_plant, data = lm_data, xlab = "End of in-crop rain referenced to 90 days after planting")
+abline(v = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], col = "grey")
+text(x = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], 
+     y = max(lm_data$r_squared * 0.75), 
+     labels = paste("Rsquared =",round(max(lm_data$r_squared),4)),
+     pos = 2)
+
+
 plot(estimate ~ days_from_plant, data = lm_data)
-abline(v = -3)
+abline(v = -3 ,h = lm_data[lm_data$r_squared == max(lm_data$r_squared),"estimate"], col = "grey")
 
 
 #write.csv(lm_data, "data/rainfall_x_Gyield_lmod.csv")
@@ -324,12 +420,12 @@ rain_dat_sum[rain_dat_sum$location != "Hermitage",] %>%
    geom_point(aes(colour = location)) +
    geom_smooth(method = "lm")              
 
-# use Bomrang to find the quantaty of rain for the season and do a linear regression
 
 
 ```
 The approximate period when in-crop rainfall impacts the most on the mean harvest is bettween 11 - 88 days after planting.
 
+### Season range and first incidence
 
 ```{r first_incidence}
 # Here I want to build a plot of horizontal lines indicating the season length and
@@ -347,7 +443,6 @@ season_dates <- PM_MB_means %>%
 # function to extract date from the year
 # format should be Universal time format
 source("R/year2day.r")
-year.day(season_dates$Planting_date[5])
 
 
 season_dates$Planting_day <- unlist(lapply(season_dates$Planting_date,year2day))
@@ -389,25 +484,11 @@ season_dates %>%
    coord_flip()+
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
    
-   
-   
-    scale_x_continuous(
-      limits = c(0, 200),
-      labels = c(),
-      breaks = c(1, 50, 100, 150, 200)
-   )
-
-as.character(format(FS_dates, "%b-%d"))
-
-as.Date()
-
-head(season_dates)
-
 ```
 
 
 
-## Standardising the type of variance  
+## Standardising sample variance  
 
 The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
 
@@ -430,10 +511,13 @@ PM_MB_means %>%
 ```
 
 
-```{r LSD_trials}
+### Converting least-squares tp sample variance
+
+```{r all_LSD_trials}
 Trials <- PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-          row_spacing == 0.75,
+   filter(
+      #fungicide_ai == "tebuconazole",
+      #    row_spacing == 0.75,
           Y_error_type == "lsd (P=0.05)") %>%
    select(trial_ref) %>%
    distinct()
@@ -503,6 +587,7 @@ for (Trial2012 in Trials$trial_ref) {
 ```
 
 
+### Converting standard deviation to sample variance
 Now to estimate the variance from the standard deviation
 
 ```{r stdev2SampVariance}
@@ -543,19 +628,23 @@ PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$Y_error_type <-
 ```
 
 
+### Estimating variance for trials without reported error
+
 Now for the trickier part creating 'Sampling Variance' for treatments where only mean yield is recorded.  
 The trial which does not report any type of variance also reports that there is no significant difference between the means.
 
 ```{r}
 NATrials <- PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
-          row_spacing.m == 0.75,
+          row_spacing == 0.75,
           is.na(Y_error_type)) %>%
    select(trial_ref) %>%
    distinct()
 ```
 
 A single trial `mung1516/03` within the current scope of the meta-analysis fails to report a variance statistic. According to [Machado F. et. al (2017)](http://apsjournals.apsnet.org/doi/10.1094/PDIS-03-17-0340-RE) [Paul et al. (2007)](https://apsjournals.apsnet.org/doi/pdfplus/10.1094/PHYTO-97-2-0211) uses linear regression model to estimate sampling variance.  
+
+#### Mixed effect model to estimate variance
 
 ```{r na2Sampling_variance, message=FALSE}
 library(lme4)
@@ -579,10 +668,10 @@ PM_MB_train$trial_ref <- as.factor(PM_MB_train$trial_ref)
 plot(PM_MB_train$yield_error,
      log(PM_MB_train$grain_yield.t.ha))
 
-length(unique(PM_MB_train$Trial_ref))
+length(unique(PM_MB_train$trial_ref))
 
 # Run a linear model with grain_yield.t.ha as a fixed effect predictor and trial as a random intercept
-PM_MB_trainLMER <- lmer(yield_error ~ grain_yield.t.ha +
+PM_MB_trainLMER <- lmer(yield_error ~ grain_yield.t.ha. +
                            (1 | trial_ref), data = PM_MB_train)
 summary(PM_MB_trainLMER)
 
@@ -721,7 +810,7 @@ ggplot(PM_MB_train.2) +
 ```
 
 
-
+#### Random effects model to predict trial variance
 Just for kicks lets look at the linear regression model as a random effects model where `grain_yield.t.ha` is set as a random slope to the random intercept `trial_ref`.
 
 The model fits better as shown by an ANOVA comparison. But how to impute from this model if mean variance for a trial is unknown...
