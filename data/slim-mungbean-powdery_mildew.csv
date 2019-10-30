@@ -1,0 +1,358 @@
+trial_ref,year,location,host_genotype,row_spacing.m,first_sign_disease,fungicide_ai,fungicide_application_1,fungicide_application_2,fungicide_application_3,fungicide_application_4,fungicide_application_5,fungicide_application_6,fungicide_application_7,total_fungicide,grain_yield.t.ha.
+mung0001/01,2001,Bongeen_1,Emerald,1,16/03/2001,control,,,,,,,,0,0.506
+mung0001/01,2001,Bongeen_1,Emerald,1,16/03/2001,sulphur,16/03/2001,,,,,,,1,0.594
+mung0001/01,2001,Bongeen_1,Emerald,1,16/03/2001,sulphur,16/03/2001,26/03/2001,,,,,,2,0.637
+mung0001/01,2001,Bongeen_1,Emerald,1,16/03/2001,Acibenzolar-S-methyl,16/03/2001,26/03/2001,,,,,,2,0.498
+mung0001/01,2001,Bongeen_1,Emerald,1,16/03/2001,pyrazophos,16/03/2001,26/03/2001,,,,,,2,0.531
+mung0001/01,2001,Bongeen_1,Emerald,1,16/03/2001,carbendazim,16/03/2001,26/03/2001,,,,,,2,0.588
+mung0001/01,2001,Bongeen_1,Emerald,1,16/03/2001,benomyl,16/03/2001,26/03/2001,,,,,,2,0.7
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/01,2002,Bongeen_2,Emerald,1,07/02/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,control,,,,,,,,0,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (SC),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/02,2002,Hermitage,Emerald,0.75,19/03/2002,sulphur (WP),07/02/2002,19/02/2002,,,,,,2,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,control,,,,,,,,0,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (SC),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (SC),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (SC),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (SC),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (SC),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (SC),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (WP),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (WP),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (WP),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (WP),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (WP),04/04/2002,,,,,,,1,
+mung0102/03,2002,Hermitage,Emerald,0.75,04/04/2002,sulphur (WP),04/04/2002,,,,,,,1,
+mung0102/04,2002,Kingaroy,Emerald,0.9,05/04/2002,control,,,,,,,,1,0.945
+mung0102/04,2002,Kingaroy,Emerald,0.9,05/04/2002,sulphur (SC),05/04/2002,,,,,,,1,1.041
+mung0102/04,2002,Kingaroy,Emerald,0.9,05/04/2002,sulphur (WP),05/04/2002,,,,,,,1,0.959
+mung0304/01,2002,Redvale,Berken,0.9,23/03/2004,control,,,,,,,,1,0.814
+mung0304/01,2002,Redvale,Berken,0.9,23/03/2004,sulphur (SC),23/03/2004,07/04/2004,,,,,,2,0.939
+mung0304/01,2002,Redvale,Berken,0.9,23/03/2004,sulphur (Ultra SC),23/03/2004,07/04/2004,,,,,,2,0.962
+mung0910/01,2010,Hermitage,Berken,0.25,18/03/2010,control,,,,,,,,0,1.0011
+mung0910/01,2010,Hermitage,Berken,0.25,18/03/2010,sulphur,19/02/2010,26/02/2010,05/03/2010,11/03/2010,18/03/2010,25/03/2010,07/04/2010,7,1.1194
+mung0910/01,2010,Hermitage,Berken,0.25,18/03/2010,sulphur,19/02/2010,26/02/2010,,,,,,2,1.1751
+mung0910/01,2010,Hermitage,Berken,0.25,18/03/2010,sulphur,18/03/2010,,,,,,,1,1.2608
+mung0910/01,2010,Hermitage,Berken,0.25,18/03/2010,carbendazim,18/03/2010,,,,,,,1,1.276
+mung0910/01,2010,Hermitage,Crystal,0.25,18/03/2010,control,,,,,,,,0,1.7045
+mung0910/01,2010,Hermitage,Crystal,0.25,18/03/2010,sulphur,19/02/2010,26/02/2010,05/03/2010,11/03/2010,18/03/2010,25/03/2010,07/04/2010,7,1.7861
+mung0910/01,2010,Hermitage,Crystal,0.25,18/03/2010,sulphur,19/02/2010,26/02/2010,,,,,,2,1.6686
+mung0910/01,2010,Hermitage,Crystal,0.25,18/03/2010,sulphur,18/03/2010,,,,,,,1,1.8919
+mung0910/01,2010,Hermitage,Crystal,0.25,18/03/2010,carbendazim,18/03/2010,,,,,,,1,1.736
+mung0910/01,2010,Hermitage,Green Diamond,0.25,18/03/2010,control,,,,,,,,0,1.0333
+mung0910/01,2010,Hermitage,Green Diamond,0.25,18/03/2010,sulphur,19/02/2010,26/02/2010,05/03/2010,11/03/2010,18/03/2010,25/03/2010,07/04/2010,7,1.0301
+mung0910/01,2010,Hermitage,Green Diamond,0.25,18/03/2010,sulphur,19/02/2010,26/02/2010,,,,,,2,1.196
+mung0910/01,2010,Hermitage,Green Diamond,0.25,18/03/2010,sulphur,18/03/2010,,,,,,,1,1.0841
+mung0910/01,2010,Hermitage,Green Diamond,0.25,18/03/2010,carbendazim,18/03/2010,,,,,,,1,1.1442
+mung0910/02,2010,Kingaroy,Berken,0.25,26/03/2010,control,,,,,,,,0,1.428
+mung0910/02,2010,Kingaroy,Berken,0.25,26/03/2010,sulphur,12/03/2010,26/03/2010,09/04/2010,,,,,3,1.465
+mung0910/02,2010,Kingaroy,Berken,0.25,26/03/2010,sulphur,12/03/2010,,,,,,,1,1.379
+mung0910/02,2010,Kingaroy,Berken,0.25,26/03/2010,sulphur,26/03/2010,,,,,,,1,1.536
+mung0910/02,2010,Kingaroy,Berken,0.25,26/03/2010,carbendazim,26/03/2010,,,,,,,1,1.542
+mung0910/02,2010,Kingaroy,Crystal,0.25,26/03/2010,control,,,,,,,,0,1.381
+mung0910/02,2010,Kingaroy,Crystal,0.25,26/03/2010,sulphur,12/03/2010,26/03/2010,09/04/2010,,,,,3,1.249
+mung0910/02,2010,Kingaroy,Crystal,0.25,26/03/2010,sulphur,12/03/2010,,,,,,,1,1.395
+mung0910/02,2010,Kingaroy,Crystal,0.25,26/03/2010,sulphur,26/03/2010,,,,,,,1,1.374
+mung0910/02,2010,Kingaroy,Crystal,0.25,26/03/2010,carbendazim,26/03/2010,,,,,,,1,1.378
+mung0910/02,2010,Kingaroy,Green Diamond,0.25,26/03/2010,control,,,,,,,,0,1.373
+mung0910/02,2010,Kingaroy,Green Diamond,0.25,26/03/2010,sulphur,12/03/2010,26/03/2010,09/04/2010,,,,,3,1.286
+mung0910/02,2010,Kingaroy,Green Diamond,0.25,26/03/2010,sulphur,12/03/2010,,,,,,,1,1.177
+mung0910/02,2010,Kingaroy,Green Diamond,0.25,26/03/2010,sulphur,26/03/2010,,,,,,,1,1.306
+mung0910/02,2010,Kingaroy,Green Diamond,0.25,26/03/2010,carbendazim,26/03/2010,,,,,,,1,1.264
+mung1011/01,2011,Hermitage,Berken,0.75,28/03/2011,control,,,,,,,,0,1.629
+mung1011/01,2011,Hermitage,Berken,0.75,28/03/2011,control,,,,,,,,0,1.694
+mung1011/01,2011,Hermitage,Berken,0.75,28/03/2011,tebuconazole,28/03/2011,,,,,,,1,1.769
+mung1011/01,2011,Hermitage,Berken,0.75,28/03/2011,sulphur,28/03/2011,,,,,,,1,1.808
+mung1011/01,2011,Hermitage,Berken,0.75,28/03/2011,sulphur,28/02/2011,14/03/2011,28/03/2011,,,,,3,1.75
+mung1011/01,2011,Hermitage,Berken,0.75,28/03/2011,azoxystrobin + cyproconazole,28/03/2011,,,,,,,1,1.609
+mung1011/01,2011,Hermitage,Berken,0.75,28/03/2011,azoxystrobin + cyproconazole,28/02/2011,14/03/2011,28/03/2011,,,,,3,1.664
+mung1011/01,2011,Hermitage,Crystal,0.75,28/03/2011,control,,,,,,,,0,1.399
+mung1011/01,2011,Hermitage,Crystal,0.75,28/03/2011,control,,,,,,,,0,1.376
+mung1011/01,2011,Hermitage,Crystal,0.75,28/03/2011,tebuconazole,28/03/2011,,,,,,,1,1.544
+mung1011/01,2011,Hermitage,Crystal,0.75,28/03/2011,sulphur,28/03/2011,,,,,,,1,1.407
+mung1011/01,2011,Hermitage,Crystal,0.75,28/03/2011,sulphur,28/02/2011,14/03/2011,28/03/2011,,,,,3,1.639
+mung1011/01,2011,Hermitage,Crystal,0.75,28/03/2011,azoxystrobin + cyproconazole,28/03/2011,,,,,,,1,1.519
+mung1011/01,2011,Hermitage,Crystal,0.75,28/03/2011,azoxystrobin + cyproconazole,28/02/2011,14/03/2011,28/03/2011,,,,,3,1.427
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,control,,,,,,,,0,0.79846
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,tebuconazole,23/03/2011,,,,,,,1,1.05857
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,tebuconazole,23/03/2011,13/04/2011,,,,,,2,0.986235
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,tebuconazole,9/03/2011,30/03/2011,13/04/2011,,,,,3,0.86358
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,sulphur,23/03/2011,,,,,,,1,0.79624
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,sulphur,23/03/2011,13/04/2011,,,,,,2,0.868945
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,sulphur,09/03/2011,30/03/2011,13/04/2011,,,,,3,0.88356
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,azoxystrobin + cyproconazole,23/03/2011,,,,,,,1,0.8621
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,azoxystrobin + cyproconazole,23/03/2011,13/04/2011,,,,,,2,0.8658
+mung1011/02,2011,Kingaroy,Berken,0.75,22/03/2011,azoxystrobin + cyproconazole,09/03/2011,30/03/2011,13/04/2011,,,,,3,0.900395
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,control,,,,,,,,0,0.79846
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,tebuconazole,23/03/2011,,,,,,,1,0.730195
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,tebuconazole,23/03/2011,13/04/2011,,,,,,2,0.87542
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,tebuconazole,09/03/2011,30/03/2011,13/04/2011,,,,,3,0.64084
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,sulphur,23/03/2011,,,,,,,1,0.665445
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,sulphur,23/03/2011,13/04/2011,,,,,,2,0.71336
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,sulphur,09/03/2011,30/03/2011,13/04/2011,,,,,3,0.64713
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,azoxystrobin + cyproconazole,23/03/2011,,,,,,,1,0.77182
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,azoxystrobin + cyproconazole,23/03/2011,13/04/2011,,,,,,2,0.691345
+mung1011/02,2011,Kingaroy,Crystal,0.75,22/03/2011,azoxystrobin + cyproconazole,09/03/2011,30/03/2011,13/04/2011,,,,,3,0.8288925
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,control,,,,,,,,0,0.738
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,tebuconazole,02/04/2012,,,,,,,1,0.81
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,tebuconazole,02/04/2012,16/04/2012,,,,,,2,0.948
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,sulphur,02/04/2012,,,,,,,1,0.785
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,sulphur,02/04/2012,16/04/2012,,,,,,2,0.969
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,azoxystrobin + cyproconazole,02/04/2012,,,,,,,1,0.923
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,azoxystrobin + cyproconazole,02/04/2012,16/04/2012,,,,,,2,0.965
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,azoxystrobin + cyproconazole,02/04/2012,,,,,,,1,0.742
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,azoxystrobin + cyproconazole,02/04/2012,16/04/2012,,,,,,2,0.715
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,azoxystrobin + cyproconazole,02/04/2012,,,,,,,1,0.773
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,azoxystrobin + cyproconazole,02/04/2012,16/04/2012,,,,,,2,0.707
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,propiconazole,02/04/2012,,,,,,,1,0.91
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,propiconazole,02/04/2012,16/04/2012,,,,,,2,0.925
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,propiconazole,02/04/2012,,,,,,,1,0.86
+mung1112/01,2012,Gatton,Crystal,0.75,02/04/2012,propiconazole,02/04/2012,16/04/2012,,,,,,2,0.944
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,control,,,,,,,,0,0.751
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,tebuconazole,13/03/2012,,,,,,,1,1.09
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,tebuconazole,13/03/2012,30/03/2012,,,,,,2,1.098
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,sulphur,13/03/2012,,,,,,,1,0.87
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,sulphur,13/03/2012,30/03/2012,,,,,,2,1.251
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,azoxystrobin + cyproconazole,13/03/2012,,,,,,,1,1.112
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,azoxystrobin + cyproconazole,13/03/2012,30/03/2012,,,,,,2,1.175
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,azoxystrobin + cyproconazole,13/03/2012,,,,,,,1,1.265
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,azoxystrobin + cyproconazole,13/03/2012,30/03/2012,,,,,,2,1.166
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,azoxystrobin + cyproconazole,13/03/2012,,,,,,,1,1.052
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,azoxystrobin + cyproconazole,13/03/2012,30/03/2012,,,,,,2,1.178
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,propiconazole,13/03/2012,,,,,,,1,1.036
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,propiconazole,13/03/2012,30/03/2012,,,,,,2,1.201
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,propiconazole,13/03/2012,,,,,,,1,1.057
+mung1112/02,2012,Kingaroy,Crystal,0.75,12/03/2012,propiconazole,13/03/2012,30/03/2012,,,,,,2,1.323
+AM1303,2013,Premer,Crystal,,10/03/2013,control,,,,,,,,0,1.439440359
+AM1303,2013,Premer,Crystal,,10/03/2013,carbendazim,28/02/2013,,,,,,,1,1.522671569
+AM1303,2013,Premer,Crystal,,10/03/2013,propiconazole,28/02/2013,,,,,,,1,1.452205882
+AM1303,2013,Premer,Crystal,,10/03/2013,azoxystrobin + cyproconazole,28/02/2013,,,,,,,1,1.615604575
+AM1303,2013,Premer,Crystal,,10/03/2013,azoxystrobin + cyproconazole,28/02/2013,,,,,,,1,1.435866013
+AM1303,2013,Premer,Crystal,,10/03/2013,pyraclostrobin,28/02/2013,,,,,,,1,1.415951797
+AM1303,2013,Premer,Crystal,,10/03/2013,carbendazim,28/02/2013,19/03/2013,,,,,,2,1.464460784
+AM1303,2013,Premer,Crystal,,10/03/2013,propiconazole,28/02/2013,19/03/2013,,,,,,2,1.425142974
+AM1303,2013,Premer,Crystal,,10/03/2013,azoxystrobin + cyproconazole,28/02/2013,19/03/2013,,,,,,2,1.464971405
+AM1303,2013,Premer,Crystal,,10/03/2013,pyraclostrobin,28/02/2013,19/03/2013,,,,,,2,1.539522059
+AM1303,2013,Premer,Crystal,,10/03/2013,propiconazole,28/02/2013,19/03/2013,31/03/2013,,,,,3,1.443014706
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,control,,,,,,,,0,0.802083333
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,carbendazim,13/03/2013,,,,,,,1,0.772671569
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,propiconazole,13/03/2013,,,,,,,1,0.802696078
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,azoxystrobin + cyproconazole,13/03/2013,,,,,,,1,0.818627451
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,azoxystrobin + cyproconazole,13/03/2013,,,,,,,1,0.683210784
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,pyraclostrobin,13/03/2013,,,,,,,1,0.816176471
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,carbendazim,13/03/2013,21/03/2013,,,,,,2,0.816789216
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,propiconazole,13/03/2013,21/03/2013,,,,,,2,0.771446078
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,azoxystrobin + cyproconazole,13/03/2013,21/03/2013,,,,,,2,0.786151961
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,pyraclostrobin,13/03/2013,21/03/2013,,,,,,2,0.847426471
+BB1305,2013,Millmerran,Crystal,0.333,13/03/2013,propiconazole,13/03/2013,21/03/2013,28/03/2013,,,,,3,0.743872549
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,control,,,,,,,,0,1.09375
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,carbendazim,28/02/2013,,,,,,,1,1.336805556
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,propiconazole,28/02/2013,,,,,,,1,1.186342593
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,azoxystrobin + cyproconazole,28/02/2013,,,,,,,1,1.163194444
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,azoxystrobin + cyproconazole,28/02/2013,,,,,,,1,1.180555556
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,pyraclostrobin,28/02/2013,,,,,,,1,1.261574074
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,carbendazim,28/02/2013,18/03/2013,,,,,,2,1.302083333
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,propiconazole,28/02/2013,18/03/2013,,,,,,2,1.174768519
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,azoxystrobin + cyproconazole,28/02/2013,18/03/2013,,,,,,2,1.267361111
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,pyraclostrobin,28/02/2013,18/03/2013,,,,,,2,1.105324074
+AM1304,2013,Mary’s Mount,Crystal,1,16/03/2013,propiconazole,28/02/2013,18/03/2013,,,,,,2,1.116898148
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,control,,,,,,,,0,0.680555556
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,carbendazim,28/03/2013,,,,,,,1,0.6875
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,propiconazole,28/03/2013,,,,,,,1,0.652777778
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,azoxystrobin + cyproconazole,28/03/2013,,,,,,,1,0.722222222
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,azoxystrobin + cyproconazole + adj,28/03/2013,,,,,,,1,0.6875
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,pyraclostrobin,28/03/2013,,,,,,,1,0.597222222
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,carbendazim,28/03/2013,13/04/2013,,,,,,2,0.541666667
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,propiconazole,28/03/2013,13/04/2013,,,,,,2,0.722222222
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,azoxystrobin + cyproconazole,28/03/2013,13/04/2013,,,,,,2,0.625
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,pyraclostrobin,28/03/2013,13/04/2013,,,,,,2,0.673611111
+AM1305,2013,Goolhi,Crystal,0.333,25/03/2013,propiconazole,28/03/2013,13/04/2013,27/04/2013,,,,,3,0.604166667
+mung1415/01,2015,Hermitage,Jade,0.75,16/03/2015,control,,,,,,,,0,2.045
+mung1415/01,2015,Hermitage,Jade,0.75,16/03/2015,tebuconazole,02/03/2015,17/03/2015,31/03/2015,,,,,3,2.262
+mung1415/01,2015,Hermitage,Jade,0.75,16/03/2015,tebuconazole,17/03/2015,,,,,,,1,2.018
+mung1415/01,2015,Hermitage,Jade,0.75,16/03/2015,tebuconazole,17/03/2015,31/03/2015,,,,,,2,2.152
+mung1415/01,2015,Hermitage,Jade,0.75,16/03/2015,tebuconazole,24/03/2015,,,,,,,1,2.124
+mung1415/01,2015,Hermitage,Jade,0.75,16/03/2015,tebuconazole,24/03/2015,07/04/2015,,,,,,2,2.176
+mung1415/02,2015,Dalby,Jade,0.75,2/03/2015,control,,,,,,,,0,0.957
+mung1516/03,2016,Emerald,Jade,0.75,17/03/2016,control,,,,,,,,0,0.805
+mung1516/03,2016,Emerald,Jade,0.75,17/03/2016,tebuconazole,17/03/2016,,,,,,,1,0.87
+mung1516/03,2016,Emerald,Jade,0.75,17/03/2016,tebuconazole,17/03/2016,31/03/2016,,,,,,2,0.833
+mung1516/03,2016,Emerald,Jade,0.75,17/03/2016,tebuconazole,17/03/2016,31/03/2016,,,,,,2,0.848
+mung1516/03,2016,Emerald,Jade,0.75,17/03/2016,tebuconazole,17/03/2016,,,,,,,1,0.926
+mung1516/03,2016,Emerald,Jade,0.75,17/03/2016,tebuconazole,17/03/2016,31/03/2016,,,,,,2,0.805
+mung1516/03,2016,Emerald,Jade,0.75,17/03/2016,tebuconazole,5/04/2016,20/04/2016,,,,,,2,0.784
+mung1516/01,2016,Hermitage,Jade,0.75,08/03/2016,control,,,,,,,,0,1.578
+mung1516/01,2016,Hermitage,Jade,0.75,08/03/2016,tebuconazole,17/03/2016,,,,,,,1,1.934
+mung1516/01,2016,Hermitage,Jade,0.75,08/03/2016,tebuconazole,17/03/2016,30/03/2016,,,,,,2,2.057
+mung1516/01,2016,Hermitage,Jade,0.75,08/03/2016,tebuconazole,17/03/2016,30/03/2016,13/04/2016,,,,,3,2.013
+mung1516/01,2016,Hermitage,Jade,0.75,08/03/2016,tebuconazole,08/03/2016,,,,,,,1,1.861
+mung1516/01,2016,Hermitage,Jade,0.75,08/03/2016,tebuconazole,08/03/2016,22/03/2016,,,,,,2,2.03
+mung1516/01,2016,Hermitage,Jade,0.75,08/03/2016,tebuconazole,17/03/2016,30/03/2016,,,,,,2,2.033
+mung1516/02,2016,Kingaroy,Jade,0.75,09/03/2016,control,,,,,,,,0,0.771
+mung1516/02,2016,Kingaroy,Jade,0.75,09/03/2016,tebuconazole,22/03/2016,,,,,,,1,0.785
+mung1516/02,2016,Kingaroy,Jade,0.75,09/03/2016,tebuconazole,22/03/2016,05/04/2016,,,,,,2,0.854
+mung1516/02,2016,Kingaroy,Jade,0.75,09/03/2016,tebuconazole,22/03/2016,05/04/2016,19/04/2016,,,,,3,0.902
+mung1516/02,2016,Kingaroy,Jade,0.75,09/03/2016,tebuconazole,09/03/2016,,,,,,,1,0.784
+mung1516/02,2016,Kingaroy,Jade,0.75,09/03/2016,tebuconazole,09/03/2016,22/03/2016,,,,,,2,0.809
+mung1516/02,2016,Kingaroy,Jade,0.75,09/03/2016,tebuconazole,22/03/2016,05/04/2016,,,,,,2,0.856
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,control,,,,,,,,0,1.641859179
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,control,,,,,,,,0,1.824895611
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,control,,,,,,,,0,2.083941443
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,control,,,,,,,,0,1.504572599
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,control,,,,,,,,0,1.608540191
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,control,,,,,,,,0,1.482819982
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,control,,,,,,,,0,1.448371756
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,control,,,,,,,,0,1.227888703
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,control,,,,,,,,0,1.226520043
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole,22/02/2017,,,,,,,1,1.72428223
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole,22/02/2017,,,,,,,1,1.717279603
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole,22/02/2017,,,,,,,1,1.443520279
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,propiconazole,22/02/2017,,,,,,,1,1.791405913
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,propiconazole,22/02/2017,,,,,,,1,1.733003672
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,propiconazole,22/02/2017,,,,,,,1,1.130177109
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole + azoxystrobin,22/02/2017,,,,,,,1,2.051078604
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole + azoxystrobin,22/02/2017,,,,,,,1,1.763283559
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole + azoxystrobin,22/02/2017,,,,,,,1,1.419914921
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole,08/03/2017,,,,,,,1,2.277913689
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole,08/03/2017,,,,,,,1,1.356902589
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole,08/03/2017,,,,,,,1,1.742435355
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,propiconazole,08/03/2017,,,,,,,1,2.312144363
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,propiconazole,08/03/2017,,,,,,,1,2.112593409
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,propiconazole,08/03/2017,,,,,,,1,1.792165464
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole + azoxystrobin,08/03/2017,,,,,,,1,2.271942787
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole + azoxystrobin,08/03/2017,,,,,,,1,1.97413836
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole + azoxystrobin,08/03/2017,,,,,,,1,1.713999102
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole,08/03/2017,24/03/2017,,,,,,2,1.921852239
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole,08/03/2017,24/03/2017,,,,,,2,1.860992634
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole,08/03/2017,24/03/2017,,,,,,2,1.389057938
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,propiconazole,08/03/2017,24/03/2017,,,,,,2,2.100555965
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,propiconazole,08/03/2017,24/03/2017,,,,,,2,1.85921909
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,propiconazole,08/03/2017,24/03/2017,,,,,,2,1.498095698
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole + azoxystrobin,08/03/2017,24/03/2017,,,,,,2,2.048535928
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole + azoxystrobin,08/03/2017,24/03/2017,,,,,,2,1.973936266
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole + azoxystrobin,08/03/2017,24/03/2017,,,,,,2,1.488552315
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole,19/03/2017,,,,,,,1,2.526252843
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole,19/03/2017,,,,,,,1,2.000600788
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole,19/03/2017,,,,,,,1,1.798839416
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,propiconazole,19/03/2017,,,,,,,1,2.101699431
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,propiconazole,19/03/2017,,,,,,,1,2.179481091
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,propiconazole,19/03/2017,,,,,,,1,1.973739024
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole + azoxystrobin,19/03/2017,,,,,,,1,2.266106985
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole + azoxystrobin,19/03/2017,,,,,,,1,2.092209808
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole + azoxystrobin,19/03/2017,,,,,,,1,1.31375407
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole,19/03/2017,02/04/2017,,,,,,2,1.877780116
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole,19/03/2017,02/04/2017,,,,,,2,1.7806148
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole,19/03/2017,02/04/2017,,,,,,2,1.533670383
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,propiconazole,19/03/2017,02/04/2017,,,,,,2,2.143353833
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,propiconazole,19/03/2017,02/04/2017,,,,,,2,1.827898658
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,propiconazole,19/03/2017,02/04/2017,,,,,,2,1.756389965
+mung1617/02,2017,Missen Flats,Jade,0.25,07/03/2017,tebuconazole + azoxystrobin,19/03/2017,02/04/2017,,,,,,2,2.642183756
+mung1617/02,2017,Missen Flats,Jade,0.5,07/03/2017,tebuconazole + azoxystrobin,19/03/2017,02/04/2017,,,,,,2,2.136981988
+mung1617/02,2017,Missen Flats,Jade,1,07/03/2017,tebuconazole + azoxystrobin,19/03/2017,02/04/2017,,,,,,2,1.84339985
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,control,,,,,,,,0,0.737011844
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,control,,,,,,,,0,0.370449789
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,control,,,,,,,,0,0.492199221
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,control,,,,,,,,0,0.604052503
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,control,,,,,,,,0,0.74660328
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,control,,,,,,,,0,0.650352868
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,control,,,,,,,,0,0.55384968
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,control,,,,,,,,0,0.564404827
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,control,,,,,,,,0,0.379566155
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole,13/03/2017,,,,,,,1,0.644268565
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole,13/03/2017,,,,,,,1,0.589633704
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole,13/03/2017,,,,,,,1,0.575370107
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,propiconazole,13/03/2017,,,,,,,1,0.427522273
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,propiconazole,13/03/2017,,,,,,,1,0.713230745
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,propiconazole,13/03/2017,,,,,,,1,0.710955237
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole + azoxystrobin,13/03/2017,,,,,,,1,0.724955625
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole + azoxystrobin,13/03/2017,,,,,,,1,0.59804532
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole + azoxystrobin,13/03/2017,,,,,,,1,0.523680011
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole,24/03/2017,07/04/2017,,,,,,2,0.512205782
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole,24/03/2017,07/04/2017,,,,,,2,0.607614588
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole,24/03/2017,07/04/2017,,,,,,2,0.508835875
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,propiconazole,24/03/2017,07/04/2017,,,,,,2,0.58896069
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,propiconazole,24/03/2017,07/04/2017,,,,,,2,0.453594627
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,propiconazole,24/03/2017,07/04/2017,,,,,,2,0.514517724
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole + azoxystrobin,24/03/2017,07/04/2017,,,,,,2,0.620060497
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole + azoxystrobin,24/03/2017,07/04/2017,,,,,,2,0.638755884
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole + azoxystrobin,24/03/2017,07/04/2017,,,,,,2,0.503661011
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole,27/03/2017,,,,,,,1,0.555131641
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole,27/03/2017,,,,,,,1,0.546531591
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole,27/03/2017,,,,,,,1,0.617149439
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,propiconazole,27/03/2017,,,,,,,1,0.761183805
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,propiconazole,27/03/2017,,,,,,,1,0.710358998
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,propiconazole,27/03/2017,,,,,,,1,0.647483614
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole + azoxystrobin,27/03/2017,,,,,,,1,0.557934915
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole + azoxystrobin,27/03/2017,,,,,,,1,0.58970698
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole + azoxystrobin,27/03/2017,,,,,,,1,0.687191531
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole,27/03/2017,11/04/2017,,,,,,2,0.403880913
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole,27/03/2017,11/04/2017,,,,,,2,0.660755042
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole,27/03/2017,11/04/2017,,,,,,2,0.759453914
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,propiconazole,27/03/2017,11/04/2017,,,,,,2,0.784376579
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,propiconazole,27/03/2017,11/04/2017,,,,,,2,0.639065478
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,propiconazole,27/03/2017,11/04/2017,,,,,,2,0.495170437
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole + azoxystrobin,27/03/2017,11/04/2017,,,,,,2,0.410450132
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole + azoxystrobin,27/03/2017,11/04/2017,,,,,,2,0.83830719
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole + azoxystrobin,27/03/2017,11/04/2017,,,,,,2,0.666193702
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole,05/04/2017,,,,,,,1,0.628319341
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole,05/04/2017,,,,,,,1,0.584562864
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole,05/04/2017,,,,,,,1,0.812147402
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,propiconazole,05/04/2017,,,,,,,1,0.45776149
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,propiconazole,05/04/2017,,,,,,,1,0.565797033
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,propiconazole,05/04/2017,,,,,,,1,0.38666199
+mung1617/01,2017,Hermitage,Jade,0.25,24/03/2017,tebuconazole + azoxystrobin,05/04/2017,,,,,,,1,0.586878008
+mung1617/01,2017,Hermitage,Jade,0.5,24/03/2017,tebuconazole + azoxystrobin,05/04/2017,,,,,,,1,0.642104949
+mung1617/01,2017,Hermitage,Jade,1,24/03/2017,tebuconazole + azoxystrobin,05/04/2017,,,,,,,1,0.71703827
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,control,,,,,,,,0,0.900712969
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,control,,,,,,,,0,1.089077207
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,control,,,,,,,,0,1.092765743
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,tebuconazole + azoxystrobin,28/03/2018,16/04/2018,,,,,,2,1.409057474
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,tebuconazole + azoxystrobin,28/03/2018,16/04/2018,,,,,,2,1.503637679
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,tebuconazole + azoxystrobin,28/03/2018,16/04/2018,,,,,,2,1.282229758
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,tebuconazole,28/03/2018,16/04/2018,,,,,,2,1.555946994
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,tebuconazole,28/03/2018,16/04/2018,,,,,,2,1.472523663
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,tebuconazole,28/03/2018,16/04/2018,,,,,,2,1.084522903
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,propiconazole,28/03/2018,16/04/2018,,,,,,2,1.582020885
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,propiconazole,28/03/2018,16/04/2018,,,,,,2,1.56753778
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,propiconazole,28/03/2018,16/04/2018,,,,,,2,1.154251062
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,control,,,,,,,,0,1.573120296
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,control,,,,,,,,0,1.451297057
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,control,,,,,,,,0,1.056135197
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,tebuconazole + azoxystrobin,28/03/2018,16/04/2018,,,,,,2,1.582098718
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,tebuconazole + azoxystrobin,28/03/2018,16/04/2018,,,,,,2,1.65734565
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,tebuconazole + azoxystrobin,28/03/2018,16/04/2018,,,,,,2,0.812759584
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,tebuconazole,28/03/2018,16/04/2018,,,,,,2,1.575397611
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,tebuconazole,28/03/2018,16/04/2018,,,,,,2,1.216950267
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,tebuconazole,28/03/2018,16/04/2018,,,,,,2,1.234357791
+mung1718/01,2018,Wellcamp,Jade,0.25,21/03/2018,propiconazole,28/03/2018,16/04/2018,,,,,,2,1.652113232
+mung1718/01,2018,Wellcamp,Jade,0.5,21/03/2018,propiconazole,28/03/2018,16/04/2018,,,,,,2,1.690297844
+mung1718/01,2018,Wellcamp,Jade,1,21/03/2018,propiconazole,28/03/2018,16/04/2018,,,,,,2,1.173093405
+mung1819/01,2019,Hermitage,Jade,0.25,12/04/2019,tebuconazole,15/04/2019,,,,,,,1,0.543163586
+mung1819/01,2019,Hermitage,Jade,0.25,12/04/2019,tebuconazole,15/04/2019,29/04/2019,,,,,,2,0.563552428
+mung1819/01,2019,Hermitage,Jade,0.25,12/04/2019,tebuconazole,23/04/2019,,,,,,,1,0.571263691
+mung1819/01,2019,Hermitage,Jade,0.25,12/04/2019,control,,,,,,,,0,0.5871653
+mung1819/02,2019,Hermitage,Jade,0.25,12/04/2019,tebuconazole,15/04/2019,,,,,,,1,0.296209259
+mung1819/02,2019,Hermitage,Jade,0.25,12/04/2019,tebuconazole,15/04/2019,29/04/2019,,,,,,2,0.311682998
+mung1819/02,2019,Hermitage,Jade,0.25,12/04/2019,tebuconazole,23/04/2019,,,,,,,1,0.275859288
+mung1819/02,2019,Hermitage,Jade,0.25,12/04/2019,control,,,,,,,,0,0.289442983

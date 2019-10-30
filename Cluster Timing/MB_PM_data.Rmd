@@ -1,0 +1,138 @@
+---
+title: "Mungbean Powdery Mildew Spray Timing"
+author: "Adam H. Sparks"
+date: "30/10/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(skimr)
+mb <- read_csv("data/slim-mungbean-powdery_mildew.csv")
+```
+
+# Clean data
+
+The csv file included is already reduced in columns compared with the original file.
+This next step converts the date columns to `Date` class, removes more cols, including the dates for spray applications after two (there are up to seven in some studies) and creates two columns of time differences.
+
+The first column of time differences is for the time from first sign to first spray. The second is for time from first sign to second spray.
+
+Any rows that are missing yield data are removed.
+
+
+```{r mutate-filter}
+mb <-
+  mb %>%
+  mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
+  mutate_at(vars(starts_with("fungicide_application_")), dmy) %>%
+  mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
+  mutate(fungicide_timing_2 = fungicide_application_2 - first_sign_disease) %>%
+  select(-c(fungicide_application_3:fungicide_application_7)) %>%
+  filter(!is.na(grain_yield.t.ha.))
+```
+
+
+# Inspect the new data set
+
+```{r skim}
+skim(mb)
+```
+
+# Create Histograms of time differences to spray
+
+## First spray
+
+```{r first-spray-hist}
+ggplot(filter(mb, !is.na(fungicide_timing_1)),
+       aes(x = as.numeric(fungicide_timing_1))) +
+  geom_histogram(bins = 50, fill = "grey") +
+  geom_vline(linetype = 2,
+             xintercept = 0,
+             colour = "red") +
+  xlab("Days from first sign") +
+  ggtitle("First Application",
+          subtitle = "Line at first sign") +
+  theme_bw()
+```
+
+Suggest that any sprays prior to first sign are a group with another group from Day 0 to Day 3 and third group being >= Day 4.
+
+## Second spray
+
+```{r second-spray-hist}
+ggplot(filter(mb, !is.na(fungicide_timing_2)),
+       aes(x = as.numeric(fungicide_timing_2))) +
+   geom_histogram(bins = 50, fill = "grey") +
+   geom_vline(linetype = 2,
+              xintercept = 14,
+              colour = "red") +
+   xlab("Days from first sign") +
+   ggtitle("Second Application",
+           subtitle = "Line at 14 days after first sign") +
+   theme_bw()
+```
+
+Again, suggest any sprays that are prior to 14 days after first sign be first group, the second being 14 days to 17 days after first sign and the third being >= 18 days after first sign.
+
+These groups would then have preventative (before), at first sign and then 14 days after and late applications.
+
+```{r cluster}
+mb <-
+  mb %>%
+  mutate(
+    cluster_1 = case_when(
+      fungicide_timing_1 < 0 ~ "Early",
+      fungicide_timing_1 >= 0 &
+        fungicide_timing_1 < 3 ~ "Recommended",
+      TRUE ~ "Late"
+    )
+  ) %>%
+  mutate(
+    cluster_2 = case_when(
+      fungicide_timing_2 < 13 ~ "Early",
+      fungicide_timing_2 >= 13 &
+        fungicide_timing_2 < 17 ~ "Recommended",
+      TRUE ~ "Late"
+    )
+  )
+```
+
+# Histograms with Clusters
+
+## First spray
+
+```{r hist-clust1}
+ggplot(filter(mb, !is.na(fungicide_timing_1)),
+       aes(x = as.numeric(fungicide_timing_1))) +
+  geom_histogram(bins = 50, aes(fill = cluster_1)) +
+  scale_fill_viridis_d("Cluster") +
+   geom_vline(linetype = 2,
+              xintercept = 0,
+              colour = "red") +
+   xlab("Days from first sign") +
+   ggtitle("First Application",
+           subtitle = "Line at first sign") +
+   theme_bw()
+```
+
+## Second spray
+
+```{r hist-clust2}
+ggplot(filter(mb, !is.na(fungicide_timing_2)),
+       aes(x = as.numeric(fungicide_timing_2))) +
+  geom_histogram(bins = 50, aes(fill = cluster_2)) +
+  scale_fill_viridis_d("Cluster") +
+  geom_vline(linetype = 2,
+             xintercept = 14,
+             colour = "red") +
+  xlab("Days from first sign") +
+  ggtitle("Second Application",
+          subtitle = "Line at 14 days after first sign") +
+  theme_bw()
+```
+
+Note that the cluster for the second spray "reccomended" is from Day 13, not Day 14.
+
