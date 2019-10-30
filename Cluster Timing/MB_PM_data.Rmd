@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(lubridate)
 library(skimr)
-mb <- read_csv("data/slim-mungbean-powdery_mildew.csv")
+mb <- read_csv("slim-mungbean-powdery_mildew.csv")
 ```
 
 # Clean data
@@ -26,11 +26,11 @@ Any rows that are missing yield data are removed.
 ```{r mutate-filter}
 mb <-
   mb %>%
+  select(-c(fungicide_application_3:fungicide_application_7)) %>%
   mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
   mutate_at(vars(starts_with("fungicide_application_")), dmy) %>%
   mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
   mutate(fungicide_timing_2 = fungicide_application_2 - first_sign_disease) %>%
-  select(-c(fungicide_application_3:fungicide_application_7)) %>%
   filter(!is.na(grain_yield.t.ha.))
 ```
 
@@ -134,5 +134,5 @@ ggplot(filter(mb, !is.na(fungicide_timing_2)),
   theme_bw()
 ```
 
-Note that the cluster for the second spray "reccomended" is from Day 13, not Day 14.
+Note that the cluster for the second spray "recommended" is from Day 13, not Day 14.
 

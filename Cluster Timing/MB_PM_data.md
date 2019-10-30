@@ -19,11 +19,11 @@ Any rows that are missing yield data are removed.
 ``` r
 mb <-
   mb %>%
+  select(-c(fungicide_application_3:fungicide_application_7)) %>%
   mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
   mutate_at(vars(starts_with("fungicide_application_")), dmy) %>%
   mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
   mutate(fungicide_timing_2 = fungicide_application_2 - first_sign_disease) %>%
-  select(-c(fungicide_application_3:fungicide_application_7)) %>%
   filter(!is.na(grain_yield.t.ha.))
 ```
 
@@ -176,5 +176,5 @@ ggplot(filter(mb, !is.na(fungicide_timing_2)),
 
 ![](MB_PM_data_files/figure-gfm/hist-clust2-1.png)<!-- -->
 
-Note that the cluster for the second spray “reccomended” is from Day 13,
+Note that the cluster for the second spray “recommended” is from Day 13,
 not Day 14.
