@@ -235,62 +235,22 @@ rain_dat_sum[rain_dat_sum$location == "Dalby", c("lat","lon")] <- c(-27.168426, 
 Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall.
 
 ```{r rainfall_sum_Sstart}
-# add column for sum in-crop rainfall
-rain_dat_sum$rainfall_sum <- NA
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#       BEWARE THIS CODE REQUIRES MORE WORK AND TAKES ~10 HOURS TO RUN
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-# source funtion that uses bomrang get_historical to return the sum rainfall between two dates
-source("R/AUS_rainfall_function.r")
-
-# loop to download and save all the rainfall sum data
-# this first loop Investigate when is the first day in the season for which in-crop rainfall is important
-
-# use Bomrang to find the quantaty of rain for the season and do a linear regression
-for(k in -19:20){
-for(j in -9:30){
-   
-   lm_rain <- data.frame(start_day = rep(-20:40, times = length(-30:30)),
-              end_day = rep(-30:30, each = length(-20:40)),
-              lm_pval = NA,
-              lm_rsquared = NA,
-              lm_adj_rsquared = NA
-   )
-   dim(lm_rain)
-   
-
-# for using parRapply   
-#    cl8 <- makeCluster(getOption("cl.cores", 8))
-# clusterExport(cl8, list("rain_dat_sum", "AUS_rainfall", "lm_rain", "get_historical"))
-
-
-   
-   testlist1 <- apply(lm_rain,1,function(x1){
-         for(i in seq_along(rain_dat_sum$trial_ref)){
-      
-         rain_dat_sum$rainfall_sum <- AUS_rainfall(StartDate = as.Date(rain_dat_sum$planting_date)[i] + x1[1],
-                                                   EndDate = as.Date(rain_dat_sum$planting_date[i]) + 80 + x1[2],
-                                                   lat = rain_dat_sum$lat[i],
-                                                   long = rain_dat_sum$lon[i])
-         }
-         lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
-                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
-         
-         pval <- coef(lmod1)[2,4]
-         rsqu <- lmod1$r.squared
-         ADrs <- lmod1$adj.r.squared
-         return(list(pval,rsqu,ADrs))
-         
-         })
- 
-head(testlist1)   
-lm_rain$lm_pval <- head(bind_rows(testlist1))
-   ?bind_rows
-   
-for(i in seq_along(testlist1)){
-   lm_rain$lm_pval[i] <- testlist1[[i]][[1]]
-   lm_rain$lm_rsquared[i] <- testlist1[[i]][[2]]
-   lm_rain$lm_adj_rsquared[i] <- testlist1[[i]][[3]]
-}
+source("R/Rainfall_x_cropYield.R")
 head(lm_rain)
+lm_rain <- read.csv("data/lmInSeasonRainfall.csv",stringsAsFactors = FALSE)
+
+
+
+
+
 
 summary(lm_rain$lm_adj_rsquared)
 
@@ -298,41 +258,8 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_pval))+
    geom_contour()
 
 
-   
-   if(k == -19 & j == -19){
-      lm_pval <- matrix(nrow = 40,
-                        ncol = 40)
-      colnames(lm_pval) <- as.character(-19:20) # End date
-      row.names(lm_pval) <- as.character(-9:30) # start date
-      
-      
-      lm_square <- matrix(nrow = 40,
-                          ncol = 40)
-      colnames(lm_square) <- as.character(-19:20) # End date
-      row.names(lm_square) <- as.character(-9:30) # start date
-      }
-   
-   for(i in seq_along(rain_dat_sum$trial_ref)){
-      
-         rain_dat_sum$rainfall_sum[i] <- 
-            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + j),
-                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 80 + k ),
-                         lat = rain_dat_sum$lat[i],
-                         long = rain_dat_sum$lon[i])
 
-   }
-  
-    lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
-                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
- 
-    
-      lm_pval[j,k] <- coef(lmod1)[2,4]
-      lm_square[j,k] <- lmod1$r.squared
-      
-   
-   }
-   }# If it aborts with an error Error in row_start:(row_start + season) : argument of length 0, just re-run the code
-   
+
 image(1:ncol(lm_pval), 1:nrow(lm_pval), t(lm_pval), col = terrain.colors(60), axes = TRUE)
 
 image(1:ncol(lm_square), 1:nrow(lm_square), t(lm_square), col = terrain.colors(60), axes = TRUE)
