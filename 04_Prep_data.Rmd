@@ -1,14 +1,20 @@
 # Place holder
 
+
+Warning this markdown file needs corrections to variable names.
+Column headers for PM_MB_means were changed and the column names need to be corrected below accordingly
+
+
+
 ```{r}
 library(dplyr)
 library(readr)
 ```
 
 ```{r Calculate_yield-gains}
-PM_MB_means <-
-   read.csv("data/1902 powdery mildew-Mungbean - Collated means.csv",
-            stringsAsFactors = FALSE)
+source("R/import_data.R")
+PM_MB_means <- import_data()
+
 PM_MB_means$grain_yield.t.ha. <-
    as.numeric(PM_MB_means$grain_yield.t.ha.) # NAs produced due to some cells having text description to why there is no specific data
 
