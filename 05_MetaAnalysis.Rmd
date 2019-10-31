@@ -18,12 +18,13 @@ library(RColorBrewer)
 library(tidyverse)
 library(theme.usq)
 library(bomrang)
-source("R/import_data.R")
+
 ```
 
 # Meta-analysis
 
 ```{r data_import, message=FALSE, echo=FALSE}
+source("R/import_data.R")
 PM_MB_means <- import_data()
 
 # see Yield vs in-season rain section on the influence of rain and irrigation on grain yield
@@ -182,13 +183,19 @@ In crop rain could be a significant factor which contributes to the end of seaso
 Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time. The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run. For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
 
 ```{r rainfall_sum_Sstart}
+# The four data files were created from four scripts run as four jobs in Rstudio
+# when the four jobs are finished they can be imported and combined into one data.frame
+# source(Rainfall_x_cropYield_s-10.09_e30.65.R)
+# source(Rainfall_x_cropYield_s-10.09_e65.100.R)
+# source(Rainfall_x_cropYield_s10.30_e30.65.R)
+# source(Rainfall_x_cropYield_s10.30_e65.10.R)
 
-source("R/Rainfall_x_cropYield.R")
+lm_rain1 <- read.csv("data/lmInSeasonRainfall_-10.09_30.64.csv",stringsAsFactors = FALSE)
+lm_rain2 <- read.csv("data/lmInSeasonRainfall_-10.09_65.100.csv",stringsAsFactors = FALSE)
+lm_rain3 <- read.csv("data/lmInSeasonRainfall_10.30_30.64.csv",stringsAsFactors = FALSE)
+lm_rain4 <- read.csv("data/lmInSeasonRainfall_10.30_65.100.csv",stringsAsFactors = FALSE)
 
-# lm_rain <- read.csv("data/lmInSeasonRainfall_-10.20_50.110.csv",stringsAsFactors = FALSE)
-# lm_rain <- read.csv("data/lmInSeasonRainfall_10.30_60.95.csv",stringsAsFactors = FALSE)
-# lm_rain <- read.csv("data/lmInSeasonRainfall_20.40_80.110.csv",stringsAsFactors = FALSE)
-# lm_rain <- read.csv("data/lmInSeasonRainfall_-10.30_50.80.csv",stringsAsFactors = FALSE)
+lm_rain <- rbind(lm_rain1,lm_rain2,lm_rain3,lm_rain4)
 
 lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),]
 lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),]
