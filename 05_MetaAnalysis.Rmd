@@ -185,8 +185,10 @@ Loop over the dates at the start of the season (to 90 days after planting) to fi
 
 source("R/Rainfall_x_cropYield.R")
 
-lm_rain <- read.csv("data/lmInSeasonRainfall.csv",stringsAsFactors = FALSE)
-
+# lm_rain <- read.csv("data/lmInSeasonRainfall_-10.20_50.110.csv",stringsAsFactors = FALSE)
+# lm_rain <- read.csv("data/lmInSeasonRainfall_10.30_60.95.csv",stringsAsFactors = FALSE)
+# lm_rain <- read.csv("data/lmInSeasonRainfall_20.40_80.110.csv",stringsAsFactors = FALSE)
+# lm_rain <- read.csv("data/lmInSeasonRainfall_-10.30_50.80.csv",stringsAsFactors = FALSE)
 
 lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),]
 lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),]
@@ -221,23 +223,6 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared))+
 
 
 
-
-
-plot(log(P_value) ~ days_from_plant, data = lm_data)
-abline(v = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], col = "grey")
-text(x = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], 
-     y = log(max(lm_data$P_value))/0.95, 
-     labels = paste("pvalue =",round(min(lm_data$P_value),2)),
-     pos = 4)
-plot(r_squared ~ days_from_plant, data = lm_data)
-abline(v = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], col = "grey")
-text(x = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], 
-     y = max(lm_data$r_squared * 0.75), 
-     labels = paste("Rsquared =",round(max(lm_data$r_squared),4)),
-     pos = 2)
-
-plot(estimate ~ days_from_plant, data = lm_data)
-abline(v = 14, h = lm_data[lm_data$r_squared == max(lm_data$r_squared),"estimate"], col = "grey")
 ```
 
 The approximate period when in-crop rainfall impacts the most on the mean harvest is bettween 11 - 88 days after planting.
