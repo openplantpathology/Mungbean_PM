@@ -37,7 +37,7 @@ write.csv(
 
 Herm_11 <-
    read_xls(
-      "C:/Users/U8011054/OneDrive - USQ//Cloudstor/Mungbean/Past trials/2011/2011 PMmung Herm/pmhermratings2011.xls",
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/pmhermratings2011.xls",
       sheet = "Analyses factor"
    )
 
@@ -50,15 +50,19 @@ Herm_11 <-
 head(Herm_11)
 
 Herm_11_m <- Herm_11 %>%
-   group_by(`Cultivar!`, `Tr`, `fungicide`, `spray_n`) %>%
+   group_by(`Cultivar!`, `fungicide`, `spray_n`) %>%
    summarise_all(list( ~ mean(., na.rm = TRUE),  ~ sd(., na.rm = TRUE)))
 
-Herm_11_m <- data.table(Herm_11_m)[, c(1:4, 8:12, 16:20)]
+head(data.frame(Herm_11_m))
+
+Herm_11_m <- data.frame(Herm_11_m[, c("Cultivar!","fungicide", "spray_n",
+                                      "P.M. 11  w.a.p._mean","P.M. 11  w.a.p._sd",
+                                      "Yld Kg/ha_mean", "Yld Kg/ha_sd")])
 colnames(Herm_11_m)
 
 write.csv(
    as.data.frame(Herm_11_m),
-   "C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/2011 PMmung Herm means.csv"
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/2011 PMmung Herm means.csv"
 )
 
 
