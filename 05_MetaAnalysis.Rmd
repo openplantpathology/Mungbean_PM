@@ -13,6 +13,8 @@ output: html_document
 # devtools::install_github("https://github.com/adamhsparks/theme.usq")
 # install.packages("lme4")
 
+
+library(RColorBrewer)
 library(tidyverse)
 library(theme.usq)
 library(bomrang)
@@ -173,98 +175,52 @@ yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
 
 ### Yield vs in-season rain  
 
-In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate any relationship I will loop a linear model over time periods from 10 days prior to planting, to 100 days after planting.
-
-```{r yield_from_rain_DataRangle}
-# Import the information for each experimental site
-experiment_sites <- read.csv("data/Mungbean_experiment_sites.csv", stringsAsFactors = FALSE)
-
-
-rain_dat <- PM_MB_means[!is.na(PM_MB_means$planting_date),] # Which locations don't have NA for planting date
-unique(as.character(rain_dat$location)) # locations with recorded planting date
-
-# Create data set for which we will input the sum in-crop rainfall
-rain_dat_sum <- rain_dat %>%
-   group_by(trial_ref) %>%
-   summarise(location = unique(location),
-             planting_date = unique(as.character(planting_date))[1],
-             grain_yield = mean(grain_yield.t.ha., na.rm = TRUE))
-
-rain_dat_sum <- rain_dat_sum[order(rain_dat_sum$location),] # order them to make adding the lat long easier
-
-# add columns for lat and lon
-rain_dat_sum$lat <- NA
-rain_dat_sum$lon <- NA
-
-
-# Input lat and lon to dataframe for each experimental location
-rain_dat_sum[rain_dat_sum$location == "Bongeen_1", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Bongeen 1 & 2",c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Hermitage", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Hermitage Research Station",c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Gatton", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Gatton",c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Kingaroy", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Red Vale & Kingaroy Research Station",c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Missen Flats", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Missen Flats",c("lat","lon")]
-
-# sweep_for_stations(latlon = unlist(c(rain_dat_sum[rain_dat_sum$location == "Premer", c("lat","lon")])))[2,c("lon")]
-# closest weather to Premer does not have rain, recoding so it takes the next closest station
-rain_dat_sum[rain_dat_sum$location == "Premer", c("lat","lon")] <- 
-   sweep_for_stations(latlon = unlist(c(rain_dat_sum[rain_dat_sum$location == "Premer", c("lat","lon")])))[2,c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Emerald", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Emerald Agricultural College",c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Redvale", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Red Vale & Kingaroy Research Station",c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Wellcamp", c("lat","lon")] <- 
-   experiment_sites[experiment_sites$location == "Wellcamp",c("lat","lon")]
-
-rain_dat_sum[rain_dat_sum$location == "Dalby", c("lat","lon")] <- c(-27.168426, 151.264421)
-```
+In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate any relationship I will loop a linear model over time periods from 20 days prior to planting, to 100 days after planting.
 
 #### Best start day for in-crop rainfall
 
-Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall.
+Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time. The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run. For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
 
 ```{r rainfall_sum_Sstart}
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#
-#       BEWARE THIS CODE REQUIRES MORE WORK AND TAKES ~10 HOURS TO RUN
-#
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 source("R/Rainfall_x_cropYield.R")
-head(lm_rain)
+
 lm_rain <- read.csv("data/lmInSeasonRainfall.csv",stringsAsFactors = FALSE)
 
 
+lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),]
+lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),]
+lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)),]
 
 
-
-
-summary(lm_rain$lm_adj_rsquared)
 
 ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_pval))+
-   geom_contour()
+   geom_raster(aes(fill = lm_pval), interpolate = TRUE)+
+   geom_contour(bins = 15, colour = "white")+
+   geom_abline(intercept = 0, slope = 1, colour = "red")+
+   geom_point(data = lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),], aes(x = start_day, y = end_day), colour =" red")+
+   scale_fill_distiller(palette ="RdBu", direction = -1) 
 
 
 
+ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_rsquared))+
+   geom_raster(aes(fill = lm_rsquared), interpolate = TRUE)+
+   geom_contour(bins = 15, colour = "white")+
+   geom_abline(intercept = 0, slope = 1, colour = "red")+
+   geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),], aes(x = start_day, y = end_day), colour =" red")+
+   scale_fill_distiller(palette ="RdBu") 
 
-image(1:ncol(lm_pval), 1:nrow(lm_pval), t(lm_pval), col = terrain.colors(60), axes = TRUE)
 
-image(1:ncol(lm_square), 1:nrow(lm_square), t(lm_square), col = terrain.colors(60), axes = TRUE)
 
-ggplot(lm_pval, aes(x = colnames(lm_pval), y = row.names(lm_pval), z = ))
+ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared))+
+   geom_raster(aes(fill = lm_adj_rsquared), interpolate = TRUE)+
+   geom_contour(bins = 15, colour = "white")+
+   geom_abline(intercept = 0, slope = 1, colour = "red")+
+   geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),], aes(x = start_day, y = end_day), colour =" red")+
+   scale_fill_distiller(palette ="RdBu") 
+
+
+
 
 
 plot(log(P_value) ~ days_from_plant, data = lm_data)
@@ -284,73 +240,10 @@ plot(estimate ~ days_from_plant, data = lm_data)
 abline(v = 14, h = lm_data[lm_data$r_squared == max(lm_data$r_squared),"estimate"], col = "grey")
 ```
 
-#### Best end day for in-crop rainfall
-
-```{r rainfall_sum_SEnd}
-
-# Loop to find the last day in the season for which in crop rainfall is important
-for(j in -20:20){
-   if(j == -20){lm_data <- data.frame()}
-   
-   for(i in seq_along(rain_dat_sum$trial_ref)){
-      
-         rain_dat_sum$rainfall_sum[i] <- 
-            AUS_rainfall(StartDate = (as.Date(rain_dat_sum$planting_date)[i] + 14),
-                         EndDate = (as.Date(rain_dat_sum$planting_date)[i] + 80 + j),
-                         lat = rain_dat_sum$lat[i],
-                         long = rain_dat_sum$lon[i])
-
-   }
-  
-    lmod1 <- summary(lm(rainfall_sum ~ grain_yield, 
-                       data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])) # remove hermitage which is irrigated
- 
-    
-      lm_data <- rbind(lm_data,
-                    data.frame(days_from_plant = j + 80,
-                               estimate = coef(lmod1)[2,1],
-                               P_value = coef(lmod1)[2,4],
-                               r_squared = lmod1$r.squared,
-                               adj_r_squared = lmod1$adj.r.squared,
-                               stringsAsFactors = FALSE)
-                    )
-   
-   }
-
-
-
-
-plot(log(P_value) ~ days_from_plant, data = lm_data, xlab = "End of in-crop rain referenced to 90 days after planting")
-abline(v = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], col = "grey")
-text(x = lm_data[lm_data$P_value == min(lm_data$P_value),"days_from_plant"], 
-     y = max(log(lm_data$P_value * 0.75)), 
-     labels = paste("pvalue =",round(min(lm_data$P_value),4)),
-     pos = 4)
-
-plot(r_squared ~ days_from_plant, data = lm_data, xlab = "End of in-crop rain referenced to 90 days after planting")
-abline(v = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], col = "grey")
-text(x = lm_data[lm_data$r_squared == max(lm_data$r_squared),"days_from_plant"], 
-     y = max(lm_data$r_squared * 0.75), 
-     labels = paste("Rsquared =",round(max(lm_data$r_squared),4)),
-     pos = 2)
-
-
-plot(estimate ~ days_from_plant, data = lm_data)
-abline(v = -3 ,h = lm_data[lm_data$r_squared == max(lm_data$r_squared),"estimate"], col = "grey")
-
-
-#write.csv(lm_data, "data/rainfall_x_Gyield_lmod.csv")
-
-lm_data <- read.csv("data/rainfall_x_Gyield_lmod.csv", stringsAsFactors = FALSE)
-rain_dat_sum[rain_dat_sum$location != "Hermitage",] %>%
-   ggplot(aes(x = rainfall_sum, y = grain_yield )) + 
-   geom_point(aes(colour = location)) +
-   geom_smooth(method = "lm")              
-
-
-
-```
 The approximate period when in-crop rainfall impacts the most on the mean harvest is bettween 11 - 88 days after planting.
+
+
+
 
 ### Season range and first incidence
 
