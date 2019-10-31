@@ -5,15 +5,15 @@
 # this is to find the best timeframe that contributes to grain yeild
 #
 # This file contains a start date of:
-#     between 20 days after planting and 40 days after planting
+#     between 10 days after planting and 30 days after planting
 # An end date between 
-#     50 days after planting and 80 days after planting.
+#     60 days after planting and 95 days after planting.
 # 
 
-start1 <- 20
-start2 <- 40
-end1 <- 50
-end2 <- 80
+start1 <- -10
+start2 <- 9
+end1 <- 65
+end2 <- 100
 
 
 library(tidyverse)
@@ -163,7 +163,7 @@ rain_dat_sum$rainfall_sum <- NA
          lm_rain$lm_adj_rsquared[i] <- testlist1[[i]][[3]]
       }
       
-      write.csv(lm_rain, file = "data/lmInSeasonRainfall_20.40_50.80.csv", row.names = FALSE)
+      write.csv(lm_rain, file = "data/lmInSeasonRainfall_-10.09_65.100.csv", row.names = FALSE)
       
       message("Script completed running")
       

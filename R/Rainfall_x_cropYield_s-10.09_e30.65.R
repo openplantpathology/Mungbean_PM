@@ -10,10 +10,10 @@
 #     60 days after planting and 95 days after planting.
 # 
 
-start1 <- 10
-start2 <- 30
-end1 <- 60
-end2 <- 95
+start1 <- -10
+start2 <- 9
+end1 <- 30
+end2 <- 64
 
 
 library(tidyverse)
@@ -163,7 +163,7 @@ rain_dat_sum$rainfall_sum <- NA
          lm_rain$lm_adj_rsquared[i] <- testlist1[[i]][[3]]
       }
       
-      write.csv(lm_rain, file = "data/lmInSeasonRainfall_10.30_60.95.csv", row.names = FALSE)
+      write.csv(lm_rain, file = "data/lmInSeasonRainfall_-10.09_30.64.csv", row.names = FALSE)
       
       message("Script completed running")
       
