@@ -107,7 +107,7 @@ AUS_rainfall <- function(StartDate = Sys.Date()-30,
    
    
    rainfall <- sum(rain[as.numeric(row_start):(as.numeric(row_start) + as.numeric(season)),"Rainfall.amount..millimetres."],na.rm = TRUE)
-   message(paste("rainfall:",rainfall))
+   
    message(paste0("Season days: ",season))
    return(rainfall)                                       
 }
