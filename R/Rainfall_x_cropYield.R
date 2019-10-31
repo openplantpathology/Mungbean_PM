@@ -93,8 +93,8 @@ rain_dat_sum$rainfall_sum <- NA
 # this first loop Investigate when is the first day in the season for which in-crop rainfall is important
 
 # use Bomrang to find the quantaty of rain for the season and do a linear regression
-      lm_rain <- data.frame(start_day = rep(-20:40, times = length(-30:30)),
-                            end_day = rep(50:110, each = length(-20:40)),
+      lm_rain <- data.frame(start_day = rep(-10:20, times = length(50:110)),
+                            end_day = rep(50:110, each = length(-10:20)),
                             lm_pval = NA,
                             lm_rsquared = NA,
                             lm_adj_rsquared = NA
@@ -140,6 +140,9 @@ rain_dat_sum$rainfall_sum <- NA
       
       
       
+      
+      
+      
       for(i in seq_along(testlist1)){
          lm_rain$lm_pval[i] <- testlist1[[i]][[1]]
          lm_rain$lm_rsquared[i] <- testlist1[[i]][[2]]
@@ -149,3 +152,4 @@ rain_dat_sum$rainfall_sum <- NA
       write.csv(lm_rain, file = "data/lmInSeasonRainfall.csv", row.names = FALSE)
       
       message("Script completed running")
+      
