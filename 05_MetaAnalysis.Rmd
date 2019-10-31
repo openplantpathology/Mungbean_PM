@@ -196,8 +196,8 @@ lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)),]
 
 
 
-ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_pval))+
-   geom_raster(aes(fill = lm_pval), interpolate = TRUE)+
+ggplot(lm_rain, aes(x = start_day, y = end_day, z = log(lm_pval)))+
+   geom_raster(aes(fill = log(lm_pval)), interpolate = TRUE)+
    geom_contour(bins = 15, colour = "white")+
    geom_abline(intercept = 0, slope = 1, colour = "red")+
    geom_point(data = lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),], aes(x = start_day, y = end_day), colour =" red")+
