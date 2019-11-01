@@ -108,7 +108,7 @@ PM_MB_means %>%
    ggplot(aes(x = as.factor(row_spacing), y = Trials)) +
    xlab("Row Spacing (m)") +
    ylab("N Trials") +
-   ggtitle(label = "Trial row spacings using tebuconazole") +
+   ggtitle(label = "Trial row spacing using tebuconazole") +
    geom_col(aes(fill = fungicide_ai),
             position = "dodge") +
    scale_fill_usq(name = "Fungicide AI") +
@@ -121,7 +121,7 @@ PM_MB_means %>%
 ```
 
 Were there any statistical difference between all row spacing or only some?
-Can we pool certain row spacings that have no significant difference?
+Can we pool certain row spacing that have no significant difference?
 From the preliminary analysis, the graphs seem to imply that if there is a lower overall yield there is no effect of row spacing on yield.
 However, if the average yield is more than approximately 0.6 - 1 t/ha then smaller row spacing has the potential to provide greater yield.
 
@@ -232,7 +232,7 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared))+
 
 ```
 
-The approximate period when in-crop rainfall impacts the most on the mean harvest is bettween 11 - 88 days after planting.
+The approximate period when in-crop rainfall impacts the most on the mean harvest is between 11 - 88 days after planting.
 
 
 
@@ -323,7 +323,7 @@ PM_MB_means %>%
 ```
 
 
-### Converting least-squares tp sample variance
+### Converting least-squares to sample variance
 
 ```{r all_LSD_trials}
 Trials <- PM_MB_means %>%
