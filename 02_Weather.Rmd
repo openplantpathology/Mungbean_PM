@@ -9,37 +9,21 @@ Below I am plotting the mean maximum temperatures over 7 days during the growing
 The vertical lines indicate when powdery mildew was first observed in that season.
 Variation may exist in the sowing date of each trial.
 
+```{r import_libraries_&_data}
+source("R/import_data.R")
+PM.dat <- import_data()  # importing means yield and disease severity for each treatment within each powdery mildew trial on mungbean
+source("R/year2day.r")
+
+```
+
+
 ```{r weather1, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 # This chunk has been removed as the get_PPD2 function has stopped working and needs fixing
 # Update: I have included data files instead of seeking the data from the web. 
 # issue has something to do with website certificates not being appropriate
 
 # Import dataset
-PM.dat <-
-   read_csv("data/1902 powdery mildew-Mungbean - Collated means.csv")
-PM.dat <- PM.dat %>%
-   mutate(trial_ref = as.factor(trial_ref)) %>%
-   mutate(location = as.factor(location)) %>%
-   mutate(host_genotype = as.factor(host_genotype)) %>%
-   mutate(fungicide_ai = as.factor(fungicide_ai)) %>%
-   mutate(trade_name = as.factor(trade_name)) %>%
-   mutate(year = as.factor(year)) %>%
-   mutate(replicates = as.factor(replicates)) %>%
-   mutate(planting_date = as.Date(planting_date, format = "%d/%m/%Y")) %>%
-   mutate(emergence_date = as.Date(emergence_date, format = "%d/%m/%Y")) %>%
-   mutate(flowering_date = as.Date(flowering_date, format = "%d/%m/%Y")) %>%
-   mutate(pod_final_date = as.Date(pod_final_date, format = "%d/%m/%Y")) %>%
-   mutate(mid_late_pod_final = as.Date(mid_late_pod_final, format = "%d/%m/%Y")) %>%
-   mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_1 = as.Date(fungicide_application_1, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_2 = as.Date(fungicide_application_2, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_3 = as.Date(fungicide_application_3, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_4 = as.Date(fungicide_application_4, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_5 = as.Date(fungicide_application_5, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_6 = as.Date(fungicide_application_6, format = "%d/%m/%Y")) %>%
-   mutate(fungicide_application_7 = as.Date(fungicide_application_7, format = "%d/%m/%Y")) %>%
-   mutate(harvest_date = as.Date(harvest_date, format = "%d/%m/%Y")) %>%
-   mutate(final_assessment = as.Date(final_assessment, format = "%d/%m/%Y"))
+
 
 # Need weather data between 2011 and 2017
 
@@ -55,14 +39,6 @@ gg_color_hue <- function(n) {
 }
 cols1 <- gg_color_hue(4)
 
-
-# silo.API <- "YeTZsWlFNC8hvbQLllv8KtbRQWsje4qxic5QQ7mL"
-# # retrieve the maximum temperatures from the six yearsd between 2011 and 2017 at weather station 041525 (Hermitage)
-# silo_war_Tmax <- getPPD2(station_id = 041525,start = 20110101,end = 20160630, silo.apikey = silo.API, variables = "max_temp,min_temp,daily_rain")
-# # retrieve the maximum temperatures from the six yearsd between 2011 and 2017 by location
-# silo_king_Tmax <- getPPD2(lat = -26.58, long = 151.83, start = 20110101, end = 20160630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
-# silo_gatton_Tmax <- getPPD2(lat = -27.56, long = 152.32, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
-# silo_emerald_Tmax <- getPPD2(lat = -23.54, long = 148.19, start = 20110101, end = 20170630, silo.apikey =  silo.API, variables = "max_temp,min_temp,daily_rain")
 
 silo_war_Tmax <- read.csv("./data/silo_war_Tmax.csv")
 silo_king_Tmax <- read.csv("./data/silo_king_Tmax.csv")
@@ -93,7 +69,7 @@ king_Tm_aver <-
 king_Tm_aver <- king_Tm_aver %>%
    mutate(
       Year = substr(king_Tm_aver$date, start = 1, stop = 4),
-      Day = ymd(king_Tm_aver$date)
+      Day = year2day(king_Tm_aver$date)
    )
 
 
@@ -102,9 +78,11 @@ King_FS <- PM.dat %>%
    group_by(trial_ref, location, year) %>%
    summarise(first_sign = mean(as.Date(first_sign_disease), na.rm = T)) %>%
    filter(location == "Kingaroy") %>%
-   mutate(day = ymd(first_sign))
-str(king_Tm_aver)
-str(King_FS)
+   mutate(day = year2day(first_sign))
+
+
+
+
 ggplot(subset(king_Tm_aver, year == levels(factor(King_FS$year))),
        aes(day)) +
    geom_line(aes(y = max_T, colour = year)) +
