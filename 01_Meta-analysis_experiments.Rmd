@@ -35,7 +35,7 @@ source("R/import_data.R")
    
 * 2013  
    + Premer  
-   + Milmerran   
+   + Millmerran   
    + Mt Mary   
    + Goolhi  
 
