@@ -1,10 +1,6 @@
 # Place holder
 
 
-Warning this markdown file needs corrections to variable names.
-Column headers for PM_MB_means were changed and the column names need to be corrected below accordingly
-
-
 
 ```{r load_libraries}
 library(dplyr)
