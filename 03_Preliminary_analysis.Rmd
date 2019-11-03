@@ -34,16 +34,20 @@ Various factors have been studied in the previous experiments which may influenc
 # Import data
 PM_MB_means <- import_data()
 colnames(PM_MB_means)
+class(PM_MB_means$year)
 ```
+
+
+
 
 ```{r row_spacing}
 
-
 # Which row spacing leads to the higher disease severity
 PM_MB_means %>%
-   filter(Year >= 2017) %>%
-   filter(Fungicide == "control") %>%
-   ggplot(aes(y = PM_final_severity, x = row_spacing, colour = Location)) +
+   filter(year == 2017 |
+             year == 2018) %>%
+   filter(fungicide == "control") %>%
+   ggplot(aes(y = PM_final_severity, x = row_spacing, colour = location)) +
    geom_point() +
    #  geom_smooth()+
    scale_y_continuous(limits = c(-5, 15)) +
@@ -52,12 +56,13 @@ PM_MB_means %>%
 
 # Which row spacing leads to the higher yeild potential
 PM_MB_means %>%
-   filter(Year >= 2017) %>%
+   filter(year == 2017|
+             year == 2018) %>%
    #   filter(Fungicide == "control") %>%
    ggplot(aes(
       y = as.numeric(grain_yield.t.ha.),
       x = row_spacing,
-      colour = Location
+      colour = location
    )) +
    geom_smooth(method = "gam") +
    geom_jitter(width = 0.01) +
@@ -77,7 +82,7 @@ First lets look at the quantiles for each fungicide irrespective of other factor
 We will focus on proportional yield gain, compared to no treatment control, as this should partially correct for some spatial and seasonal effects.  
 ```{r fungicide_proportion_yield}
 PM_MB_means %>%
-   group_by(Fungicide) %>%
+   group_by(fungicide) %>%
    summarise(
       n = length(prop_YG),
       lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
@@ -90,19 +95,18 @@ PM_MB_means %>%
    kable(caption = "Fungicide effect on proportion of yield gain") %>%
    kable_styling(fixed_thead = T, full_width = T)
 
-
-
+unique(PM_MB_means$fungicide)
 # plot table as a box plot
 PM_MB_means %>%
    filter(
-      Fungicide == c(
-         "200 g/l  Tebuconazole + 120 g/l  Azoxystrobin" ,
-         "Azoxystrobin",
-         "Tebeconazole",
-         "Propiconoazole"
+      fungicide == c(
+         "200 g/L tebuconazole + 120 g/L azoxystrobin" ,
+         "200 g/L azoxystrobin + 80 g/L cyproconazole",
+         "tebuconazole",
+         "propiconazole"
       )
    ) %>%
-   ggplot(aes(y = prop_YG, x = Fungicide)) +
+   ggplot(aes(y = prop_YG, x = fungicide)) +
    geom_boxplot() +
    geom_hline(aes(yintercept = 0), size = 0.5) +
    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
@@ -126,7 +130,7 @@ There was some hope groups of fungicide could be combined, _i.e._ Propiconazole 
 
 ```{r Fungicide_x_nSprays, message=FALSE}
 PM_MB_means %>%
-   group_by(Fungicide, total_Fungicide) %>%
+   group_by(fungicide, total_fungicide) %>%
    summarise(
       n = length(prop_YG),
       lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
@@ -142,41 +146,40 @@ PM_MB_means %>%
 
 
 PM_MB_means %>%
-   filter(total_Fungicide == 1 | total_Fungicide == 2) %>%
+   filter(total_fungicide == 1 | total_fungicide == 2) %>%
    filter(
-      Fungicide != "Pyrazophos" &
-         Fungicide != "control" &
-         Fungicide != "Benomyl" &
-         Fungicide != "Acibenzolar-S-Methyl" &
-         Fungicide != "200g/L Azoxystrobin + 80 g/L Cyproconazole + adj"
+      fungicide != "pyrazophos" &
+         fungicide != "control" &
+         fungicide != "benomyl" &
+         fungicide != "Acibenzolar-S-methyl" &
+         fungicide != "200g/L azoxystrobin + 80 g/L cyproconazole + adj"
    ) %>%
-   ggplot(aes(y = prop_YG, x = Fungicide)) +
-   facet_grid(rows = vars(total_Fungicide)) +
-   geom_boxplot(aes(fill = Fungicide, alpha = 0.5)) +
+   ggplot(aes(y = prop_YG, x = fungicide)) +
+   facet_grid(rows = vars(total_fungicide)) +
+   geom_boxplot(aes(fill = fungicide, alpha = 0.5)) +
    geom_hline(aes(yintercept = 0), size = 0.5) +
    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
    labs(y = "Proportion of grain yield saved",
         title = "Grain yield proportion saved\ngrouped by Fungicide type") +
    theme_usq() +
    theme(legend.position = "none") +
-   coord_cartesian() +
-   scale_x_discrete(
-      limits = c(
-         "200 g/l  Tebuconazole + 120 g/l  Azoxystrobin",
-         "Propiconazole",
-         "Tebeconazole",
-         "200g/L Azoxystrobin + 80 g/L Cyproconazole",
-         "Sulphur",
-         "Carbendazim",
-         "Pyraclostrobin",
-         "Azoxystrobin"
-      )
-   ) +
+   # coord_cartesian() +
+   # scale_x_discrete(
+   #    limits = c(
+   #       "200 g/l  Tebuconazole + 120 g/l  Azoxystrobin",
+   #       "Propiconazole",
+   #       "Tebeconazole",
+   #       "200g/L Azoxystrobin + 80 g/L Cyproconazole",
+   #       "Sulphur",
+   #       "Carbendazim",
+   #       "Pyraclostrobin",
+   #       "Azoxystrobin"
+   #    )
+   # ) +
    #  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))+
    coord_flip()
 #scale_x_continuous(limits = c(-0.3,0.6))
 
-levels(PM_MB_means$Fungicide)
 
 ```
 

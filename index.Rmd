@@ -1,5 +1,5 @@
 ---
-title: "Powdery Milder yield loss mitigation strategies in Mungbean a Meta-analysis"
+title: "Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis."
 author: "Paul Melloy, Emerson Del Ponte, Charles T. Gray and Adam H. Sparks"
 date: "`r Sys.Date()`"
 output:
@@ -10,22 +10,23 @@ output:
 
 # Research questions
 
-When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yields?
++ When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yields?  
 
-How has the first sign of powdery mildew changed over the seasons and between experimental sites?
++ How has the first sign of powdery mildew changed over the seasons and between experimental sites?  
 
++ Is there an ideal planting time, or fungicide management strategy, which could make use of powdery mildew defoliation during pod maturation resulting in an increased yield?  
 
-How has the first sign of powdery mildew changed over the seasons and between experimental sites?
++ Do infections that occur before flowering increase the probable yield loss?  
 
-When would the ideal planting time be to make use of powdery mildew defoliation in the final growth of the crop?
-
-Do infections that occur before flowering increase the probable yield loss?
-
-What is the length of a mungbean season and how has it varied in this trial?
++ What is the length of a mungbean season and how has it varied in this trial?  
    - This data has not been collected or is not accurate enough to be useful to answer this question.  
 
 
 ## Parts of analysis that need checking
 
-Variability among host genotypes and probable influence of season given that over the years, the genotype studied changed from Berken, Crystal to Jade.  
++ Variability among host genotypes.  
+   + The probable influence of season might be influenced by host genotype. This is because newer varieties were adopted into experimental trials as they were released.  
+   + Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken, Crystal to Jade. Jade was the only cultivar used between 2015 and 2019.  
+   
++ Estimations of plant maturity stages over each growing season. These estimations might able to be computed using APSIM.  
 
