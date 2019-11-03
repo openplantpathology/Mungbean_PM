@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(lubridate)
 library(skimr)
-mb <- read_csv("slim-mungbean-powdery_mildew.csv")
+mb <- read_csv("slim_PM_dat.csv")
 ```
 
 # Clean data
@@ -26,12 +26,11 @@ Any rows that are missing yield data are removed.
 ```{r mutate-filter}
 mb <-
   mb %>%
-  select(-c(fungicide_application_3:fungicide_application_7)) %>%
-  mutate(first_sign_disease = as.Date(first_sign_disease, format = "%d/%m/%Y")) %>%
-  mutate_at(vars(starts_with("fungicide_application_")), dmy) %>%
   mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
-  mutate(fungicide_timing_2 = fungicide_application_2 - first_sign_disease) %>%
-  filter(!is.na(grain_yield.t.ha.))
+  mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
+  mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2) %>%
+  filter(!is.na(grain_yield.t.ha)) %>% 
+  filter(!is.na(PM_final_severity))
 ```
 
 
@@ -71,13 +70,29 @@ ggplot(filter(mb, !is.na(fungicide_timing_2)),
               colour = "red") +
    xlab("Days from first sign") +
    ggtitle("Second Application",
-           subtitle = "Line at 14 days after first sign") +
+           subtitle = "Line at 14 days after first spray") +
    theme_bw()
 ```
 
 Again, suggest any sprays that are prior to 14 days after first sign be first group, the second being 14 days to 17 days after first sign and the third being >= 18 days after first sign.
 
 These groups would then have preventative (before), at first sign and then 14 days after and late applications.
+
+
+## Third spray
+
+```{r third-spray-hist}
+ggplot(filter(mb, !is.na(fungicide_timing_3)),
+       aes(x = as.numeric(fungicide_timing_3))) +
+   geom_histogram(bins = 50, fill = "grey") +
+   geom_vline(linetype = 2,
+              xintercept = 14,
+              colour = "red") +
+   xlab("Days from first sign") +
+   ggtitle("Second Application",
+           subtitle = "Line at 14 days after second spray") +
+   theme_bw()
+```
 
 ```{r cluster}
 mb <-
@@ -86,7 +101,7 @@ mb <-
     cluster_1 = case_when(
       fungicide_timing_1 < 0 ~ "Early",
       fungicide_timing_1 >= 0 &
-        fungicide_timing_1 < 3 ~ "Recommended",
+        fungicide_timing_1 < 4 ~ "Recommended",
       TRUE ~ "Late"
     )
   ) %>%
@@ -96,6 +111,12 @@ mb <-
       fungicide_timing_2 >= 13 &
         fungicide_timing_2 < 17 ~ "Recommended",
       TRUE ~ "Late"
+    )
+  ) %>% 
+  mutate(
+    cluster_3 = case_when(
+      fungicide_timing_3 < 14 ~ "Early",
+      TRUE ~ "Recommended"
     )
   )
 ```
@@ -120,6 +141,8 @@ ggplot(filter(mb, !is.na(fungicide_timing_1)),
 
 ## Second spray
 
+The APVMA permit allows for a second spray not sooner than 14 days after the first.
+
 ```{r hist-clust2}
 ggplot(filter(mb, !is.na(fungicide_timing_2)),
        aes(x = as.numeric(fungicide_timing_2))) +
@@ -128,11 +151,30 @@ ggplot(filter(mb, !is.na(fungicide_timing_2)),
   geom_vline(linetype = 2,
              xintercept = 14,
              colour = "red") +
-  xlab("Days from first sign") +
+  xlab("Days from first application") +
   ggtitle("Second Application",
-          subtitle = "Line at 14 days after first sign") +
+          subtitle = "Line at 14 days after first application") +
   theme_bw()
 ```
 
 Note that the cluster for the second spray "recommended" is from Day 13, not Day 14.
+
+
+## Third spray
+
+The APVMA permit allows for a second spray not sooner than 14 days after the first.
+
+```{r hist-clust3}
+ggplot(filter(mb, !is.na(fungicide_timing_3)),
+       aes(x = as.numeric(fungicide_timing_3))) +
+  geom_histogram(bins = 50, aes(fill = cluster_3)) +
+  scale_fill_viridis_d("Cluster") +
+  geom_vline(linetype = 2,
+             xintercept = 14,
+             colour = "red") +
+  xlab("Days from second sign") +
+  ggtitle("Second Application",
+          subtitle = "Line at 14 days after second application") +
+  theme_bw()
+```
 
