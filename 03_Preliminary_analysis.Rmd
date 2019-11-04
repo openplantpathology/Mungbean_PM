@@ -1,7 +1,7 @@
 # Preliminary Analysis
 
 ```{r PA_Libraries, include=FALSE}
-library(dplyr)
+library(tidyverse)
 library(openxlsx)
 library(kableExtra)
 library(ggplot2)
@@ -18,47 +18,45 @@ source("R/import_data.R")
 # Import data
 PM_MB_means <- import_data()
 
+#remove the variation in different sulphur formulations
+unique(PM_MB_means[
+   grep("sulphur",PM_MB_means$fungicide),
+   "fungicide"])
+PM_MB_means[grep("sulphur",PM_MB_means$fungicide),"fungicide"] <- "sulphur"
+
 ```
 
 Various factors have been studied in the previous experiments which may influence the following results. However unless stated the following plots and analyses were made disregarding effects from other factors not mentioned.
 
-   1) Fungicide type
+   1) Fungicide type  
    
-   2) Fungicide dose
+   2) Fungicide dose (varies only slightly within some fungicide types)  
    
-   3) Row spacing
+   3) Number of fungicide sprays  
    
-   4) Host cultivars (probably is a covariate with season due to changing cultivars over time)
+   4) Timing of fungicide spray/s relative to first sign of disease (ie. when pathogen is present)  
    
-   5) Experiment location
+   5) Host cultivars (probably is a covariate with season due to changing cultivars over time)  
    
-   6) Final disease rating
-
-1. Type of Fungicide sprayed
-2. In-crop rainfall
-3. mungbean cultivar
-4. Fungicide dose (we don't expect this to influence as it was only changes slightly)
-5. Mean daily temperature in the weeks following spray application
-6. Row spacing
-7. Two pathogen species cause PM (new discovery)
-8. irrigated vs non-irrigated trials
-9. Number of fungicide sprays (edited) 
-
-
+   6) Experiment location  
+   
+   7) Row spacing  
+   
+   8) In-crop rainfall  
+   
+   9) irrigated vs non-irrigated trials  
+   
+   10) Mean daily temperature in the weeks following spray application  
+   
+   11) Final disease rating  
+   
+   12) Two pathogen species cause PM (new discovery)
 
 
 ### Fungicides
-
-The data plotted below are from the past field trials (2011 - 2017) described in the aforementioned table.
-All data are a list of mean values from each treatment applied in each experiment.
-
-
-
-
-
-When investigating previous studies into powdery mildew fungicide efficacy on mungbean `r length(unique(PM_MB_means$trial_ref))` trials were found.
-However, only eleven tebuconazole were used for the following meta-analysis, followed by the next most common fungicide, propiconazole. Sulphur was disregarded due to its inconsistency in efficacy.
-
+#### Fungicide type
+The data plotted below are from `r length(unique(PM_MB_means$trial_ref))` field trials between (`r first(levels(PM_MB_means$year))` - `r last(levels(PM_MB_means$year))`) of which the details are described in [Studies considered in meta-analysis section](#studies-considered-in-meta-analysis).  
+All data explored below are a list of mean values from each treatment applied in each experiment. Some experiments have in-season observations of disease incidence and severity, however here we have summarised the data to show only the end of season observations.    
 ```{r Fungicides}
 PM_MB_means %>%
    group_by(fungicide_ai, trial_ref) %>%
@@ -76,16 +74,82 @@ PM_MB_means %>%
    coord_flip()
 ```
 
-Tebuconazole and propiconazole might be able to be pooled as a triazole fungicide treatment. 
-Amistar Xtra is a combination of azoxystrobin and cyproconazole.
-Custodia is a combination of tebuconazole and azoxystrobin.
-Amistar Xtra and Custodia might be able to be pooled given they both contain strobilurin and triazole, however, they contain differing dose ratios (inverted).
 
-Perhaps best way forward is to do an analysis of only the triazoles. Then do another including azoxystrobin as a comparison.
+   - Tebuconazole and propiconazole might be able to be pooled as a triazole fungicide treatment.  
 
-Preliminary analysis of fungicides show there is a difference the effect of fungicide in proportion of yield saved.
+   - Amistar Xtra and Custodia are both contain strobilurin and triazole, however, they because they contain differing dose ratios (inverted) pooling may not be appropriate.  
 
-#### Fungicide Doses
+   - Perhaps best way forward is to do an analysis of only the triazoles/demethylation inhibitors. Then do another including azoxystrobin as a comparison.  
+
+The primary focus of this research is the effect of fungicide on mitigating yield loss to disease. To reduce the affect of location and seasonal influences we will investigate the proportion of grain yield saved, relative to the no spray controls.  
+
+First lets investigate the difference in the effect of fungicide on proportion of yield saved?  
+
+```{r Fungicide_x_nSprays, message=FALSE}
+PM_MB_means %>%
+   group_by(fungicide, total_fungicide) %>%
+   summarise(
+      n = length(prop_YG),
+      lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
+      median = median(prop_YG, na.rm = T),
+      mean = mean(prop_YG, na.rm = T),
+      upper_97.5 = quantile(prop_YG, na.rm = T, c(0.975))
+   ) %>%
+   filter(n >= 5) %>% # remove any fungicide groups with less than 5 observations
+   arrange(desc(median)) %>%
+   kable(caption = "Fungicide effect on proportion of yield gain.") %>%
+   kable_styling(fixed_thead = T, full_width = T) %>%
+   footnote(general = "Fungicides with less than five observations were omitted from this table")
+
+class(PM_MB_means$fungicide)
+
+PM_MB_means %>%
+   mutate(fungicide = as.factor(PM_MB_means$fungicide)) %>%
+   filter(total_fungicide == 1 | total_fungicide == 2) %>%
+   filter(
+      fungicide != "pyrazophos" &
+         fungicide != "control" &
+         fungicide != "benomyl" &
+         fungicide != "Acibenzolar-S-methyl"
+   ) %>%
+   mutate(fungicide = factor(fungicide, 
+                             levels = c("carbendazim", "pyraclostrobin",
+                                        "sulphur", "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                                        "tebuconazole", "propiconazole", 
+                                        "200 g/L tebuconazole + 120 g/L azoxystrobin"))) %>%
+   ggplot(aes(y = prop_YG, x = fungicide)) +
+   facet_grid(rows = vars(total_fungicide)) +
+   geom_boxplot(aes(fill = fungicide, alpha = 0.5)) +
+   geom_hline(aes(yintercept = 0), size = 0.5) +
+   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
+   labs(y = "Proportion of grain yield saved",
+        title = "Grain yield proportion saved\ngrouped by Fungicide type") +
+   theme_usq() +
+   theme(legend.position = "none") +
+   # coord_cartesian() +
+   # scale_x_discrete(
+   #    limits = c(
+   #       "200 g/l  Tebuconazole + 120 g/l  Azoxystrobin",
+   #       "Propiconazole",
+   #       "Tebeconazole",
+   #       "200g/L Azoxystrobin + 80 g/L Cyproconazole",
+   #       "Sulphur",
+   #       "Carbendazim",
+   #       "Pyraclostrobin",
+   #       "Azoxystrobin"
+   #    )
+   # ) +
+   #  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))+
+   coord_flip()
+#scale_x_continuous(limits = c(-0.3,0.6))
+
+
+```
+
+
+
+
+#### Fungicide Doses  
 
 All trials that used tebuconazole used approximately the same dose.
 Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare. 
@@ -108,85 +172,12 @@ PM_MB_means %>%
    theme_usq()
 ```
 
+#### Number of fungicide sprays  
+
+#### Timing of fungicide sprays
 
 
-
-
-
-### Row spacing
-
-Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease.
-The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly. This finding has also been shown by Kerry McKenzie's work as well.
-Eight trials used a row spacing of 0.75&nbsp;meters and tebuconazole as an active ingredient (AI).
-
-```{r row_spacing.m}
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole" | fungicide_ai == "propiconazole") %>%
-   group_by(fungicide_ai, row_spacing, trial_ref) %>%
-   summarise() %>%
-   count() %>%
-   rename(Trials = n) %>%
-   ggplot(aes(x = as.factor(row_spacing), y = Trials)) +
-   xlab("Row Spacing (m)") +
-   ylab("N Trials") +
-   ggtitle(label = "Trial row spacing using tebuconazole") +
-   geom_col(aes(fill = fungicide_ai),
-            position = "dodge") +
-   scale_fill_usq(name = "Fungicide AI") +
-   theme_usq()
-
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-         row_spacing == 0.75) %>% 
-   glimpse()
-```
-
-Were there any statistical difference between all row spacing or only some?
-Can we pool certain row spacing that have no significant difference?
-From the preliminary analysis, the graphs seem to imply that if there is a lower overall yield there is no effect of row spacing on yield.
-However, if the average yield is more than approximately 0.6 - 1 t/ha then smaller row spacing has the potential to provide greater yield.
-
-
-```{r row_spacing}
-
-# Which row spacing leads to the higher disease severity
-PM_MB_means %>%
-   filter(year == 2017 |
-             year == 2018) %>%
-   filter(fungicide == "control") %>%
-   ggplot(aes(y = PM_final_severity, x = row_spacing, colour = location)) +
-   geom_point() +
-   #  geom_smooth()+
-   scale_y_continuous(limits = c(-5, 15)) +
-   theme_usq()
-
-
-# Which row spacing leads to the higher yeild potential
-PM_MB_means %>%
-   filter(year == 2017|
-             year == 2018) %>%
-   #   filter(Fungicide == "control") %>%
-   ggplot(aes(
-      y = as.numeric(grain_yield.t.ha.),
-      x = row_spacing,
-      colour = location
-   )) +
-   geom_smooth(method = "gam") +
-   geom_jitter(width = 0.01) +
-   #   scale_y_continuous(limits = c(-5,15))+
-   theme_usq()
-
-
-
-```
-
-
-
-
-
-
-### Host genotypes
-
+### Mungbean cultivars  
 Host genotype may need to be analysed to determine the effect.
 
 ```{r Host_genotype}
@@ -219,28 +210,116 @@ In general the mungbean varieties have the following resistance to powdery milde
 
 Host genotype seems to contribute to the variation in yield. Berken shows higher yields compared to crystal and jade.
 ```{r yield_vol}
+# this could be converted into a shiny app as a chunk. Make each input for the function a shiny option
+# Outputs the table and graph
 source("R/yield_volatility.r") #function to investigate the volatility in yields
+# Volitility is the range between the upper and lower 97.5 and 2.5 % quartiles
 
-yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
-yield_volatility(genotype_by_trial = FALSE, control_only = TRUE)
-yield_volatility(genotype_by_trial = FALSE, control_only = FALSE, location = "Hermitage")
+YV1 <- yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
+YV1[[2]]
+YV1[[3]]
+YV2 <- yield_volatility(genotype_by_trial = FALSE, control_only = TRUE)
+YV2[[2]]
 
-yield_volatility("Crystal",control_only = TRUE)
-yield_volatility("Crystal",control_only = FALSE)
+YV1_herm <- yield_volatility(genotype_by_trial = FALSE, control_only = FALSE, location = "Hermitage")
+YV1_herm[[2]]
 
-yield_volatility("Jade",control_only = TRUE)
-yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
+YV1_crystal <- yield_volatility("Crystal",control_only = FALSE)
+YV1_crystal[[2]]
+
+YV2_crystal <- yield_volatility("Crystal",control_only = TRUE)
+YV2_crystal[[2]]
+
+
+YV1_herm_jade <- yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
+YV2_jade <- yield_volatility("Jade",control_only = TRUE)
 
 ```
+
+
+
+
+
+### Row spacing  
+
+Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease.
+The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly. This finding has also been shown by Kerry McKenzie's work as well.
+Eight trials used a row spacing of 0.75&nbsp;meters and tebuconazole as an active ingredient (AI).
+
+```{r row_spacing.m}
+PM_MB_means %>%
+   filter(fungicide_ai == "tebuconazole" | fungicide_ai == "propiconazole") %>%
+   group_by(fungicide_ai, row_spacing, trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Trials = n) %>%
+   ggplot(aes(x = as.factor(row_spacing), y = Trials)) +
+   xlab("Row Spacing (m)") +
+   ylab("N Trials") +
+   ggtitle(label = "Trial row spacing using tebuconazole") +
+   geom_col(aes(fill = fungicide_ai),
+            position = "dodge") +
+   scale_fill_usq(name = "Fungicide AI") +
+   theme_usq()
+
+PM_MB_means %>%
+   filter(fungicide_ai == "tebuconazole",
+         row_spacing == 0.75) %>% 
+   glimpse()
+```
+
+Were there any statistical difference between all row spacing or only some?
+Can we pool certain row spacing that have no significant difference?  
+From the preliminary analysis, the graphs seem to imply if there is a lower overall yield there is no effect of row spacing on yield.
+However, if the average yield is more than approximately 0.6 - 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.
+
+
+```{r row_spacing}
+
+# Which row spacing leads to the higher disease severity
+PM_MB_means %>%
+   filter(year == 2017 |
+             year == 2018) %>%
+   filter(fungicide == "control") %>%
+   ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
+   geom_boxplot() +
+   #  geom_smooth()+
+   scale_y_continuous(limits = c(-5, 15)) +
+   theme_usq()+
+   ggtitle("Powdery mildew variation between different row spacing")
+
+
+# Which row spacing leads to the higher yeild potential
+PM_MB_means %>%
+   filter(year == 2017|
+             year == 2018) %>%
+   #   filter(Fungicide == "control") %>%
+   ggplot(aes(
+      y = as.numeric(grain_yield.t.ha.),
+      x = row_spacing,
+      colour = location
+   )) +
+   geom_smooth(method = "gam") +
+   geom_jitter(width = 0.01) +
+   #   scale_y_continuous(limits = c(-5,15))+
+   theme_usq()+
+   ggtitle("Grain yield results for different row spacing at three locations")
+
+
+
+```
+
+
+
+
+
 
 
 ### Yield vs in-season rain  
 
 In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate any relationship I will loop a linear model over time periods from 20 days prior to planting, to 100 days after planting.
 
-#### Best start day for in-crop rainfall
-
-Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time. The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run. For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
+Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time. To speed up the computation I split the script into four, ran the jobs and bound the data into one frame. The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run. For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
 
 ```{r rainfall_sum_Sstart}
 # The four data files were created from four scripts run as four jobs in Rstudio
@@ -289,10 +368,33 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared))+
    scale_fill_distiller(palette ="RdBu") 
 
 
+source("R/AUS_rainfall_function.r")
+source("R/rainfall_sum_dat.R")
+
+for(i in rain_dat_sum$trial_ref){
+dat_rain <- rain_dat_sum[rain_dat_sum$trial_ref == i,]
+   
+   rain_dat_sum[which(rain_dat_sum$trial_ref == i), "rainfall_sum"] <- 
+      AUS_rainfall(StartDate = as.Date(dat_rain$planting_date) +
+                   lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)), "start_day"],
+                EndDate = as.Date(dat_rain$planting_date) +
+                   lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)), "end_day"],
+                latlong = as.vector(unlist(dat_rain[, 5:6])))
+}
+
+summary(lm(rainfall_sum ~ grain_yield, 
+                             data = rain_dat_sum[rain_dat_sum$location != "Hermitage",]))
+
+rain_dat_sum %>%
+   ggplot(aes(x = grain_yield, y = rainfall_sum, colour = location))+
+   geom_point() + 
+   geom_abline(intercept = -167.98, slope = 284.44, colour = "red")
+
+
 
 ```
 
-The approximate period when in-crop rainfall impacts the most on the mean harvest is between 11 - 88 days after planting.
+The approximate period when in-crop rainfall impacts the most on the mean harvest is between 14 - 67 days after planting.
 
 
 
@@ -416,60 +518,7 @@ There was some hope groups of fungicide could be combined, _i.e._ Propiconazole 
 
 
 
-```{r Fungicide_x_nSprays, message=FALSE}
-PM_MB_means %>%
-   group_by(fungicide, total_fungicide) %>%
-   summarise(
-      n = length(prop_YG),
-      lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
-      median = median(prop_YG, na.rm = T),
-      mean = mean(prop_YG, na.rm = T),
-      upper_97.5 = quantile(prop_YG, na.rm = T, c(0.975))
-   ) %>%
-   filter(n >= 5) %>% # remove any fungicide groups with less than 5 observations
-   arrange(desc(median)) %>%
-   kable(caption = "Fungicide effect on proportion of yield gain") %>%
-   kable_styling(fixed_thead = T, full_width = T)
 
-
-
-PM_MB_means %>%
-   filter(total_fungicide == 1 | total_fungicide == 2) %>%
-   filter(
-      fungicide != "pyrazophos" &
-         fungicide != "control" &
-         fungicide != "benomyl" &
-         fungicide != "Acibenzolar-S-methyl" &
-         fungicide != "200g/L azoxystrobin + 80 g/L cyproconazole + adj"
-   ) %>%
-   ggplot(aes(y = prop_YG, x = fungicide)) +
-   facet_grid(rows = vars(total_fungicide)) +
-   geom_boxplot(aes(fill = fungicide, alpha = 0.5)) +
-   geom_hline(aes(yintercept = 0), size = 0.5) +
-   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-   labs(y = "Proportion of grain yield saved",
-        title = "Grain yield proportion saved\ngrouped by Fungicide type") +
-   theme_usq() +
-   theme(legend.position = "none") +
-   # coord_cartesian() +
-   # scale_x_discrete(
-   #    limits = c(
-   #       "200 g/l  Tebuconazole + 120 g/l  Azoxystrobin",
-   #       "Propiconazole",
-   #       "Tebeconazole",
-   #       "200g/L Azoxystrobin + 80 g/L Cyproconazole",
-   #       "Sulphur",
-   #       "Carbendazim",
-   #       "Pyraclostrobin",
-   #       "Azoxystrobin"
-   #    )
-   # ) +
-   #  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))+
-   coord_flip()
-#scale_x_continuous(limits = c(-0.3,0.6))
-
-
-```
 
 
 Lets run this by a quick linear mixed effect model
@@ -746,8 +795,8 @@ The following density plots show mean yield saved in relation to how many sprays
 
 # Making a table of showing the upper and lower percentiles (95%)
 quant_PMy <- PM_MB_means %>%
-   filter(Fungicide != "control") %>%
-   group_by(total_Fungicide) %>%
+   filter(fungicide != "control") %>%
+   group_by(total_fungicide) %>%
    summarise(
       n = length(yield_gain),
       lower_2.5 = quantile(yield_gain, na.rm = T, c(0.025)),
@@ -757,10 +806,10 @@ quant_PMy <- PM_MB_means %>%
    )
 
 # Density plot of Number of fungicide applications and the resulting yeild saved (as a proportion)
-ggplot(subset(PM_MB_means, Fungicide != "control"), aes(yield_gain)) +
+ggplot(subset(PM_MB_means, fungicide != "control"), aes(yield_gain)) +
    geom_density(aes(
-      group = factor(total_Fungicide),
-      fill = factor(total_Fungicide)
+      group = factor(total_fungicide),
+      fill = factor(total_fungicide)
    ), alpha = 0.6) +
    geom_vline(xintercept = 0, size = 1) +
    labs(x = "Grain yield saved (t/ha)",
@@ -773,14 +822,14 @@ ggplot(subset(PM_MB_means, Fungicide != "control"), aes(yield_gain)) +
    geom_vline(
       data = quant_PMy,
       aes(xintercept = lower_2.5,
-          colour = factor(total_Fungicide)),
+          colour = factor(total_fungicide)),
       size = 0.9,
       linetype =  "dashed"
    ) +
    geom_vline(
       data = quant_PMy,
       aes(xintercept = upper_97.5,
-          colour = factor(total_Fungicide)),
+          colour = factor(total_fungicide)),
       size = 0.9,
       linetype =  "dashed"
    ) +
