@@ -1,15 +1,4 @@
 "trial","trial_ref","year","location","row_spacing","first_sign_disease","fungicide_ai","fungicide_application_1","fungicide_application_2","fungicide_application_3","total_fungicide","grain_yield.t.ha","yield_error","PM_final_severity","PM_final_severity_error"
-"mung0001/01_2001_Bongeen_1_Emerald_1","mung0001/01",1,"Bongeen_1",1,2001-03-16,"control",NA,NA,NA,0,0.506,0.085,3.4,0.54
-"mung0102/02_2002_Hermitage_Emerald_0.75","mung0102/02",2,"Hermitage",0.75,2002-03-19,"control",NA,NA,NA,0,NA,NA,3.5,0.42
-"mung0102/03_2002_Hermitage_Emerald_0.75","mung0102/03",2,"Hermitage",0.75,2002-04-04,"control",NA,NA,NA,0,NA,NA,3.67,0.45
-"mung0102/04_2002_Kingaroy_Emerald_0.9","mung0102/04",2,"Kingaroy",0.9,2002-04-05,"control",NA,NA,NA,1,0.945,NA,2.63,0.32
-"mung0304/01_2002_Redvale_Berken_0.9","mung0304/01",2,"Redvale",0.9,2004-03-23,"control",NA,NA,NA,1,0.814,NA,4.29,0.29
-"mung0910/01_2010_Hermitage_Berken_0.25","mung0910/01",3,"Hermitage",0.25,2010-03-18,"control",NA,NA,NA,0,1.0011,0.033003976,5,0
-"mung0910/01_2010_Hermitage_Crystal_0.25","mung0910/01",3,"Hermitage",0.25,2010-03-18,"control",NA,NA,NA,0,1.7045,0.110798065,5.333333333,0.577350269
-"mung0910/01_2010_Hermitage_Green Diamond_0.25","mung0910/01",3,"Hermitage",0.25,2010-03-18,"control",NA,NA,NA,0,1.0333,0.077024052,4.333333333,0.577350269
-"mung0910/02_2010_Kingaroy_Berken_0.25","mung0910/02",3,"Kingaroy",0.25,2010-03-26,"control",NA,NA,NA,0,1.428,12.5,6.667,17.9
-"mung0910/02_2010_Kingaroy_Crystal_0.25","mung0910/02",3,"Kingaroy",0.25,2010-03-26,"control",NA,NA,NA,0,1.381,103.217,4,17.9
-"mung0910/02_2010_Kingaroy_Green Diamond_0.25","mung0910/02",3,"Kingaroy",0.25,2010-03-26,"control",NA,NA,NA,0,1.373,103.217,3.667,17.9
 "mung1011/01_2011_Hermitage_Berken_0.75","mung1011/01",4,"Hermitage",0.75,2011-03-28,"control",NA,NA,NA,0,1.6618554,0.117323327,4.666666667,0.516397779
 "mung1011/01_2011_Hermitage_Berken_0.75","mung1011/01",4,"Hermitage",0.75,2011-03-28,"tebuconazole",2011-03-28,NA,NA,1,1.7693124,0.194419561,2,0
 "mung1011/01_2011_Hermitage_Crystal_0.75","mung1011/01",4,"Hermitage",0.75,2011-03-28,"control",NA,NA,NA,0,1.387592,0.12446517,5,0
@@ -57,7 +46,6 @@
 "mung1415/01_2015_Hermitage_Jade_0.75","mung1415/01",7,"Hermitage",0.75,2015-03-16,"tebuconazole",2015-03-17,2015-03-31,NA,2,2.152,0.248,5.4,1.140175425
 "mung1415/01_2015_Hermitage_Jade_0.75","mung1415/01",7,"Hermitage",0.75,2015-03-16,"tebuconazole",2015-03-24,NA,NA,1,2.124,0.061,6.6,0.547722558
 "mung1415/01_2015_Hermitage_Jade_0.75","mung1415/01",7,"Hermitage",0.75,2015-03-16,"tebuconazole",2015-03-24,2015-04-07,NA,2,2.176,0.116,6.4,0.547722558
-"mung1415/02_2015_Dalby_Jade_0.75","mung1415/02",7,"Dalby",0.75,2015-03-02,"control",NA,NA,NA,0,0.957,NA,NA,NA
 "mung1516/03_2016_Emerald_Jade_0.75","mung1516/03",8,"Emerald",0.75,2016-03-17,"control",NA,NA,NA,0,0.805,NA,4.5,NA
 "mung1516/03_2016_Emerald_Jade_0.75","mung1516/03",8,"Emerald",0.75,2016-03-17,"tebuconazole",2016-03-17,NA,NA,1,0.87,NA,3.5,NA
 "mung1516/03_2016_Emerald_Jade_0.75","mung1516/03",8,"Emerald",0.75,2016-03-17,"tebuconazole",2016-03-17,2016-03-31,NA,2,0.833,NA,2.5,NA
