@@ -1,4 +1,7 @@
-yield_volatility <- function(genotype, control_only = TRUE, genotype_by_trial = TRUE, location = NA){
+yield_volatility <- function(genotype, 
+                             control_only = TRUE, 
+                             genotype_by_trial = TRUE, 
+                             location = NA){
    
    if(isTRUE(genotype_by_trial)){
    
@@ -36,7 +39,8 @@ yield_volatility <- function(genotype, control_only = TRUE, genotype_by_trial = 
    
    Plot1 <- dat3 %>%
       ggplot(aes(x = values))+
-      geom_density(aes(fill = trial), alpha = 0.4)
+      geom_density(aes(fill = trial), alpha = 0.4)+
+      xlim(0.25,2.25)
    
    mean_Y_volatility <- dat3 %>%
       group_by(trial) %>%
