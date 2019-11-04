@@ -70,3 +70,54 @@ for (i in unique(PM_MB_means$trial_ref)) {
 write.csv(PM_MB_means,
           "data/1902 PM_MB_means&Ygains.csv")
 ```
+
+
+
+
+```{r clustered_fungicide_applications}
+source("R/slimming_PM_dat.R")
+head(slim_PM_dat)
+
+
+slim_PM_dat %<>%
+  mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
+  mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
+  mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2) %>%
+  filter(!is.na(grain_yield.t.ha)) %>% 
+  filter(!is.na(PM_final_severity))
+
+
+```
+
+
+```{r cluster}
+
+slim_PM_dat %<>%
+  mutate(
+    cluster_1 = case_when(
+      fungicide_timing_1 < 0 ~ "Early",
+      fungicide_timing_1 >= 0 &
+        fungicide_timing_1 < 4 ~ "Recommended",
+      TRUE ~ "Late"
+    )
+  ) %>%
+  mutate(
+    cluster_2 = case_when(
+      fungicide_timing_2 < 13 ~ "Early",
+      fungicide_timing_2 >= 13 &
+        fungicide_timing_2 < 17 ~ "Recommended",
+      TRUE ~ "Late"
+    )
+  ) %>% 
+  mutate(
+    cluster_3 = case_when(
+      fungicide_timing_3 < 14 ~ "Early",
+      TRUE ~ "Recommended"
+    )
+  )
+
+slim_PM_dat[slim_PM_dat$fungicide_ai == "control", c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
+                                                     "cluster_1", "cluster_2","cluster_3")] <- "control"
+
+
+```
