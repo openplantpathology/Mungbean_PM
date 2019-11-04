@@ -67,7 +67,7 @@ AUS_rainfall <- function(StartDate = Sys.Date()-30,
       
          
     }
-	head(rain)
+	
 	rain$Bureau.of.Meteorology.station.number <- as.character(rain[,2])
 	
 	if(nchar(rain$Bureau.of.Meteorology.station.number[1]) == 5){
@@ -106,7 +106,10 @@ AUS_rainfall <- function(StartDate = Sys.Date()-30,
 
    
    
-   rainfall <- sum(rain[as.numeric(row_start):(as.numeric(row_start) + as.numeric(season)),"Rainfall.amount..millimetres."],na.rm = TRUE)
+   rainfall <- sum(
+      rain[as.numeric(row_start):(as.numeric(row_start) + 
+                                     as.numeric(season)),
+           6],na.rm = TRUE)
    
    message(paste0("Season days: ",season))
    return(rainfall)                                       

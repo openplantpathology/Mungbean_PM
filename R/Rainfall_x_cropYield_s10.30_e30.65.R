@@ -146,7 +146,17 @@ rain_dat_sum$rainfall_sum <- NA
          pval <- coef(lmod1)[2,4]
          rsqu <- lmod1$r.squared
          ADrs <- lmod1$adj.r.squared
-         return(list(pval,rsqu,ADrs))
+
+         
+         lmod2 <- summary(lm(rainfall_sum ~ grain_yield, 
+                             data = rain_dat_sum)) # remove hermitage which is irrigated
+         
+         pval2 <- coef(lmod2)[2,4]
+         rsqu2 <- lmod2$r.squared
+         ADrs2 <- lmod2$adj.r.squared
+         
+         
+         return(list(pval,rsqu,ADrs,pval2,rsqu2,ADrs2))
          
       })
       
@@ -164,6 +174,14 @@ rain_dat_sum$rainfall_sum <- NA
       }
       
       write.csv(lm_rain, file = "data/lmInSeasonRainfall_10.30_30.64.csv", row.names = FALSE)
+      
+      for(i in seq_along(testlist1)){
+         lm_rain$lm_pval[i] <- testlist1[[i]][[4]]
+         lm_rain$lm_rsquared[i] <- testlist1[[i]][[5]]
+         lm_rain$lm_adj_rsquared[i] <- testlist1[[i]][[6]]
+      }
+      
+      write.csv(lm_rain, file = "data/lmInSeasonRainfall_10.30_30.64_HERM.csv", row.names = FALSE)
       
       message("Script completed running")
       
