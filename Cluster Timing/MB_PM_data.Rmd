@@ -118,8 +118,7 @@ mb <-
       fungicide_timing_3 < 14 ~ "Early",
       fungicide_timing_3 == 14 ~ "Recommended"
     )
-  ) %>% 
-  View()
+  )
 ```
 
 # Histograms with Clusters
