@@ -102,7 +102,7 @@ mb <-
       fungicide_timing_1 < 0 ~ "Early",
       fungicide_timing_1 >= 0 &
         fungicide_timing_1 < 4 ~ "Recommended",
-      TRUE ~ "Late"
+      fungicide_timing_1 > 4 ~ "Late"
     )
   ) %>%
   mutate(
@@ -110,15 +110,16 @@ mb <-
       fungicide_timing_2 < 13 ~ "Early",
       fungicide_timing_2 >= 13 &
         fungicide_timing_2 < 17 ~ "Recommended",
-      TRUE ~ "Late"
+      fungicide_timing_2 > 17 ~ "Late"
     )
   ) %>% 
   mutate(
     cluster_3 = case_when(
       fungicide_timing_3 < 14 ~ "Early",
-      TRUE ~ "Recommended"
+      fungicide_timing_3 == 14 ~ "Recommended"
     )
-  )
+  ) %>% 
+  View()
 ```
 
 # Histograms with Clusters
