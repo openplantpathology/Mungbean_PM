@@ -18,6 +18,7 @@ library(RColorBrewer)
 library(tidyverse)
 library(theme.usq)
 library(bomrang)
+library(lme4)
 
 ```
 
@@ -36,7 +37,7 @@ PM_MB_means[PM_MB_means$location != "Hermitage", "irrigation"] <- FALSE
 
 
 
-### Estimating variance for trials without reported error
+## Estimating variance for trials without reported error
 
 Now for the trickier part creating 'Sampling Variance' for treatments where only mean yield is recorded.  
 The trial which does not report any type of variance also reports that there is no significant difference between the means.
@@ -218,7 +219,7 @@ ggplot(PM_MB_train.2) +
 ```
 
 
-#### Random effects model to predict trial variance
+### Random effects model to predict trial variance
 Just for kicks lets look at the linear regression model as a random effects model where `grain_yield.t.ha` is set as a random slope to the random intercept `trial_ref`.
 
 The model fits better as shown by an ANOVA comparison. But how to impute from this model if mean variance for a trial is unknown...
@@ -264,7 +265,7 @@ I also re-ran the model without including the trial in which we used LSD to inte
 
 
 
-## Between trial variation
+### Between trial variation
 
 Emerson proposed I look at the between trial variation
 ```{r between_trial_variation}
@@ -305,3 +306,38 @@ abline(SV_mod1)
 
 
 ```
+
+
+## Preliminary meta-analysis
+
+```{r}
+slim_PM_dat <- read.csv("data/slim_PM_clusterdat.csv")
+
+m1 <- lmer(grain_yield.t.ha*1000 ~ factor(total_fungicide) + (factor(total_fungicide) | trial_ref), data = slim_PM_dat)
+
+m2 <- lmer(grain_yield.t.ha*1000 ~ factor(total_fungicide) + (1 | trial_ref), data = slim_PM_dat)
+
+anova(m1,m2)
+
+m3 <- lmer(log(grain_yield.t.ha*1000) ~ factor(total_fungicide) + (factor(total_fungicide) | trial_ref), data = slim_PM_dat)
+
+anova(m1, m3)
+summary(m3)
+
+
+```
+
+
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
