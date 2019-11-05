@@ -13,6 +13,148 @@ PM_MB_means <- import_data()
 ```
 
 
+## Standardising sample variance  
+
+The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
+
+```{r variance_types}
+# PM_MB_means$Y_error_type <- forcats::fct_explicit_na(PM_MB_means$Y_error_type, na_level = NA)
+# Trials using tebuconazole
+PM_MB_means %>%
+   filter(fungicide_ai == "tebuconazole",
+         row_spacing == 0.75) %>%
+   group_by(trial_ref, location, Y_error_type) %>%
+   summarise(tebuconazole_trts = length(Y_error_type))
+
+
+# Trials using propiconazole
+PM_MB_means %>%
+   filter(fungicide_ai == "propiconazole",
+          row_spacing == 0.75) %>%
+   group_by(trial_ref, location, Y_error_type) %>%
+   summarise(propiconazole_trts = length(Y_error_type))
+```
+
+The experiment summaries report either standard deviation, least square differences or no error term (`NA`). Below we will convert LSD and standard deviation to sample variance
+
+### Converting least-squares to sample variance
+
+```{r all_LSD_trials}
+Trials <- PM_MB_means %>%
+   filter(
+          Y_error_type == "lsd (P=0.05)") %>%
+   select(trial_ref) %>%
+   distinct()
+Trials
+```
+
+
+The trial, `mung1112/02` uses Least Square Differences (LSD) to describe the variation within the experiment.
+The following code attempts to convert this to sampling variance as per the method in [Nugugi et.al (2011)](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221).
+Ideas for using a T-critical value of 1.697 came from reading a [statisics-how-to website](https://www.statisticshowto.datasciencecentral.com/how-to-calculate-the-least-significant-difference-lsd/).
+A [table of T-critical values](https://www.statisticshowto.datasciencecentral.com/tables/t-distribution-table/) was consulted where 30 degrees of freedom within experiment was used to find the 'T-crit' value of 1.697.
+
+![Calculating sampling variance from mean squared error Paul et al. (2008)](Paul_etal_2008.PNG)
+
+```{r LSD_2_Sampling Variance}
+# Formula and modifications based off information found at https://www.statisticshowto.datasciencecentral.com/how-to-calculate-the-least-significant-difference-lsd/
+
+for (Trial2012 in Trials$trial_ref) {
+   Tcrit <-
+      1.697  # 0.05 and DFw = 30 # T critical value for which there is significant difference between two groups; This value is the same for both trials "mung1112/01" and "mung1112/02"
+   DFw <-
+      sum(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates) -
+      length(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates) # degrees of freedom within groups
+   # n.A <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$replicates[1]
+   # n.B <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$replicates[2]
+   LSD <-
+      PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$yield_error[1]
+   
+   
+   # SSwithin <- #unknown
+   # MSW <- SSwithin / DFw # mean square within (SS within / DF within)
+   
+   
+   #  LSD = (Tcrit) * sqrt(MSW * (1/n.A + 1/n.B))
+   #  (LSD/Tcrit) = sqrt(MSW * (1/n.A + 1/n.B))
+   #  (LSD/Tcrit)^2 = MSW * (1/n.A + 1/n.B)
+   #  (LSD/Tcrit)^2/(1/n.A + 1/n.B) = MSW
+   #  MSE <- (LSD/Tcrit)^2/(1/n.A + 1/n.B) # This formula was abandon in favor for the formula in Nugugi et. at (2011)
+   MSE <-
+      PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates[1] * (LSD /
+                                                                            Tcrit) ^ 2 / 2 # method for finding variance in Nugugi et.al (2011) DOI: 10.1094/phyto-08-10-0221
+   
+   
+   for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates)) {
+      if (j == 1) {
+         Sv <-
+            vector(length = length(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates))
+      }
+      #  Sv[j]^2 = MSE/(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$replicates[j] *
+      #                   PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$grain_yield.t.ha[j])
+      # Balance equation
+      Sv[j] = sqrt(MSE / (
+         PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates[j] *
+            as.numeric(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$grain_yield.t.ha[j])
+      ))
+      
+   }
+   
+   # and replacing the values in the dataset
+   
+   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$yield_error <-
+      Sv
+   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$Y_error_type <-
+      "SamplingVariance"
+   
+}
+```
+
+
+### Converting standard deviation to sample variance
+Now to estimate the variance from the standard deviation
+
+```{r stdev2SampVariance}
+# subset data by those which describe the Yield error with standard deviation
+Trials <- PM_MB_means %>%
+   filter(#fungicide_ai == "tebuconazole",
+      #row_spacing.m == 0.75,
+      Y_error_type == "stdev") %>%
+   select(trial_ref) %>%
+   distinct()
+
+
+# calculate the Sampling variance from the standard deviation
+# standard error of the mean equals the standard deviation divided by the square root of the number of samples
+# Sv <- sem^2 <- stdev/sqrt(n)
+# Sampling variance equals the square of the standard error.
+# Sv <- (stdev/sqrt(n))^2
+
+# Therefore
+
+for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error)) {
+   # create empty vector at first iteration with length of j
+   if (j == 1) {
+      Sv <-
+         vector(length = length(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error))
+   }
+   
+   # Equation to convert standard deviation to Sampling Variance
+   Sv[j] = (PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error[j]) ^
+      2
+}
+
+# and replacing the values in the dataset
+PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error <-
+   Sv
+PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$Y_error_type <-
+   "SamplingVariance"
+```
+
+
+## Yield gains  
+Yield gains and yield gains proportional to the control.
+
 Data from `r length(PM_MB_means$trial_ref)` trials were collected and the means of each treatment calculated (`R/Cleaning historical data.R`). These data were combined into one file `1902 powdery mildew-Mungbean - Collated means.csv`.
 
 ```{r Calculate_yield-gains}
@@ -57,18 +199,18 @@ for (i in unique(PM_MB_means$trial_ref)) {
 # ____________________________________________
 # calculate yield gain and prop_yield gain for experiments with no row spacing data
 
-# dat1 <- PM_MB_means[PM_MB_means$trial_ref == "AM1303", ]
-# 
-# controlY <-
-#    mean(dat1[dat1$fungicide == "control", "grain_yield.t.ha."])
-# 
-# dat1$yield_gain <- dat1$grain_yield.t.ha. - controlY
-# dat1$prop_YG <- dat1$yield_gain / controlY
-# dat1[dat1$fungicide == "control", c("yield_gain", "prop_YG")] <- NA
-# PM_MB_means[PM_MB_means$trial_ref == "AM1303", ] <- dat1
+dat1 <- PM_MB_means[PM_MB_means$trial_ref == "AM1303", ]
+
+controlY <-
+   mean(dat1[dat1$fungicide == "control", "grain_yield.t.ha."])
+
+dat1$yield_gain <- dat1$grain_yield.t.ha. - controlY
+dat1$prop_YG <- dat1$yield_gain / controlY
+dat1[dat1$fungicide == "control", c("yield_gain", "prop_YG")] <- NA
+PM_MB_means[PM_MB_means$trial_ref == "AM1303", ] <- dat1
 
 write.csv(PM_MB_means,
-          "data/1902 PM_MB_means&Ygains.csv")
+          "data/1911_PM_MB_means&Ygains.csv")
 ```
 
 
@@ -116,8 +258,11 @@ slim_PM_dat %<>%
     )
   )
 
-slim_PM_dat[slim_PM_dat$fungicide_ai == "control", c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
-                                                     "cluster_1", "cluster_2","cluster_3")] <- "control"
+slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
+            c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
+              "cluster_1", "cluster_2","cluster_3"
+              )] <- "control"
 
+write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
 
 ```
