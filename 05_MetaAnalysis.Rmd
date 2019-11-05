@@ -330,8 +330,17 @@ summary(m3)
 
 
 
-
 ```{r}
+slim_PM_dat <- read.csv("data/slim_PM_clusterdat.csv")
+slim_PM_dat$spray_management
+
+m4 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
+
+m5 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
+
+anova(m4,m5) # m5 has a much lower AIC and significantly better model
+
+summary(m5)
 
 ```
 
