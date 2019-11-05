@@ -234,7 +234,7 @@ slim_PM_dat %<>%
 
 ```{r cluster}
 
-slim_PM_dat %>%
+slim_PM_dat %<>%
   mutate(
     cluster_1 = case_when(
       fungicide_timing_1 < 0 ~ "Early",
@@ -268,3 +268,76 @@ slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
 write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
 
 ```
+
+Cluster the clusters
+
+```{r cluster_clusters}
+
+clusters <- unique(slim_PM_dat[c("cluster_1","cluster_2","cluster_3")])
+
+for(i in 1:nrow(clusters)){
+   if(i == 1){clusters$n <- NA
+   clusters$n_x_trial <- NA}
+   
+   clusters[i,"n"] <- nrow(slim_PM_dat[slim_PM_dat$cluster_1 == clusters[i,"cluster_1"] &
+                                          slim_PM_dat$cluster_2 == clusters[i,"cluster_2"] &
+                                          slim_PM_dat$cluster_3 == clusters[i,"cluster_3"],
+                                       ])
+   
+   clusters[i,"n_x_trial"] <- length(unique(slim_PM_dat[slim_PM_dat$cluster_1 == clusters[i,"cluster_1"] &
+                                          slim_PM_dat$cluster_2 == clusters[i,"cluster_2"] &
+                                          slim_PM_dat$cluster_3 == clusters[i,"cluster_3"],
+                                       "trial_ref"]))
+   
+}
+
+knitr::kable(clusters)
+
+```
+
+From this we can see that there are 16 different cluster combinations, which would make the analysis too difficult. I will reduce this to 6 levels within one variable.  
+
+Single sprays either early, recommended timing or late.
+
+Two sprays or more where the first spray was either early, recommended timing, or late.
+
+
+```{r simple_clusters}
+
+slim_PM_dat %>%
+  mutate(
+    spray_management = case_when(
+       fungicide_timing_1 < 0 &
+          is.na(fungicide_application_2) &
+          is.na(fungicide_application_3) ~ "Early",
+       fungicide_timing_1 >= 0 &
+          fungicide_timing_1 < 4 &
+          is.na(fungicide_application_2) &
+          is.na(fungicide_application_3) ~ "Recommended",
+      fungicide_timing_1 >= 4 &
+          is.na(fungicide_application_2) &
+          is.na(fungicide_application_3) ~ "Late",
+      fungicide_timing_1 < 0 &
+          !is.na(fungicide_application_2) ~ "Early_plus",
+       fungicide_timing_1 >= 0 &
+          fungicide_timing_1 < 4 &
+          !is.na(fungicide_application_2) ~ "Recommended_plus",
+      fungicide_timing_1 >= 4 &
+          !is.na(fungicide_application_2) ~ "Late_plus",
+      TRUE ~ NA_character_
+    )
+  ) 
+
+slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
+            c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
+              "spray_management"
+              )] <- "control"
+
+write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
+```
+
+
+
+
+
+
