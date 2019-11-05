@@ -99,6 +99,7 @@ mb <-
   mb %>%
   mutate(
     cluster_1 = case_when(
+      is.na(fungicide_timing_1) ~ NA_character_,
       fungicide_timing_1 < 0 ~ "Early",
       fungicide_timing_1 >= 0 &
         fungicide_timing_1 < 4 ~ "Recommended",
@@ -107,6 +108,7 @@ mb <-
   ) %>%
   mutate(
     cluster_2 = case_when(
+      is.na(fungicide_timing_2) ~ NA_character_,
       fungicide_timing_2 < 13 ~ "Early",
       fungicide_timing_2 >= 13 &
         fungicide_timing_2 < 17 ~ "Recommended",
@@ -115,6 +117,7 @@ mb <-
   ) %>% 
   mutate(
     cluster_3 = case_when(
+      is.na(fungicide_timing_3) ~ NA_character_,
       fungicide_timing_3 < 14 ~ "Early",
       fungicide_timing_3 == 14 ~ "Recommended"
     )
