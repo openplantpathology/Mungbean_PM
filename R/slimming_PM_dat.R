@@ -2,7 +2,8 @@
 # The slimed down dataset will be used for the Meta-analysis
 
 source("R/import_data.R")
-PM_MB_means <- import_data()
+# PM_MB_means <- import_data()
+PM_MB_means <- read.csv("data/1911_PM_MB_means&Ygains.csv")
 
 slim_PM_dat <- data.frame(
    trial = paste(PM_MB_means$trial_ref, PM_MB_means$year,
