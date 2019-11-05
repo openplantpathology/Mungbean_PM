@@ -304,8 +304,8 @@ Two sprays or more where the first spray was either early, recommended timing, o
 
 ```{r simple_clusters}
 
-slim_PM_dat %>%
-  mutate(
+slim_PM_dat <- slim_PM_dat %>%
+   mutate(
     spray_management = case_when(
        fungicide_timing_1 < 0 &
           is.na(fungicide_application_2) &
@@ -323,8 +323,7 @@ slim_PM_dat %>%
           fungicide_timing_1 < 4 &
           !is.na(fungicide_application_2) ~ "Recommended_plus",
       fungicide_timing_1 >= 4 &
-          !is.na(fungicide_application_2) ~ "Late_plus",
-      TRUE ~ NA_character_
+          !is.na(fungicide_application_2) ~ "Late_plus"
     )
   ) 
 
