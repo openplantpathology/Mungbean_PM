@@ -322,8 +322,8 @@ slim_PM_dat <- slim_PM_dat %>%
        fungicide_timing_1 >= 0 &
           fungicide_timing_1 < 4 &
           !is.na(fungicide_application_2) ~ "Recommended_plus",
-      fungicide_timing_1 >= 4 &
-          !is.na(fungicide_application_2) ~ "Late_plus"
+      fungicide_timing_1 >= 4 ~ "Late_plus",
+      TRUE ~ "Other"
     )
   ) 
 
@@ -332,10 +332,50 @@ slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
               "spray_management"
               )] <- "control"
 
+table(slim_PM_dat$spray_management)
+
 write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
 ```
 
+```{r simpler_clusters_REMOVE}
 
+slim_PM_dat <- slim_PM_dat %>%
+   mutate(
+    spray_management = case_when(
+       fungicide_timing_1 < 0 &
+          is.na(fungicide_application_2) &
+          is.na(fungicide_application_3) ~ "Early",
+       fungicide_timing_1 >= 0 &
+          fungicide_timing_1 < 4 &
+          is.na(fungicide_application_2) &
+          is.na(fungicide_application_3) ~ "Recommended",
+      fungicide_timing_1 >= 4 &
+          is.na(fungicide_application_2) &
+          is.na(fungicide_application_3) ~ "Late",
+      fungicide_timing_1 < 0 &
+          !is.na(fungicide_application_2) ~ "Early_plus",
+       fungicide_timing_1 >= 0 &
+          fungicide_timing_1 < 4 &
+          !is.na(fungicide_application_2) ~ "Recommended_plus",
+      fungicide_timing_1 >= 4 ~ "Late_plus",
+      TRUE ~ "Other"
+    )
+  ) 
+
+slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
+            c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
+              "spray_management"
+              )] <- "control"
+
+table(slim_PM_dat$spray_management)
+
+# Remove "Early_plus" and "Late" due to lack of replicates
+
+slimer_PM_dat <- slim_PM_dat[slim_PM_dat$spray_management != "Late" & 
+               slim_PM_dat$spray_management != "Early_plus",]
+
+write.csv(slimer_PM_dat, file = "data/slimer_PM_clusterdat.csv", row.names = FALSE)
+```
 
 
 
