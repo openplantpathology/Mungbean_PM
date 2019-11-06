@@ -332,20 +332,54 @@ summary(m3)
 
 ```{r}
 slim_PM_dat <- read.csv("data/slim_PM_clusterdat.csv")
-slim_PM_dat$spray_management
 
 m4 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
 
-m5 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
+m5 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat) # Model failed to converge
+
+m5.0 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (1 | trial_ref), data = slim_PM_dat) # Model failed to converge
 
 anova(m4,m5) # m5 has a much lower AIC and significantly better model
 
-summary(m5)
+anova(m5,m5.0) 
+
+summary(m5.0)
 
 ```
 
 
+```{r LME_cluster_disease_mod}
+m6 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) * PM_final_severity +
+              (factor(spray_management) | trial_ref), 
+           data = slim_PM_dat)
 
+m7 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) * PM_final_severity + 
+              (factor(spray_management) | trial_ref), 
+           data = slim_PM_dat)
+
+anova(m5,m6) # 65 has a lower AIC but not evaluated as a significantly better model
+
+summary(m6)
+
+```
+
+
+```{r LME_slimer_cluster_disease_mod}
+slimer_PM_dat <- read.csv("data/slimer_PM_clusterdat.csv")
+
+m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
+              (factor(spray_management) | trial_ref), 
+           data = slimer_PM_dat)
+
+m9 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + 
+              (factor(spray_management) | trial_ref), 
+           data = slimer_PM_dat)
+
+anova(m8,m9) # 65 has a lower AIC but not evaluated as a significantly better model
+
+summary(m9)
+
+```
 
 
 
