@@ -375,9 +375,30 @@ m9 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) +
               (factor(spray_management) | trial_ref), 
            data = slimer_PM_dat)
 
-anova(m8,m9) # 65 has a lower AIC but not evaluated as a significantly better model
+anova(m8,m9) # m9 is significantly better model
 
 summary(m9)
+# m9_summary <- as.data.frame(coef(summary(m9)))
+# m9_summary[1,1] <- 0
+# m9_summary$treats <- row.names(m9_summary)
+# 
+# class(m9_summary)
+# 
+# 
+# m9_summary %>%
+#    ggplot(aes(x = treats, y = exp(Estimate)))+
+#    geom_point()+
+#    geom_linerange(ymin = exp(m9_summary[,1] - m9_summary[,2]),
+#                   ymax = exp(m9_summary[,1] + m9_summary[,2]))+
+#    geom_hline(yintercept = m9_summary[1,1])+
+#    geom_rect(ymin = exp(m9_summary[1,1] - m9_summary[1,2]),
+#              ymax = exp(m9_summary[1,1] + m9_summary[1,2]),
+#              xmin = -Inf, xmax = -Inf,
+#              fill = "red", alpha = 0.5)+
+#    coord_flip()
+# 
+# 
+
 
 ```
 
