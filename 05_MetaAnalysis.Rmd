@@ -375,33 +375,42 @@ m9 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) +
               (factor(spray_management) | trial_ref), 
            data = slimer_PM_dat)
 
+m10 <- lmer(log(grain_yield.t.ha*1000) ~ (factor(spray_management) | trial_ref), 
+           data = slimer_PM_dat)
+
+
 anova(m8,m9) # m9 is significantly better model
+anova(m9,m10) # m9 is significantly better model
 
 summary(m9)
-# m9_summary <- as.data.frame(coef(summary(m9)))
-# m9_summary[1,1] <- 0
-# m9_summary$treats <- row.names(m9_summary)
-# 
-# class(m9_summary)
-# 
-# 
-# m9_summary %>%
-#    ggplot(aes(x = treats, y = exp(Estimate)))+
-#    geom_point()+
-#    geom_linerange(ymin = exp(m9_summary[,1] - m9_summary[,2]),
-#                   ymax = exp(m9_summary[,1] + m9_summary[,2]))+
-#    geom_hline(yintercept = m9_summary[1,1])+
-#    geom_rect(ymin = exp(m9_summary[1,1] - m9_summary[1,2]),
-#              ymax = exp(m9_summary[1,1] + m9_summary[1,2]),
-#              xmin = -Inf, xmax = -Inf,
-#              fill = "red", alpha = 0.5)+
-#    coord_flip()
-# 
-# 
-
 
 ```
 
+```{r}
+library(metafor)
+
+slimer_PM_dat <- slimer_PM_dat[!is.na(slimer_PM_dat$yield_error),]
+slimer_PM_dat$yi <- log(slimer_PM_dat$grain_yield.t.ha*1000)
+slimer_PM_dat$spray_management
+
+PM_mv_AI <- rma.mv(yi,yield_error,
+                   mods = spray_management,
+                   method = "ML",
+                   random = list(~ spray_management | trial_ref),
+                   struct = "UN",
+                   data = slimer_PM_dat)
+   
+PM_mv_AI
+
+
+anova(PM_mv_AI, L = rbind(c(0,1,-1,0,0), 
+                          c(0,0,-1,1,0),
+                          c(0,0,-1,0,1),
+                          c(0,0,0,-1,1)))
+
+
+
+```
 
 
 
