@@ -333,6 +333,8 @@ slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
               )] <- "control"
 
 table(slim_PM_dat$spray_management)
+sum(table(slim_PM_dat$spray_management)[1:7])
+nrow(slim_PM_dat)
 
 write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
 ```

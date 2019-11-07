@@ -13,6 +13,7 @@ slim_PM_dat <- data.frame(
    year = as.integer(PM_MB_means$year),
    location = as.character(PM_MB_means$location),
    row_spacing = as.double(PM_MB_means$row_spacing),
+   n = as.integer(PM_MB_means$replicates),
    first_sign_disease = as.Date(PM_MB_means$first_sign_disease, format = "%Y-%m-%d"),
    fungicide_ai = as.character(PM_MB_means$fungicide_ai),
    fungicide_application_1 = as.Date(PM_MB_means$fungicide_application_1, format = "%Y-%m-%d"),
