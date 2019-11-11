@@ -364,19 +364,19 @@ summary(m6)
 ```
 
 
-```{r LME_slimer_cluster_disease_mod}
-slimer_PM_dat <- read.csv("data/slimer_PM_clusterdat.csv")
+```{r LME_slimmer_cluster_disease_mod}
+slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 
 m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
               (factor(spray_management) | trial_ref), 
-           data = slimer_PM_dat)
+           data = slimmer_PM_dat)
 
 m9 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + 
               (factor(spray_management) | trial_ref), 
-           data = slimer_PM_dat)
+           data = slimmer_PM_dat)
 
 m10 <- lmer(log(grain_yield.t.ha*1000) ~ (factor(spray_management) | trial_ref), 
-           data = slimer_PM_dat)
+           data = slimmer_PM_dat)
 
 
 anova(m8,m9) # m9 is significantly better model
@@ -388,17 +388,63 @@ summary(m9)
 
 ```{r}
 library(metafor)
+sum(is.na(slimmer_PM_dat$yield_error)) # 14 treatments have no error
+sum(!is.na(slimmer_PM_dat$yield_error)) # 152 treatments with error
 
-slimer_PM_dat <- slimer_PM_dat[!is.na(slimer_PM_dat$yield_error),]
-slimer_PM_dat$yi <- log(slimer_PM_dat$grain_yield.t.ha*1000)
-slimer_PM_dat$spray_management
+hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
+hist(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
 
-PM_mv_AI <- rma.mv(yi,yield_error,
-                   mods = spray_management,
+
+# generate yield error values
+log_Yerror <- rnorm(14, mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE),
+                    sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)) 
+
+
+# Lets plot the values to see if they are significantly different
+# First lets convert Variance to standard error for all the variables that have variance recorded
+slimmer_PM_dat$yield_SE <- sqrt(slimmer_PM_dat$yield_error)/sqrt(slimmer_PM_dat$n)
+
+
+# Second; adding the imputed standard errors
+slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"] <- sqrt(exp(log_Yerror))/sqrt(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"n"]) # 14 treatments have no error
+
+
+# Plot the imputed errors for each trial
+slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),] %>%
+   ggplot(aes(y = grain_yield.t.ha, trial))+
+   #geom_point()+
+   geom_pointrange(ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] - (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                  ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] + (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                  position = "jitter"
+                 )+
+   ylim(0.2,1.5)
+
+
+   
+# all errorbars shoul overlap so they are consistant with the meta-data describing no significant difference bettween treatments
+# lets test to make sure
+if(max(outer(X = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] - (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+             Y = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] + (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+             FUN = "-")) > 0){
+   message("\nWarning!!: Imputed yield errors show significant differences when they should not, rerun chunk")
+}else{
+                message("\nImputed variances show no significant distances :)\n Now adding variances to data")
+   slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_error"] <- exp(log_Yerror)
+       }
+
+slimmer_PM_dat$yield_error
+
+slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha*1000)
+slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
+
+table(slimmer_PM_dat$spray_management)
+
+PM_mv_AI <- rma.mv(yi,log(yield_error*1000),
+ #                  mods = spray_management,
                    method = "ML",
                    random = list(~ spray_management | trial_ref),
                    struct = "UN",
-                   data = slimer_PM_dat)
+                   data = slimmer_PM_dat)
    
 PM_mv_AI
 
@@ -408,8 +454,11 @@ anova(PM_mv_AI, L = rbind(c(0,1,-1,0,0),
                           c(0,0,-1,0,1),
                           c(0,0,0,-1,1)))
 
+There are outcomes with non-positive sampling variances.Negative sampling variances constrained to zero.'V' appears to be not positive definite.Some combinations of the levels of the inner factor never occurred. Corresponding rho value(s) fixed to 0.diag(.) had 0 or NA entries; non-finite result is doubtfulError in .ll.rma.mv(opt.res$par, reml = reml, Y = Y, M = V, A = A, X.fit = X,  : 
+  Final variance-covariance matrix not positive definite.
 
-
+There are outcomes with non-positive sampling variances.Negative sampling variances constrained to zero.'V' appears to be not positive definite.Some combinations of the levels of the inner factor never occurred. Corresponding rho value(s) fixed to 0.diag(.) had 0 or NA entries; non-finite result is doubtfulError in .ll.rma.mv(opt.res$par, reml = reml, Y = Y, M = V, A = A, X.fit = X,  : 
+  Final variance-covariance matrix not positive definite.
 ```
 
 

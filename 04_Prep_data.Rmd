@@ -339,6 +339,9 @@ nrow(slim_PM_dat)
 write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
 ```
 
+
+
+
 ```{r simpler_clusters_REMOVE}
 
 slim_PM_dat <- slim_PM_dat %>%
@@ -373,10 +376,10 @@ table(slim_PM_dat$spray_management)
 
 # Remove "Early_plus" and "Late" due to lack of replicates
 
-slimer_PM_dat <- slim_PM_dat[slim_PM_dat$spray_management != "Late" & 
+slimmer_PM_dat <- slim_PM_dat[slim_PM_dat$spray_management != "Late" & 
                slim_PM_dat$spray_management != "Early_plus",]
 
-write.csv(slimer_PM_dat, file = "data/slimer_PM_clusterdat.csv", row.names = FALSE)
+write.csv(slimmer_PM_dat, file = "data/slimmer_PM_clusterdat.csv", row.names = FALSE)
 ```
 
 
