@@ -383,5 +383,28 @@ write.csv(slimmer_PM_dat, file = "data/slimmer_PM_clusterdat.csv", row.names = F
 ```
 
 
+```{r Trial_variance}
+
+slimmer_PM_dat$SSquare <- 
+   slimmer_PM_dat$yield_error * (slimmer_PM_dat$n - 1)
+
+slimmer_PM_dat$pop_var <- NA
+
+for(i in unique(slimmer_PM_dat$trial)){
+   pop_var <- sqrt(
+      sum(slimmer_PM_dat[slimmer_PM_dat$trial == i,"SSquare"])/
+         sum(slimmer_PM_dat[slimmer_PM_dat$trial == i,"n"])
+      )
+      
+slimmer_PM_dat[slimmer_PM_dat$trial == i, "pop_var"] <- pop_var
+   
+}
+
+
+write.csv(slimmer_PM_dat, file = "data/slimmer_PM_clusterdat.csv", row.names = FALSE)
+
+```
+
+
 
 
