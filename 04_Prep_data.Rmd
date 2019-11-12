@@ -152,8 +152,8 @@ PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$Y_error_type <-
 ```
 
 
-## Yield gains  
-Yield gains and yield gains proportional to the control.
+## Yield saving  
+Yield saving and Yield saving proportional to the control.
 
 Data from `r length(PM_MB_means$trial_ref)` trials were collected and the means of each treatment calculated (`R/Cleaning historical data.R`). These data were combined into one file `1902 powdery mildew-Mungbean - Collated means.csv`.
 
