@@ -335,7 +335,7 @@ slim_PM_dat <- read.csv("data/slim_PM_clusterdat.csv")
 
 m4 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
 
-m5 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat) # Model failed to converge
+m5 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
 
 m5.0 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (1 | trial_ref), data = slim_PM_dat) # Model failed to converge
 
@@ -389,70 +389,69 @@ summary(m9)
 
 
 
-We need to impute the variances
+We need to impute the variances which are missing for a few of the trials. These trials `r paste(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),c("location","year", "trial_ref")])` were analysed and reported that there was no significant difference between the treatments in each trial. So therefore we need the imputed variances not to show a significant difference.  
+
+There are `r sum(is.na(slimmer_PM_dat$yield_error))` treatments without yield error in our data, and `r sum(!is.na(slimmer_PM_dat$yield_error))` where yield error was recorded.  
+
+Plotting a histogram of the variances show that the yield is not normally distributed. A log transformation, however, shows a normal disrtubution. We can use the mean and standard deviation of the log(V) to sample variances for the treatments where V is mission.  
+
+We will evaluate wheather the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, infering signicifant difference, the imputed variances are discarded and resampled until all treatment variances show no significant differences.
 
 ```{r imputing_variances}
-
-table(slimmer_PM_dat$spray_management)
-
-sum(is.na(slimmer_PM_dat$yield_error)) # 14 treatments have no error
-sum(!is.na(slimmer_PM_dat$yield_error)) # 152 treatments with error
 
 hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
 hist(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
 
 # generate yield error values
-again <- 0
-for(i in seq(from = again, to = 500, by = 0.1)){
-if(i == 0){log_Yerror <- vector()}
+for(i in 0:500){
+
+   # Imputing missing log variances
+   log_Yerror <- rnorm(n = sum(is.na(slimmer_PM_dat$yield_error)),
+               mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE),
+               sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)) 
    
-      
-   x1 <- rnorm(1, mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE), #+ i,
-                  sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)) 
-   if(x1 <= -7){again <- i
-      next()}
-   log_Yerror <- c(log_Yerror,x1)
    
-   if(length(log_Yerror) < 14){again <- i
-      next()}
+   # First lets convert Variance to standard error for all the variables that have variance recorded
+   slimmer_PM_dat$yield_SE <- 
+      sqrt(slimmer_PM_dat$yield_error)/sqrt(slimmer_PM_dat$n)
    
-   if(length(log_Yerror) > 14){ stop(message("length of log_Yerror exceeded 14"))}
+   
+   # Second; adding the imputed standard errors
+   slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"] <-
+      sqrt(exp(log_Yerror))/sqrt(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"n"]) 
 
 
-
-# Lets plot the values to see if they are significantly different
-# First lets convert Variance to standard error for all the variables that have variance recorded
-slimmer_PM_dat$yield_SE <- sqrt(slimmer_PM_dat$yield_error)/sqrt(slimmer_PM_dat$n)
-
-
-# Second; adding the imputed standard errors
-slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"] <- sqrt(exp(log_Yerror))/sqrt(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"n"]) # 14 treatments have no error
-
-# all errorbars shoul overlap so they are consistant with the meta-data describing no significant difference bettween treatments
+# all errorbars should overlap so they are consistant with the meta-data describing no significant difference bettween treatments
 # lets test to make sure
-if(max(outer(X = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] - (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
-             Y = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] + (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
-             FUN = "-")) > 0){
+if(
+   max(outer(X = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] -
+               (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+             Y = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] +
+               (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+             FUN = "-")
+       ) > 0){
+   
    message(paste("\nWarning!!: Imputed yield errors show significant differences when they should not, rerun chunk", "i =",i))
-   log_Yerror <- vector()
    next()
-}else{
-                message(paste(#"\nA value of",i,"was added to the mean distribution from which imputed erorrs were sampled. This led to 
-                   "imputed variances now show no significant distances :)\n Now adding variances to data"))
-   slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_error"] <- exp(log_Yerror)
-       break()}
+   }else{
+      message(paste(i,"iterations: ", "imputed variances now show no significant distances :)\n Now adding variances to data "))
+      
+      # Plot the imputed errors for each trial
+      Vplot <- slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),] %>%
+         ggplot(aes(y = grain_yield.t.ha, trial))+
+         #geom_point()+
+         geom_pointrange(ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] -
+                            (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                         ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] +
+                            (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                         position = "jitter"
+                         )+
+         ylim(0.2,1.5)
+      
+      slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_error"] <- exp(log_Yerror)
+      print(Vplot)
+      break()}
 }
-
-# # Plot the imputed errors for each trial
-# slimmer_PM_dat[is.na(slimmer_PM_dat$),] %>%
-#    ggplot(aes(y = grain_yield.t.ha, trial))+
-#    #geom_point()+
-#    geom_pointrange(ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] - (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
-#                   ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] + (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
-#                   position = "jitter"
-#                  )+
-#    ylim(0.2,1.5)
-# 
 
 ```
 
@@ -473,42 +472,18 @@ table(slimmer_PM_dat$spray_management)
 
 
 PM_mv_AI <- rma.mv(yi,vi,
-                   mods = spray_management,
-                   method = "ML",
-                   random = ~ spray_management | trial,
-                   struct = "UN",
-                   data = slimmer_PM_dat)
-   
-summary(PM_mv_AI)
-
-
-
-```
-
-
-```{r meta_2}
-# Using trial instead of trial_ref
-
-head(slimmer_PM_dat)
-
-slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
-slimmer_PM_dat$vi <- log(slimmer_PM_dat$pop_var)
-slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
-
-table(slimmer_PM_dat$spray_management)
-
-
-PM_mv_AI <- rma.mv(yi,vi,
-#                   mods = spray_management,
-                   method = "ML",
+                   mods = ~ spray_management,
+#                   method = "ML",
                    random = list(~ spray_management | trial),
                    struct = "UN",
-                   data = slimmer_PM_dat2)
-   
+                   data = slimmer_PM_dat)
+
 summary(PM_mv_AI)
 
 
 ```
+
+
 
 
 
