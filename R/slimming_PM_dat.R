@@ -28,10 +28,27 @@ slim_PM_dat <- data.frame(
    PM_final_severity_error = as.double(PM_MB_means$disease_error)
 )
 
+
+for(i in levels(slim_PM_dat$trial_ref)){
+   if(i == levels(slim_PM_dat$trial_ref)[1]){
+      rows_to_delete <- vector()
+   }
+   
+   if(any(slim_PM_dat[slim_PM_dat$trial_ref == i,"fungicide_ai"] == "tebuconazole" |
+          slim_PM_dat[slim_PM_dat$trial_ref == i,"fungicide_ai"] == "propiconazole")){
+      next()
+   }else
+      rows_to_delete <- c(rows_to_delete, which(slim_PM_dat$trial_ref == i))
+}
+
+slim_PM_dat <- slim_PM_dat[-rows_to_delete,]
+
+
 slim_PM_dat <- slim_PM_dat[slim_PM_dat$fungicide_ai == "control" |
                               slim_PM_dat$fungicide_ai == "tebuconazole" |
                               slim_PM_dat$fungicide_ai == "propiconazole" ,
                            ]
+
 
 
 write.csv(slim_PM_dat, file = "data/slim_PM_dat.csv", row.names = FALSE)
