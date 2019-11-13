@@ -382,15 +382,17 @@ dat_rain <- rain_dat_sum[rain_dat_sum$trial_ref == i,]
                 latlong = as.vector(unlist(dat_rain[, 5:6])))
 }
 
-summary(lm(rainfall_sum ~ grain_yield, 
-                             data = rain_dat_sum[rain_dat_sum$location != "Hermitage",]))
+rain_lm <- lm(rainfall_sum ~ grain_yield, 
+                             data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])
+
+summary(rain_lm)
 
 rain_dat_sum %>%
    ggplot(aes(x = grain_yield, y = rainfall_sum, colour = location))+
    geom_point() + 
    geom_abline(intercept = -167.98, slope = 284.44, colour = "red")
 
-
+resid_rain_lm <- residuals(rain_lm)
 
 ```
 
@@ -921,6 +923,8 @@ PM_MB_means %>%
 
 ```
 
+
+
 ```{r spray_timing&PropYield}
 # What range of
 unique(PM_MB_means1$days_from_1st)
@@ -964,3 +968,24 @@ ggplot(PM_MB_means1, aes(prop_YG)) +
    ) +
    scale_x_continuous(limits = c(-0.2, 0.55))
 ```
+
+
+
+We need to also define the relationship between yield loss and disease severity. When exploring this data we should look primarily at the no spray control plots
+
+```{r yield_x_PMseverity}
+
+PM_MB_means %>%
+   filter(fungicide == "control") %>%
+   ggplot(aes(x = PM_final_severity, y = grain_yield.t.ha.)) +
+   geom_point()+
+   geom_smooth(method = "lm")
+
+PM_MB_means %>%
+   ggplot(aes(x = PM_final_severity, y = prop_YG)) +
+   geom_point()+
+   geom_smooth(method = "lm")
+
+```
+
+

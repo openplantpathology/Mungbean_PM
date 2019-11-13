@@ -365,6 +365,7 @@ summary(m6)
 
 
 ```{r LME_slimmer_cluster_disease_mod}
+library(lme4)
 slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 
 m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
@@ -386,18 +387,37 @@ summary(m9)
 
 ```
 
-```{r}
-library(metafor)
+
+
+We need to impute the variances
+
+```{r imputing_variances}
+
+table(slimmer_PM_dat$spray_management)
+
 sum(is.na(slimmer_PM_dat$yield_error)) # 14 treatments have no error
 sum(!is.na(slimmer_PM_dat$yield_error)) # 152 treatments with error
 
 hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
 hist(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
 
-
 # generate yield error values
-log_Yerror <- rnorm(14, mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE),
-                    sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)) 
+again <- 0
+for(i in seq(from = again, to = 500, by = 0.1)){
+if(i == 0){log_Yerror <- vector()}
+   
+      
+   x1 <- rnorm(1, mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE), #+ i,
+                  sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)) 
+   if(x1 <= -7){again <- i
+      next()}
+   log_Yerror <- c(log_Yerror,x1)
+   
+   if(length(log_Yerror) < 14){again <- i
+      next()}
+   
+   if(length(log_Yerror) > 14){ stop(message("length of log_Yerror exceeded 14"))}
+
 
 
 # Lets plot the values to see if they are significantly different
@@ -408,45 +428,58 @@ slimmer_PM_dat$yield_SE <- sqrt(slimmer_PM_dat$yield_error)/sqrt(slimmer_PM_dat$
 # Second; adding the imputed standard errors
 slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"] <- sqrt(exp(log_Yerror))/sqrt(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"n"]) # 14 treatments have no error
 
-
-# Plot the imputed errors for each trial
-slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),] %>%
-   ggplot(aes(y = grain_yield.t.ha, trial))+
-   #geom_point()+
-   geom_pointrange(ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] - (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
-                  ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] + (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
-                  position = "jitter"
-                 )+
-   ylim(0.2,1.5)
-
-
-   
 # all errorbars shoul overlap so they are consistant with the meta-data describing no significant difference bettween treatments
 # lets test to make sure
 if(max(outer(X = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] - (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
              Y = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] + (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
              FUN = "-")) > 0){
-   message("\nWarning!!: Imputed yield errors show significant differences when they should not, rerun chunk")
+   message(paste("\nWarning!!: Imputed yield errors show significant differences when they should not, rerun chunk", "i =",i))
+   log_Yerror <- vector()
+   next()
 }else{
-                message("\nImputed variances show no significant distances :)\n Now adding variances to data")
+                message(paste(#"\nA value of",i,"was added to the mean distribution from which imputed erorrs were sampled. This led to 
+                   "imputed variances now show no significant distances :)\n Now adding variances to data"))
    slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_error"] <- exp(log_Yerror)
-       }
+       break()}
+}
 
-slimmer_PM_dat$yield_error
+# # Plot the imputed errors for each trial
+# slimmer_PM_dat[is.na(slimmer_PM_dat$),] %>%
+#    ggplot(aes(y = grain_yield.t.ha, trial))+
+#    #geom_point()+
+#    geom_pointrange(ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] - (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+#                   ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] + (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+#                   position = "jitter"
+#                  )+
+#    ylim(0.2,1.5)
+# 
 
-slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha*1000)
+```
+
+
+
+
+
+
+
+```{r meta_1}
+library(metafor)
+
+slimmer_PM_dat$yi <- slimmer_PM_dat$grain_yield.t.ha
+slimmer_PM_dat$vi <- slimmer_PM_dat$yield_error
+
 slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
-
 table(slimmer_PM_dat$spray_management)
 
-PM_mv_AI <- rma.mv(yi,log(yield_error*1000),
- #                  mods = spray_management,
+
+PM_mv_AI <- rma.mv(yi,vi,
+#                   mods = spray_management,
                    method = "ML",
-                   random = list(~ spray_management | trial_ref),
+                   random = ~ spray_management | trial,
                    struct = "UN",
                    data = slimmer_PM_dat)
    
-PM_mv_AI
+summary(PM_mv_AI)
 
 
 anova(PM_mv_AI, L = rbind(c(0,1,-1,0,0), 
@@ -454,11 +487,56 @@ anova(PM_mv_AI, L = rbind(c(0,1,-1,0,0),
                           c(0,0,-1,0,1),
                           c(0,0,0,-1,1)))
 
-There are outcomes with non-positive sampling variances.Negative sampling variances constrained to zero.'V' appears to be not positive definite.Some combinations of the levels of the inner factor never occurred. Corresponding rho value(s) fixed to 0.diag(.) had 0 or NA entries; non-finite result is doubtfulError in .ll.rma.mv(opt.res$par, reml = reml, Y = Y, M = V, A = A, X.fit = X,  : 
-  Final variance-covariance matrix not positive definite.
 
-There are outcomes with non-positive sampling variances.Negative sampling variances constrained to zero.'V' appears to be not positive definite.Some combinations of the levels of the inner factor never occurred. Corresponding rho value(s) fixed to 0.diag(.) had 0 or NA entries; non-finite result is doubtfulError in .ll.rma.mv(opt.res$par, reml = reml, Y = Y, M = V, A = A, X.fit = X,  : 
-  Final variance-covariance matrix not positive definite.
+```
+
+
+```{r meta_2}
+# Using trial instead of trial_ref
+
+head(slimmer_PM_dat)
+
+slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
+slimmer_PM_dat$vi <- log(slimmer_PM_dat$pop_var)
+slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
+
+table(slimmer_PM_dat$spray_management)
+
+
+PM_mv_AI <- rma.mv(yi,vi,
+#                   mods = spray_management,
+                   method = "ML",
+                   random = list(~ spray_management | trial),
+                   struct = "UN",
+                   data = slimmer_PM_dat2)
+   
+summary(PM_mv_AI)
+
+
+```
+
+
+
+```{r inspect_for_outliers}
+head(slimmer_PM_dat)
+
+slimmer_PM_dat %>%
+#   filter(spray_management == "Late_plus") %>%
+   ggplot(aes(prop_yield_gain, fill = spray_management))+
+   geom_histogram(alpha = 0.5)
+   
+slimmer_PM_dat %>%
+   filter(spray_management == "Late_plus") %>%
+   ggplot(aes(prop_yield_gain, fill = trial_ref))+
+   geom_histogram(alpha = 0.5)
+
+
+
+slimmer_PM_dat %>%
+   filter(spray_management == "Recommended") %>%
+   ggplot(aes(prop_yield_gain, fill = trial_ref))+
+   geom_histogram(alpha = 0.5)
+
 ```
 
 

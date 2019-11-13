@@ -10,6 +10,7 @@ library(readr)
 ```{r import_data}
 source("R/import_data.R")
 PM_MB_means <- import_data()
+
 ```
 
 
@@ -269,6 +270,7 @@ write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
 
 ```
 
+
 Cluster the clusters
 
 ```{r cluster_clusters}
@@ -337,6 +339,8 @@ sum(table(slim_PM_dat$spray_management)[1:7])
 nrow(slim_PM_dat)
 
 write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
+
+slim_PM_dat[slim_PM_dat$spray_management == "Late_plus",]
 ```
 
 
@@ -379,32 +383,10 @@ table(slim_PM_dat$spray_management)
 slimmer_PM_dat <- slim_PM_dat[slim_PM_dat$spray_management != "Late" & 
                slim_PM_dat$spray_management != "Early_plus",]
 
-write.csv(slimmer_PM_dat, file = "data/slimmer_PM_clusterdat.csv", row.names = FALSE)
-```
-
-
-```{r Trial_variance}
-
-slimmer_PM_dat$SSquare <- 
-   slimmer_PM_dat$yield_error * (slimmer_PM_dat$n - 1)
-
-slimmer_PM_dat$pop_var <- NA
-
-for(i in unique(slimmer_PM_dat$trial)){
-   pop_var <- sqrt(
-      sum(slimmer_PM_dat[slimmer_PM_dat$trial == i,"SSquare"])/
-         sum(slimmer_PM_dat[slimmer_PM_dat$trial == i,"n"])
-      )
-      
-slimmer_PM_dat[slimmer_PM_dat$trial == i, "pop_var"] <- pop_var
-   
-}
-
+#slimmer_PM_dat <- slim_PM_dat[slim_PM_dat$spray_management != "Late",]
 
 write.csv(slimmer_PM_dat, file = "data/slimmer_PM_clusterdat.csv", row.names = FALSE)
-
 ```
-
 
 
 
