@@ -473,7 +473,7 @@ table(slimmer_PM_dat$spray_management)
 
 
 PM_mv_AI <- rma.mv(yi,vi,
-#                   mods = spray_management,
+                   mods = spray_management,
                    method = "ML",
                    random = ~ spray_management | trial,
                    struct = "UN",
@@ -481,11 +481,6 @@ PM_mv_AI <- rma.mv(yi,vi,
    
 summary(PM_mv_AI)
 
-
-anova(PM_mv_AI, L = rbind(c(0,1,-1,0,0), 
-                          c(0,0,-1,1,0),
-                          c(0,0,-1,0,1),
-                          c(0,0,0,-1,1)))
 
 
 ```
