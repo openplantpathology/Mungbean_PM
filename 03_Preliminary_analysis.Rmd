@@ -2,6 +2,7 @@
 
 ```{r PA_Libraries, include=FALSE}
 library(tidyverse)
+library(bomrang)
 library(openxlsx)
 library(kableExtra)
 library(ggplot2)
@@ -44,13 +45,13 @@ Various factors have been studied in the previous experiments which may influenc
    
    8) In-crop rainfall  
    
-   9) irrigated vs non-irrigated trials  
+   9) Irrigated vs non-irrigated trials  
    
    10) Mean daily temperature in the weeks following spray application  
    
    11) Final disease rating  
    
-   12) Two pathogen species cause PM (new discovery)
+   12) Two pathogen species cause PM (new discovery in 2018)
 
 
 ### Fungicides

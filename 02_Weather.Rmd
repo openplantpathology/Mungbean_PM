@@ -10,6 +10,7 @@ The vertical lines indicate when powdery mildew was first observed in that seaso
 Variation may exist in the sowing date of each trial.
 
 ```{r import_libraries_&_data}
+library(ggplot2)
 source("R/import_data.R")
 PM.dat <- import_data()  # importing means yield and disease severity for each treatment within each powdery mildew trial on mungbean
 source("R/year2day.r")
