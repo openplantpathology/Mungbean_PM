@@ -1,15 +1,7 @@
 # This script is dedicated to
 # importing and cleaning previous powdery mildew experimental field trial data.
 
-# install.packages("openxlsx")
-# install.packages("readxl")
-# install.packages("tidyr")
 
-library(openxlsx)
-library(readxl)
-library(tidyr)
-library(dplyr)
-library(data.table)
 
 # Year #  Trial location  #  Sowing date
 
@@ -17,14 +9,21 @@ library(data.table)
 # _____________            Hermitage  2010        ____________
 
 Herm_10 <-
-   read_xls(
-      "C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Past Trials/2010/2010 PMmung Herm/2010 PMmung hermitage RAW field book.xls",
+   as.data.frame(read_xls(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2010/2010 PMmung Herm/2010 PMmung hermitage RAW field book.xls",
       sheet = "For analysis"
-   )
+   ), stringsAsFactors == FALSE)
+
+Herm_10[1:20,]
+
+
 
 Herm_10_m <- Herm_10 %>%
    group_by(`Cultivar!`, `Treat!`, `Description!`) %>%
    summarise_all(list(~ mean(., na.rm = TRUE),  ~ sd(., na.rm = TRUE)))
+
+head(Herm_10_m)
+colnames((Herm_10_m))
 
 write.csv(
    as.data.frame(Herm_10_m),
