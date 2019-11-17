@@ -1,0 +1,805 @@
+# Data wrangling
+
+
+## Import Libraries
+```{r}
+# install.packages("openxlsx")
+# install.packages("readxl")
+# install.packages("tidyr")
+install.packages("agricolae")
+
+library(openxlsx)
+library(readxl)
+library(tidyr)
+library(dplyr)
+library(data.table)
+library(agricolae)
+
+source("R/import_data.R")
+PM_MB_means <- import_data()
+
+```
+
+## Functions
+```{r functions}
+
+fold_data <- function(new_DataFrame, template_DataFrame){
+   for(i in colnames(new_DataFrame)){
+      if(i == colnames(new_DataFrame)[1]){
+         x1 <- vector()}
+      
+      cnames1 <- as.character(colnames(new_DataFrame))
+      cnames2 <- as.character(colnames(template_DataFrame))
+      
+      x1 <- c(x1,match(i, cnames2, nomatch = NA)) # MAke a index vector for the location of new_DataFrame col names in template_DataFrame
+   }
+   
+   new_DataFrame[cnames2[!(cnames2 %in% cnames1)]] <- NA # adding column names to new_DataFrame not in template_DataFrame
+   new_DataFrame <- 
+      new_DataFrame[,c(cnames2, cnames1[is.na(x1)])]  # adding column names to new_DataFrame not in template_DataFrame
+   return(new_DataFrame)
+}
+```
+
+
+## Data wrangling for each trial
+### Hermitage 2010
+
+```{r Hermitage_2010}
+
+Herm_10 <-
+   as.data.frame(read_xls(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2010/2010 PMmung Herm/2010 PMmung hermitage RAW field book.xls",
+      sheet = "For analysis"
+   ), stringsAsFactors == FALSE)
+
+
+Herm_10 <- Herm_10 %>%
+   mutate(trade_name = case_when(`Schedule!` == "U/S" ~ NA_character_,
+                                 `Schedule!` == "FirstsignC" ~ " ",
+                                 TRUE ~ "Kendon"))%>%
+   mutate(fungicide = case_when(`Schedule!` == "U/S" ~ "control",
+                                 `Schedule!` == "FirstsignC" ~ "carbendazim",
+                                 TRUE ~ "sulphur"))%>%
+   mutate(dose_ai.ha = case_when(`Schedule!` == "U/S" ~ 0,
+                                 `Schedule!` == "FirstsignC" ~ 250,
+                                 TRUE ~ 2400))%>%
+   mutate(fungicide_application_1 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-02-19", format = "%Y-%m-%d"),
+                                              `Schedule!` == "Early Sp" ~ as.Date("2010-02-19", format = "%Y-%m-%d"),
+                                              `Schedule!` == "FirstsignC" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
+                                              `Schedule!` == "FirstsignS" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
+                                              `Schedule!` == "U/S" ~ as.Date(NA),
+                                              TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-02-26", format = "%Y-%m-%d"),
+                                              `Schedule!` == "Early Sp" ~ as.Date("2010-02-26", format = "%Y-%m-%d"),
+                                              TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-05", format = "%Y-%m-%d"),
+                                              TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_4 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-11", format = "%Y-%m-%d"),
+                                              TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_5 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
+                                              TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_6 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-25", format = "%Y-%m-%d"),
+                                              TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_7 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-07", format = "%Y-%m-%d"),
+                                              TRUE ~ as.Date(NA)))%>%
+   mutate(total_fungicide = case_when(`Schedule!` == "Full Sp" ~ 7,
+                                      `Schedule!` == "Early Sp" ~ 2,
+                                      `Schedule!` == "FirstsignC" ~ 1,
+                                      `Schedule!` == "FirstsignS" ~ 1,
+                                      `Schedule!` == "U/S" ~ 0,
+                                      TRUE ~ 9999))
+   
+
+Herm_10_dat <- 
+   data.frame(trial_ref = "mung0910/01",
+              year = "2010",
+              location = "Hermitage",
+              host_genotype = Herm_10$`Cultivar!`,
+              trial_design = "RB",
+              plot_length = Herm_10$`Length (m)`,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 0.25,
+              replicate = Herm_10$`Rep!`,
+              planting_date = as.Date("2010-01-22"),
+              emergence_date = NA,
+              flowering_date = NA,
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = as.Date("2010-03-18"),
+              trade_name = Herm_10$trade_name,
+              fungicide_ai = Herm_10$fungicide,
+              dose_ai.ha = Herm_10$dose_ai.ha,
+              n_treatment = Herm_10$`Treat!`,
+              fungicide_application_1 = Herm_10$fungicide_application_1,
+              fungicide_application_2 = Herm_10$fungicide_application_2,
+              fungicide_application_3 = Herm_10$fungicide_application_3,
+              fungicide_application_4 = Herm_10$fungicide_application_4,
+              fungicide_application_5 = Herm_10$fungicide_application_5,
+              fungicide_application_6 = Herm_10$fungicide_application_6,
+              fungicide_application_7 = Herm_10$fungicide_application_7,
+              total_fungicide = Herm_10$total_fungicide,
+              harvest_date = as.Date("2010-05-14"),
+              final_assessment = as.Date("2010-04-20"),
+              PM_final_severity = Herm_10$P.M.13wap,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = Herm_10$`Kg/ha`,
+              AUDPC = apply(Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")],1, FUN = audpc, dates = c(9*7,11*7,13*7)),
+              stringsAsFactors = FALSE
+              )
+
+
+Herm_10_m <- Herm_10_dat %>%
+   group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
+   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+              plot_width.m. = mean(plot_width, na.rm = TRUE),
+              plant_density = unique(plant_density),
+              row_spacing = unique(row_spacing),
+              replicates = sum(replicate),
+              planting_date = unique(planting_date),
+              emergence_date = NA,
+              flowering_date = NA,
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = unique(first_sign_disease),
+              fungicide_application_1 = unique(fungicide_application_1),
+              fungicide_application_2 = unique(fungicide_application_2),
+              fungicide_application_3 = unique(fungicide_application_3),
+              fungicide_application_4 = unique(fungicide_application_4),
+              fungicide_application_5 = unique(fungicide_application_5),
+             fungicide_application_6 = unique(fungicide_application_6),
+             fungicide_application_6 = unique(fungicide_application_7),
+              total_fungicide = unique(total_fungicide),
+              harvest_date = unique(harvest_date),
+              final_assessment = unique(final_assessment),
+              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+              rating_scale = unique(rating_scale),
+              disease_error = sd(PM_final_severity, na.rm = TRUE),
+              D_error_type = "stdev",
+              grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+              raw_graded = NA,
+              yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              Y_error_type = "stdev",
+              AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+              meanSq = anova(lm(grain_yield.t.ha. ~ host_genotype + factor(n_treatment), data = Herm_10_dat))[2,3]
+   )
+
+
+
+
+Herm_10_m <- fold_data(Herm_10_m, PM_MB_means)
+
+
+
+write.csv(
+   as.data.frame(Herm_10_m),
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2010/2010 PMmung Herm/2010 PMmung Hermitage means.csv"
+)
+
+```
+
+### Hermitage 2011
+```{r Herm_2011}
+
+Herm_11 <-
+   as.data.frame(read_xls(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/pmhermratings2011.xls",
+      sheet = "Analyses factor"
+   ), stringsAsFactors = FALSE)
+
+Herm_11 <- Herm_11 %>%
+   mutate(trade_name = 
+             case_when(`Treatment!` == "1 spray AMI-X" ~ "Amistar Xtra",
+                       `Treatment!` == "3 spray AMI-X" ~ "Amistar Xtra",
+                       `Treatment!` == "1 spray SULPHUR" ~ "Kendon",
+                       `Treatment!` == "3 spray SULPHUR" ~ "Kendon",
+                       `Treatment!` == "1 spray FOLICUR" ~ "Folicur",
+                       TRUE ~ "control"))%>%
+   mutate(fungicide_ai = 
+             case_when(`Treatment!` == "1 spray AMI-X" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       `Treatment!` == "3 spray AMI-X" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       `Treatment!` == "1 spray SULPHUR" ~ "sulphur",
+                       `Treatment!` == "3 spray SULPHUR" ~ "sulphur",
+                       `Treatment!` == "1 spray FOLICUR" ~ "tebuconazole",
+                       TRUE ~ "control"))%>%
+   mutate(dose_ai.ha = 
+             case_when(`Treatment!` == "1 spray AMI-X" ~ 120,
+                       `Treatment!` == "3 spray AMI-X" ~ 120,
+                       `Treatment!` == "1 spray SULPHUR" ~ 3000,
+                       `Treatment!` == "3 spray SULPHUR" ~ 3000,
+                       `Treatment!` == "1 spray FOLICUR" ~ 62.35,
+                       TRUE ~ 0))%>%
+   mutate(fungicide_application_1 = 
+             case_when(`Treatment!` == "1 spray AMI-X" ~ as.Date("2011-03-28", format = "%Y-%m-%d"),
+                       `Treatment!` == "3 spray AMI-X" ~ as.Date("2011-02-28", format = "%Y-%m-%d"),
+                       `Treatment!` == "1 spray SULPHUR" ~ as.Date("2011-03-28", format = "%Y-%m-%d"),
+                       `Treatment!` == "3 spray SULPHUR" ~ as.Date("2011-02-28", format = "%Y-%m-%d"),
+                       `Treatment!` == "1 spray FOLICUR" ~ as.Date("2011-03-28", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(`Treatment!` == "3 spray AMI-X" ~ as.Date("2011-03-14", format = "%Y-%m-%d"),
+                       `Treatment!` == "3 spray SULPHUR" ~ as.Date("2011-03-14", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = 
+             case_when(`Treatment!` == "3 spray AMI-X" ~ as.Date("2011-03-14", format = "%Y-%m-%d"),
+                       `Treatment!` == "3 spray SULPHUR" ~ as.Date("2011-03-14", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(total_fungicide = 
+             case_when(`Treatment!` == "1 spray AMI-X" ~ 1,
+                       `Treatment!` == "3 spray AMI-X" ~ 3,
+                       `Treatment!` == "1 spray SULPHUR" ~ 1,
+                       `Treatment!` == "3 spray SULPHUR" ~ 3,
+                       `Treatment!` == "1 spray FOLICUR" ~ 1,
+                       TRUE ~ 0))
+
+
+
+Herm_11_dat <- 
+   data.frame(trial_ref = "mung1011/01",
+              year = "2011",
+              location = "Hermitage",
+              host_genotype = Herm_11$`Cultivar!`,
+              trial_design = "RCB",
+              plot_length = 11,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 0.75,
+              replicate = Herm_11$`Rep!`,
+              planting_date = as.Date("2011-01-24", format = "%Y-%m-%d"),
+              emergence_date = NA,
+              flowering_date = as.Date("2011-03-22", format = "%Y-%m-%d"),
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = as.Date("2011-03-28", format = "%Y-%m-%d"),
+              trade_name = as.factor(Herm_11$trade_name),
+              fungicide_ai = Herm_11$fungicide_ai,
+              dose_ai.ha = Herm_11$dose_ai.ha,
+              n_treatment = Herm_11$Tr,
+              fungicide_application_1 = Herm_11$fungicide_application_1,
+              fungicide_application_2 = Herm_11$fungicide_application_2,
+              fungicide_application_3 = Herm_11$fungicide_application_3,
+              total_fungicide = Herm_11$total_fungicide,
+              harvest_date = as.Date("2011-04-25", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2010-04-11", format = "%Y-%m-%d"),
+              PM_final_severity = Herm_11$`P.M. 11  w.a.p.`,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = Herm_11$`Yld Kg/ha`
+              )
+   
+
+
+Herm_11_m <- Herm_11_dat %>%
+   group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
+   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+              plot_width.m. = mean(plot_width, na.rm = TRUE),
+              plant_density = unique(plant_density),
+              row_spacing = unique(row_spacing),
+              replicates = sum(replicate),
+              planting_date = unique(planting_date),
+              emergence_date = NA,
+              flowering_date = unique(flowering_date),
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = unique(first_sign_disease),
+              fungicide_application_1 = unique(fungicide_application_1),
+              fungicide_application_2 = unique(fungicide_application_2),
+              fungicide_application_3 = unique(fungicide_application_3),
+              total_fungicide = unique(total_fungicide),
+              harvest_date = unique(harvest_date),
+              final_assessment = unique(final_assessment),
+              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+              rating_scale = unique(rating_scale),
+              disease_error = sd(PM_final_severity, na.rm = TRUE),
+              D_error_type = "stdev",
+              grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+              raw_graded = NA,
+              yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              Y_error_type = "stdev",
+              meanSq = anova(lm(grain_yield.t.ha. ~ host_genotype + factor(n_treatment), data = Herm_11_dat))[2,3]
+   )
+
+
+Herm_11_m <- fold_data(Herm_11_m, PM_MB_means)
+
+write.csv(
+   as.data.frame(Herm_11_m),
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/2011 PMmung Herm means.csv"
+)
+
+```
+
+### Kingaroy 2011
+```{r King_11}
+King_11 <-
+   as.data.frame(read_xls(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung King/pmKing ratings2011.xls",
+      sheet = "analyses"
+   ), stringsAsFactors = FALSE)
+
+tmp1 <- do.call(rbind.data.frame, strsplit(King_11$`Treatment!`, " "))
+colnames(tmp1) <- c("cultivar" , "spray_n", "spray", "fungicide")
+King_11 <- cbind(tmp1, King_11)
+
+King_11 <- King_11 %>%
+   mutate(trade_name = 
+             case_when(fungicide == "AMIS-X" ~ "Amistar Xtra",
+                       fungicide == "SULPHUR" ~ "Kendon",
+                       fungicide == "FOLICUR" ~ "Folicur",
+                       TRUE ~ "control"))%>%
+   mutate(fungicide_ai = 
+             case_when(fungicide == "AMIS-X" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       fungicide == "SULPHUR" ~ "sulphur",
+                       fungicide == "FOLICUR" ~ "tebuconazole",
+                       TRUE ~ "control"))%>%
+   mutate(dose_ai.ha = 
+             case_when(fungicide == "AMIS-X" ~ 120,
+                       fungicide == "SULPHUR" ~ 3000,
+                       fungicide == "FOLICUR" ~ 62.35,
+                       TRUE ~ 0))%>%
+   mutate(fungicide_application_1 = 
+             case_when(spray_n == 1 ~ as.Date("2011-03-23", format = "%Y-%m-%d"),
+                       spray_n == 2 ~ as.Date("2011-03-23", format = "%Y-%m-%d"),
+                       spray_n == 3 ~ as.Date("2011-03-09", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   
+   mutate(fungicide_application_2 = 
+             case_when(spray_n == 2 ~ as.Date("2011-04-13", format = "%Y-%m-%d"),
+                       spray_n == 3 ~ as.Date("2011-03-30", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = 
+             case_when(spray_n == 3 ~ as.Date("2011-04-12", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))
+
+
+
+King_11_dat <- 
+   data.frame(trial_ref = "mung1011/02",
+              year = "2011",
+              location = "Kingaroy",
+              host_genotype = King_11$cultivar,
+              trial_design = "RCB",
+              plot_length = 11,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 0.75,
+              replicate = King_11$`rep!`,
+              planting_date = as.Date("2011-02-02", format = "%Y-%m-%d"),
+              emergence_date = NA,
+              flowering_date = NA,
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = as.Date("2011-03-22", format = "%Y-%m-%d"),
+              trade_name = as.factor(King_11$trade_name),
+              fungicide_ai = King_11$fungicide_ai,
+              dose_ai.ha = King_11$dose_ai.ha,
+              n_treatment = King_11$`trt!`,
+              fungicide_application_1 = King_11$fungicide_application_1,
+              fungicide_application_2 = King_11$fungicide_application_2,
+              fungicide_application_3 = King_11$fungicide_application_3,
+              total_fungicide = King_11$spray_n,
+              harvest_date = as.Date(NA),
+              final_assessment = as.Date("2010-05-11", format = "%Y-%m-%d"),
+              PM_final_severity = King_11$`14 w.a.p.`,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`),
+              AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")],1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))
+              )
+   
+
+
+King_11_m <- King_11_dat %>%
+   group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
+   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+              plot_width.m. = mean(plot_width, na.rm = TRUE),
+              plant_density = unique(plant_density),
+              row_spacing = unique(row_spacing),
+              replicates = sum(replicate),
+              planting_date = unique(planting_date),
+              emergence_date = NA,
+              flowering_date = unique(flowering_date),
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = unique(first_sign_disease),
+              fungicide_application_1 = unique(fungicide_application_1),
+              fungicide_application_2 = unique(fungicide_application_2),
+              fungicide_application_3 = unique(fungicide_application_3),
+              total_fungicide = unique(total_fungicide),
+              harvest_date = unique(harvest_date),
+              final_assessment = unique(final_assessment),
+              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+              rating_scale = unique(rating_scale),
+              disease_error = sd(PM_final_severity, na.rm = TRUE),
+              D_error_type = "stdev",
+              grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+              raw_graded = NA,
+              yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+              meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = King_11_dat))[2,3]
+   )
+
+
+King_11_m <- fold_data(King_11_m, PM_MB_means)
+
+
+write.csv(
+   King_11_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/2011 PMmung Kingaroy means.csv"
+)
+
+
+
+```
+
+### Goolhi 2013
+```{r Goolhi_2013}
+
+for(D_assessment in c("16 DAT1", "33DAT1")){
+
+# Import final disease survey
+Goolhi.13 <-
+   as.data.frame(
+      read_xlsx(
+         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx",
+         sheet = D_assessment,
+         range = "A15:AG75",
+         col_names = TRUE
+      )
+   )
+
+Goolhi.13 <- Goolhi.13[order(Goolhi.13[,1],Goolhi.13[,2],Goolhi.13[,3],Goolhi.13[,4]),]
+
+
+# Replace empty cells / NAs with zeros
+for (i in 7:33) {
+   Goolhi.13[is.na(Goolhi.13[, i]), i] <- 0
+}
+
+
+# Calculate incidence
+#     Sites      1     2     3
+# low canopy  c(7:9, 16:18, 25:27)
+# mid canopy c(10:12, 19:21, 28:30)
+# upp canopy c(13:15, 22:24, 31:33)
+
+incidence1 <-
+   vector(mode = "numeric", length = length(Goolhi.13[, 1]))
+
+# Convert disease survey data to 1-9 Incidence rating scale
+for (i in seq_along(incidence1)) {
+   # incidence = 1
+   if (all(Goolhi.13[i, 7:33] == 0)) {
+      incidence1[i] <- 1
+      next()
+   }
+   
+   # incidence = 2
+   if (all(Goolhi.13[i, c(10:15, 19:24, 28, 33)] == 0) &&
+       (sum(Goolhi.13[i, c(7:9, 16:18, 25:27)] > 0) /
+        length(Goolhi.13[i, c(7:9, 16:18, 25:27)])) <= 0.75) {
+      incidence1[i] <- 2
+      next()
+   }
+   
+   
+   # incidence = 3
+   if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
+       sum(Goolhi.13[i, c(10:12, 19:21, 28:30)] != 0) <= 3 &&
+       (sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] > 0) /
+        length(Goolhi.13[i, c(7:12, 16:21, 25:30)])) > 0.75) {
+      incidence1[i] <- 3
+   } else{
+      # if it is in the lower half of the canopy and in less than 75% of plants then incidence = 2.5
+      if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
+          sum(Goolhi.13[i, c(10:12, 19:21, 28:30)] != 0) <= 3 &&
+          (sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] > 0) /
+           length(Goolhi.13[i, c(7:12, 16:21, 25:30)])) <= 0.75) {
+         incidence1[i] <- 2.5
+         next()
+      }
+   }
+   
+   
+   # incidence = 4
+   if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
+       sum(Goolhi.13[i, c(10:12, 19:21, 28:30)] != 0) > 3 &&
+       (sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] > 0) /
+        length(Goolhi.13[i, c(7:12, 16:21, 25:30)])) <= 0.75) {
+      incidence1[i] <- 4
+      next()
+   }
+   
+   
+   # incidence = 5
+   if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
+       sum(Goolhi.13[i, c(10:12, 19:21, 28:30)] != 0) > 3 &&
+       (sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] > 0) /
+        length(Goolhi.13[i, c(7:12, 16:21, 25:30)])) > 0.75 &&
+       any(Goolhi.13[i, c(7:12, 16:21, 25:30)] == 0)) {
+      incidence1[i] <- 5
+      next()
+   }
+   
+   
+   # incidence = 6
+   if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
+       all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0)) {
+      incidence1[i] <- 6
+      next()
+   }
+   
+   
+   # incidence = 7
+   if (sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) <= 3 &&
+       all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0)) {
+      incidence1[i] <- 7
+      next()
+   }
+   
+   
+   # incidence = 8
+   if ((sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) > 3 |
+        sum(Goolhi.13[i, c(13:15, 22:24, 31:33)]) <= 200) &&
+       all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) &&
+       (sum(Goolhi.13[i, 7:33] > 0) /
+        length(Goolhi.13[i, 7:33]) > 0.75) &&
+       sum(Goolhi.13[i, 7:33]) <= 2000) {
+      incidence1[i] <- 8
+      next()
+   }
+   
+   
+   # incidence = 9
+   if (sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) > 3 &&
+       all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) &&
+       (sum(Goolhi.13[i, 7:33] > 0) /
+        length(Goolhi.13[i, 7:33]) > 0.75) &&
+       sum(Goolhi.13[i, 7:33]) > 2000) {
+      incidence1[i] <- 9
+      next()
+   }
+   
+   # if not in the lower canopy but small colonies in mid and upper canopy
+   if (all(Goolhi.13[i, c(7:9, 16:18, 25:27)] == 0) &&
+       (sum(Goolhi.13[i, c(10:15, 19:24, 28, 33)] > 0) /
+        length(Goolhi.13[i, 7:33]) <= 0.5)) {
+      incidence1[i] <- 2.5
+      next()
+   }
+   
+   
+   # incidence = 7.5
+   if (sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) > 3 &&
+       sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) > 10 &&
+       any(Goolhi.13[i, c(7:12, 16:21, 25:30)] == 0) &&
+       (sum(Goolhi.13[i, 7:33] > 0) /
+        length(Goolhi.13[i, 7:33]) > 0.7) &&
+       sum(Goolhi.13[i, 7:33]) <= 2000) {
+      incidence1[i] <- 7.5
+      next()
+   }
+   
+   # incidence = 6.5
+   if (sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) > 3 &&
+       sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) <= 12 &&
+       sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) >= 10 &&
+       (sum(Goolhi.13[i, 7:33] > 0) /
+        length(Goolhi.13[i, 7:33]) <= 0.75) &&
+       sum(Goolhi.13[i, 7:33]) <= 2000) {
+      incidence1[i] <- 6.5
+      next()
+   }
+   
+   
+   # incidence = 4.5
+   if (sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) > 3 &&
+       sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) < 10 &&
+       sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) > 5 &&
+       (sum(Goolhi.13[i, 7:33] > 0) /
+        length(Goolhi.13[i, 7:33]) <= 0.75) &&
+       sum(Goolhi.13[i, 7:33]) <= 2000) {
+      incidence1[i] <- 4.5
+      next()
+   } else{
+      # If none of the conditions are met give the incidence zero
+      incidence1[i] <- 0
+   }
+   
+}
+
+# check data to make sure there are no zeros
+incidence1
+length(Goolhi.13[incidence1 == 0, 1])
+Goolhi.13[incidence1 == 0, ]
+hist(incidence1)
+
+# Re-format data-frame
+if(D_assessment == "16 DAT1"){
+Goolhi.13D <- Goolhi.13[,c("Treat", "Rep", "Run", "Plot")]
+Goolhi.13D$Inc_16D <-  incidence1
+
+} 
+
+if(D_assessment == "33DAT1"){
+Goolhi.13D$Inc_33D <-  incidence1
+}
+}
+
+
+# head(Goolhi.13D)
+# Goolhi.13D <- Goolhi.13D %>%
+#    group_by(Treat) %>%
+#    summarise(M.inc = mean(Incidence, na.rm = TRUE),
+#              sd.inc = sd(Incidence, na.rm = TRUE))
+
+
+write.csv(
+   Goolhi.13D,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305-Goolhi-Disease_means.csv"
+)
+
+#_____________________
+# Read in Harvest data
+Goolhi.13Y <-
+   as.data.frame(
+      read_xlsx(
+         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx",
+         sheet = "Yield",
+         range = "A15:F75",
+         col_names = TRUE
+      )
+   )
+
+Goolhi.13Y <- Goolhi.13Y[order(Goolhi.13Y[,1],Goolhi.13Y[,2],Goolhi.13Y[,3],Goolhi.13Y[,4]),]
+
+Goolhi_13 <- left_join(Goolhi.13D, Goolhi.13Y)
+
+
+
+Goolhi_13 <- Goolhi_13 %>%
+   mutate(trade_name = 
+             case_when(Treat == "1" ~ NA_character_,
+                       Treat == "2" ~ "Spin-flo",
+                       Treat == "3" ~ "Tilt",
+                       Treat == "4" ~ "Amistar Xtra",
+                       Treat == "5" ~ "Amistar Xtra + adj",
+                       Treat == "6" ~ "Cabrio",
+                       Treat == "7" ~ "Spin-flo",
+                       Treat == "8" ~ "Tilt",
+                       Treat == "9" ~ "Amistar Xtra + adj",
+                       Treat == "10" ~ "Cabrio",
+                       Treat == "11" ~ "Tilt",
+                       TRUE ~ "control"))%>%
+   mutate(fungicide_ai = 
+             case_when(fungicide == "AMIS-X" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       fungicide == "SULPHUR" ~ "sulphur",
+                       fungicide == "FOLICUR" ~ "tebuconazole",
+                       TRUE ~ "control"))%>%
+   mutate(dose_ai.ha = 
+             case_when(fungicide == "AMIS-X" ~ 120,
+                       fungicide == "SULPHUR" ~ 3000,
+                       fungicide == "FOLICUR" ~ 62.35,
+                       TRUE ~ 0))%>%
+   mutate(fungicide_application_1 = 
+             case_when(spray_n == 1 ~ as.Date("2011-03-23", format = "%Y-%m-%d"),
+                       spray_n == 2 ~ as.Date("2011-03-23", format = "%Y-%m-%d"),
+                       spray_n == 3 ~ as.Date("2011-03-09", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   
+   mutate(fungicide_application_2 = 
+             case_when(spray_n == 2 ~ as.Date("2011-04-13", format = "%Y-%m-%d"),
+                       spray_n == 3 ~ as.Date("2011-03-30", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = 
+             case_when(spray_n == 3 ~ as.Date("2011-04-12", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))
+
+
+
+King_11_dat <- 
+   data.frame(trial_ref = "mung1011/02",
+              year = "2011",
+              location = "Kingaroy",
+              host_genotype = King_11$cultivar,
+              trial_design = "RCB",
+              plot_length = 11,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 0.75,
+              replicate = King_11$`rep!`,
+              planting_date = as.Date("2011-02-02", format = "%Y-%m-%d"),
+              emergence_date = NA,
+              flowering_date = NA,
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = as.Date("2011-03-22", format = "%Y-%m-%d"),
+              trade_name = as.factor(King_11$trade_name),
+              fungicide_ai = King_11$fungicide_ai,
+              dose_ai.ha = King_11$dose_ai.ha,
+              n_treatment = King_11$`trt!`,
+              fungicide_application_1 = King_11$fungicide_application_1,
+              fungicide_application_2 = King_11$fungicide_application_2,
+              fungicide_application_3 = King_11$fungicide_application_3,
+              total_fungicide = King_11$spray_n,
+              harvest_date = as.Date(NA),
+              final_assessment = as.Date("2010-05-11", format = "%Y-%m-%d"),
+              PM_final_severity = King_11$`14 w.a.p.`,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`),
+              AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")],1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))
+              )
+   
+
+
+King_11_m <- King_11_dat %>%
+   group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
+   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+              plot_width.m. = mean(plot_width, na.rm = TRUE),
+              plant_density = unique(plant_density),
+              row_spacing = unique(row_spacing),
+              replicates = sum(replicate),
+              planting_date = unique(planting_date),
+              emergence_date = NA,
+              flowering_date = unique(flowering_date),
+              pod_fill_date = NA,
+              mid_late_pod_fill = NA,
+              first_sign_disease = unique(first_sign_disease),
+              fungicide_application_1 = unique(fungicide_application_1),
+              fungicide_application_2 = unique(fungicide_application_2),
+              fungicide_application_3 = unique(fungicide_application_3),
+              total_fungicide = unique(total_fungicide),
+              harvest_date = unique(harvest_date),
+              final_assessment = unique(final_assessment),
+              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+              rating_scale = unique(rating_scale),
+              disease_error = sd(PM_final_severity, na.rm = TRUE),
+              D_error_type = "stdev",
+              grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+              raw_graded = NA,
+              yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+              meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = King_11_dat))[2,3]
+   )
+
+
+King_11_m <- fold_data(King_11_m, PM_MB_means)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Goolhi.13Y <- Goolhi.13Y %>%
+   group_by(Treat) %>%
+   summarise(
+      M.Yield = mean(`Yield Kg/ha`, na.rm = TRUE),
+      sd.Yield = sd(`Yield Kg/ha`, na.rm = TRUE)
+   )
+write.csv(
+   Goolhi.13Y,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305-Goolhi-Yield_means.csv"
+)
+
+
+
+```
