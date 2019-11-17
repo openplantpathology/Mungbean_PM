@@ -99,6 +99,8 @@ for (Trial2012 in Trials$trial_ref) {
             as.numeric(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$grain_yield.t.ha[j])
       ))
       
+      ### -> This formula should be V = (n * (LSD/1.96)^2) / 2
+      
    }
    
    # and replacing the values in the dataset
