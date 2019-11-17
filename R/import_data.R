@@ -19,7 +19,7 @@ import_data <- function() {
    x$trial_ref <- as.factor(x$trial_ref)
    x$location <- as.factor(x$location)
    x$host_genotype <- as.factor(x$host_genotype)
-   x$fungicide_ai <- as.factor(x$fungicide)
+   x$fungicide_ai <- as.factor(x$fungicide_ai)
    x$trade_name <- as.factor(x$trade_name)
    x$year <- as.factor(x$year)
    x$replicates <- as.numeric(x$replicates)
