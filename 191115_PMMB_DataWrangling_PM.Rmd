@@ -125,7 +125,7 @@ Herm_10_dat <-
               PM_final_severity = Herm_10$P.M.13wap,
               rating_scale = "1-9",
               grain_yield.t.ha. = Herm_10$`Kg/ha`,
-              AUDPC = apply(Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")],1, FUN = audpc, dates = c(9*7,11*7,13*7)),
+              AUDPC = apply(Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1,1, FUN = audpc, dates = c(9*7,11*7,13*7)), # -1 to the data because zero disease = 1 on rating scale
               stringsAsFactors = FALSE
               )
 
@@ -384,7 +384,7 @@ King_11_dat <-
               PM_final_severity = King_11$`14 w.a.p.`,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`),
-              AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")],1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))
+              AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")]-1,1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))# -1 to the data because zero disease = 1 on rating scale
               )
    
 
@@ -764,7 +764,7 @@ Goolhi_13_dat <-
               PM_final_severity = Goolhi_13$Inc_33D,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(Goolhi_13$`Yield Kg/ha`),
-              AUDPC = apply(Goolhi_13[,c("Inc_16D","Inc_33D")],1, FUN = audpc, dates = c(16,33))
+              AUDPC = apply(Goolhi_13[,c("Inc_16D","Inc_33D")]-1,1, FUN = audpc, dates = c(16,33))# -1 to the data because zero disease = 1 on rating scale
               )
    
 
@@ -831,6 +831,9 @@ MarysM.13D <-
          col_names = TRUE
       )
    )
+
+colnames(MarysM.13D)[1:4] <- c("Treat", "Rep", "Run", "Plot")
+MarysM.13D <- MarysM.13D[order(MarysM.13D[,1],MarysM.13D[,2],MarysM.13D[,3],MarysM.13D[,4]),]
 
 if(D_assess == "18 DAT1 18-3-2013"){
    col_ref <- 33:57
@@ -991,47 +994,31 @@ for (i in seq_along(incidence2)) {
       incidence2[i] <- 0
    }
    
+}# End of incidence2 loop
 
-   
+if(any(incidence2 == 0)){
+   warning("Code caluculated incidence on '0' which is off the incidence scale")
+} 
 
 # Re-format data-frame
 if(D_assess == "18 DAT1 18-3-2013"){
 MarysM.13D.1 <- MarysM.13D[,c("Treat", "Rep", "Run", "Plot")]
 MarysM.13D.1$Inc_18D <-  incidence2
 #cat(incidence2,"\n",length(incidence2), sep = ", ")
-} 
-
+}
+   
 if(D_assess == "19 DAT1 19-3-2013"){
    MarysM.13D.1$Inc_19D <-  incidence2
    #cat(incidence2,"\n",length(incidence2), sep = ", ")
 }
    
-}
-   
-   
-}
+} #end of loop on disease observations
 
 
-# Check for Zeros which indicat the above code could not fit the data into an incidence rating on the 1-9 scale
-incidence2
-MarysM.13D[incidence2 == 0, 1:5]
-dim(MarysM.13D[incidence2 == 0, ])
-hist(incidence2)
 
-
-# Re-format data-frame
-MarysM.13D$Incidence <- incidence2
-MarysM.13D <-
-   MarysM.13D[, c("Treat", "Rep", "Run", "Plot", "Incidence")]
-
-
-MarysM.13D <- MarysM.13D %>%
-   group_by(Treat) %>%
-   summarise(M.inc = mean(Incidence, na.rm = TRUE),
-             sd.inc = sd(Incidence, na.rm = TRUE))
 write.csv(
-   MarysM.13D,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MaryMount-Disease_means.csv"
+   MarysM.13D.1,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304-MaryMount-Disease_means.csv"
 )
 
 
@@ -1040,23 +1027,189 @@ write.csv(
 MarysM.13Y <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
+         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
          sheet = "42 DAT1 Yield",
          range = "A14:F58",
          col_names = TRUE
       )
    )
-head(MarysM.13Y)
+dim(MarysM.13Y)
+dim(MarysM.13D.1)
 
-MarysM.13Y <- MarysM.13Y %>%
-   group_by(Treat) %>%
-   summarise(
-      M.Yield = mean(`Yield Kg/ha`, na.rm = TRUE),
-      sd.Yield = sd(`Yield Kg/ha`, na.rm = TRUE)
+MarysM.13Y$Treat <- as.character(MarysM.13Y$Treat)
+MarysM.13Y$Rep <- as.character(MarysM.13Y$Rep)
+
+
+MarysM.13Y <- MarysM.13Y[order(MarysM.13Y[,1],MarysM.13Y[,2],MarysM.13Y[,3],MarysM.13Y[,4]),]
+
+MarysM_13 <- left_join(MarysM.13D.1,MarysM.13Y)
+
+
+
+MarysM_13 <- MarysM_13 %>%
+   mutate(trade_name = 
+             case_when(Treat == "1" ~ "control",
+                       Treat == "2" ~ "Spin-flo",
+                       Treat == "3" ~ "Tilt",
+                       Treat == "4" ~ "Amistar Xtra",
+                       Treat == "5" ~ "Amistar Xtra + adj",
+                       Treat == "6" ~ "Cabrio",
+                       Treat == "7" ~ "Spin-flo",
+                       Treat == "8" ~ "Tilt",
+                       Treat == "9" ~ "Amistar Xtra + adj",
+                       Treat == "10" ~ "Cabrio",
+                       Treat == "11" ~ "Tilt",
+                       TRUE ~ "other"))%>%
+   mutate(fungicide_ai = 
+             case_when(Treat == "1" ~ "control",
+                       Treat == "2" ~ "carbendazim",
+                       Treat == "3" ~ "propiconazole",
+                       Treat == "4" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       Treat == "5" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       Treat == "6" ~ "pyraclostrobin",
+                       Treat == "7" ~ "carbendazim",
+                       Treat == "8" ~ "propiconazole",
+                       Treat == "9" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       Treat == "10" ~ "pyraclostrobin",
+                       Treat == "11" ~ "propiconazole",
+                       TRUE ~ "other"))%>%
+   mutate(dose_ai.ha = 
+             case_when(Treat == "1" ~ 0,
+                       Treat == "2" ~ 250,
+                       Treat == "3" ~ 62.5,
+                       Treat == "4" ~ 40,
+                       Treat == "5" ~ 40,
+                       Treat == "6" ~ 125,
+                       Treat == "7" ~ 250,
+                       Treat == "8" ~ 62.5,
+                       Treat == "9" ~ 40,
+                       Treat == "10" ~ 125,
+                       Treat == "11" ~ 62.5,
+                       TRUE ~ 0))%>%
+   mutate(fungicide_application_1 = 
+             case_when(Treat == "1" ~ as.Date(NA),
+                       Treat == "2" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "3" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "4" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "5" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "6" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "7" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "8" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "9" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "10" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "11" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(Treat == "7" ~ as.Date("2013-03-18", format = "%Y-%m-%d"),
+                       Treat == "8" ~ as.Date("2013-03-18", format = "%Y-%m-%d"),
+                       Treat == "9" ~ as.Date("2013-03-18", format = "%Y-%m-%d"),
+                       Treat == "10" ~ as.Date("2013-03-18", format = "%Y-%m-%d"),
+                       Treat == "11" ~ as.Date("2013-03-18", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = 
+             case_when(Treat == "11" ~ as.Date("2013-04-02", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(Treat == "1" ~ 0,
+                       Treat == "2" ~ 1,
+                       Treat == "3" ~ 1,
+                       Treat == "4" ~ 1,
+                       Treat == "5" ~ 1,
+                       Treat == "6" ~ 1,
+                       Treat == "7" ~ 2,
+                       Treat == "8" ~ 2,
+                       Treat == "9" ~ 2,
+                       Treat == "10" ~ 2,
+                       Treat == "11" ~ 2, # third spray not applied ?
+                       TRUE ~ 0))
+
+
+
+MarysM_13_dat <- 
+   data.frame(trial_ref = "AM1304",
+              year = "2013",
+              location = "Mary's mount",
+              host_genotype = "Crystal",
+              trial_design = "RCB",
+              plot_length = 12,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 1,
+              replicate = MarysM_13$Rep,
+              planting_date = NA,
+              emergence_date = NA,
+              flowering_date = NA,
+              pod_fill_date = as.Date("2013-02-28", format = "%Y-%m-%d"),
+              mid_late_pod_fill = NA,
+              first_sign_disease = as.Date("2013-03-16", format = "%Y-%m-%d"),
+              trade_name = as.factor(MarysM_13$trade_name),
+              fungicide_ai = MarysM_13$fungicide_ai,
+              dose_ai.ha = MarysM_13$dose_ai.ha,
+              n_treatment = MarysM_13$Treat,
+              fungicide_application_1 = MarysM_13$fungicide_application_1,
+              fungicide_application_2 = MarysM_13$fungicide_application_2,
+              fungicide_application_3 = MarysM_13$fungicide_application_3,
+              total_fungicide = MarysM_13$spray_n,
+              harvest_date = as.Date("2013-04-11", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2013-03-26", format = "%Y-%m-%d"),
+              PM_final_severity = MarysM_13$Inc_19D,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(MarysM_13$`Yield Kg/ha`)/1000,
+              AUDPC = apply(MarysM_13[,c("Inc_18D","Inc_19D")]-1,1, FUN = audpc, dates = c(12,12+19)) # -1 to the data because zero disease = 1 on rating scale
+              )
+   
+
+
+MarysM_13_m <- MarysM_13_dat %>%
+   group_by(trial_ref, year, location, host_genotype, trial_design, 
+            trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
+   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+              plot_width.m. = mean(plot_width, na.rm = TRUE),
+              plant_density = unique(plant_density),
+              row_spacing = unique(row_spacing),
+              replicates = sum(as.numeric(replicate)),
+              planting_date = unique(planting_date),
+              emergence_date = NA,
+              flowering_date = unique(flowering_date),
+              pod_fill_date = unique(pod_fill_date),
+              mid_late_pod_fill = unique(mid_late_pod_fill),
+              first_sign_disease = unique(first_sign_disease),
+              fungicide_application_1 = unique(fungicide_application_1),
+              fungicide_application_2 = unique(fungicide_application_2),
+              fungicide_application_3 = unique(fungicide_application_3),
+              total_fungicide = unique(total_fungicide),
+              harvest_date = unique(harvest_date),
+              final_assessment = unique(final_assessment),
+              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+              rating_scale = unique(rating_scale),
+              disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+              D_error_type = "stdev",
+              grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+              raw_graded = NA,
+              yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+              meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = MarysM_13_dat))[2,3]
    )
+
+
+MarysM_13_m <- fold_data(MarysM_13_m, PM_MB_means)
+
+MarysM_13_m <- MarysM_13_m[MarysM_13_m$trade_name != "other",]
+
+
+MarysM_13_m[,c("disease_error","yield_error")] <- 
+   MarysM_13_dat %>%
+   group_by(n_treatment) %>%
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   select(c("disease_error","yield_error"))
+
+
 write.csv(
-   MarysM.13Y,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MarysMount-Yield_means.csv"
+   MarysM_13_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304-MarysMount_means.csv"
 )
 
 
