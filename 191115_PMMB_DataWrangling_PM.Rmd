@@ -813,5 +813,270 @@ write.csv(
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1305_Goolhi_means.csv"
 )
 
+```
+
+
+
+```{r MarysM_13}
+
+for(D_assess in c("18 DAT1 18-3-2013","19 DAT1 19-3-2013")){
+
+# Import  disease survey
+MarysM.13D <-
+   as.data.frame(
+      read_xlsx(
+         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
+         sheet = D_assess,
+         range = "A14:DC72",
+         col_names = TRUE
+      )
+   )
+
+if(D_assess == "18 DAT1 18-3-2013"){
+   col_ref <- 33:57
+   col_ref2 <- 7:31
+}
+if(D_assess == "19 DAT1 19-3-2013"){
+   col_ref <- 58:107
+   col_ref2 <- 7:56
+}
+
+# Replace empty cells / NAs with zeros
+for (i in c(col_ref2,col_ref)) {
+   MarysM.13D[is.na(MarysM.13D[, i]), i] <- 0
+}
+
+
+incidence2 <-
+   vector(mode = "numeric", length = length(MarysM.13D[, 1]))
+
+
+# Convert disease survey data to 1-9 Incidence rating scale
+for (i in seq_along(incidence2)) {
+   # incidence = 1
+   if (all(MarysM.13D[i, col_ref] == 0)) {
+      incidence2[i] <- 1
+      next()
+   }
+   
+   # incidence = 2
+   if (sum(MarysM.13D[i, col_ref] == 2) == 0 &&
+       sum(MarysM.13D[i, col_ref] == 1) == 0 &&
+       (sum(MarysM.13D[i, col_ref] == 3) /
+        length(MarysM.13D[i, col_ref])) <= 0.75) {
+      incidence2[i] <- 2
+      next()
+   }
+   
+   
+   # incidence = 3
+   if (sum(MarysM.13D[i, col_ref] == 1) == 0 &&
+       sum(MarysM.13D[i, col_ref] == 2) <= 8 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) > 0.75) {
+      incidence2[i] <- 3
+   } else{
+      # if it is in the lower half of the canopy and in less than 75% of plants then incidence = 2.5
+      if (sum(MarysM.13D[i, col_ref] == 1) == 0 &&
+          sum(MarysM.13D[i, col_ref] == 2) <= 8 &&
+          sum(MarysM.13D[i, col_ref] == 3) > 0 &&
+          (sum(MarysM.13D[i, col_ref] > 0) /
+           length(MarysM.13D[i, col_ref])) <= 0.75) {
+         incidence2[i] <- 2.5
+         next()
+      }
+   }
+   
+   
+   # incidence = 4
+   if (sum(MarysM.13D[i, col_ref] == 1) == 0 &&
+       sum(MarysM.13D[i, col_ref] == 2) > 0 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) <= 0.75) {
+      incidence2[i] <- 4
+      next()
+   }
+   
+   
+   # incidence = 5
+   if (sum(MarysM.13D[i, col_ref] == 1) == 0 &&
+       sum(MarysM.13D[i, col_ref] == 2) > 0 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) > 0.75) {
+      incidence2[i] <- 5
+      next()
+   }
+   
+   
+   # incidence = 6
+   if (sum(MarysM.13D[i, col_ref] == 1) == 0 &&
+       sum(MarysM.13D[i, col_ref] >= 2) > 0 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) > 0.95) {
+      incidence2[i] <- 6
+      next()
+   }
+   
+   
+   # incidence = 7
+   if (sum(MarysM.13D[i, col_ref] == 1) <= 8 &&
+       sum(MarysM.13D[i, col_ref] >= 2) > 0 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) > 0.95) {
+      incidence2[i] <- 7
+      next()
+   }
+   
+   
+   # incidence = 8
+   if (sum(MarysM.13D[i, col_ref] >= 1) > 0 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) > 0.75) {
+      incidence2[i] <- 8
+      next()
+   }
+   
+   
+   # incidence = 9
+   if (sum(MarysM.13D[i, col_ref] >= 1) > 0 &&
+       sum(MarysM.13D[i, col_ref2] >= (10 * 5 * 100 * 0.75)) &&
+       # ten leaves from 5 sample sites with a maximum % leaf area infected with PM of 100% * 0.75 as a threshold for leaf drop
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) > 0.75) {
+      incidence2[i] <- 9
+      next()
+   }
+   
+   # if there are few (< 10%) leaves with very small infections in all parts of the canopy OR
+   # if there is a stray colony on a upper leaf in addition to all lower
+   if (sum(MarysM.13D[i, col_ref] == 3) >= 1 &&
+       sum(MarysM.13D[i, col_ref] == 1) <= 2 &&
+       sum(MarysM.13D[i, col_ref] == 2) <= 2 &&
+       sum(MarysM.13D[i, col_ref2]) <= 150) {
+      incidence2[i] <- 2.5
+      next()
+   }
+   
+   # incidence = 7.5  In the upper canopy with less than 75% plants infected
+   if (sum(MarysM.13D[i, col_ref] == 3) > 0 &&
+       sum(MarysM.13D[i, col_ref] == 2) > 0 &&
+       sum(MarysM.13D[i, col_ref] == 1) > 0 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref]) <= 0.75) &&
+       sum(MarysM.13D[i, col_ref2]) >= 2000) {
+      incidence2[i] <- 7.5
+      next()
+   }
+   #
+   # incidence = 6.5
+   if (sum(MarysM.13D[i, col_ref] == 1) > 3 &&
+       sum(MarysM.13D[i, col_ref] >= 2) > 0 &&
+       sum(MarysM.13D[i, col_ref2] <= 500)  &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref]) >= 0.65)) {
+      incidence2[i] <- 6.5
+      next()
+   }
+   #
+   #
+   # incidence = 4.5 If PM is in the the lower and mid-canopy in less than 75% of plants and one or two in the upper canopy
+   if (sum(MarysM.13D[i, col_ref] == 1) <= 3 &&
+       sum(MarysM.13D[i, col_ref] >= 2) > 0 &&
+       (sum(MarysM.13D[i, col_ref] > 0) /
+        length(MarysM.13D[i, col_ref])) <= 0.75) {
+      incidence2[i] <- 4.5
+      next()
+   } else{
+      # If none of the conditions are met give the incidence zero
+      incidence2[i] <- 0
+   }
+   
+
+   
+
+# Re-format data-frame
+if(D_assess == "18 DAT1 18-3-2013"){
+MarysM.13D.1 <- MarysM.13D[,c("Treat", "Rep", "Run", "Plot")]
+MarysM.13D.1$Inc_18D <-  incidence2
+#cat(incidence2,"\n",length(incidence2), sep = ", ")
+} 
+
+if(D_assess == "19 DAT1 19-3-2013"){
+   MarysM.13D.1$Inc_19D <-  incidence2
+   #cat(incidence2,"\n",length(incidence2), sep = ", ")
+}
+   
+}
+   
+   
+}
+
+
+# Check for Zeros which indicat the above code could not fit the data into an incidence rating on the 1-9 scale
+incidence2
+MarysM.13D[incidence2 == 0, 1:5]
+dim(MarysM.13D[incidence2 == 0, ])
+hist(incidence2)
+
+
+# Re-format data-frame
+MarysM.13D$Incidence <- incidence2
+MarysM.13D <-
+   MarysM.13D[, c("Treat", "Rep", "Run", "Plot", "Incidence")]
+
+
+MarysM.13D <- MarysM.13D %>%
+   group_by(Treat) %>%
+   summarise(M.inc = mean(Incidence, na.rm = TRUE),
+             sd.inc = sd(Incidence, na.rm = TRUE))
+write.csv(
+   MarysM.13D,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MaryMount-Disease_means.csv"
+)
+
+
+
+# read in yield and format
+MarysM.13Y <-
+   as.data.frame(
+      read_xlsx(
+         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
+         sheet = "42 DAT1 Yield",
+         range = "A14:F58",
+         col_names = TRUE
+      )
+   )
+head(MarysM.13Y)
+
+MarysM.13Y <- MarysM.13Y %>%
+   group_by(Treat) %>%
+   summarise(
+      M.Yield = mean(`Yield Kg/ha`, na.rm = TRUE),
+      sd.Yield = sd(`Yield Kg/ha`, na.rm = TRUE)
+   )
+write.csv(
+   MarysM.13Y,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1304-MarysMount-Yield_means.csv"
+)
+
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
