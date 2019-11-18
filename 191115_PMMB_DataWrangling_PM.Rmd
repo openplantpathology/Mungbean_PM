@@ -2061,10 +2061,7 @@ write.csv(
 
 ### Hermitage 2015
 ```{r Herm_15}
-# ____________________________________________________________
-# _____________            Hermitage  2015        ____________
 
-# Yield data from 2016 Hermitage trial with final disease severity
 Herm_15 <-
    read.xlsx(
       "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2015 PMmung Herm/Mugbean powdery mildew 2014-15 inc results v2.xlsx",
@@ -2099,81 +2096,88 @@ Herm_15$`Plot.Yield.(t/ha)` <-
 #as.numeric(unlist(strsplit(Herm_15.DR$Treatment,)))
 Herm_15$disease_severity <- as.numeric(Herm_15.DR[, 8])
 
-unique(Herm_15.DR$Treatment)
-Herm_15.DR[is.na(Herm_15.DR$Treatment),]
+Herm_15.DR <- Herm_15.DR[!is.na(Herm_15.DR$Treatment),]
 ```
 
-
+#### Define treatment data
 ```{r Herm_15_Treats}
 
-
-
-Millm_13 <- Herm_15.DR %>%
+Herm_15_dat <- Herm_15.DR %>%
    mutate(trade_name = 
              case_when(Treatment == "control" ~ "control",
                        TRUE ~ "Folicur"))%>%
    mutate(fungicide_ai = 
-             case_when(Treat == "1" ~ "control",
-                       Treat == "2" ~ "carbendazim",
-                       Treat == "3" ~ "propiconazole",
-                       Treat == "4" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
-                       Treat == "5" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
-                       Treat == "6" ~ "pyraclostrobin",
-                       Treat == "7" ~ "carbendazim",
-                       Treat == "8" ~ "propiconazole",
-                       Treat == "9" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
-                       Treat == "10" ~ "pyraclostrobin",
-                       Treat == "11" ~ "propiconazole",
-                       TRUE ~ "other"))%>%
+             case_when(Treatment == "control" ~ "control",
+                       TRUE ~ "tebuconazole"))%>%
    mutate(dose_ai.ha = 
-             case_when(Treat == "1" ~ 0,
-                       Treat == "2" ~ 250,
-                       Treat == "3" ~ 62.5,
-                       Treat == "4" ~ 40,
-                       Treat == "5" ~ 40,
-                       Treat == "6" ~ 125,
-                       Treat == "7" ~ 250,
-                       Treat == "8" ~ 62.5,
-                       Treat == "9" ~ 40,
-                       Treat == "10" ~ 125,
-                       Treat == "11" ~ 62.5,
-                       TRUE ~ 0))%>%
+             case_when(Treatment == "control" ~ 0,
+                       TRUE ~ 62.35))%>%
    mutate(fungicide_application_1 = 
-             case_when(Treat == "1" ~ as.Date(NA),
-                       Treat == "2" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "3" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "4" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "5" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "6" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "7" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "8" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "9" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "10" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
-                       Treat == "11" ~ as.Date("2013-03-13", format = "%Y-%m-%d"),
+             case_when(Treatment == "1st sign +1" ~ as.Date("2015-03-17", format = "%Y-%m-%d"),
+                       Treatment == "control" ~ as.Date(NA),
+                       Treatment == "1st sign" ~ as.Date("2015-03-17", format = "%Y-%m-%d"),
+                       Treatment == "1/3C + 1" ~ as.Date("2015-03-23", format = "%Y-%m-%d"),
+                       Treatment == "5wks+2" ~ as.Date("2015-03-02", format = "%Y-%m-%d"),
+                       Treatment == "1/3C" ~ as.Date("2015-03-23", format = "%Y-%m-%d"),
                        TRUE ~ as.Date(NA)))%>%
    mutate(fungicide_application_2 = 
-             case_when(Treat == "7" ~ as.Date("2013-03-21", format = "%Y-%m-%d"),
-                       Treat == "8" ~ as.Date("2013-03-21", format = "%Y-%m-%d"),
-                       Treat == "9" ~ as.Date("2013-03-21", format = "%Y-%m-%d"),
-                       Treat == "10" ~ as.Date("2013-03-21", format = "%Y-%m-%d"),
-                       Treat == "11" ~ as.Date("2013-03-21", format = "%Y-%m-%d"),
+             case_when(Treatment == "1st sign +1" ~ as.Date("2015-03-31", format = "%Y-%m-%d"),
+                       Treatment == "control" ~ as.Date(NA),
+                       Treatment == "1/3C + 1" ~ as.Date("2015-04-07", format = "%Y-%m-%d"),
+                       Treatment == "5wks+2" ~ as.Date("2015-03-17", format = "%Y-%m-%d"),
                        TRUE ~ as.Date(NA)))%>%
    mutate(fungicide_application_3 = 
-             case_when(Treat == "11" ~ as.Date("2013-03-28", format = "%Y-%m-%d"),
+             case_when(Treatment == "5wks+2" ~ as.Date("2015-03-31", format = "%Y-%m-%d"),
                        TRUE ~ as.Date(NA)))%>%
    mutate(spray_n = 
-             case_when(Treat == "1" ~ 0,
-                       Treat == "2" ~ 1,
-                       Treat == "3" ~ 1,
-                       Treat == "4" ~ 1,
-                       Treat == "5" ~ 1,
-                       Treat == "6" ~ 1,
-                       Treat == "7" ~ 2,
-                       Treat == "8" ~ 2,
-                       Treat == "9" ~ 2,
-                       Treat == "10" ~ 2,
-                       Treat == "11" ~ 3, 
-                       TRUE ~ 0))
+             case_when(Treatment == "1st sign +1" ~ 2,
+                       Treatment == "control" ~ 0,
+                       Treatment == "1st sign" ~ 1,
+                       Treatment == "1/3C + 1" ~ 2,
+                       Treatment == "5wks+2" ~ 3,
+                       Treatment == "1/3C" ~ 1,
+                       TRUE ~ 9999))
+Herm_15_dat
+
+```
+
+
+#### Input trial data
+```{r Herm15_Trialdat}
+
+Herm_15_dat <- 
+   data.frame(trial_ref = "mung1415/01",
+              year = "2015",
+              location = "Hermitage",
+              host_genotype = "Jade",
+              trial_design = "RCB",
+              plot_length = 12,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 0.75,
+              replicate = Herm_15_dat$Rep,
+              planting_date = as.Date("2015-01-19", format = "%Y-%m-%d"),
+              emergence_date = as.Date("2015-01-24", format = "%Y-%m-%d"),
+              flowering_date = as.Date(NA),
+              pod_fill_date = as.Date(NA),
+              mid_late_pod_fill = as.Date(NA),
+              first_sign_disease = as.Date("2013-03-16", format = "%Y-%m-%d"),
+              trade_name = as.factor(Herm_15_dat$trade_name),
+              fungicide_ai = Herm_15_dat$fungicide_ai,
+              dose_ai.ha = Herm_15_dat$dose_ai.ha,
+              n_treatment = Herm_15_dat$Treat,
+              fungicide_application_1 = Herm_15_dat$fungicide_application_1,
+              fungicide_application_2 = Herm_15_dat$fungicide_application_2,
+              fungicide_application_3 = Herm_15_dat$fungicide_application_3,
+              total_fungicide = Herm_15_dat$spray_n,
+              harvest_date = as.Date("2013-04-20", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2013-04-06", format = "%Y-%m-%d"),
+              PM_final_severity = Herm_15_dat$Inc_42D,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(Herm_15_dat$`kg/Ha`)/1000,
+              AUDPC = apply(Herm_15_dat[,c("Inc_23D","Inc_42D")]-1,1, FUN = audpc, dates = c(23,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
+              )
+
 ```
 
 
@@ -2185,6 +2189,7 @@ Millm_13 <- Herm_15.DR %>%
 
 
 
+```{r}
 
 Herm_15_m <- as.data.table(Herm_15[, c(4, 5, 7:12)] %>%
                               group_by(`Year`, `location`, `Treatment`) %>%
