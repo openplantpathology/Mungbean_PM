@@ -815,8 +815,7 @@ write.csv(
 
 ```
 
-
-
+### Mary's Mount 2013
 ```{r MarysM_13}
 
 for(D_assess in c("18 DAT1 18-3-2013","19 DAT1 19-3-2013")){
@@ -1198,7 +1197,7 @@ MarysM_13_m <- fold_data(MarysM_13_m, PM_MB_means)
 
 MarysM_13_m <- MarysM_13_m[MarysM_13_m$trade_name != "other",]
 
-
+# For some wierd reason standard deviations are comming back NA in the code above
 MarysM_13_m[,c("disease_error","yield_error")] <- 
    MarysM_13_dat %>%
    group_by(n_treatment) %>%
@@ -1212,11 +1211,406 @@ write.csv(
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304-MarysMount_means.csv"
 )
 
+```
+
+
+### Premer
+#### Convert disease scores
+```{r Premer_13_convert_scores}
+
+for(D_assess in c("19 DAT1 19-3-2013","31 DAT1 31-3-2013")){
+
+# Import final disease survey
+Premer.13D <-
+   as.data.frame(
+      read_xlsx(
+         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1303 Fungicides for powdery mildew in mungbean - Premer.xlsx",
+         sheet = D_assess,
+         range = "A14:DC64",
+         col_names = TRUE
+      )
+   )
+
+
+colnames(Premer.13D)[1:4] <- c("Treat", "Rep", "Run", "Plot")
+Premer.13D <- Premer.13D[order(Premer.13D[,1],Premer.13D[,2],Premer.13D[,3],Premer.13D[,4]),]
+
+
+# remove Plots not surveyed
+for (i in seq_along(Premer.13D[, 1])) {
+   if (i == 1) {
+      plotsRecorded <- vector(length = length(Premer.13D[, 1]))
+   }
+   
+   plotsRecorded[i] <- all(is.na(Premer.13D[i, 7:56]))
+   
+   if (i == length(Premer.13D[, 1])) {
+      print(!plotsRecorded)
+   }
+}
+# remove Plots not surveyed
+Premer.13D <- Premer.13D[!plotsRecorded, ]
+
+incidence3 <-
+   vector(mode = "numeric", length = length(Premer.13D[, 1]))
+
+
+# Convert disease survey data to 1-9 Incidence rating scale
+for (i in seq_along(incidence3)) {
+   # # NAs
+   # if (all(is.na(Premer.13D[i, 58:107]))) {
+   #    incidence3[i] <- NA
+   #    next()
+   # }
+   
+   # incidence = 1
+   if (all(Premer.13D[i, 58:107] == 0)) {
+      incidence3[i] <- 1
+      next()
+   }
+   
+   # incidence = 2
+   if (sum(Premer.13D[i, 58:107] == 2, na.rm = TRUE) == 0 &&
+       sum(Premer.13D[i, 58:107] == 1, na.rm = TRUE) == 0 &&
+       (sum(Premer.13D[i, 58:107] == 3, na.rm = TRUE) /
+        length(Premer.13D[i, 58:107])) <= 0.75) {
+      incidence3[i] <- 2
+      next()
+   }
+   
+   
+   # incidence = 3
+   if (sum(Premer.13D[i, 58:107] == 1, na.rm = TRUE) == 0 &&
+       sum(Premer.13D[i, 58:107] == 2, na.rm = TRUE) <= 8 &&
+       (sum(Premer.13D[i, 58:107] > 0, na.rm = TRUE) /
+        length(Premer.13D[i, 58:107])) > 0.75) {
+      incidence3[i] <- 3
+   } else{
+      # if it is in the lower half of the canopy and in less than 75% of plants then incidence = 2.5
+      if (sum(Premer.13D[i, 58:107] == 1, na.rm = TRUE) == 0 &&
+          sum(Premer.13D[i, 58:107] == 2, na.rm = TRUE) <= 8 &&
+          sum(Premer.13D[i, 58:107] == 3, na.rm = TRUE) > 0 &&
+          (sum(Premer.13D[i, 58:107] > 0, na.rm = TRUE) /
+           length(Premer.13D[i, 58:107])) <= 0.75) {
+         incidence3[i] <- 2.5
+         next()
+      }
+   }
+   
+   
+   # incidence = 4
+   if (sum(Premer.13D[i, 58:107] == 1, na.rm = TRUE) == 0 &&
+       sum(Premer.13D[i, 58:107] == 2, na.rm = TRUE) > 0 &&
+       (sum(Premer.13D[i, 58:107] > 0, na.rm = TRUE) /
+        length(Premer.13D[i, 58:107])) <= 0.75) {
+      incidence3[i] <- 4
+      next()
+   }
+   
+   
+   # incidence = 5
+   if (sum(Premer.13D[i, 58:107] == 1, na.rm = TRUE) == 0 &&
+       sum(Premer.13D[i, 58:107] == 2, na.rm = TRUE) > 0 &&
+       (sum(Premer.13D[i, 58:107] > 0, na.rm = TRUE) /
+        length(Premer.13D[i, 58:107])) > 0.75) {
+      incidence3[i] <- 5
+      next()
+   }
+   
+   
+   # incidence = 6
+   if (sum(Premer.13D[i, 58:107] == 1, na.rm = TRUE) == 0 &&
+       sum(Premer.13D[i, 58:107] >= 2, na.rm = TRUE) > 0 &&
+       (sum(Premer.13D[i, 58:107] > 0, na.rm = TRUE) /
+        length(Premer.13D[i, 58:107])) > 0.95) {
+      incidence3[i] <- 6
+      next()
+   }
+   
+   
+   # incidence = 7
+   if (sum(Premer.13D[i, 58:107] == 1, na.rm = TRUE) <= 8 &&
+       sum(Premer.13D[i, 58:107] >= 2, na.rm = TRUE) > 0 &&
+       (sum(Premer.13D[i, 58:107] > 0, na.rm = TRUE) /
+        length(Premer.13D[i, 58:107])) > 0.95) {
+      incidence3[i] <- 7
+      next()
+   }
+   
+   
+   # incidence = 8
+   if (sum(Premer.13D[i, 58:107] >= 1, na.rm = TRUE) > 0 &&
+       (sum(Premer.13D[i, 58:107] > 0, na.rm = TRUE) /
+        length(Premer.13D[i, 58:107])) > 0.75) {
+      incidence3[i] <- 8
+      next()
+   }
+   
+   
+   # incidence = 9
+   if (sum(Premer.13D[i, 58:107] >= 1) > 0 &&
+       sum(Premer.13D[i, 7:56] >= (10 * 5 * 100 * 0.75)) &&
+       # ten leaves from 5 sample sites with a maximum % leaf area infected with PM of 100% * 0.75 as a threshold for leaf drop
+       (sum(Premer.13D[i, 58:107] > 0) /
+        length(Premer.13D[i, 58:107])) > 0.75) {
+      incidence3[i] <- 9
+      next()
+   }
+   
+   # if there are few (< 10%) leaves with very small infections in all parts of the canopy OR
+   # if there is a stray colony on a upper leaf in addition to all lower
+   if (sum(Premer.13D[i, 58:107] == 3) >= 1 &&
+       sum(Premer.13D[i, 58:107] == 1) <= 2 &&
+       sum(Premer.13D[i, 58:107] == 2) <= 2 &&
+       sum(Premer.13D[i, 7:56]) <= 150) {
+      incidence3[i] <- 2.5
+      next()
+   }
+   
+   # incidence = 7.5  In the upper canopy with less than 75% plants infected
+   if (sum(Premer.13D[i, 58:107] == 3) >= 0 &&
+       sum(Premer.13D[i, 58:107] == 2) > 0 &&
+       sum(Premer.13D[i, 58:107] == 1) > 0 &&
+       (sum(Premer.13D[i, 58:107] > 0) /
+        length(Premer.13D[i, 58:107]) <= 0.75) &&
+       sum(Premer.13D[i, 7:56]) >= 150) {
+      incidence3[i] <- 7.5
+      next()
+   }
+   #
+   # incidence = 6.5
+   if (sum(Premer.13D[i, 58:107] == 1) > 3 &&
+       sum(Premer.13D[i, 58:107] >= 2) > 0 &&
+       sum(Premer.13D[i, 7:56] <= 500)  &&
+       (sum(Premer.13D[i, 58:107] > 0) /
+        length(Premer.13D[i, 58:107]) >= 0.65)) {
+      incidence3[i] <- 6.5
+      next()
+   }
+   #
+   #
+   # incidence = 4.5 If PM is in the the lower and mid-canopy in less than 75% of plants and one or two in the upper canopy
+   if (sum(Premer.13D[i, 58:107] == 1) <= 3 &&
+       sum(Premer.13D[i, 58:107] >= 2) > 0 &&
+       (sum(Premer.13D[i, 58:107] > 0) /
+        length(Premer.13D[i, 58:107])) <= 0.75) {
+      incidence3[i] <- 4.5
+      next()
+   } else{
+      # If none of the conditions are met give the incidence zero
+      incidence3[i] <- 0
+   }
+   
+}# end incidence loop
+
+if(any(incidence3 == 0)){
+   warning("Code caluculated incidence on '0' which is off the incidence scale")}
+
+
+# Re-format data-frame
+if(D_assess == "19 DAT1 19-3-2013"){
+   Premer.13D.1 <- Premer.13D[,c("Treat", "Rep", "Run", "Plot")]
+   Premer.13D.1$Inc_19D <-  incidence3}
+   
+
+if(D_assess == "31 DAT1 31-3-2013"){
+   Premer.13D.2 <- Premer.13D[,c("Treat", "Rep", "Run", "Plot")]
+   Premer.13D.2$Inc_31D <-  incidence3}
+
+}# end disease assessment loop
+
+
+# The 19 Days after T1 only assessed the first 6 treatments
+# Therefore it will be dropped
+#Premer.13D <- left_join(Premer.13D.1,Premer.13D.2)
+Premer.13D <- Premer.13D.2
+
+
+# read in yield and format
+Premer.13Y <-
+   as.data.frame(
+      read_xlsx(
+         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1303 Fungicides for powdery mildew in mungbean - Premer.xlsx",
+         sheet = "Yield 18-4-2013",
+         range = "A14:F58",
+         col_names = TRUE
+      )
+   )
+Premer.13Y$Treat <- as.character(Premer.13Y$Treat)
+
+Premer_13 <- left_join(Premer.13D,Premer.13Y)
+
+```
+
+#### Define treatment data
+```{r Premer13_define_treat}
+
+Premer_13 <- Premer_13 %>%
+   mutate(trade_name = 
+             case_when(Treat == "1" ~ "control",
+                       Treat == "2" ~ "Spin-flo",
+                       Treat == "3" ~ "Tilt",
+                       Treat == "4" ~ "Amistar Xtra",
+                       Treat == "5" ~ "Amistar Xtra + adj",
+                       Treat == "6" ~ "Cabrio",
+                       Treat == "7" ~ "Spin-flo",
+                       Treat == "8" ~ "Tilt",
+                       Treat == "9" ~ "Amistar Xtra + adj",
+                       Treat == "10" ~ "Cabrio",
+                       Treat == "11" ~ "Tilt",
+                       TRUE ~ "other"))%>%
+   mutate(fungicide_ai = 
+             case_when(Treat == "1" ~ "control",
+                       Treat == "2" ~ "carbendazim",
+                       Treat == "3" ~ "propiconazole",
+                       Treat == "4" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       Treat == "5" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       Treat == "6" ~ "pyraclostrobin",
+                       Treat == "7" ~ "carbendazim",
+                       Treat == "8" ~ "propiconazole",
+                       Treat == "9" ~ "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                       Treat == "10" ~ "pyraclostrobin",
+                       Treat == "11" ~ "propiconazole",
+                       TRUE ~ "other"))%>%
+   mutate(dose_ai.ha = 
+             case_when(Treat == "1" ~ 0,
+                       Treat == "2" ~ 250,
+                       Treat == "3" ~ 62.5,
+                       Treat == "4" ~ 40,
+                       Treat == "5" ~ 40,
+                       Treat == "6" ~ 125,
+                       Treat == "7" ~ 250,
+                       Treat == "8" ~ 62.5,
+                       Treat == "9" ~ 40,
+                       Treat == "10" ~ 125,
+                       Treat == "11" ~ 62.5,
+                       TRUE ~ 0))%>%
+   mutate(fungicide_application_1 = 
+             case_when(Treat == "1" ~ as.Date(NA),
+                       Treat == "2" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "3" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "4" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "5" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "6" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "7" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "8" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "9" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "10" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       Treat == "11" ~ as.Date("2013-02-28", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(Treat == "7" ~ as.Date("2013-03-19", format = "%Y-%m-%d"),
+                       Treat == "8" ~ as.Date("2013-03-19", format = "%Y-%m-%d"),
+                       Treat == "9" ~ as.Date("2013-03-19", format = "%Y-%m-%d"),
+                       Treat == "10" ~ as.Date("2013-03-19", format = "%Y-%m-%d"),
+                       Treat == "11" ~ as.Date("2013-03-19", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = 
+             case_when(Treat == "11" ~ as.Date("2013-03-31", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(Treat == "1" ~ 0,
+                       Treat == "2" ~ 1,
+                       Treat == "3" ~ 1,
+                       Treat == "4" ~ 1,
+                       Treat == "5" ~ 1,
+                       Treat == "6" ~ 1,
+                       Treat == "7" ~ 2,
+                       Treat == "8" ~ 2,
+                       Treat == "9" ~ 2,
+                       Treat == "10" ~ 2,
+                       Treat == "11" ~ 2, 
+                       TRUE ~ 0))
+```
+
+
+#### Input trial data
+```{r Prem13_Trialdat}
+
+Premer_13_dat <- 
+   data.frame(trial_ref = "AM1303",
+              year = "2013",
+              location = "Premer",
+              host_genotype = "Crystal",
+              trial_design = "RCB",
+              plot_length = 12,
+              plot_width = 4,
+              plant_density = as.Date(NA),
+              row_spacing = as.Date(NA),
+              replicate = Premer_13$Rep,
+              planting_date = as.Date("2013-12-28", format = "%Y-%m-%d"),
+              emergence_date = as.Date(NA),
+              flowering_date = as.Date("2013-02-28", format = "%Y-%m-%d"),
+              pod_fill_date = as.Date(NA),
+              mid_late_pod_fill = as.Date(NA),
+              first_sign_disease = as.Date("2013-02-28", format = "%Y-%m-%d"),
+              trade_name = as.factor(Premer_13$trade_name),
+              fungicide_ai = Premer_13$fungicide_ai,
+              dose_ai.ha = Premer_13$dose_ai.ha,
+              n_treatment = Premer_13$Treat,
+              fungicide_application_1 = Premer_13$fungicide_application_1,
+              fungicide_application_2 = Premer_13$fungicide_application_2,
+              fungicide_application_3 = Premer_13$fungicide_application_3,
+              total_fungicide = Premer_13$spray_n,
+              harvest_date = as.Date("2013-04-18", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2013-03-31", format = "%Y-%m-%d"),
+              PM_final_severity = Premer_13$Inc_31D,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(Premer_13$`Yield kg/ha`)/1000
+             # AUDPC = apply(Premer_13[,c("Inc_19D","Inc_31D")]-1,1, FUN = audpc, dates = c(19,12+19)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
+              )
 
 ```
 
 
+#### Calculating the treatment means
+```{r Prem13_TreatmentMeans}
+Premer_13_m <- Premer_13_dat %>%
+   group_by(trial_ref, year, location, host_genotype, trial_design, 
+            trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
+   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+              plot_width.m. = mean(plot_width, na.rm = TRUE),
+              plant_density = unique(plant_density),
+              row_spacing = unique(row_spacing),
+              replicates = sum(as.numeric(replicate)),
+              planting_date = unique(planting_date),
+              emergence_date = NA,
+              flowering_date = unique(flowering_date),
+              pod_fill_date = unique(pod_fill_date),
+              mid_late_pod_fill = unique(mid_late_pod_fill),
+              first_sign_disease = unique(first_sign_disease),
+              fungicide_application_1 = unique(fungicide_application_1),
+              fungicide_application_2 = unique(fungicide_application_2),
+              fungicide_application_3 = unique(fungicide_application_3),
+              total_fungicide = unique(total_fungicide),
+              harvest_date = unique(harvest_date),
+              final_assessment = unique(final_assessment),
+              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+              rating_scale = unique(rating_scale),
+              disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+              D_error_type = "stdev",
+              grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+              raw_graded = NA,
+              yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              Y_error_type = "stdev",
+             #AUDPC.m = mean(AUDPC),
+             #AUDPC.sd = sd(AUDPC),
+              meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = Premer_13_dat))[2,3]
+   )
 
+
+Premer_13_m <- fold_data(Premer_13_m, PM_MB_means)
+
+Premer_13_m <- Premer_13_m[Premer_13_m$trade_name != "other",]
+
+write.csv(
+   Premer_13_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1303-Premer-Disease_means.csv"
+)
+
+
+
+```
 
 
 
