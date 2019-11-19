@@ -2625,3 +2625,206 @@ write.csv(
 )
 
 ```
+
+### Missen Flats 2017
+```{r Missen2017}
+# ____________________________________________________________
+# _____________   Missen Flats (Fogarty's) 2017     ____________
+Fogerty_17 <-
+   read.xlsx(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty Work File 2017 (Autosaved).xlsx",
+      sheet = "Data",
+      startRow = 3,
+      colNames = TRUE,
+      detectDates = TRUE
+   )[, 1:43]
+
+#dim(Fogerty_17)   # 162 rows , 43 Columns
+
+
+# Columns to keep
+Fogerty_17 <- Fogerty_17[, c('Plot', 'Rep', 'Row', 'Column', 'Chem.Trt',
+                           'Chemical', 'Row.Spacing.(m)', 'Treatment.No',
+                           'Treatment', 'Population.plsnts/ha',
+                           '2017-03-07', '2017-03-19', '2017-03-24',
+                           '2017-04-02', '2017-04-10', '2017-04-18',
+                           'Yield.t/ha', 'Grain.Moisture.%', 'Temp.moisture.Taken',
+                           '100.grain.wt.Grams')]
+
+
+Fogerty_17$Treatment.No <- as.numeric(unlist(strsplit(
+   Fogerty_17$Treatment.No, "T"))[
+      seq(from = 2, to = 324, by = 2)])
+
+
+
+
+# Fog_17_sum <- Fogerty_17 %>%
+#    group_by(Treatment, Chemical, `Row.Spacing.(m)`) %>%
+#    summarise(
+#       m_disease = mean(`2017-04-18`, na.rm = TRUE),
+#       sd_disease = sd(`2017-04-18`, na.rm = TRUE),
+#       m_Yield = mean(`Yield.t/ha`, na.rm = TRUE),
+#       sd_Yield = sd(`Yield.t/ha`, na.rm = TRUE)
+#    )
+# 
+# write.csv(
+#    Fog_17_sum,
+#    "C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Fogerty_17_mean.csv"
+# )
+# 
+# 
+# # gather the incidence assessment into long format
+# Fogerty_17.1 <-
+#    gather(Fogerty_17,
+#           key = Incidence_assessment_date,
+#           value = Incidence,
+#           colnames(Fogerty_17)[c(11:16)])
+# #Fogerty_17.1$Severity <- gather(Fogerty_17, key = assessment_date, value = Severity,
+# #                                colnames(Fogerty_17)[c(15,18)])
+# Fogerty_17.1$location <- "Fogerty"
+# 
+# 
+
+head(Fogerty_17)
+unique(Fogerty_17$Chem.Trt)
+unique(Fogerty_17$Chemical)
+Fogerty_17[,7:11]
+```
+
+#### Define treatment data
+```{r King16_treatmentDefine}
+Fogerty_17_dat <- Fogerty_17 %>%
+   mutate(trade_name = 
+             case_when(Chem.Trt == 1 ~ "Folicur",
+                       Chem.Trt == 2 ~ "Throttle",
+                       Chem.Trt == 3 ~ "Custodia",
+                       TRUE ~ "other"))%>%
+   mutate(fungicide_ai = 
+             case_when(Chem.Trt == 1 ~ "tebuconazole",
+                       Chem.Trt == 2 ~ "propiconazole",
+                       Chem.Trt == 3 ~ "200 g/L tebuconazole + 120 g/L azoxystrobin",
+                       TRUE ~ "other"))%>%
+   mutate(dose_ai.ha = 
+             case_when(Chem.Trt == 1 ~ 62,
+                       Chem.Trt == 2 ~ 125,
+                       Chem.Trt == 3 ~ 60,
+                       TRUE ~ 9999))%>%
+   mutate(fungicide_application_1 = 
+             case_when(Treatment.No == 1 ~ as.Date(NA),
+                       Treatment.No == 2 ~ as.Date("2017-02-22", format = "%Y-%m-%d"),
+                       Treatment.No == 3 ~ as.Date("2017-03-08", format = "%Y-%m-%d"),
+                       Treatment.No == 4 ~ as.Date("2017-03-08", format = "%Y-%m-%d"),
+                       Treatment.No == 5 ~ as.Date("2017-03-19", format = "%Y-%m-%d"),
+                       Treatment.No == 6 ~ as.Date("2017-03-08", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(Treatment.No == 4 ~ as.Date("2017-03-24", format = "%Y-%m-%d"),
+                       Treatment.No == 6 ~ as.Date("2017-04-02", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(Treatment == 1 ~ 0,
+                       Treatment == 4 ~ 2,
+                       Treatment == 6 ~ 2,
+                       TRUE ~ 1))
+
+```
+
+#### Input trial data
+```{r King16_Trialdat}
+# Remove zeros
+Fogerty_17_dat[Fogerty_17_dat$`2017-03-07` == 0 ,c("2017-03-07")] <- 1
+
+
+Fogerty_17_dat <- 
+   data.frame(trial_ref = "mung1617/02",
+              year = "2016",
+              location = "Missen Flats",
+              host_genotype = "Jade",
+              trial_design = "RCB",
+              plot_length = 10,
+              plot_width = 2,
+              plant_density = Fogerty_17_dat$`Population.plsnts/ha`,
+              row_spacing = Fogerty_17_dat$`Row.Spacing.(m)`,
+              replicate = Fogerty_17_dat$Rep,
+              planting_date = as.Date("2017-01-27", format = "%Y-%m-%d"),
+              emergence_date = as.Date("2017-02-01", format = "%Y-%m-%d"),
+              flowering_date = as.Date(NA),
+              pod_fill_date = as.Date(NA),
+              mid_late_pod_fill = as.Date(NA),
+              first_sign_disease = as.Date("2017-03-07", format = "%Y-%m-%d"),
+              trade_name = as.factor(Fogerty_17_dat$trade_name),
+              fungicide_ai = Fogerty_17_dat$fungicide_ai,
+              dose_ai.ha = Fogerty_17_dat$dose_ai.ha,
+              n_treatment = as.numeric(Fogerty_17_dat$Treatment.No),
+              fungicide_application_1 = Fogerty_17_dat$fungicide_application_1,
+              fungicide_application_2 = Fogerty_17_dat$fungicide_application_2,
+              total_fungicide = Fogerty_17_dat$spray_n,
+              harvest_date = as.Date("2017-05-11", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2017-04-18", format = "%Y-%m-%d"),
+              PM_final_severity = Fogerty_17_dat$`2017-04-18`,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(Fogerty_17_dat$`Yield.t/ha`),
+              AUDPC = apply(Fogerty_17_dat[,c("2017-03-07", "2017-03-19", "2017-03-24", "2017-04-02","2017-04-10","2017-04-18")]-1,1, 
+                            FUN = audpc, dates = c(1,12,17,26,34,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
+              )
+```
+
+#### Calculating treatment means
+```{r Missen17_means}
+
+Fogerty_17_m <- Fogerty_17_dat %>%
+   group_by(host_genotype, n_treatment, row_spacing, fungicide_ai) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             dose_ai.ha = unique(dose_ai.ha),
+             trial_ref = unique(trial_ref),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
+             plot_width.m. = mean(plot_width, na.rm = TRUE),
+             plant_density = mean(plant_density, na.rm = TRUE),
+             replicates = length(as.numeric(replicate)),
+             planting_date = unique(planting_date),
+             emergence_date = unique(emergence_date),
+             flowering_date = unique(flowering_date),
+             pod_fill_date = unique(pod_fill_date),
+             mid_late_pod_fill = unique(mid_late_pod_fill),
+             first_sign_disease = unique(first_sign_disease),
+             fungicide_application_1 = unique(fungicide_application_1),
+             fungicide_application_2 = unique(fungicide_application_2),
+             total_fungicide = unique(total_fungicide),
+             harvest_date = unique(harvest_date),
+             final_assessment = unique(final_assessment),
+             PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             rating_scale = unique(rating_scale),
+             disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+             D_error_type = "stdev",
+             grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+             raw_graded = NA,
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+             Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment) + fungicide_ai + row_spacing, data = subset(Fogerty_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
+   )
+
+# For some weird reason standard deviations are comming back NA in the code above
+Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
+   Fogerty_17_dat %>%
+   group_by(n_treatment, row_spacing, fungicide_ai) %>%
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   select(c("disease_error","yield_error"))
+
+
+
+
+write.csv(
+   Fogerty_17_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty_17_mean.csv",
+   row.names = FALSE
+)
+
+```
