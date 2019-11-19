@@ -2108,6 +2108,14 @@ Herm_15 <- left_join(Herm_15.DR, Herm_15)
 ```{r Herm_15_Treats}
 
 Herm_15_dat <- Herm_15 %>%
+   mutate(n_treatment = 
+             case_when(Treatment == "1st sign +1" ~ 4,
+                       Treatment == "control" ~ 1,
+                       Treatment == "1st sign" ~ 3,
+                       Treatment == "1/3C + 1" ~ 6,
+                       Treatment == "5wks+2" ~ 2,
+                       Treatment == "1/3C" ~ 5,
+                       TRUE ~ 9998))%>%
    mutate(trade_name = 
              case_when(Treatment == "control" ~ "control",
                        TRUE ~ "Folicur"))%>%
@@ -2169,7 +2177,7 @@ Herm_15_dat <-
               trade_name = as.factor(Herm_15_dat$trade_name),
               fungicide_ai = Herm_15_dat$fungicide_ai,
               dose_ai.ha = Herm_15_dat$dose_ai.ha,
-              n_treatment = Herm_15_dat$Treat,
+              n_treatment = as.numeric(Herm_15_dat$n_treatment),
               fungicide_application_1 = Herm_15_dat$fungicide_application_1,
               fungicide_application_2 = Herm_15_dat$fungicide_application_2,
               fungicide_application_3 = Herm_15_dat$fungicide_application_3,
@@ -2187,11 +2195,18 @@ Herm_15_dat <-
 
 
 #### Calculating treatment means
-```{r}
+```{r Herm15_means}
 Herm_15_m <- Herm_15_dat %>%
-   group_by(trial_ref, year, location, host_genotype, trial_design, 
-            trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
-   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+   group_by(host_genotype, n_treatment) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             fungicide_ai = unique(fungicide_ai),
+             dose_ai.ha = unique(dose_ai.ha),
+             trial_ref = unique(trial_ref),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
              plot_width.m. = mean(plot_width, na.rm = TRUE),
              plant_density = unique(plant_density),
              row_spacing = unique(row_spacing),
@@ -2241,7 +2256,372 @@ write.csv(
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2015 PMmung Herm/Herm_15_means.csv"
 )
 
-
+Herm_16
 ```
 
 
+### Hermitage 2016  
+Disease data for Hermitage 2016 only exists as a mean of treatments within the `2016 Mungbean PM trials summary.xlsx` file.  
+```{r Herm16_dataimport}
+# Yield data from 2016 Hermitage trial with final disease severity
+Herm_16 <-
+   read.xlsx(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Yeild Data 2016 Kingaroy Hermitage (PaulM adjusted).xlsx",
+      sheet = "Hermitage",
+      startRow = 1,
+      colNames = TRUE
+   )[1:28, 1:9]
+
+
+Herm_16$Year <- 2016
+Herm_16$location <- "Hermitage"
+
+Herm_16$Plot <- as.numeric(unlist(strsplit(
+   Herm_16$Plot, "P"))[
+      seq(from = 2, to = 56, by = 2)])
+
+unique(Herm_16$Treatment)
+```
+
+#### Define treatment data
+```{r Herm16_treatmentDefine}
+Herm_16_dat <- Herm_16 %>%
+   mutate(trade_name = 
+             case_when(Treatment == "1" ~ "control",
+                       TRUE ~ "Folicur"))%>%
+   mutate(fungicide_ai = 
+             case_when(Treatment == "1" ~ "control",
+                       TRUE ~ "tebuconazole"))%>%
+   mutate(dose_ai.ha = 
+             case_when(Treatment == "1" ~ 0,
+                       TRUE ~ 62.35))%>%
+   mutate(fungicide_application_1 = 
+             case_when(Treatment == "1" ~ as.Date(NA),
+                       Treatment == "2" ~ as.Date("2016-03-17", format = "%Y-%m-%d"),
+                       Treatment == "3" ~ as.Date("2016-03-17", format = "%Y-%m-%d"),
+                       Treatment == "4" ~ as.Date("2016-03-17", format = "%Y-%m-%d"),
+                       Treatment == "5" ~ as.Date("2016-03-8", format = "%Y-%m-%d"),
+                       Treatment == "6" ~ as.Date("2016-03-8", format = "%Y-%m-%d"),
+                       Treatment == "7" ~ as.Date("2016-03-17", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(Treatment == "1" ~ as.Date(NA),
+                       Treatment == "3" ~ as.Date("2016-03-30", format = "%Y-%m-%d"),
+                       Treatment == "4" ~ as.Date("2016-03-30", format = "%Y-%m-%d"),
+                       Treatment == "6" ~ as.Date("2016-03-22", format = "%Y-%m-%d"),
+                       Treatment == "7" ~ as.Date("2016-03-30", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = 
+             case_when(Treatment == "4" ~ as.Date("2016-04-13", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(Treatment == "1" ~ 0,
+                       Treatment == "2" ~ 1,
+                       Treatment == "3" ~ 2,
+                       Treatment == "4" ~ 3,
+                       Treatment == "5" ~ 1,
+                       Treatment == "6" ~ 2,
+                       Treatment == "7" ~ 2,
+                       TRUE ~ 9999))
+
+```
+
+#### Input trial data
+```{r Herm15_Trialdat}
+
+Herm_16_dat <- 
+   data.frame(trial_ref = "mung1516/01",
+              year = "2016",
+              location = "Hermitage",
+              host_genotype = "Jade",
+              trial_design = "RCB",
+              plot_length = 12,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 0.75,
+              replicate = Herm_16_dat$rep,
+              planting_date = as.Date("2016-02-03", format = "%Y-%m-%d"),
+              emergence_date = as.Date("2016-02-12", format = "%Y-%m-%d"),
+              flowering_date = as.Date(NA),
+              pod_fill_date = as.Date(NA),
+              mid_late_pod_fill = as.Date("2016-04-15", format = "%Y-%m-%d"),
+              first_sign_disease = as.Date("2016-03-08", format = "%Y-%m-%d"),
+              trade_name = as.factor(Herm_16_dat$trade_name),
+              fungicide_ai = Herm_16_dat$fungicide_ai,
+              dose_ai.ha = Herm_16_dat$dose_ai.ha,
+              n_treatment = as.numeric(Herm_16_dat$Treatment),
+              fungicide_application_1 = Herm_16_dat$fungicide_application_1,
+              fungicide_application_2 = Herm_16_dat$fungicide_application_2,
+              fungicide_application_3 = Herm_16_dat$fungicide_application_3,
+              total_fungicide = Herm_16_dat$spray_n,
+              harvest_date = as.Date("2015-05-06", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2015-04-15", format = "%Y-%m-%d"),
+              PM_final_severity = NA,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(Herm_16_dat$`Raw.Adjusted.Yeild./.ha`)
+              )
+```
+
+
+#### Calculating treatment means
+```{r Herm16_means}
+Herm_16_m <- Herm_16_dat %>%
+   group_by(host_genotype, n_treatment) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             fungicide_ai = unique(fungicide_ai),
+             dose_ai.ha = unique(dose_ai.ha),
+             trial_ref = unique(trial_ref),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
+             plot_width.m. = mean(plot_width, na.rm = TRUE),
+             plant_density = unique(plant_density),
+             row_spacing = unique(row_spacing),
+             replicates = length(as.numeric(replicate)),
+             planting_date = unique(planting_date),
+             emergence_date = unique(emergence_date),
+             flowering_date = unique(flowering_date),
+             pod_fill_date = unique(pod_fill_date),
+             mid_late_pod_fill = unique(mid_late_pod_fill),
+             first_sign_disease = unique(first_sign_disease),
+             fungicide_application_1 = unique(fungicide_application_1),
+             fungicide_application_2 = unique(fungicide_application_2),
+             fungicide_application_3 = unique(fungicide_application_3),
+             total_fungicide = unique(total_fungicide),
+             harvest_date = unique(harvest_date),
+             final_assessment = unique(final_assessment),
+             #PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             rating_scale = unique(rating_scale),
+             #disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+             #D_error_type = "stdev",
+             grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+             raw_graded = "Yes",
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+             Y_error_type = "stdev",
+             #AUDPC.m = mean(AUDPC),
+             #AUDPC.sd = sd(AUDPC),
+             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = Herm_16_dat))[2,3]
+   )
+
+# For some wierd reason standard deviations are comming back NA in the code above
+Herm_16_m[,"yield_error"] <- 
+   Herm_16_dat %>%
+   group_by(n_treatment) %>%
+   summarise(yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   select(c("yield_error"))
+
+
+
+# Mean Disease incidence assessments through the 2016 season
+Herm_16.DR  <-
+   read.xlsx(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/2016 Mungbean PM trials summary.xlsx",
+      sheet = "Hermitage_2016",
+      startRow = 5,
+      colNames = TRUE
+   )
+names(Herm_16.DR)[1:6] <- c("Treatment", "dae24","dae38","dae48","dae63","Final_Yield_tHa")
+names(Herm_16.DR)[6] <- "Final_Yield_tHa"
+Herm_16.DR$n_treatment <- c(4,3,7,5,2,6,1)
+
+Herm_16_m
+
+Herm_16_m <- left_join(Herm_16_m,Herm_16.DR)
+Herm_16_m$AUDPC.m <- apply(Herm_16_m[,c("dae24", "dae38", "dae48", "dae63")]-1,1, 
+                            FUN = audpc, dates = c(0,14,24,39))
+
+
+Herm_16_m <- fold_data(Herm_16_m, PM_MB_means)
+
+
+write.csv(
+   Herm_16_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Hermitage/Herm_16_means.csv"
+)
+
+```
+
+### Kingaroy 2016  
+Disease data for Kingaroy 2016 only exists as a mean of treatments within the `2016 Mungbean PM trials summary.xlsx` file.  
+```{r Herm16_dataimport}
+# Yield data from 2016 Hermitage trial with final disease severity
+King_16 <-
+   read.xlsx(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past Trials/2016/Yeild Data 2016 Kingaroy Hermitage (PaulM adjusted).xlsx",
+      sheet = "Kingaroy",
+      startRow = 1,
+      colNames = TRUE
+   )[1:28, 1:9]
+
+
+King_16$Year <- 2016
+King_16$location <- "Kingaroy"
+
+
+King_16$Plot <- as.numeric(unlist(strsplit(
+   King_16$Plot, "P"))[
+      seq(from = 2, to = 56, by = 2)])
+
+
+```
+
+#### Define treatment data
+```{r King16_treatmentDefine}
+King_16_dat <- King_16 %>%
+   mutate(trade_name = 
+             case_when(Treatment == "1" ~ "control",
+                       TRUE ~ "Folicur"))%>%
+   mutate(fungicide_ai = 
+             case_when(Treatment == "1" ~ "control",
+                       TRUE ~ "tebuconazole"))%>%
+   mutate(dose_ai.ha = 
+             case_when(Treatment == "1" ~ 0,
+                       TRUE ~ 62.35))%>%
+   mutate(fungicide_application_1 = 
+             case_when(Treatment == "1" ~ as.Date(NA),
+                       Treatment == "2" ~ as.Date("2016-03-22", format = "%Y-%m-%d"),
+                       Treatment == "3" ~ as.Date("2016-03-22", format = "%Y-%m-%d"),
+                       Treatment == "4" ~ as.Date("2016-03-22", format = "%Y-%m-%d"),
+                       Treatment == "5" ~ as.Date("2016-03-09", format = "%Y-%m-%d"),
+                       Treatment == "6" ~ as.Date("2016-03-09", format = "%Y-%m-%d"),
+                       Treatment == "7" ~ as.Date("2016-03-22", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(Treatment == "1" ~ as.Date(NA),
+                       Treatment == "3" ~ as.Date("2016-04-05", format = "%Y-%m-%d"),
+                       Treatment == "4" ~ as.Date("2016-04-05", format = "%Y-%m-%d"),
+                       Treatment == "6" ~ as.Date("2016-03-22", format = "%Y-%m-%d"),
+                       Treatment == "7" ~ as.Date("2016-04-05", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_3 = 
+             case_when(Treatment == "4" ~ as.Date("2016-04-19", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(Treatment == "1" ~ 0,
+                       Treatment == "2" ~ 1,
+                       Treatment == "3" ~ 2,
+                       Treatment == "4" ~ 3,
+                       Treatment == "5" ~ 1,
+                       Treatment == "6" ~ 2,
+                       Treatment == "7" ~ 2,
+                       TRUE ~ 9999))
+
+```
+
+#### Input trial data
+```{r King16_Trialdat}
+
+King_16_dat <- 
+   data.frame(trial_ref = "mung1516/02",
+              year = "2016",
+              location = "Kingaroy",
+              host_genotype = "Jade",
+              trial_design = "RCB",
+              plot_length = 12,
+              plot_width = 4,
+              plant_density = NA,
+              row_spacing = 0.75,
+              replicate = King_16_dat$rep,
+              planting_date = as.Date("2016-02-11", format = "%Y-%m-%d"),
+              emergence_date = as.Date("2016-02-19", format = "%Y-%m-%d"),
+              flowering_date = as.Date(NA),
+              pod_fill_date = as.Date("2016-04-05", format = "%Y-%m-%d"),
+              mid_late_pod_fill = as.Date(NA),
+              first_sign_disease = as.Date("2016-03-09", format = "%Y-%m-%d"),
+              trade_name = as.factor(King_16_dat$trade_name),
+              fungicide_ai = King_16_dat$fungicide_ai,
+              dose_ai.ha = King_16_dat$dose_ai.ha,
+              n_treatment = as.numeric(King_16_dat$Treatment),
+              fungicide_application_1 = King_16_dat$fungicide_application_1,
+              fungicide_application_2 = King_16_dat$fungicide_application_2,
+              fungicide_application_3 = King_16_dat$fungicide_application_3,
+              total_fungicide = King_16_dat$spray_n,
+              harvest_date = as.Date("2015-05-10", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2015-04-19", format = "%Y-%m-%d"),
+              PM_final_severity = NA,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(King_16_dat$`Raw.Adjusted.Yeild./.ha`)
+              )
+```
+
+
+#### Calculating treatment means
+```{r King16_means}
+King_16_m <- King_16_dat %>%
+   group_by(host_genotype, n_treatment) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             fungicide_ai = unique(fungicide_ai),
+             dose_ai.ha = unique(dose_ai.ha),
+             trial_ref = unique(trial_ref),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
+             plot_width.m. = mean(plot_width, na.rm = TRUE),
+             plant_density = unique(plant_density),
+             row_spacing = unique(row_spacing),
+             replicates = length(as.numeric(replicate)),
+             planting_date = unique(planting_date),
+             emergence_date = unique(emergence_date),
+             flowering_date = unique(flowering_date),
+             pod_fill_date = unique(pod_fill_date),
+             mid_late_pod_fill = unique(mid_late_pod_fill),
+             first_sign_disease = unique(first_sign_disease),
+             fungicide_application_1 = unique(fungicide_application_1),
+             fungicide_application_2 = unique(fungicide_application_2),
+             fungicide_application_3 = unique(fungicide_application_3),
+             total_fungicide = unique(total_fungicide),
+             harvest_date = unique(harvest_date),
+             final_assessment = unique(final_assessment),
+             #PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             rating_scale = unique(rating_scale),
+             #disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+             #D_error_type = "stdev",
+             grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+             raw_graded = "Yes",
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+             Y_error_type = "stdev",
+             #AUDPC.m = mean(AUDPC),
+             #AUDPC.sd = sd(AUDPC),
+             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = King_16_dat))[2,3]
+   )
+
+# For some wierd reason standard deviations are comming back NA in the code above
+King_16_m[,"yield_error"] <- 
+   King_16_dat %>%
+   group_by(n_treatment) %>%
+   summarise(yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   select(c("yield_error"))
+
+
+
+# Mean Disease incidence assessments through the 2016 season
+King_16.DR  <-
+   read.xlsx(
+      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/2016 Mungbean PM trials summary.xlsx",
+      sheet = "Kingaroy_2016",
+      startRow = 5,
+      colNames = TRUE
+   )
+names(King_16.DR)[1:6] <- c("Treatment", "dae20","dae34","dae46","dae60","Final_Yield_tHa")
+names(King_16.DR)[6] <- "Final_Yield_tHa"
+King_16.DR$n_treatment <- c(3,2,7,6,5,4,1)
+
+
+King_16_m <- left_join(King_16_m,King_16.DR)
+King_16_m$AUDPC.m <- apply(King_16_m[,c("dae20", "dae34", "dae46", "dae60")]-1,1, 
+                            FUN = audpc, dates = c(1,14,26,40))
+
+
+King_16_m <- fold_data(King_16_m, PM_MB_means)
+
+
+write.csv(
+   King_16_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Kingaroy/King_16_means.csv"
+)
+
+```
