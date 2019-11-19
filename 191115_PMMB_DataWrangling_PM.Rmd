@@ -2538,8 +2538,8 @@ King_16_dat <-
               fungicide_application_2 = King_16_dat$fungicide_application_2,
               fungicide_application_3 = King_16_dat$fungicide_application_3,
               total_fungicide = King_16_dat$spray_n,
-              harvest_date = as.Date("2015-05-10", format = "%Y-%m-%d"),
-              final_assessment = as.Date("2015-04-19", format = "%Y-%m-%d"),
+              harvest_date = as.Date("2016-05-10", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2016-04-19", format = "%Y-%m-%d"),
               PM_final_severity = NA,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(King_16_dat$`Raw.Adjusted.Yeild./.ha`)
@@ -2606,13 +2606,12 @@ King_16.DR  <-
       startRow = 5,
       colNames = TRUE
    )
-names(King_16.DR)[1:6] <- c("Treatment", "dae20","dae34","dae46","dae60","Final_Yield_tHa")
-names(King_16.DR)[6] <- "Final_Yield_tHa"
+names(King_16.DR)[1:6] <- c("Treatment", "dae20","dae34","dae46","PM_final_severity","Final_Yield_tHa")
 King_16.DR$n_treatment <- c(3,2,7,6,5,4,1)
 
 
 King_16_m <- left_join(King_16_m,King_16.DR)
-King_16_m$AUDPC.m <- apply(King_16_m[,c("dae20", "dae34", "dae46", "dae60")]-1,1, 
+King_16_m$AUDPC.m <- apply(King_16_m[,c("dae20", "dae34", "dae46", "PM_final_severity")]-1,1, 
                             FUN = audpc, dates = c(1,14,26,40))
 
 
@@ -2621,7 +2620,8 @@ King_16_m <- fold_data(King_16_m, PM_MB_means)
 
 write.csv(
    King_16_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Kingaroy/King_16_means.csv"
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Kingaroy/King_16_means.csv",
+   row.names = FALSE
 )
 
 ```
