@@ -59,6 +59,7 @@ A single trial `mung1516/03` within the current scope of the meta-analysis fails
 library(lme4)
 library(scales)
 
+
 # for(i in PM_MB_means$trial_ref){
 #
 # log(V)[i] = a + b * log(
@@ -367,6 +368,7 @@ summary(m6)
 ```{r LME_slimmer_cluster_disease_mod}
 library(lme4)
 slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
+unique(slimmer_PM_dat$trial_ref, slimmer_PM_dat$location, slimmer_PM_dat$year)
 
 m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
               (factor(spray_management) | trial_ref), 
@@ -456,6 +458,28 @@ if(
 ```
 
 
+```{r imputing_MSE}
+hist(unique(slimmer_PM_dat$Y_Msquare))
+hist(log(unique(slimmer_PM_dat$Y_Msquare))) # log mean square has a more normal distribution
+
+TrialMSQ <- slimmer_PM_dat %>%
+   group_by(trial_ref)%>%
+   summarise(unique(Y_Msquare))
+
+TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), "trial_ref"]
+
+for(i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`),]$trial_ref){
+   slimmer_PM_dat[slimmer_PM_dat$trial_ref == i,"Y_Msquare"] <- 
+      exp(
+         rnorm(n = 1,
+               mean = mean(TrialMSQ$`unique(Y_Msquare)`, na.rm = TRUE),
+               sd(TrialMSQ$`unique(Y_Msquare)`, na.rm = TRUE)
+         )
+      )
+   }
+
+
+```
 
 
 
@@ -465,7 +489,7 @@ if(
 library(metafor)
 
 slimmer_PM_dat$yi <- slimmer_PM_dat$grain_yield.t.ha
-slimmer_PM_dat$vi <- slimmer_PM_dat$yield_error
+slimmer_PM_dat$vi <- slimmer_PM_dat$Y_Msquare/(slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha^2)
 
 slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
 table(slimmer_PM_dat$spray_management)
@@ -473,7 +497,7 @@ table(slimmer_PM_dat$spray_management)
 
 PM_mv_AI <- rma.mv(yi,vi,
                    mods = ~ spray_management,
-#                   method = "ML",
+                   method = "ML",
                    random = list(~ spray_management | trial),
                    struct = "UN",
                    data = slimmer_PM_dat)
