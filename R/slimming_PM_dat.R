@@ -25,7 +25,8 @@ slim_PM_dat <- data.frame(
    yield_gain = as.double(PM_MB_means$yield_gain),
    prop_yield_gain = as.double(PM_MB_means$prop_YG),
    PM_final_severity = as.double(PM_MB_means$PM_final_severity),
-   PM_final_severity_error = as.double(PM_MB_means$disease_error)
+   PM_final_severity_error = as.double(PM_MB_means$disease_error),
+   PM_MB_means$Y_Msquare = as.double(PM_MB_means$Y_Msquare)
 )
 
 
