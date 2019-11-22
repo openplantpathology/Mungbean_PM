@@ -1,0 +1,111 @@
+---
+title: "analysis"
+author: "Emerson"
+date: "10/29/2019"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+```{r}
+datPM <- read_csv("data/slimmer_PM_clusterdat.csv")
+
+
+```
+
+# Fungicide treatments
+
+```{r}
+datPM %>% 
+   tabyl(fungicide_ai)
+
+```
+
+
+
+```{r}
+
+datPM %>%
+   group_by(trial_ref, year, fungicide_ai) %>% 
+   tally(sort = TRUE) %>% 
+   ggplot(aes(x = fungicide_ai, fill = as.factor(year))) +
+   geom_bar() +
+   coord_flip()
+```
+
+
+```{r}
+datPM %>% 
+   filter(fungicide_ai %in% c("control", "tebuconazole", "propiconazole")) %>% 
+   tabyl(year, fungicide_ai) %>% 
+   gather(fungicide_ai, n, 2:4) %>% 
+   ggplot(aes(factor(year), n, fill = fungicide_ai))+
+   geom_col()
+```
+
+
+
+
+
+```{r}
+datPM <- datPM %>% 
+   mutate(V = case_when(is.na(Y_Msquare) ~ mean(datPM$Y_Msquare, na.rm = TRUE),
+                    TRUE ~ Y_Msquare),
+          yi = grain_yield.t.ha,
+          vi = V/n, 
+          id = 1:nrow(datPM))
+
+
+```
+
+
+```{r}
+library(metafor)
+
+PM_mv1 <- rma.mv(yi, vi, 
+                    mods = ~ spray_management, 
+                    method="ML",
+                    random = list(~ spray_management | trial, ~1 | id), 
+                    struct="UN", data=datPM)
+
+
+```
+
+```{r}
+anova(PM_mv1, L=rbind(c(0,1,-1,0,0), 
+                        c(0,0,1,-1,0),
+                        c(0,0,1,0,-1),
+                        c(0,0,0,-1,1),
+                        c(0,1,0,0,1)))
+```
+
+```{r}
+results <- data.frame(cbind(PM_mv1$b, 
+                             PM_mv1$ci.lb,
+                             PM_mv1$ci.ub))
+results <- cbind(rownames(results), results)
+rownames(results) <- NULL
+colnames(results)<- c("treat","mean","lci", "uci")
+
+results %>%
+   filter(treat != "intrcpt") %>% 
+   ggplot(aes(treat, mean))+
+   geom_point(aes(size = 1/(uci-lci)), shape =15)+
+   geom_errorbar(aes(ymin = lci, ymax = uci), width = 0.1)+
+   coord_flip()
+
+
+```
+
