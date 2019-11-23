@@ -35,25 +35,7 @@ datPM %>%
 
 
 
-```{r}
 
-datPM %>%
-   group_by(trial_ref, year, fungicide_ai) %>% 
-   tally(sort = TRUE) %>% 
-   ggplot(aes(x = fungicide_ai, fill = as.factor(year))) +
-   geom_bar() +
-   coord_flip()
-```
-
-
-```{r}
-datPM %>% 
-   filter(fungicide_ai %in% c("control", "tebuconazole", "propiconazole")) %>% 
-   tabyl(year, fungicide_ai) %>% 
-   gather(fungicide_ai, n, 2:4) %>% 
-   ggplot(aes(factor(year), n, fill = fungicide_ai))+
-   geom_col()
-```
 
 
 
