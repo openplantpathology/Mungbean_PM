@@ -65,8 +65,37 @@ datPM <- datPM %>%
                     TRUE ~ Y_Msquare),
           yi = grain_yield.t.ha,
           vi = V/n, 
-          id = 1:nrow(datPM))
+          id = 1:nrow(datPM)) 
 
+
+
+```
+
+
+
+```{r}
+control <- datPM %>% 
+   filter(spray_management == "control") %>% 
+group_by(trial) %>% 
+summarize(sev_control = mean(PM_final_severity)) 
+
+control %>% 
+   ggplot(aes(sev_control))+
+   geom_histogram()
+
+datPM2 <- left_join(control, datPM) %>% 
+   filter(year != 2019)
+
+datPM2 %>% 
+   ggplot(aes(spray_management, yi, size = 1/vi, color = sev_control))+
+   geom_jitter(width = 0.1)+
+   facet_wrap(~year)
+
+
+datPM2 %>% 
+   filter(spray_management == "control") %>% 
+   ggplot(aes(row_spacing, yi, size = 1/vi, color = sev_control))+
+   geom_jitter(width = 0.1)
 
 ```
 
@@ -76,10 +105,8 @@ library(metafor)
 
 PM_mv1 <- rma.mv(yi, vi, 
                     mods = ~ spray_management, 
-                    method="ML",
                     random = list(~ spray_management | trial, ~1 | id), 
-                    struct="UN", data=datPM)
-
+                    struct="UN", data=datPM2)
 
 ```
 
@@ -107,5 +134,86 @@ results %>%
    coord_flip()
 
 
+
+```
+
+```{r}
+library(netmeta)
+
+datPM3 <- datPM2 %>% 
+   group_by(trial, spray_management, n) %>% 
+      summarize(yi_mean = mean(yi), 
+             vi_mean = mean(vi)) %>% 
+   ungroup()
+
+PM_con <- pairwise(treat = spray_management,
+                  n = n,
+                  mean = yi_mean,
+                  sd = sqrt(vi_mean),
+                  studlab= trial,
+                  data = datPM3, 
+                  sm="MD")
+
+
+```
+
+```{r}
+net_con <- netmeta(TE, 
+                seTE, 
+                treat1, 
+                treat2, 
+                studlab, 
+                data=PM_con, 
+                sm="MD")
+
+summary(net_con)
+```
+
+
+```{r}
+forest(net_con, reference.group = 4,
+       rightcols=c("effect", "ci", "Pscore"),
+       rightlabs="P-Score", small.values = "bad")
+```
+
+```{r}
+netrank(net_con, small.values = "bad")
+```
+
+```{r}
+netgraph(net_con, 
+         plastic = FALSE,
+         col = "orange",
+         thickness =  "number.of.studies",
+         points = FALSE, 
+         col.points = "black", 
+         cex.points = 1,
+         number.of.studies = TRUE,
+         cex.number.of.studies = 1,
+         col.number.of.studies = "black",
+         bg.number.of.studies = "orange",
+         multiarm = FALSE,
+         col.multiarm = "lightblue",
+         pos.number.of.studies = 0.5)
+```
+
+```{r}
+netleague(net_con)
+```
+
+```{r}
+decomp.design(net_con)
+```
+
+
+```{r}
+netsplit(net_con)
+```
+```{r}
+nm1 <- netmeasures(net_con)
+
+plot(nm1$meanpath, nm1$minpar, pch="",
+     xlab="Mean path length", ylab="Minimal parallelism")
+text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex=0.8)
 ```
 
