@@ -76,9 +76,7 @@ king_Tm_aver[king_Tm_aver$year == "2002"|
                 king_Tm_aver$year == "2016", ] %>%
    ggplot(aes(x = day)) +
    geom_line(aes(y = max_T, colour = year)) +
-   #geom_smooth(method = "lm", aes(y = max_T), colour = "darkred")+
    geom_line(aes(y = min_T, colour = year)) +
-   #geom_smooth(method = "lm", aes(y = min_T), colour = "darkblue")+
    labs(x = "Date", y = "Daily maximum temperature averaged over 7 days",
         title = "Maximum and minimum daily temperatures in Kingaroy") +
    scale_x_continuous(
@@ -111,9 +109,6 @@ king_Tm_aver[king_Tm_aver$year == "2002"|
    ) +
    geom_area(aes(y = daily_rain, fill = year), alpha = 0.5) +
    scale_y_continuous(limits = c(0, 40),sec.axis = dup_axis(name = "Rainfall (mm)"))
-#   scale_x_continuous(limits = c(1,180),
-#                      breaks = c(1,32,(31+29),(31+29+31),(31+29+31+30),(31+29+31+30+31),(31+29+31+30+31+30)),
-#                      labels = c("2012-Jan-01","2012-Feb-01","2012-Mar-01","2012-Apr-01","2012-May-01","2012-Jun-01","2012-Jul-01"))
 ```
 
 ### Hermitage historical weather
@@ -153,9 +148,7 @@ Herm_FS$day <- as.numeric(Herm_FS$day)
 ggplot(subset(war_Tm_aver, year == levels(factor(Herm_FS$year))),
        aes(day)) +
    geom_line(aes(y = max_T, colour = year)) +
-   #geom_smooth(method = "lm", aes(y = max_T), colour = "darkred")+
    geom_line(aes(y = min_T, color = year)) +
-   #geom_smooth(method = "lm", aes(y = min_T), colour = "darkblue")+
    labs(x = "Date", y = "Daily maximum temperature averaged over 7 days",
         title = "Maximum and minimum daily temperatures in Hermitage") +
    theme(
@@ -232,13 +225,11 @@ Gat_Tm_aver <-
 
 
 # Add columns for Year and date to data
-# Add columns for Year and date to data
 Gat_Tm_aver$year <- substr(Gat_Tm_aver$date, start = 1, stop = 4)
 Gat_Tm_aver$day <- sapply(Gat_Tm_aver$date,year2day)
    
 
 # Create data subset of powdery mildew data means for the first sign of the disease by location
-
 Gatton_FS <- PM.dat_sum[PM.dat_sum$location == "Gatton",]
 Gatton_FS$day <- as.numeric(Gatton_FS$day)
 
