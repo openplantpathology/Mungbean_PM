@@ -51,13 +51,15 @@ Various factors have been studied in the previous experiments which may influenc
    
    11) Final disease rating  
    
-   12) Two pathogen species cause PM (new discovery in 2018)
+   12) Two pathogen species cause PM (new discovery in 2018)  
 
+The data plotted below are from `r length(unique(PM_MB_means$trial_ref))` field trials between (`r first(levels(PM_MB_means$year))` - `r last(levels(PM_MB_means$year))`) of which the details are described in [Studies considered in meta-analysis section](#studies-considered-in-meta-analysis).  
+All data explored below are a list of mean values from each treatment applied in each experiment. Some experiments have in-season observations of disease incidence and severity, however here we have summarised the data to show only the end of season observations.    
 
 ### Fungicides
 #### Fungicide type
-The data plotted below are from `r length(unique(PM_MB_means$trial_ref))` field trials between (`r first(levels(PM_MB_means$year))` - `r last(levels(PM_MB_means$year))`) of which the details are described in [Studies considered in meta-analysis section](#studies-considered-in-meta-analysis).  
-All data explored below are a list of mean values from each treatment applied in each experiment. Some experiments have in-season observations of disease incidence and severity, however here we have summarised the data to show only the end of season observations.    
+Let's explore how many different types of fungicide were used and at what frequency.
+
 ```{r Fungicides}
 PM_MB_means %>%
    group_by(fungicide_ai, trial_ref) %>%
@@ -76,17 +78,17 @@ PM_MB_means %>%
 ```
 
 
-   - Tebuconazole and propiconazole might be able to be pooled as a triazole fungicide treatment.  
+   - Tebuconazole and propiconazole could be pooled as a triazole or demethylation inhibitors (DMI) fungicide treatment.  
 
    - Amistar Xtra and Custodia are both contain strobilurin and triazole, however, they because they contain differing dose ratios (inverted) pooling may not be appropriate.  
 
-   - Perhaps best way forward is to do an analysis of only the triazoles/demethylation inhibitors. Then do another including azoxystrobin as a comparison.  
+   - Perhaps best way forward is to do an analysis of only the triazoles/DMIs. Then do another including azoxystrobin as a comparison.  
 
 The primary focus of this research is the effect of fungicide on mitigating yield loss to disease. To reduce the affect of location and seasonal influences we will investigate the proportion of grain yield saved, relative to the no spray controls.  
 
 First lets investigate the difference in the effect of fungicide on proportion of yield saved?  
 
-```{r Fungicide_x_nSprays, message=FALSE}
+```{r Fungicide_x_nSprays_tble, message=FALSE}
 PM_MB_means %>%
    group_by(fungicide, total_fungicide) %>%
    summarise(
@@ -102,48 +104,67 @@ PM_MB_means %>%
    kable_styling(fixed_thead = T, full_width = T) %>%
    footnote(general = "Fungicides with less than five observations were omitted from this table")
 
-class(PM_MB_means$fungicide)
+```
+
+Plot one and two applications of the main sprays
+
+```{r Fungicide_x_nSprays_tble, message=FALSE}
+
+PM_MB_means[PM_MB_means$fungicide_ai == "sulphur (SC)"|
+               PM_MB_means$fungicide_ai == "sulphur (WP)"|
+               PM_MB_means$fungicide_ai == "sulphur (Ultra SC)","fungicide_ai"] <- "sulphur"
+
+PM_MB_means$sprays <- sapply(PM_MB_means$total_fungicide, FUN = function(x){if(x == 1){return("one")}else{return("plus")}})
+
 
 PM_MB_means %>%
-   mutate(fungicide = as.factor(PM_MB_means$fungicide)) %>%
+   mutate(fungicide_ai = as.factor(PM_MB_means$fungicide_ai)) %>%
    filter(total_fungicide == 1 | total_fungicide == 2) %>%
    filter(
-      fungicide != "pyrazophos" &
-         fungicide != "control" &
-         fungicide != "benomyl" &
-         fungicide != "Acibenzolar-S-methyl"
-   ) %>%
-   mutate(fungicide = factor(fungicide, 
+      fungicide_ai != "pyrazophos" &
+         fungicide_ai != "control" &
+         fungicide_ai != "benomyl" &
+         fungicide_ai != "Acibenzolar-S-methyl") %>%
+   mutate(fungicide_ai = factor(fungicide_ai, 
                              levels = c("carbendazim", "pyraclostrobin",
                                         "sulphur", "200 g/L azoxystrobin + 80 g/L cyproconazole",
                                         "tebuconazole", "propiconazole", 
                                         "200 g/L tebuconazole + 120 g/L azoxystrobin"))) %>%
-   ggplot(aes(y = prop_YG, x = fungicide)) +
+   ggplot(aes(y = prop_YG, x = fungicide_ai)) +
    facet_grid(rows = vars(total_fungicide)) +
-   geom_boxplot(aes(fill = fungicide, alpha = 0.5)) +
+   geom_boxplot(aes(fill = fungicide_ai, alpha = 0.5)) +
    geom_hline(aes(yintercept = 0), size = 0.5) +
-   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
    labs(y = "Proportion of grain yield saved",
         title = "Grain yield proportion saved\ngrouped by Fungicide type") +
    theme_usq() +
    theme(legend.position = "none") +
-   # coord_cartesian() +
-   # scale_x_discrete(
-   #    limits = c(
-   #       "200 g/l  Tebuconazole + 120 g/l  Azoxystrobin",
-   #       "Propiconazole",
-   #       "Tebeconazole",
-   #       "200g/L Azoxystrobin + 80 g/L Cyproconazole",
-   #       "Sulphur",
-   #       "Carbendazim",
-   #       "Pyraclostrobin",
-   #       "Azoxystrobin"
-   #    )
-   # ) +
-   #  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))+
    coord_flip()
-#scale_x_continuous(limits = c(-0.3,0.6))
 
+
+
+
+PM_MB_means %>%
+   mutate(fungicide_ai = as.factor(PM_MB_means$fungicide_ai)) %>%
+#   filter(total_fungicide == 1 | total_fungicide == 2) %>%
+   filter(
+      fungicide_ai != "pyrazophos" &
+         fungicide_ai != "control" &
+         fungicide_ai != "benomyl" &
+         fungicide_ai != "Acibenzolar-S-methyl") %>%
+   mutate(fungicide_ai = factor(fungicide_ai, 
+                             levels = c("carbendazim", "pyraclostrobin",
+                                        "sulphur", "200 g/L azoxystrobin + 80 g/L cyproconazole",
+                                        "tebuconazole", "propiconazole", 
+                                        "200 g/L tebuconazole + 120 g/L azoxystrobin"))) %>%
+   ggplot(aes(y = prop_YG, x = fungicide_ai)) +
+   facet_grid(rows = vars(sprays)) +
+   geom_boxplot(aes(fill = fungicide_ai, alpha = 0.5)) +
+   geom_hline(aes(yintercept = 0), size = 0.5) +
+   labs(y = "Proportion of grain yield saved",
+        title = "Grain yield proportion saved\ngrouped by Fungicide type") +
+   theme_usq() +
+   theme(legend.position = "none") +
+   coord_flip()
 
 ```
 
