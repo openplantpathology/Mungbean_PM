@@ -7,6 +7,7 @@ library(openxlsx)
 library(kableExtra)
 library(ggplot2)
 library(devtools)
+library(reshape2)
 library(lme4)
 library(theme.usq)
 source("R/import_data.R")
@@ -21,9 +22,9 @@ PM_MB_means <- import_data()
 
 #remove the variation in different sulphur formulations
 unique(PM_MB_means[
-   grep("sulphur",PM_MB_means$fungicide),
-   "fungicide"])
-PM_MB_means[grep("sulphur",PM_MB_means$fungicide),"fungicide"] <- "sulphur"
+   grep("sulphur",PM_MB_means$fungicide_ai),
+   "fungicide_ai"])
+PM_MB_means[grep("sulphur",PM_MB_means$fungicide_ai),"fungicide_ai"] <- "sulphur"
 
 ```
 
@@ -86,11 +87,11 @@ PM_MB_means %>%
 
 The primary focus of this research is the effect of fungicide on mitigating yield loss to disease. To reduce the affect of location and seasonal influences we will investigate the proportion of grain yield saved, relative to the no spray controls.  
 
-First lets investigate the difference in the effect of fungicide on proportion of yield saved?  
+First lets investigate the difference in the effect of the type of fungicide on proportion of yield saved?  
 
 ```{r Fungicide_x_nSprays_tble, message=FALSE}
 PM_MB_means %>%
-   group_by(fungicide, total_fungicide) %>%
+   group_by(fungicide_ai, total_fungicide) %>%
    summarise(
       n = length(prop_YG),
       lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
@@ -106,16 +107,9 @@ PM_MB_means %>%
 
 ```
 
-Plot one and two applications of the main sprays
+Lets visualise this in a plot for one and two sprays only.  
 
 ```{r Fungicide_x_nSprays_tble, message=FALSE}
-
-PM_MB_means[PM_MB_means$fungicide_ai == "sulphur (SC)"|
-               PM_MB_means$fungicide_ai == "sulphur (WP)"|
-               PM_MB_means$fungicide_ai == "sulphur (Ultra SC)","fungicide_ai"] <- "sulphur"
-
-PM_MB_means$sprays <- sapply(PM_MB_means$total_fungicide, FUN = function(x){if(x == 1){return("one")}else{return("plus")}})
-
 
 PM_MB_means %>%
    mutate(fungicide_ai = as.factor(PM_MB_means$fungicide_ai)) %>%
@@ -140,32 +134,6 @@ PM_MB_means %>%
    theme(legend.position = "none") +
    coord_flip()
 
-
-
-
-PM_MB_means %>%
-   mutate(fungicide_ai = as.factor(PM_MB_means$fungicide_ai)) %>%
-#   filter(total_fungicide == 1 | total_fungicide == 2) %>%
-   filter(
-      fungicide_ai != "pyrazophos" &
-         fungicide_ai != "control" &
-         fungicide_ai != "benomyl" &
-         fungicide_ai != "Acibenzolar-S-methyl") %>%
-   mutate(fungicide_ai = factor(fungicide_ai, 
-                             levels = c("carbendazim", "pyraclostrobin",
-                                        "sulphur", "200 g/L azoxystrobin + 80 g/L cyproconazole",
-                                        "tebuconazole", "propiconazole", 
-                                        "200 g/L tebuconazole + 120 g/L azoxystrobin"))) %>%
-   ggplot(aes(y = prop_YG, x = fungicide_ai)) +
-   facet_grid(rows = vars(sprays)) +
-   geom_boxplot(aes(fill = fungicide_ai, alpha = 0.5)) +
-   geom_hline(aes(yintercept = 0), size = 0.5) +
-   labs(y = "Proportion of grain yield saved",
-        title = "Grain yield proportion saved\ngrouped by Fungicide type") +
-   theme_usq() +
-   theme(legend.position = "none") +
-   coord_flip()
-
 ```
 
 
@@ -176,49 +144,75 @@ PM_MB_means %>%
 All trials that used tebuconazole used approximately the same dose.
 Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare. 
 
-```{r tebu_dose}
+```{r tebuAndPropi_dose}
 PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole") %>%
+   filter(fungicide_ai == "tebuconazole"|
+             fungicide_ai == "propiconazole") %>%
    select(trial_ref,
           year,
           location,
           first_sign_disease,
+          fungicide_ai,
           dose_ai.ha,
           total_fungicide) %>%
-   ggplot(aes(x = as.factor(dose_ai.ha))) +
+   ggplot(aes(x = as.factor(dose_ai.ha), fill = fungicide_ai)) +
    xlab("Dose (g ai/ha)") +
    ggtitle(label = "Total number of treatments for each respective tebuconazole dose") +
    geom_bar() +
+   facet_grid(rows = vars(fungicide_ai))+
    scale_fill_usq() +
    scale_colour_usq() +
    theme_usq()
 ```
+
+There is much variation in the propiconazole dose, lets inspect the difference in yields for each dose.
+
+```{r PropiDoseEffect}
+PM_MB_means %>%
+   filter(fungicide_ai == "propiconazole") %>%
+   ggplot(aes(x = relevel(as.factor(dose_ai.ha),"62.5"), y = prop_YG)) +
+   xlab("Dose (g ai/ha)") +
+   ggtitle(label = "Yield for each respective propiconazole dose") +
+   geom_boxplot() +
+   scale_fill_usq() +
+   scale_colour_usq() +
+   theme_usq()
+
+```
+
+
 
 #### Number of fungicide sprays  
 
-#### Timing of fungicide sprays
+Lets look at the frequency of sprays per fungicide.
+```{r Fungicide_x_nSprays}
+table(PM_MB_means$fungicide_ai, PM_MB_means$total_fungicide)
+
+PM_MB_means[PM_MB_means$fungicide_ai == "control"
+               ,]
+
+```
+
+#### Timing of fungicide sprays  
+When are fungicides sprayed in relation to first sign.
+
+```{r spray_relative2FS}
+PM_MB_means %>%
+   mutate(s1_DfromFS = fungicide_application_1 - first_sign_disease,
+          s2_DfromFS = fungicide_application_2 - first_sign_disease,
+          s3_DfromFS = fungicide_application_3 - first_sign_disease,
+          s4_DfromFS = fungicide_application_4 - first_sign_disease,
+          s5_DfromFS = fungicide_application_5 - first_sign_disease) %>%
+   gather(key = spray, value = n_days, s1_DfromFS, s2_DfromFS, s3_DfromFS, s4_DfromFS, s5_DfromFS)%>%
+   ggplot(aes(x = spray, y = n_days))+
+   geom_violin()
+
+```
+
 
 
 ### Mungbean cultivars  
-Host genotype may need to be analysed to determine the effect.
-
-```{r Host_genotype}
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-         row_spacing == 0.75) %>%
-   group_by(host_genotype, trial_ref) %>%
-   summarise() %>%
-   count() %>%
-   rename(Treatments = n) %>%
-   ggplot(aes(x = host_genotype, y = Treatments)) +
-   xlab("Cultivar") +
-   ylab("N Trials") +
-   ggtitle(label = "Cultivars used in tebuconazole trials with 0.75 m row spacing") +
-   geom_col() +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   theme_usq()
-```
+What role does host genotype have in tolerating disease preasure and is it likely to influence the meta-analysis.  
 
 In general the mungbean varieties have the following resistance to powdery mildew.
 
@@ -227,6 +221,27 @@ In general the mungbean varieties have the following resistance to powdery milde
    - Crystal: Susceptible
    
    - Jade: Moderately susceptible
+
+Lets plot a stacked barplot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.
+
+```{r Host_genotype}
+PM_MB_means %>%
+   filter(fungicide_ai == "tebuconazole"|
+             fungicide_ai == "propiconazole")%>%
+   group_by(host_genotype, fungicide_ai, trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Treatments = n) %>%
+   ggplot(aes(x = host_genotype, y = Treatments, fill = fungicide_ai)) +
+   xlab("Cultivar") +
+   ylab("N Trials") +
+   ggtitle(label = "Cultivars used in tebuconazole trials") +
+   geom_col() +
+   scale_fill_usq() +
+   scale_colour_usq() +
+   theme_usq()
+```
+
 
 #### Genotype yield variability
 
