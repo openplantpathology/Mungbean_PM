@@ -87,7 +87,7 @@ PM_MB_means %>%
 
 The primary focus of this research is the effect of fungicide on mitigating yield loss to disease. To reduce the affect of location and seasonal influences we will investigate the proportion of grain yield saved, relative to the no spray controls.  
 
-First lets investigate the difference in the effect of the type of fungicide on proportion of yield saved?  
+First lets investigate the difference in the effect of the type of fungicide on proportion of yield saved. Proportion of yield saved is used in attempt to reduce variation between trials.    
 
 ```{r Fungicide_x_nSprays_tble, message=FALSE}
 PM_MB_means %>%
@@ -136,13 +136,11 @@ PM_MB_means %>%
 
 ```
 
-
+There is a small yield effect when applying fungicide and it is unclear how much a second spray improves yield saved. Interestingly Sulpur sprays might be worth investigating when sprayed twice.  
 
 
 #### Fungicide Doses  
-
-All trials that used tebuconazole used approximately the same dose.
-Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare. 
+We should check that all fungicide doses that were used were roughly the same if we are to compare between trials were dose might be different.  
 
 ```{r tebuAndPropi_dose}
 PM_MB_means %>%
@@ -165,7 +163,9 @@ PM_MB_means %>%
    theme_usq()
 ```
 
-There is much variation in the propiconazole dose, lets inspect the difference in yields for each dose.
+All trials that used tebuconazole used approximately the same dose. Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare.  
+
+There is a large amount of variation in the propiconazole dose, lets inspect the difference in yields for each dose.
 
 ```{r PropiDoseEffect}
 PM_MB_means %>%
@@ -177,9 +177,13 @@ PM_MB_means %>%
    scale_fill_usq() +
    scale_colour_usq() +
    theme_usq()
-
 ```
 
+Which studies used which doses?  
+
+```{r}
+
+```
 
 
 #### Number of fungicide sprays  
@@ -187,9 +191,6 @@ PM_MB_means %>%
 Lets look at the frequency of sprays per fungicide.
 ```{r Fungicide_x_nSprays}
 table(PM_MB_means$fungicide_ai, PM_MB_means$total_fungicide)
-
-PM_MB_means[PM_MB_means$fungicide_ai == "control"
-               ,]
 
 ```
 
