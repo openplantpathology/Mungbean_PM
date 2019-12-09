@@ -179,23 +179,36 @@ PM_MB_means %>%
    theme_usq()
 ```
 
-Which studies used which doses?  
+This dose effect should be acknowledged in the meta-analysis. How many treatments of each dose have been investigated per trial?
 
-```{r}
-
+```{r table_PropiDoses}
+table(as.character(PM_MB_means[PM_MB_means$fungicide_ai == "propiconazole",]$trial_ref), 
+      PM_MB_means[PM_MB_means$fungicide_ai == "propiconazole",]$dose_ai.ha)
 ```
+
+Two trials show both doses were applied in the same trial, mung1112/01 and mung1112/02. Let look at the difference in proportion of yield saved in these trials.  
+
+```{r PropiDoses_TrialCompar}
+
+boxplot(prop_YG ~ dose_ai.ha, data = PM_MB_means[(PM_MB_means$trial_ref == "mung1112/01" |
+                                                    PM_MB_means$trial_ref == "mung1112/02") &
+                                                    PM_MB_means$fungicide_ai == "propiconazole",])
+```
+
+This plox plot, however, indicated the previous plot might be skewed by high yielding trials.  
+
 
 
 #### Number of fungicide sprays  
 
-Lets look at the frequency of sprays per fungicide.
+Lets look at the frequency of sprays per fungicide.  
 ```{r Fungicide_x_nSprays}
 table(PM_MB_means$fungicide_ai, PM_MB_means$total_fungicide)
 
 ```
 
 #### Timing of fungicide sprays  
-When are fungicides sprayed in relation to first sign.
+When are fungicides sprayed in relation to first sign.  
 
 ```{r spray_relative2FS}
 PM_MB_means %>%
@@ -206,7 +219,9 @@ PM_MB_means %>%
           s5_DfromFS = fungicide_application_5 - first_sign_disease) %>%
    gather(key = spray, value = n_days, s1_DfromFS, s2_DfromFS, s3_DfromFS, s4_DfromFS, s5_DfromFS)%>%
    ggplot(aes(x = spray, y = n_days))+
-   geom_violin()
+   geom_violin() +
+   scale_x_discrete(labels = c("First\nSpray", "Second\nspray","Third\nspray","Fourth\nspray","Fifth\nspray"))+
+   theme_usq()
 
 ```
 
