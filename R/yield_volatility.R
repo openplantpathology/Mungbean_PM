@@ -9,7 +9,7 @@ yield_volatility <- function(genotype,
       dat1 <- PM_MB_means[PM_MB_means$host_genotype == genotype &
                              PM_MB_means$Y_error_type == "stdev" &
                              PM_MB_means$trial_ref != "mung1718/01" &  # Outlier
-                             PM_MB_means$fungicide == "control", ]
+                             PM_MB_means$fungicide_ai == "control", ]
    }else{
       dat1 <- PM_MB_means[PM_MB_means$host_genotype == genotype &
                              PM_MB_means$trial_ref != "mung1718/01" & # Outlier
@@ -61,12 +61,12 @@ yield_volatility <- function(genotype,
             dat1 <- PM_MB_means[PM_MB_means$Y_error_type == "stdev" &
                                    PM_MB_means$location == location &
                                    PM_MB_means$trial_ref != "mung1718/01" &  # Outlier
-                                   PM_MB_means$fungicide == "control", ]
+                                   PM_MB_means$fungicide_ai == "control", ]
          }
          if(is.na(location)){
             dat1 <- PM_MB_means[PM_MB_means$Y_error_type == "stdev" &
                                    PM_MB_means$trial_ref != "mung1718/01" &  # Outlier
-                                   PM_MB_means$fungicide == "control", ]
+                                   PM_MB_means$fungicide_ai == "control", ]
          }
             
          
@@ -85,7 +85,7 @@ yield_volatility <- function(genotype,
       dat1 <- dat1[!is.na(dat1$trial_ref),]
       dat1 <- dat1[!is.na(dat1$host_genotype),]
       
-      for(i in unique(dat1$host_genotype)){
+      for(i in unique(as.character(dat1$host_genotype))){
          
          
          dat2 <- dat1[dat1$host_genotype == i,]
