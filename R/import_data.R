@@ -9,13 +9,16 @@
 #'
 #' PM_MB_means <- import_data()
 #'
-source("R/OD_DL_csv.R") # download from oneDrive shared link function.
+
+devtools::install_github("PaulMelloy/cloudy")
+
+
+x <- 
 
 import_data <- function() {
    x <-
-      OD_DL_csv(sharedURL = "https://usqprd-my.sharepoint.com/:x:/g/personal/u8011054_usq_edu_au/ER13jFzyQqNMq_SEZkNW9NoBa1ynkFl48tXlmd0i_ZHr5w?e=FRY4uo",
-                file_name = "mungbean.csv"
-               )
+      cloudy::fetch_data(url = "https://usqprd-my.sharepoint.com/:x:/g/personal/u8011054_usq_edu_au/ER13jFzyQqNMq_SEZkNW9NoBiJI8R68dfkKfWXB9wJgETw?e=mylMrZ", 
+                         file_ext = ".csv")
    x$trial_ref <- as.factor(x$trial_ref)
    x$location <- as.factor(x$location)
    x$host_genotype <- as.factor(x$host_genotype)
