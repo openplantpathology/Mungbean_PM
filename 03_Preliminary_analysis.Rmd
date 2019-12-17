@@ -18,7 +18,7 @@ source("R/import_data.R")
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, include= FALSE}
 # Import data
-PM_MB_means <- import_data()
+PM_MB_means <- import_data() # link expires 2021-12-01
 
 #remove the variation in different sulphur formulations
 unique(PM_MB_means[
@@ -228,9 +228,7 @@ PM_MB_means %>%
 
 
 ### Mungbean cultivars  
-What role does host genotype have in tolerating disease preasure and is it likely to influence the meta-analysis.  
-
-In general the mungbean varieties have the following resistance to powdery mildew.
+In general, the mungbean varieties have the following resistance to powdery mildew.
 
    - Berken: Highly susceptible
    
@@ -238,7 +236,7 @@ In general the mungbean varieties have the following resistance to powdery milde
    
    - Jade: Moderately susceptible
 
-Lets plot a stacked barplot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.
+Let's view a stacked bar plot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.
 
 ```{r Host_genotype}
 PM_MB_means %>%
@@ -261,7 +259,9 @@ PM_MB_means %>%
 
 #### Genotype yield variability
 
-Host genotype seems to contribute to the variation in yield. Berken shows higher yields compared to crystal and jade.
+Does host cultivar significantly impact the yield? Lets look at the volitility in yields to see if any cultivar yields better or has greater toleratance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar.  
+
+First lets look at overall yields for each cultivar , where trial is not a factor, for all treatments (spray and no spray).  
 ```{r yield_vol}
 # this could be converted into a shiny app as a chunk. Make each input for the function a shiny option
 # Outputs the table and graph
@@ -271,24 +271,43 @@ source("R/yield_volatility.r") #function to investigate the volatility in yields
 YV1 <- yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
 YV1[[2]]
 YV1[[3]]
+```
+Now lets look at overall yields for each cultivar, where trial is not a factor, in only the no spray treatments.
+```{r yieldVol_control}
+
 YV2 <- yield_volatility(genotype_by_trial = FALSE, control_only = TRUE)
 YV2[[2]]
+YV2[[3]]
 
+```
+Volitility of the cultivars are fairly similar when trial is not considered as a factor. Green diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials.  
+
+
+Lets examine the same plots as above but only for the most commonly used trial site, Hermitage.  
+```{r yieldVol_Herm}
 YV1_herm <- yield_volatility(genotype_by_trial = FALSE, control_only = FALSE, location = "Hermitage")
 YV1_herm[[2]]
 
+```
+Jade shows a large amount of volitility, excluding Green Diamond, Crystal shows the next least volatility.  
+
+Lets take a closer look at Crystal with spray managment treatments and without.  
+```{r YieldVol_Crystal}
 YV1_crystal <- yield_volatility("Crystal",control_only = FALSE)
 YV1_crystal[[2]]
 
-YV2_crystal <- yield_volatility("Crystal",control_only = TRUE)
+YV2_crystal <- yield_volatility("Jade",control_only = TRUE)
 YV2_crystal[[2]]
 
 
+```
+
+```{r}
 YV1_herm_jade <- yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
 YV2_jade <- yield_volatility("Jade",control_only = TRUE)
 
 ```
-
+Host genotype seems to contribute to the variation in yield. Berken shows higher yields compared to crystal and jade.
 
 
 
