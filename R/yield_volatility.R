@@ -5,15 +5,20 @@ yield_volatility <- function(genotype,
    
    if(isTRUE(genotype_by_trial)){
    
+      PlotTitle1 <- "Probability of yield (t/ha) for each genotype grouped by trial"
+      
    if(isTRUE(control_only)){
       dat1 <- PM_MB_means[PM_MB_means$host_genotype == genotype &
                              PM_MB_means$Y_error_type == "stdev" &
                              PM_MB_means$trial_ref != "mung1718/01" &  # Outlier
                              PM_MB_means$fungicide_ai == "control", ]
+      PlotTitle2 <- "/nin no spray control plots only"
+      
    }else{
       dat1 <- PM_MB_means[PM_MB_means$host_genotype == genotype &
                              PM_MB_means$trial_ref != "mung1718/01" & # Outlier
                              PM_MB_means$Y_error_type == "stdev", ]    
+      PlotTitle2 <- "/nin no spray control and spray treated plots"
    }
    
    dat1 <- dat1[!is.na(dat1$trial_ref),]
@@ -40,7 +45,8 @@ yield_volatility <- function(genotype,
    Plot1 <- dat3 %>%
       ggplot(aes(x = values))+
       geom_density(aes(fill = trial), alpha = 0.4)+
-      xlim(0.25,2.25)
+      xlim(0.25,2.25)+
+      title(paste0(PlotTitle1,PlotTitle2))
    
    mean_Y_volatility <- dat3 %>%
       group_by(trial) %>%
@@ -56,17 +62,24 @@ yield_volatility <- function(genotype,
    
    
    if(isFALSE(genotype_by_trial)){
+      
+      PlotTitle1 <- "Probability of yield (t/ha) for each genotype regardless of trial"
+      
       if(isTRUE(control_only)){
          if(!is.na(location)){
             dat1 <- PM_MB_means[PM_MB_means$Y_error_type == "stdev" &
                                    PM_MB_means$location == location &
                                    PM_MB_means$trial_ref != "mung1718/01" &  # Outlier
                                    PM_MB_means$fungicide_ai == "control", ]
-         }
+            PlotTitle2 <- "/nin no spray control plots only"
+            
+            }
          if(is.na(location)){
             dat1 <- PM_MB_means[PM_MB_means$Y_error_type == "stdev" &
                                    PM_MB_means$trial_ref != "mung1718/01" &  # Outlier
                                    PM_MB_means$fungicide_ai == "control", ]
+            PlotTitle2 <- "/nin no spray control and treated plots"
+            
          }
             
          
