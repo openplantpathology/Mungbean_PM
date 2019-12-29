@@ -249,7 +249,7 @@ PM_MB_means %>%
    ggplot(aes(x = host_genotype, y = Treatments, fill = fungicide_ai)) +
    xlab("Cultivar") +
    ylab("N Trials") +
-   ggtitle(label = "Cultivars used in tebuconazole trials") +
+   ggtitle(label = "Cultivars used in either tebuconazole or propiconazole trials") +
    geom_col() +
    scale_fill_usq() +
    scale_colour_usq() +
@@ -280,7 +280,7 @@ YV2[[2]]
 YV2[[3]]
 
 ```
-Volitility of the cultivars are fairly similar when trial is not considered as a factor. Green diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials.  
+Volitility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments). Green diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials.  
 
 
 Lets examine the same plots as above but only for the most commonly used trial site, Hermitage.  
@@ -293,23 +293,28 @@ Jade shows a large amount of volitility, excluding Green Diamond, Crystal shows 
 
 Lets take a closer look at Crystal with spray managment treatments and without.  
 ```{r YieldVol_Crystal}
-YV1_crystal <- yield_volatility("Crystal",control_only = FALSE)
+YV1_crystal <- yield_volatility(genotype = "Crystal",control_only = FALSE)
+YV1_crystal[[2]]
+YV1_crystal <- yield_volatility(genotype = "Crystal",control_only = TRUE)
 YV1_crystal[[2]]
 
-YV2_crystal <- yield_volatility("Jade",control_only = TRUE)
+```
+There is a lot of variation between field trials for Crystal, but little variation within field trials.
+
+Lets look at Jade, to see if it differs.
+```{r YieldVol_Jade}
+YV2_crystal <- yield_volatility("Jade",control_only = FALSE)
 YV2_crystal[[2]]
-
-
 ```
+For Jade there is high variation between trials and with in. Perhaps indicating lower tolerance. Lets look at the same plot with data only from no spray controls to see if the variation is the same.
 
-```{r}
-YV1_herm_jade <- yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
-YV2_jade <- yield_volatility("Jade",control_only = TRUE)
-
+```{r YieldVol_JadeControl}
+YV3_crystal <- yield_volatility("Jade",control_only = TRUE)
+YV3_crystal[[2]]
 ```
-Host genotype seems to contribute to the variation in yield. Berken shows higher yields compared to crystal and jade.
+There seems to be a noticible shift in the probability curves between the two plots. Indicating that the tolerance in Jade may not as good as Crystal. A comparison between the fungicide efficacy for reducing powdery mildew severity and fungicide efficacy at mitigating yield loss.  
 
-
+Overall there seems to be an influence of cultuvar however this variation is not as distinct as the variation between trials.  
 
 
 ### Row spacing  
