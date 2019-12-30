@@ -345,27 +345,46 @@ PM_MB_means %>%
    glimpse()
 ```
 
-Were there any statistical difference between all row spacing or only some?
-Can we pool certain row spacing that have no significant difference?  
-From the preliminary analysis, the graphs seem to imply if there is a lower overall yield there is no effect of row spacing on yield.
-However, if the average yield is more than approximately 0.6 - 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.
+Lets plot the row spacing treatments for the response variables yield and disease severity. The main questions are:  
+   - Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?  
+   - Can we pool certain row spacing that have no significant difference?  
 
-
-```{r row_spacing}
-
+```{r RS_severity}
+PM_MB_means$fungicide_ai
 # Which row spacing leads to the higher disease severity
 PM_MB_means %>%
    filter(year == 2017 |
              year == 2018) %>%
-   filter(fungicide == "control") %>%
+   filter(fungicide_ai == "control") %>%
    ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
    geom_boxplot() +
    #  geom_smooth()+
-   scale_y_continuous(limits = c(-5, 15)) +
+ #  scale_y_continuous(limits = c(-5, 15)) +
    theme_usq()+
    ggtitle("Powdery mildew variation between different row spacing")
 
+```
 
+```{r RS_severity_x_trial}
+PM_MB_means$fungicide_ai
+# Which row spacing leads to the higher disease severity
+PM_MB_means %>%
+   filter(year == 2017 |
+             year == 2018) %>%
+   filter(fungicide_ai == "control") %>%
+   ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
+   geom_boxplot() +
+   #  geom_smooth()+
+ #  scale_y_continuous(limits = c(-5, 15)) +
+   theme_usq()+
+   facet_grid(cols = vars(location))
+   ggtitle("Powdery mildew variation between different row spacing")
+
+```
+In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.  
+
+
+```{r RS_yield}
 # Which row spacing leads to the higher yeild potential
 PM_MB_means %>%
    filter(year == 2017|
@@ -380,23 +399,22 @@ PM_MB_means %>%
    geom_jitter(width = 0.01) +
    #   scale_y_continuous(limits = c(-5,15))+
    theme_usq()+
-   ggtitle("Grain yield results for different row spacing at three locations")
+   ggtitle("Grain yield results for different row spacing at three locations")+
+   xlab("Row spacing (m)")+
+   ylab("Grain yield - tonne per hectare")
 
 
 
 ```
+The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hertmitage trial. However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.  
 
-
-
-
-
-
+Overall row spacing may influence both powdery mildew severity and yield.  
 
 ### Yield vs in-season rain  
 
-In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate any relationship I will loop a linear model over time periods from 20 days prior to planting, to 100 days after planting.
+In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate this effect I will use a linear model (GY ~ SR) where seasonal rainfall represents a specific time frame with respect to planting time. Multiple time frames were tested from 20 days prior to planting, to 100 days after planting.  
 
-Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time. To speed up the computation I split the script into four, ran the jobs and bound the data into one frame. The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run. For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
+The multiple time frames were tested by a loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time. To speed up the computation I split the script into four, ran the jobs and bound the data into one frame. The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run. For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
 
 ```{r rainfall_sum_Sstart}
 # The four data files were created from four scripts run as four jobs in Rstudio
@@ -412,21 +430,31 @@ lm_rain3 <- read.csv("data/lmInSeasonRainfall_10.30_30.64.csv",stringsAsFactors 
 lm_rain4 <- read.csv("data/lmInSeasonRainfall_10.30_65.100.csv",stringsAsFactors = FALSE)
 
 lm_rain <- rbind(lm_rain1,lm_rain2,lm_rain3,lm_rain4)
+```
 
+Now we have read in the data from the previously computed models lets find the linear model which has:  
+   - The lowest P value  
+   - the highest adjusted r squared value  
+   
+```{r WhichLModel}
 lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),]
 lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),]
 lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)),]
 
+```
 
 
+To visualise the model fits we will use a heat map to describe how the models faired in relation to the rainfall windows. log of the p value was used to improve the resolution of small very small p values.  
+```{r rainLMpvalue}
 ggplot(lm_rain, aes(x = start_day, y = end_day, z = log(lm_pval)))+
    geom_raster(aes(fill = log(lm_pval)), interpolate = TRUE)+
    geom_contour(bins = 15, colour = "white")+
-   geom_abline(intercept = 0, slope = 1, colour = "red")+
    geom_point(data = lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),], aes(x = start_day, y = end_day), colour =" red")+
    scale_fill_distiller(palette ="RdBu", direction = -1) 
 
+```
 
+```{r }
 
 ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_rsquared))+
    geom_raster(aes(fill = lm_rsquared), interpolate = TRUE)+
