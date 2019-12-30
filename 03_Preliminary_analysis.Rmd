@@ -454,51 +454,21 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = log(lm_pval)))+
 
 ```
 
-```{r }
-
+```{r rainLMrsquared}
 ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_rsquared))+
    geom_raster(aes(fill = lm_rsquared), interpolate = TRUE)+
    geom_contour(bins = 15, colour = "white")+
-   geom_abline(intercept = 0, slope = 1, colour = "red")+
    geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),], aes(x = start_day, y = end_day), colour =" red")+
    scale_fill_distiller(palette ="RdBu") 
+```
 
-
-
+```{r rainLMadjrsquared}
 ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared))+
    geom_raster(aes(fill = lm_adj_rsquared), interpolate = TRUE)+
    geom_contour(bins = 15, colour = "white")+
    geom_abline(intercept = 0, slope = 1, colour = "red")+
    geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),], aes(x = start_day, y = end_day), colour =" red")+
    scale_fill_distiller(palette ="RdBu") 
-
-
-source("R/AUS_rainfall_function.r")
-source("R/rainfall_sum_dat.R")
-
-for(i in rain_dat_sum$trial_ref){
-dat_rain <- rain_dat_sum[rain_dat_sum$trial_ref == i,]
-   
-   rain_dat_sum[which(rain_dat_sum$trial_ref == i), "rainfall_sum"] <- 
-      AUS_rainfall(StartDate = as.Date(dat_rain$planting_date) +
-                   lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)), "start_day"],
-                EndDate = as.Date(dat_rain$planting_date) +
-                   lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)), "end_day"],
-                latlong = as.vector(unlist(dat_rain[, 5:6])))
-}
-
-rain_lm <- lm(rainfall_sum ~ grain_yield, 
-                             data = rain_dat_sum[rain_dat_sum$location != "Hermitage",])
-
-summary(rain_lm)
-
-rain_dat_sum %>%
-   ggplot(aes(x = grain_yield, y = rainfall_sum, colour = location))+
-   geom_point() + 
-   geom_abline(intercept = -167.98, slope = 284.44, colour = "red")
-
-resid_rain_lm <- residuals(rain_lm)
-
 ```
 
 The approximate period when in-crop rainfall impacts the most on the mean harvest is between 14 - 67 days after planting.
