@@ -466,7 +466,6 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_rsquared))+
 ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared))+
    geom_raster(aes(fill = lm_adj_rsquared), interpolate = TRUE)+
    geom_contour(bins = 15, colour = "white")+
-   geom_abline(intercept = 0, slope = 1, colour = "red")+
    geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),], aes(x = start_day, y = end_day), colour =" red")+
    scale_fill_distiller(palette ="RdBu") 
 ```
@@ -477,11 +476,11 @@ The approximate period when in-crop rainfall impacts the most on the mean harves
 
 
 ### Season range and first incidence
+Mungbean is a summer crop and powdery mildew is requires cool conditions to establish. Therefore the disease can be avoided by planting early in summer or spring, avoiding cooler temperatures at the end of some seasons. Can we visualise when PM is most likely to establish over the calender year.  
 
+I'll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.  
 ```{r first_incidence}
-# Here I want to build a plot of horizontal lines indicating the season length and
-# place a dot on the line to indicating the day of the year first sign was observed for that trial
-
+# Create the data frame for the plot
 season_dates <- PM_MB_means %>%
    group_by(trial_ref)%>%
    summarise(Planting_date = unique(planting_date),
@@ -489,7 +488,6 @@ season_dates <- PM_MB_means %>%
              First_sign_PM = unique(first_sign_disease),
              season_length = as.integer(as.Date(unique(harvest_date)) - as.Date(unique(planting_date)))
              )
-
 
 # function to extract date from the year
 # format should be Universal time format
@@ -518,9 +516,11 @@ axis_labels_date <- c(format(Sys.Date() - year2day(Sys.Date()) + first_day_month
 
 # reorder the factors so they will appear in chronilogical order
 # I used First sign because all trials have recorded this
-season_dates$trial_ref <- factor(season_dates$trial_ref, levels = levels(season_dates$trial_ref)[rev(order(season_dates$First_sign_PM))])
+season_dates$trial_ref <- 
+   factor(season_dates$trial_ref, 
+          levels = levels(season_dates$trial_ref)[rev(order(season_dates$First_sign_PM))])
 
-
+# Plot
 season_dates %>%
    ggplot()+
    geom_pointrange(aes(x = trial_ref, y = Disease_day, ymin = Planting_day, ymax = Harvest_day))+
@@ -537,19 +537,17 @@ season_dates %>%
    
 ```
 
-
-
-
+In most years, regardless of the age of the crop, powdery mildew establishes in March.
 
 
 
 #### Effect of Fungicide 
-**on proportional yield gain with respect to time of application**
+**Fungicide effect on proportional yield gain with respect to time of application**
 First lets look at the quantiles for each fungicide irrespective of other factors.
 We will focus on proportional yield gain, compared to no treatment control, as this should partially correct for some spatial and seasonal effects.  
 ```{r fungicide_proportion_yield}
 PM_MB_means %>%
-   group_by(fungicide) %>%
+   group_by(fungicide_ai) %>%
    summarise(
       n = length(prop_YG),
       lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
@@ -562,18 +560,18 @@ PM_MB_means %>%
    kable(caption = "Fungicide effect on proportion of yield gain") %>%
    kable_styling(fixed_thead = T, full_width = T)
 
-unique(PM_MB_means$fungicide)
 # plot table as a box plot
 PM_MB_means %>%
    filter(
-      fungicide == c(
+      fungicide_ai == c(
          "200 g/L tebuconazole + 120 g/L azoxystrobin" ,
          "200 g/L azoxystrobin + 80 g/L cyproconazole",
          "tebuconazole",
-         "propiconazole"
+         "propiconazole",
+         "sulphur"
       )
    ) %>%
-   ggplot(aes(y = prop_YG, x = fungicide)) +
+   ggplot(aes(y = prop_YG, x = fungicide_ai)) +
    geom_boxplot() +
    geom_hline(aes(yintercept = 0), size = 0.5) +
    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
@@ -585,7 +583,6 @@ PM_MB_means %>%
       panel.background = element_rect(fill = NA)
    ) +
    guides(fill = guide_legend(title = "Fungicide")) +
-   coord_cartesian() +
    coord_flip()
 #theme(axis.text.x = element_text(angle = 30, hjust =.6, vjust = 0.83))
 #scale_x_continuous(limits = c(-0.3,0.6))
@@ -600,11 +597,10 @@ There was some hope groups of fungicide could be combined, _i.e._ Propiconazole 
 
 Lets run this by a quick linear mixed effect model
 ```{r Fungicide_lmer}
-levels(PM_MB_means$Fungicide)
 
-PM_MB_means$Fungicide <-
+PM_MB_means$fungicide_ai <-
    factor(
-      PM_MB_means$Fungicide,
+      PM_MB_means$fungicide_ai,
       levels = c(
          "control",
          "Propiconazole",
@@ -615,19 +611,17 @@ PM_MB_means$Fungicide <-
          "Benomyl",
          "Pyrazophos",
          "Acibenzolar-S-Methyl",
-         "Sulphur",
-         "Sulphur (SC)",
-         "Sulphur (Ultra SC)",
-         "Sulphur (WP)"
+         "Sulphur"
       )
    )
 
+class(PM_MB_means$trial_ref)
+
 PM_MB_lmer.1 <-
    lmer(
-      prop_YG ~ Fungicide * as.factor(total_Fungicide) + row_spacing + (1 |
-                                                                           Trial_ref),
-      data = subset(PM_MB_means, total_Fungicide == 1 |
-                       total_Fungicide == 2)
+      prop_YG ~ fungicide_ai * as.factor(n_treatment) + row_spacing + (1 |trial_ref),
+      data = subset(PM_MB_means, 
+                    n_treatment == 1 | n_treatment == 2)
    )
 
 summary(PM_MB_lmer.1)
@@ -636,413 +630,6 @@ summary(PM_MB_lmer.1)
 There is no significant difference between Fungicides, except for Sulphur which is significantly less effective than Propiconazole. Propiconazole, on average, out performs other fungicides when mitigating yield loss.
 
 
-How many trials contain all of the most studied fungicides
-```{r Trials_with_top_three_Fungicides}
-Tebe_trials <-
-   unique(PM_MB_means[PM_MB_means$Fungicide == "Tebeconazole", ]$Trial_ref)
-Propi_trials <-
-   unique(PM_MB_means[PM_MB_means$Fungicide == "Propiconazole", ]$Trial_ref)
-Azoxystrobin_trials <-
-   unique(PM_MB_means[PM_MB_means$Fungicide == "Azoxystrobin", ]$Trial_ref)
-
-intersect(intersect(Tebe_trials, Propi_trials)
-          , Azoxystrobin_trials)
-
-
-
-```
-
-
-
-
-```{r Calculate_cuts, echo=FALSE}
-# removing 2017 and control data
-# this will help look at when the first application of fungicide is applied in relation to when the disease first appeared
-PM_MB_means1 <- PM_MB_means %>%
-   filter(Fungicide != "control") %>%
-   #   filter(total_Fungicide ==1) %>%
-   mutate(days_from_1st = as.numeric(
-      as.Date(as.character(Fungicide_application_1), format = "%d/%m/%Y") -
-         as.Date(as.character(first_sign_disease), format = "%d/%m/%Y")
-   ))
-
-
-
-
-days_from_fungicid <- function(FSD, F1, F2, F3) {
-   dF1 <- as.numeric(as.Date(F1) - as.Date(FSD))
-   dF2 <- as.numeric(as.Date(F2) - as.Date(FSD))
-   dF3 <- as.numeric(as.Date(F3) - as.Date(FSD))
-   if (is.na(dF1)) {
-      return(NA)
-   } else{
-      if (between(dF1, lower = -1, upper = 1000)) {
-         return(dF1)
-      } else{
-         if (is.na(dF2)) {
-            return(dF1)
-         } else{
-            if (between(dF2, lower = dF1, upper = -0.1)) {
-               return(dF2)
-            } else{
-               return(dF3)
-            }
-         }
-      }
-   }
-}
-vec1 <- vector()
-for (i in 1:dim(PM_MB_means1)[1]) {
-   dF1 <-
-      as.numeric(
-         as.Date(PM_MB_means1$Fungicide_application_1, format = "%d/%m/%Y")[i] -
-            as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i]
-      )
-   dF2 <-
-      as.numeric(
-         as.Date(PM_MB_means1$Fungicide_application_2, format = "%d/%m/%Y")[i] -
-            as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i]
-      )
-   dF3 <-
-      as.numeric(
-         as.Date(PM_MB_means1$Fungicide_application_3, format = "%d/%m/%Y")[i] -
-            as.Date(PM_MB_means1$first_sign_disease, format = "%d/%m/%Y")[i]
-      )
-   if (is.na(dF1)) {
-      vec1 <- c(vec1, dF1)
-   } else{
-      if (between(as.numeric(dF1), -1, 1000)) {
-         vec1 <- c(vec1, dF1)
-      } else{
-         if (is.na(dF2)) {
-            vec1 <- c(vec1, dF1)
-         } else{
-            if (between(as.numeric(dF2), as.numeric(dF1), -1.1)) {
-               vec1 <- c(vec1, dF2)
-            } else{
-               if (is.na(dF3)) {
-                  vec1 <- c(vec1, dF2)
-               } else{
-                  if (as.numeric(dF3) >= 0) {
-                     vec1 <- c(vec1, dF2)
-                  } else{
-                     vec1 <- c(vec1, dF3)
-                  }
-               }
-            }
-         }
-      }
-   }
-}
-PM_MB_means1$spray_diff <-
-   vec1 # gives the closest fungicide application date to the first sign of disease
-#PM_MB_means1$days_from_1st
-
-
-```
-
-```{r Sulphur_efficacy, echo=FALSE}
-
-
-# unique(
-# PM_MB_means1 %>%
-#    group_by(Fungicide) %>%
-#    filter(n() >= 5) %>%
-#    select(days_from_1st))
-# 
-# 
-# PM_MB_means1 %>%
-#    group_by(Fungicide) %>%
-#    filter(n() >= 5) %>%
-# ggplot(aes(prop_YG))+
-#    geom_density(aes(fill = cut(spray_diff, c(-1,2,7,10,12,20))), alpha = 0.5)+
-#    geom_vline(aes(xintercept = 0), size =0.5)+
-#    facet_grid(rows = vars(cut(spray_diff, c(1,2,7,10,12,20))), cols = vars(Fungicide))+
-#    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-#    labs(x = "Proportion of grain yeild saved",
-#    title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen")+
-#    theme(panel.grid.major = element_line(colour = "grey80"),
-#          panel.grid.minor = element_line(colour = "grey50"),
-#          panel.background = element_rect(fill = NA))+
-#    guides(fill=guide_legend(title="Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease"))+
-#    scale_x_continuous(limits = c(-0.2,0.55))
-# 
-# 
-
-#__________________________________________________________________________________________________________
-# levels(factor(PM_MB_means$Fungicide))
-
-
-
-
-# combine Sulphur treatments
-PM_MB_means2 <- PM_MB_means1 %>%
-   filter(
-      Fungicide == "Sulphur" |
-         Fungicide == "Sulphur (SC)" |
-         Fungicide == "Sulphur (Ultra SC)" |
-         Fungicide == "Sulphur (WP)"
-   )
-
-
-unique(PM_MB_means2$spray_diff)
-
-
-ggplot(PM_MB_means2, aes(prop_YG)) +
-   geom_density(aes(fill = cut(
-      PM_MB_means2$spray_diff, c(-30, -19, -15, -10, -1, 2, 7, 10, 12, 21)
-   )), alpha = 0.5) +
-   geom_vline(aes(xintercept = 0), size = 0.5) +
-   facet_grid(cut(PM_MB_means2$spray_diff, c(-30, -19, -15, -10, -1, 2, 7, 10, 12, 21)) ~
-                 .) +
-   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-   labs(x = "Proportion of grain yield saved",
-        title = "Grain yield proportion saved grouped by\nwhen the first Sulphur fungicide application was made\nrelative to when Powdery Mildew was first seen") +
-   theme(
-      panel.grid.major = element_line(colour = "grey80"),
-      panel.grid.minor = element_line(colour = "grey50"),
-      panel.background = element_rect(fill = NA)
-   ) +
-   guides(
-      fill = guide_legend(title = "Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease")
-   ) +
-   scale_x_continuous(limits = c(-0.3, 0.6))
-
-```
-This plot shows that there is not a good probability that Sulphur will help save yield, even when it is sprayed at the ideal time.
-
-```{r each_fungicide}
-Chemical <-
-   c("Azoxystrobin", "Carbendazim", "Tebeconazole", "Propiconazole")
-levels(factor(PM_MB_means$Fungicide))
-
-# Generates multiple plots for each type of fungicide tested
-for (Chem in Chemical) {
-   PM_MB_means2 <- PM_MB_means1 %>%
-      filter(Fungicide == Chem)
-   
-   cat(Chem)
-   
-   # the following code 'spray_group' sets the spray_diff groupings that are used in the plots
-   spray_group <- c(min(unique(PM_MB_means2$spray_diff)) - 1,
-                    -5, 5,
-                    max(unique(PM_MB_means2$spray_diff)) + 1)
-   
-   spray_group < -c(sort(unique(PM_MB_means2$spray_diff) - 1), max(unique(PM_MB_means2$spray_diff)))
-   
-   print(spray_group)
-   
-   p1 <- ggplot(PM_MB_means2, aes(prop_YG)) +
-      geom_density(aes(fill = cut(PM_MB_means2$spray_diff, spray_group)), alpha = 0.5) +
-      geom_vline(aes(xintercept = 0), size = 0.5) +
-      facet_grid(cut(PM_MB_means2$spray_diff, spray_group) ~ .) +
-      #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-      labs(x = "Proportion of grain yield saved",
-           title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen") +
-      theme(
-         panel.grid.major = element_line(colour = "grey80"),
-         panel.grid.minor = element_line(colour = "grey50"),
-         panel.background = element_rect(fill = NA)
-      ) +
-      guides(fill = guide_legend(
-         title = paste(
-            Chem,
-            "Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease"
-         )
-      )) +
-      scale_x_continuous(limits = c(-1, 1))
-   
-   print(p1)
-   
-}
-```
-It seems the calculation of spray diff does not elucidate any differences between application dates.
-
-
-
-
-
-
-
-### Yield saved 
-**Number of fungicide applications**
-The following density plots show mean yield saved in relation to how many sprays were applied. 
-
-```{r PA_Yield, warning=FALSE, echo=FALSE}
-
-# Making a table of showing the upper and lower percentiles (95%)
-quant_PMy <- PM_MB_means %>%
-   filter(fungicide != "control") %>%
-   group_by(total_fungicide) %>%
-   summarise(
-      n = length(yield_gain),
-      lower_2.5 = quantile(yield_gain, na.rm = T, c(0.025)),
-      median = median(yield_gain, na.rm = T),
-      mean = mean(yield_gain, na.rm = T),
-      upper_97.5 = quantile(yield_gain, na.rm = T, c(0.975))
-   )
-
-# Density plot of Number of fungicide applications and the resulting yeild saved (as a proportion)
-ggplot(subset(PM_MB_means, fungicide != "control"), aes(yield_gain)) +
-   geom_density(aes(
-      group = factor(total_fungicide),
-      fill = factor(total_fungicide)
-   ), alpha = 0.6) +
-   geom_vline(xintercept = 0, size = 1) +
-   labs(x = "Grain yield saved (t/ha)",
-        title = "Density plot of grain yield saved from differing numbers of fungicide applications") +
-   theme(
-      panel.grid.major = element_line(colour = "grey80"),
-      panel.grid.minor = element_line(colour = "grey50"),
-      panel.background = element_rect(fill = NA)
-   ) +
-   geom_vline(
-      data = quant_PMy,
-      aes(xintercept = lower_2.5,
-          colour = factor(total_fungicide)),
-      size = 0.9,
-      linetype =  "dashed"
-   ) +
-   geom_vline(
-      data = quant_PMy,
-      aes(xintercept = upper_97.5,
-          colour = factor(total_fungicide)),
-      size = 0.9,
-      linetype =  "dashed"
-   ) +
-   guides(
-      colour = guide_legend(title = "Upper (97.5%) and \nLower (2.5%) percentiles"),
-      fill = guide_legend(title = "Number of \nFungicide applications")
-   ) +
-   scale_x_continuous(limits = c(-0.3, 0.8))
-
-kable(quant_PMy,
-      caption = "Yield gain for each number of fungicide applications") %>%
-   kable_styling(fixed_thead = T, full_width = T)
-
-
-
-
-
-# Making a table of showing the upper and lower percentiles (95%)
-quant_PM <- PM_MB_means %>%
-   filter(Fungicide != "control") %>%
-   group_by(total_Fungicide) %>%
-   summarise(
-      lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
-      median = median(prop_YG, na.rm = T),
-      mean = mean(prop_YG, na.rm = T),
-      upper_97.5 = quantile(prop_YG, na.rm = T, c(0.975))
-   )
-
-
-
-
-# Density plot of proportion of yield saved
-ggplot(subset(PM_MB_means, Fungicide != "control"), aes(prop_YG)) +
-   geom_density(aes(
-      group = factor(total_Fungicide),
-      fill = factor(total_Fungicide)
-   ), alpha = 0.6) +
-   geom_vline(xintercept = 0, size = 1) +
-   labs(x = "Proportion of grain yield saved",
-        title = "Density plot of the grain yield proportion saved \n by the number of fungicide applications") +
-   theme(
-      panel.grid.major = element_line(colour = "grey80"),
-      panel.grid.minor = element_line(colour = "grey50"),
-      panel.background = element_rect(fill = NA)
-   ) +
-   geom_vline(
-      data = quant_PM,
-      aes(xintercept = lower_2.5,
-          colour = factor(total_Fungicide)),
-      size = 0.9,
-      linetype =  "dashed"
-   ) +
-   geom_vline(
-      data = quant_PM,
-      aes(xintercept = upper_97.5,
-          colour = factor(total_Fungicide)),
-      size = 0.9,
-      linetype =  "dashed"
-   ) +
-   guides(
-      colour = guide_legend(title = "Upper (97.5%) and \nLower (2.5%) percentiles"),
-      fill = guide_legend(title = "Number of \nFungicide applications")
-   ) +
-   scale_x_continuous(limits = c(-0.3, 0.55))
-
-
-
-kable(quant_PM,
-      caption = "Proportion of yield gain for each number of fungicide applications") %>%
-   kable_styling(fixed_thead = T, full_width = T)
-#knitr::kable(quant_PM,
-#             col.names = c("Number of sprays", "2.5 percentile", "97.5 percentile"))
-#caption = "The 'upper' and 'lower' percentiles for proportion of yeild saved against the number of Fungicide sprays in a season. Data from 2011-2017 mungbean experimental means. Data ignores factors such as fungicide, dose, season or location of experiment")
-```
-
-\n\n\n\n\n\n\n
-
-#### Timing of Fungicide application
-The following density plots show mean yield saved (t / Ha) or proportion yield saved in relation to when the first fungicide spray was applied in relation to when powdery mildew was first seen in the mungbean crop.
-
-```{r eval = FALSE, message = FALSE, warning = FALSE, include = FALSE}
-PM_MB_means %>%
-   filter(Fungicide != "control") %>%
-   #   filter(total_Fungicide ==1) %>%
-   mutate(days_from_1st = as.numeric(
-      as.Date(as.character(Fungicide_application_1), format = "%d/%m/%Y") -
-         as.Date(as.character(first_sign_disease), format = "%d/%m/%Y")
-   ))
-
-```
-
-
-
-```{r spray_timing&PropYield}
-# What range of
-unique(PM_MB_means1$days_from_1st)
-PM_MB_means1 %>%
-   group_by(cut(
-      PM_MB_means1$days_from_1st,
-      c(-41, -20, -15, -12, -0.5, 1.5, 7, 10, 12, 20)
-   )) %>%
-   summarise(
-      n = length(prop_YG),
-      lower_2.5 = quantile(prop_YG, na.rm = T, c(0.025)),
-      median = median(prop_YG, na.rm = T),
-      mean = mean(prop_YG, na.rm = T),
-      upper_97.5 = quantile(prop_YG, na.rm = T, c(0.975))
-   ) %>%
-   kable(caption = "Difference in days between first sign of disease and first fungicide application and the effect on proportion of yield gain") %>%
-   kable_styling(fixed_thead = T, full_width = T)
-
-
-
-ggplot(PM_MB_means1, aes(prop_YG)) +
-   geom_density(aes(fill = cut(
-      PM_MB_means1$days_from_1st,
-      c(-41, -20, -15, -12, -0.5, 1.5, 7, 10, 12, 20)
-   )), alpha = 0.5) +
-   geom_vline(aes(xintercept = 0), size = 0.5) +
-   facet_grid(cut(
-      PM_MB_means1$days_from_1st,
-      c(-41, -20, -15, -12, -0.5, 1.5, 7, 10, 12, 20)
-   ) ~ .) +
-   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
-   labs(x = "Proportion of grain yield saved",
-        title = "Grain yield proportion saved grouped by\nwhen the first fungicide application was made\nrelative to when Powdery Mildew was first seen") +
-   theme(
-      panel.grid.major = element_line(colour = "grey80"),
-      panel.grid.minor = element_line(colour = "grey50"),
-      panel.background = element_rect(fill = NA)
-   ) +
-   guides(
-      fill = guide_legend(title = "Days (binned)\nfirst spray \nwas applied\nrelative to\nFirst sign of disease")
-   ) +
-   scale_x_continuous(limits = c(-0.2, 0.55))
-```
 
 
 
