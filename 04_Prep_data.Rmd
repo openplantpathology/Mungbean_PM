@@ -1,3 +1,4 @@
+## Set environment and import data  
 
 ```{r load_libraries}
 library(dplyr)
@@ -12,28 +13,25 @@ PM_MB_means <- import_data()
 
 
 ## Standardising sample variance  
+Meta-analyses use variance from the data to calculate the effect sizes. The type of variance needs to be the same across all the data incorporated in the meta-analysis.  
 
-The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
+We are narrowing the meta-analysis to only include demethylation inhibitors, tebuconazole and propiconazole. Within studies which have used these fungicides, what type of error was reported?  
 
 ```{r variance_types}
 # PM_MB_means$Y_error_type <- forcats::fct_explicit_na(PM_MB_means$Y_error_type, na_level = NA)
 # Trials using tebuconazole
 PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole",
          row_spacing == 0.75) %>%
-   group_by(trial_ref, location, Y_error_type) %>%
-   summarise(tebuconazole_trts = length(Y_error_type))
+   group_by(trial_ref, location, Y_error_type, fungicide_ai) %>%
+   summarise(tebuconazole_trts = length(Y_error_type))%>%
+   arrange(Y_error_type)
 
 
-# Trials using propiconazole
-PM_MB_means %>%
-   filter(fungicide_ai == "propiconazole",
-          row_spacing == 0.75) %>%
-   group_by(trial_ref, location, Y_error_type) %>%
-   summarise(propiconazole_trts = length(Y_error_type))
 ```
 
-The experiment summaries report either standard deviation, least square differences or no error term (`NA`). Below we will convert LSD and standard deviation to sample variance
+The experiment summaries report either standard deviation, least square differences or no error term (`NA`). Below we will convert LSD and standard deviation to sample variance. In addition, we need to impute variances for the trials which did not report any form of variance (`NA`).  
 
 ### Converting least-squares to sample variance
 
