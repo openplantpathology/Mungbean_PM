@@ -189,12 +189,12 @@ for (i in unique(PM_MB_means$trial_ref)) {
    for (j in unique(dat1$row_spacing)) {
       dat2 <- dat1[dat1$row_spacing == j, ]
       controlY <-
-         mean(dat2[dat2$fungicide == "control", "grain_yield.t.ha."])
+         mean(dat2[dat2$fungicide_ai == "control", "grain_yield.t.ha."])
       
       dat2$yield_gain <- dat2$grain_yield.t.ha. - controlY
       dat2$prop_YG <- dat2$yield_gain  /  controlY
       
-      dat2[dat2$fungicide == "control", c("yield_gain", "prop_YG")] <-
+      dat2[dat2$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
          NA
       
       dat1[dat1$row_spacing == j, ] <- dat2
@@ -272,7 +272,7 @@ slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
             c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
               "cluster_1", "cluster_2","cluster_3"
               )] <- "control"
-
+table(slim_PM_dat$spray_management)
 write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
 
 ```
@@ -402,11 +402,25 @@ write.csv(slimmer_PM_dat, file = "data/slimmer_PM_clusterdat.csv", row.names = F
 slimmer_PM_dat$vi <- slimmer_PM_dat$Y_Msquare/(slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha^2)
 
 slimmer_PM_dat %>%
-   ggplot(aes(y= grain_yield.t.ha, x = vi))+
+   ggplot(aes(x= grain_yield.t.ha, y = vi))+
    geom_point()
 
 
+slimmer_PM_dat %>%
+   ggplot(aes(x= grain_yield.t.ha, y = Y_Msquare))+
+   geom_point()
 
+slimmer_PM_dat[slimmer_PM_dat$vi > 0.5,]
+
+boxplot(PM_MB_means$prop_YG, na.rm = TRUE)
+
+boxplot(PM_MB_means$yield_gain/PM_MB_means$grain_yield.t.ha., main = "Yield loss proportion")
+summary(PM_MB_means$yield_gain/PM_MB_means$grain_yield.t.ha., na.rm = TRUE)
+unique(PM_MB_means$trial_ref)
+
+boxplot(yield_gain/grain_yield.t.ha. ~ year,data = PM_MB_means, main = "Yield loss proportion")
+
+unique(PM_MB_means$fungicide_ai)
 
 ```
 
