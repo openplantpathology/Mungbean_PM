@@ -4,6 +4,7 @@
 library(dplyr)
 library(readr)
 library(kableExtra)
+library(ggplot2)
 ```
 
 ```{r import_data}
@@ -243,7 +244,7 @@ These categorical variables are named:
    - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.  
    - **Late**: First fungicide application was four or more days after first sign of disease being observed.  
 
-Follow up fungicide applications (cluster_2 and cluster_3) were also categorised as either, early, recommened or late.  
+Follow up fungicide applications (cluster_2 and cluster_3) were also categorised as either, early, recommended or late.  
 
 ```{r cluster}
 
@@ -273,12 +274,7 @@ slim_PM_dat %<>%
     )
   )
 
-slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
-            c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
-              "cluster_1", "cluster_2","cluster_3"
-              )] <- "control"
-table(slim_PM_dat$spray_management)
-write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
+
 
 ```
 
@@ -345,86 +341,40 @@ slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
               "spray_management"
               )] <- "control"
 
+
 table(slim_PM_dat$spray_management)
-sum(table(slim_PM_dat$spray_management)[1:7])
-nrow(slim_PM_dat)
 
-write.csv(slim_PM_dat, file = "data/slim_PM_clusterdat.csv", row.names = FALSE)
-
-slim_PM_dat[slim_PM_dat$spray_management == "Late_plus",]
 ```
-
-
+There are few 'Early_plus' and 'late' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to be provide accurate results. Therefore we will remove 'Early_plus' and 'Late' from the analysis.  
 
 
 ```{r simpler_clusters_REMOVE}
 
-slim_PM_dat <- slim_PM_dat %>%
-   mutate(
-    spray_management = case_when(
-       fungicide_timing_1 < 0 &
-          is.na(fungicide_application_2) &
-          is.na(fungicide_application_3) ~ "Early",
-       fungicide_timing_1 >= 0 &
-          fungicide_timing_1 < 4 &
-          is.na(fungicide_application_2) &
-          is.na(fungicide_application_3) ~ "Recommended",
-      fungicide_timing_1 >= 4 &
-          is.na(fungicide_application_2) &
-          is.na(fungicide_application_3) ~ "Late",
-      fungicide_timing_1 < 0 &
-          !is.na(fungicide_application_2) ~ "Early_plus",
-       fungicide_timing_1 >= 0 &
-          fungicide_timing_1 < 4 &
-          !is.na(fungicide_application_2) ~ "Recommended_plus",
-      fungicide_timing_1 >= 4 ~ "Late_plus",
-      TRUE ~ "Other"
-    )
-  ) 
-
-slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
-            c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
-              "spray_management"
-              )] <- "control"
-
-table(slim_PM_dat$spray_management)
-
-# Remove "Early_plus" and "Late" due to lack of replicates
-
 slimmer_PM_dat <- slim_PM_dat[slim_PM_dat$spray_management != "Late" & 
                slim_PM_dat$spray_management != "Early_plus",]
-
-#slimmer_PM_dat <- slim_PM_dat[slim_PM_dat$spray_management != "Late",]
 
 write.csv(slimmer_PM_dat, file = "data/slimmer_PM_clusterdat.csv", row.names = FALSE)
 ```
 
+Our data currently uses sample variance to define the yield error. We should expect that when yield increases so does the variance. Lets quickly plot this to check.
 
-
-```{r}
-
-slimmer_PM_dat$vi <- slimmer_PM_dat$Y_Msquare/(slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha^2)
+```{r Var_mean_sqaures}
+# redefine sample variance calculated from mean square
+slimmer_PM_dat$vi <- 
+   slimmer_PM_dat$Y_Msquare / 
+   (slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha ^ 2)
 
 slimmer_PM_dat %>%
    ggplot(aes(x= grain_yield.t.ha, y = vi))+
    geom_point()
+```
 
+We see here that the sample variance generally decreases or has no association with the grain yield. This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares which defines between trial variation and is a the more generic error term.  
 
+```{r Var_MeanSquarePlot}
 slimmer_PM_dat %>%
    ggplot(aes(x= grain_yield.t.ha, y = Y_Msquare))+
    geom_point()
-
-slimmer_PM_dat[slimmer_PM_dat$vi > 0.5,]
-
-boxplot(PM_MB_means$prop_YG, na.rm = TRUE)
-
-boxplot(PM_MB_means$yield_gain/PM_MB_means$grain_yield.t.ha., main = "Yield loss proportion")
-summary(PM_MB_means$yield_gain/PM_MB_means$grain_yield.t.ha., na.rm = TRUE)
-unique(PM_MB_means$trial_ref)
-
-boxplot(yield_gain/grain_yield.t.ha. ~ year,data = PM_MB_means, main = "Yield loss proportion")
-
-unique(PM_MB_means$fungicide_ai)
 
 ```
 
