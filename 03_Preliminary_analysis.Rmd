@@ -36,9 +36,9 @@ Various factors have been studied in the previous experiments which may influenc
    
    3) Number of fungicide sprays  
    
-   4) Timing of fungicide spray/s relative to first sign of disease (ie. when pathogen is present)  
+   4) Timing of fungicide spray/s relative to first sign of disease (_i.e_. when pathogen is present)  
    
-   5) Host cultivars (probably is a covariate with season due to changing cultivars over time)  
+   5) Host cultivars (probably is a co-variate with season due to changing cultivars over time)  
    
    6) Experiment location  
    
@@ -136,7 +136,7 @@ PM_MB_means %>%
 
 ```
 
-There is a small yield effect when applying fungicide and it is unclear how much a second spray improves yield saved. Interestingly Sulpur sprays might be worth investigating when sprayed twice.  
+There is a small yield effect when applying fungicide and it is unclear how much a second spray improves yield saved. Interestingly Sulphur sprays might be worth investigating when sprayed twice.  
 
 
 #### Fungicide Doses  
@@ -195,7 +195,7 @@ boxplot(prop_YG ~ dose_ai.ha, data = PM_MB_means[(PM_MB_means$trial_ref == "mung
                                                     PM_MB_means$fungicide_ai == "propiconazole",])
 ```
 
-This plox plot, however, indicated the previous plot might be skewed by high yielding trials.  
+This plot plot, however, indicated the previous plot might be skewed by high yielding trials.  
 
 
 
@@ -220,7 +220,7 @@ PM_MB_means %>%
    gather(key = spray, value = n_days, s1_DfromFS, s2_DfromFS, s3_DfromFS, s4_DfromFS, s5_DfromFS)%>%
    ggplot(aes(x = spray, y = n_days))+
    geom_violin() +
-   scale_x_discrete(labels = c("First\nSpray", "Second\nspray","Third\nspray","Fourth\nspray","Fifth\nspray"))+
+   scale_x_discrete(labels = c("First\nspray", "Second\nspray","Third\nspray","Fourth\nspray","Fifth\nspray"))+
    theme_usq()
 
 ```
@@ -259,7 +259,7 @@ PM_MB_means %>%
 
 #### Genotype yield variability
 
-Does host cultivar significantly impact the yield? Lets look at the volitility in yields to see if any cultivar yields better or has greater toleratance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar.  
+Does host cultivar significantly impact the yield? Lets look at the volatility in yields to see if any cultivar yields better or has greater tolerance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar.  
 
 First lets look at overall yields for each cultivar , where trial is not a factor, for all treatments (spray and no spray).  
 ```{r yield_vol}
@@ -280,7 +280,7 @@ YV2[[2]]
 YV2[[3]]
 
 ```
-Volitility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments). Green diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials.  
+Volatility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments). Green diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials.  
 
 
 Lets examine the same plots as above but only for the most commonly used trial site, Hermitage.  
@@ -289,9 +289,9 @@ YV1_herm <- yield_volatility(genotype_by_trial = FALSE, control_only = FALSE, lo
 YV1_herm[[2]]
 
 ```
-Jade shows a large amount of volitility, excluding Green Diamond, Crystal shows the next least volatility.  
+Jade shows a large amount of volatility, excluding Green Diamond, Crystal shows the next least volatility.  
 
-Lets take a closer look at Crystal with spray managment treatments and without.  
+Lets take a closer look at Crystal with spray management treatments and without.  
 ```{r YieldVol_Crystal}
 YV1_crystal <- yield_volatility(genotype = "Crystal",control_only = FALSE)
 YV1_crystal[[2]]
@@ -312,9 +312,9 @@ For Jade there is high variation between trials and with in. Perhaps indicating 
 YV3_crystal <- yield_volatility("Jade",control_only = TRUE)
 YV3_crystal[[2]]
 ```
-There seems to be a noticible shift in the probability curves between the two plots. Indicating that the tolerance in Jade may not as good as Crystal. A comparison between the fungicide efficacy for reducing powdery mildew severity and fungicide efficacy at mitigating yield loss.  
+There seems to be a noticeable shift in the probability curves between the two plots. Indicating that the tolerance in Jade may not as good as Crystal. A comparison between the fungicide efficacy for reducing powdery mildew severity and fungicide efficacy at mitigating yield loss.  
 
-Overall there seems to be an influence of cultuvar however this variation is not as distinct as the variation between trials.  
+Overall there seems to be an influence of cultivar however this variation is not as distinct as the variation between trials.  
 
 
 ### Row spacing  
@@ -406,7 +406,7 @@ PM_MB_means %>%
 
 
 ```
-The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hertmitage trial. However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.  
+The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial. However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.  
 
 Overall row spacing may influence both powdery mildew severity and yield.  
 
@@ -576,7 +576,7 @@ PM_MB_means %>%
    geom_hline(aes(yintercept = 0), size = 0.5) +
    #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
    labs(x = "Proportion of grain yield saved",
-        title = "Grain yield proportion saved grouped by\nFungicide type") +
+        title = "Grain yield proportion saved grouped by\nfungicide type") +
    theme(
       panel.grid.major = element_line(colour = "grey80"),
       panel.grid.minor = element_line(colour = "grey50"),
@@ -588,46 +588,7 @@ PM_MB_means %>%
 #scale_x_continuous(limits = c(-0.3,0.6))
 
 ```
-There was some hope groups of fungicide could be combined, _i.e._ Propiconazole and Tebeconazole, however it seems that they have different efficacies. Let us look to see if there is anything skewing the above.
-
-
-
-
-
-
-Lets run this by a quick linear mixed effect model
-```{r Fungicide_lmer}
-
-PM_MB_means$fungicide_ai <-
-   factor(
-      PM_MB_means$fungicide_ai,
-      levels = c(
-         "control",
-         "Propiconazole",
-         "Tebeconazole",
-         "Azoxystrobin",
-         "200 g/l  Tebuconazole + 120 g/l  Azoxystrobin",
-         "Carbendazim",
-         "Benomyl",
-         "Pyrazophos",
-         "Acibenzolar-S-Methyl",
-         "Sulphur"
-      )
-   )
-
-class(PM_MB_means$trial_ref)
-
-PM_MB_lmer.1 <-
-   lmer(
-      prop_YG ~ fungicide_ai * as.factor(n_treatment) + row_spacing + (1 |trial_ref),
-      data = subset(PM_MB_means, 
-                    n_treatment == 1 | n_treatment == 2)
-   )
-
-summary(PM_MB_lmer.1)
-
-```
-There is no significant difference between Fungicides, except for Sulphur which is significantly less effective than Propiconazole. Propiconazole, on average, out performs other fungicides when mitigating yield loss.
+There was some hope groups of fungicide could be combined, _i.e._ propiconazole and tebuconazole, however it seems that they have different efficacies. Let us look to see if there is anything skewing the above.
 
 
 
@@ -638,16 +599,12 @@ We need to also define the relationship between yield loss and disease severity.
 ```{r yield_x_PMseverity}
 
 PM_MB_means %>%
-   filter(fungicide == "control") %>%
+   filter(fungicide_ai == "control") %>%
    ggplot(aes(x = PM_final_severity, y = grain_yield.t.ha.)) +
-   geom_point()+
-   geom_smooth(method = "lm")
-
-PM_MB_means %>%
-   ggplot(aes(x = PM_final_severity, y = prop_YG)) +
    geom_point()+
    geom_smooth(method = "lm")
 
 ```
 
+From the data we have it is difficult to determine if there is an association between powdery mildew severity and grain yield.
 
