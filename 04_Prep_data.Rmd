@@ -218,8 +218,8 @@ write.csv(PM_MB_means,
           "data/1911_PM_MB_means&Ygains.csv")
 ```
 
-## Reduce dataset to required variables  
-Lets tidy up the dataset into a data frame of only the variables which are required for the analysis.  
+## Reduce data set to required variables  
+Lets tidy up the data set into a data frame of only the variables which are required for the analysis.  
 
 First remove the irrelevant columns/variables. Then calculate fungicide application timing variables relative to the first sign of disease. Entries with NA in the grain yield or powdery mildew severity are also removed from the data.    
 
