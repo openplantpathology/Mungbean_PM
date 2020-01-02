@@ -19,6 +19,7 @@ library(tidyverse)
 library(theme.usq)
 library(bomrang)
 library(lme4)
+library(kableExtra)
 
 ```
 
@@ -398,7 +399,7 @@ There are `r sum(is.na(slimmer_PM_dat$yield_error))` treatments without yield er
 Plotting a histogram of the variances show that the yield is not normally distributed. A log transformation, however, shows a normal disrtubution. We can use the mean and standard deviation of the log(V) to sample variances for the treatments where V is mission.  
 
 We will evaluate wheather the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, infering signicifant difference, the imputed variances are discarded and resampled until all treatment variances show no significant differences.
-
+### Imputing sample variances
 ```{r imputing_variances}
 
 hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
@@ -457,10 +458,12 @@ if(
 
 ```
 
-
+#### Imputing sample variances from Mean squares
 ```{r imputing_MSE}
+slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 hist(unique(slimmer_PM_dat$Y_Msquare))
 hist(log(unique(slimmer_PM_dat$Y_Msquare))) # log mean square has a more normal distribution
+
 
 TrialMSQ <- slimmer_PM_dat %>%
    group_by(trial_ref)%>%
@@ -472,8 +475,8 @@ for(i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`),]$trial_ref){
    slimmer_PM_dat[slimmer_PM_dat$trial_ref == i,"Y_Msquare"] <- 
       exp(
          rnorm(n = 1,
-               mean = mean(TrialMSQ$`unique(Y_Msquare)`, na.rm = TRUE),
-               sd(TrialMSQ$`unique(Y_Msquare)`, na.rm = TRUE)
+               mean = mean(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE),
+               sd(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE)
          )
       )
    }
@@ -481,18 +484,43 @@ for(i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`),]$trial_ref){
 
 ```
 
+Before plotting lets have a look at how the trimmed down, modified data looks.
+
+```{r treatment_means_plot}
+slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management, levels(slimmer_PM_dat$spray_management)[rev(c(1,2,4,5,3))])
+
+slimmer_PM_dat %>%
+   ggplot(aes(y = prop_yield_gain, x = spray_management))+
+   geom_boxplot()+
+   #geom_point(position = "jitter", alpha = 1/5)+
+   geom_jitter(width = 0.1, alpha = 1/5)+
+   theme_usq()+
+   labs(x = "Spray management variable", 
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario")+
+   theme(plot.title = element_text(hjust = 0.5))+
+   coord_flip()
+   
+
+kableExtra::kable(table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year), align=rep('c', 8))%>%  #commented as was redering empty, needs a look in
+   kable_styling("striped", fixed_thead = TRUE, full_width = FALSE, position = "center")
+
+```
 
 
-
-
+## Meta-analysis
 ```{r meta_1}
 library(metafor)
+slimmer_PM_dat$spray_management <-
+   factor(slimmer_PM_dat$spray_management,levels(slimmer_PM_dat$spray_management)[c(2,3,1,4,5)])
 
-slimmer_PM_dat$yi <- slimmer_PM_dat$grain_yield.t.ha
+
+slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
 slimmer_PM_dat$vi <- slimmer_PM_dat$Y_Msquare/(slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha^2)
 
 slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
-table(slimmer_PM_dat$spray_management)
+slimmer_PM_dat$trial_ref <- factor(slimmer_PM_dat$trial_ref)
+slimmer_PM_dat$trial <- factor(slimmer_PM_dat$trial)
 
 
 PM_mv_AI <- rma.mv(yi,vi,
@@ -504,34 +532,61 @@ PM_mv_AI <- rma.mv(yi,vi,
 
 summary(PM_mv_AI)
 
+```
+
+```{r compare_meta&lmer}
+lme_PM <- lmer(yi ~ spray_management + (spray_management | trial), data = slimmer_PM_dat)
+
+summary(lme_PM)
 
 ```
 
 
+```{r meta_contrasts}
+anova(PM_mv_AI, L=rbind(c(0,1,-1,0,0),  # early vs late plus
+                        c(0,1,0,-1,0),  # early vs recommended
+                        c(0,1,0,0,-1),  # early vs recommended plus
+                        c(0,0,-1,1,0),  # late plus vs recommended 
+                        c(0,0,-1,0,1),  # late plus vs recommended  Plus
+                        c(0,0,0,-1,1))) # recommended vs recommended plus
+```
+Results show that Early applications are not significantly different to the no spray control or the one and two spray management options at the recommended time. Lets view this on a plot.
 
+```{r meta_results}
+results_AI <- data.frame(cbind(exp(PM_mv_AI$b), 
+                              exp((PM_mv_AI$ci.lb)),
+                              exp(PM_mv_AI$ci.ub)))
 
+results_AI <- data.frame(cbind(PM_mv_AI$b, 
+                              (PM_mv_AI$ci.lb),
+                              PM_mv_AI$ci.ub))
 
-```{r inspect_for_outliers}
-head(slimmer_PM_dat)
+treat <- c("control", "Early", "Recommended", "Recommended_plus","Late_plus")
+efficacy <- tbl_df(results_AI)
+efficacy$treat <- treat
+efficacy$se <- PM_mv_AI$se
+colnames(efficacy) <- c("Mean", "CIsup", "CIinf", "Treatment", "SE")
+efficacy
+```
 
-slimmer_PM_dat %>%
-#   filter(spray_management == "Late_plus") %>%
-   ggplot(aes(prop_yield_gain, fill = spray_management))+
-   geom_histogram(alpha = 0.5)
-   
-slimmer_PM_dat %>%
-   filter(spray_management == "Late_plus") %>%
-   ggplot(aes(prop_yield_gain, fill = trial_ref))+
-   geom_histogram(alpha = 0.5)
-
-
-
-slimmer_PM_dat %>%
-   filter(spray_management == "Recommended") %>%
-   ggplot(aes(prop_yield_gain, fill = trial_ref))+
-   geom_histogram(alpha = 0.5)
+```{r meta_plot}
+efficacy %>% 
+  ggplot(aes(Treatment, Mean))+
+  geom_point(aes(size=1/SE), shape=15)+
+  geom_linerange(aes(ymin = CIinf, ymax = CIsup))+
+  coord_flip()+
+  theme_grey()+
+   geom_hline(yintercept = efficacy[efficacy$Treatment == "control",]$CIinf)
 
 ```
 
+
+Check the yeild 
+
+```{r}
+boxplot(slimmer_PM_dat$grain_yield.t.ha ~ slimmer_PM_dat$spray_management)
+
+
+```
 
 
