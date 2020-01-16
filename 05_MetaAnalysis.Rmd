@@ -10,7 +10,7 @@ output: html_document
 # install.packages("tidyverse")
 # install.packages("devtools")
 # devtools::install_github("https://github.com/PaulMelloy/bomrang")
-devtools::install_github("https://github.com/adamhsparks/theme.usq", dependencies = TRUE)
+# devtools::install_github("https://github.com/adamhsparks/theme.usq", dependencies = TRUE)
 # install.packages("lme4")
 
 
@@ -85,23 +85,30 @@ summary(m9)
 
 ```
 
+This linear mixed effect model shows indicates:  
+   - A single early spray before first sign of powdery mildew is not likely to increase yields.  
+   - A single or single spray with one or more follow sprays starting  at the `recommended` first spray , within 3 days of powdery mildew first sign are likely to produce significantly higher grain yields compared to the no spray control.  
+   - The `recommended_plus` spray which has one or more follow-up sprays after first sign are likley to increase the mean grain yield.  
+   - `Late_plus` spray treatments showed the highest mean grain yield, and was significantly higher than the no spray control. However showed no difference to either of the `recommended` treatments.  
 
 
 
+### Imputing sample variances  
 
-
-We need to impute the variances which are missing for a few of the trials. These trials `r paste(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),c("location","year", "trial_ref")])` were analysed and reported that there was no significant difference between the treatments in each trial. So therefore we need the imputed variances not to show a significant difference.  
+We need to impute the variances which are missing for a few of the trials. These trials `r unique(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),c("location","year", "trial_ref")])` were analysed and reported that there was no significant difference between the treatments in each trial. So therefore we need the imputed variances not to show a significant difference.  
 
 There are `r sum(is.na(slimmer_PM_dat$yield_error))` treatments without yield error in our data, and `r sum(!is.na(slimmer_PM_dat$yield_error))` where yield error was recorded.  
 
-Plotting a histogram of the variances show that the yield is not normally distributed. A log transformation, however, shows a normal disrtubution. We can use the mean and standard deviation of the log(V) to sample variances for the treatments where V is mission.  
+Plotting a histogram of the variances show that the yield is not normally distributed. A log transformation, however, shows a normal disrtubution. We can use the mean and standard deviation of the log(V) to sample variances for the treatments where V is missing.  
 
-We will evaluate wheather the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, infering signicifant difference, the imputed variances are discarded and resampled until all treatment variances show no significant differences.
-### Imputing sample variances
-```{r imputing_variances}
-
+```{r variance_histograms}
 hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
 hist(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
+```
+
+We will evaluate wheather the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, infering signicifant difference, the imputed variances are discarded and resampled until all treatment variances show no significant differences.
+
+```{r imputing_variances}
 
 # generate yield error values
 for(i in 0:500){
@@ -132,7 +139,7 @@ if(
              FUN = "-")
        ) > 0){
    
-   message(paste("\nWarning!!: Imputed yield errors show significant differences when they should not, rerun chunk", "i =",i))
+   message(paste("\nWarning!!: Imputed yield errors show significant differences when they should not, imputation will automatically rerun - iteration", "i =",i))
    next()
    }else{
       message(paste(i,"iterations: ", "imputed variances now show no significant distances :)\n Now adding variances to data "))
@@ -142,9 +149,9 @@ if(
          ggplot(aes(y = grain_yield.t.ha, trial))+
          #geom_point()+
          geom_pointrange(ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] -
-                            (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                            (1.95*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
                          ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] +
-                            (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                            (1.95*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
                          position = "jitter"
                          )+
          ylim(0.2,1.5)
@@ -207,11 +214,13 @@ kableExtra::kable(table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year), a
 
 
 ## Meta-analysis
-```{r meta_1}
+Let's load the metafor package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
+Next we are log transforming the grain yield and calculating the variance from the trial mean squares.  
+Finally we will assign factor classes to the main variables in the meta-analysis.  
+```{r meta_organisation}
 library(metafor)
 slimmer_PM_dat$spray_management <-
-   factor(slimmer_PM_dat$spray_management,levels(slimmer_PM_dat$spray_management)[c(2,3,1,4,5)])
-
+   factor(slimmer_PM_dat$spray_management,c("control", "Early", "Recommended", "Recommended_plus","Late_plus"))
 
 slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
 slimmer_PM_dat$vi <- slimmer_PM_dat$Y_Msquare/(slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha^2)
@@ -219,7 +228,9 @@ slimmer_PM_dat$vi <- slimmer_PM_dat$Y_Msquare/(slimmer_PM_dat$n * slimmer_PM_dat
 slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
 slimmer_PM_dat$trial_ref <- factor(slimmer_PM_dat$trial_ref)
 slimmer_PM_dat$trial <- factor(slimmer_PM_dat$trial)
+```
 
+```{r Meta-analysis}
 
 PM_mv_AI <- rma.mv(yi,vi,
                    mods = ~ spray_management,
