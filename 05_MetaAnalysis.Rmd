@@ -10,7 +10,7 @@ output: html_document
 # install.packages("tidyverse")
 # install.packages("devtools")
 # devtools::install_github("https://github.com/PaulMelloy/bomrang")
-# devtools::install_github("https://github.com/adamhsparks/theme.usq")
+devtools::install_github("https://github.com/adamhsparks/theme.usq", dependencies = TRUE)
 # install.packages("lme4")
 
 
@@ -20,7 +20,6 @@ library(theme.usq)
 library(bomrang)
 library(lme4)
 library(kableExtra)
-
 ```
 
 # Meta-analysis
@@ -40,10 +39,10 @@ PM_MB_means[PM_MB_means$location != "Hermitage", "irrigation"] <- FALSE
 
 ## Estimating variance for trials without reported error
 
-Now for the trickier part creating 'Sampling Variance' for treatments where only mean yield is recorded.  
+Now for the tricy part creating 'Sampling Variance' for treatments where only mean yield is recorded.  
 The trial which does not report any type of variance also reports that there is no significant difference between the means.
 
-```{r}
+```{r NAtrials}
 NATrials <- PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
           row_spacing == 0.75,
@@ -52,48 +51,15 @@ NATrials <- PM_MB_means %>%
    distinct()
 ```
 
-A single trial `mung1516/03` within the current scope of the meta-analysis fails to report a variance statistic. According to [Machado F. et. al (2017)](http://apsjournals.apsnet.org/doi/10.1094/PDIS-03-17-0340-RE) [Paul et al. (2007)](https://apsjournals.apsnet.org/doi/pdfplus/10.1094/PHYTO-97-2-0211) uses linear regression model to estimate sampling variance.  
+Two trials `mung1516/03` and `mung1112/01` within the scope of the meta-analysis fail to report variance statistics. According to [Machado F. et. al (2017)](http://apsjournals.apsnet.org/doi/10.1094/PDIS-03-17-0340-RE) [Paul et al. (2007)](https://apsjournals.apsnet.org/doi/pdfplus/10.1094/PHYTO-97-2-0211) we can use a linear regression model to estimate sampling variance.  
 
 
 ## Preliminary meta-analysis
-
-```{r slim_lmer}
-slim_PM_dat <- read.csv("data/slim_PM_clusterdat.csv")
-
-m4 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
-
-m5 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (factor(spray_management) | trial_ref), data = slim_PM_dat)
-
-m5.0 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + (1 | trial_ref), data = slim_PM_dat) 
-
-anova(m4,m5) # m5 has a much lower AIC and significantly better model
-anova(m5,m5.0) # no difference
-```
-
-Model 5 (m5) is a significantly better fit than model 4 (m4). Model 5.0 (m5.0), a simpler model with less variables, was not significantly different from m5. This analyis suggests that model 5.0 is the best fit.
-`r summary(m5.0)`
-
-
-```{r LME_cluster_disease_mod}
-m6 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) * PM_final_severity +
-              (factor(spray_management) | trial_ref), 
-           data = slim_PM_dat)
-
-m7 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) * PM_final_severity + 
-              (factor(spray_management) | trial_ref), 
-           data = slim_PM_dat)
-
-anova(m5,m6) # 65 has a lower AIC but not evaluated as a significantly better model
-
-summary(m6)
-
-```
 
 
 ```{r LME_slimmer_cluster_disease_mod}
 library(lme4)
 slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
-unique(slimmer_PM_dat$trial_ref, slimmer_PM_dat$location, slimmer_PM_dat$year)
 
 m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
               (factor(spray_management) | trial_ref), 
@@ -103,16 +69,24 @@ m9 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) +
               (factor(spray_management) | trial_ref), 
            data = slimmer_PM_dat)
 
-m10 <- lmer(log(grain_yield.t.ha*1000) ~ (factor(spray_management) | trial_ref), 
+m10 <- lmer(log(grain_yield.t.ha*1000) ~ 
+               (factor(spray_management) | trial_ref), 
            data = slimmer_PM_dat)
 
+m11 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + 
+              (1 | trial_ref), 
+           data = slimmer_PM_dat)
 
 anova(m8,m9) # m9 is significantly better model
 anova(m9,m10) # m9 is significantly better model
+anova(m9,m11) # m11 is a simpler model which is no different to m9
 
 summary(m9)
 
 ```
+
+
+
 
 
 
