@@ -1,12 +1,5 @@
----
-title: "Meta-analysis"
-author: "P. Melloy"
-date: "`r Sys.Date()`"
-output: html_document
----
 
-
-```{r MEsummary_Libraries, message=FALSE}
+```{r MEsummary_Libraries1, message=FALSE}
 # install.packages("tidyverse")
 # install.packages("devtools")
 # devtools::install_github("https://github.com/PaulMelloy/bomrang")
@@ -189,7 +182,7 @@ slimmer_PM_dat %>%
    coord_flip()
 ```
 
-There seems like no difference between the treatments, with exception to Late_plus. Lets do this plo again, but use the proportion of yield increase compared to the no spray control as the response variable.  
+There seems like no difference between the treatments, with exception to Late_plus. Lets do this plot again, but use the proportion of yield increase compared to the no spray control as the response variable.  
 
 It is also important to visualise how well the data is compared across the trial years and trials.  
 
