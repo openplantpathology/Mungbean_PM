@@ -89,7 +89,7 @@ The primary focus of this research is the effect of fungicide on mitigating yiel
 
 First lets investigate the difference in the effect of the type of fungicide on proportion of yield saved. Proportion of yield saved is used in attempt to reduce variation between trials.    
 
-```{r Fungicide_x_nSprays_tble, message=FALSE}
+```{r Fungicide_x_nSprays_tble2, message=FALSE}
 PM_MB_means %>%
    group_by(fungicide_ai, total_fungicide) %>%
    summarise(
@@ -109,7 +109,7 @@ PM_MB_means %>%
 
 Lets visualise this in a plot for one and two sprays only.  
 
-```{r Fungicide_x_nSprays_tble, message=FALSE}
+```{r Fungicide_x_nSprays_tble1, message=FALSE}
 
 PM_MB_means %>%
    mutate(fungicide_ai = as.factor(PM_MB_means$fungicide_ai)) %>%
