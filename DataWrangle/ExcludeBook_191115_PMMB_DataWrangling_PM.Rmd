@@ -22,7 +22,7 @@ library(dplyr)
 library(data.table)
 library(agricolae)
 
-source("R/import_data.R")
+source("C:/Users/U8011054/OneDrive - USQ/Cloudstor/R/Mungbean_projects/Mungbean_PM/R/import_data.R")
 PM_MB_means <- import_data()
 
 ```
@@ -132,9 +132,20 @@ Herm_10_dat <-
               PM_final_severity = Herm_10$P.M.13wap,
               rating_scale = "1-9",
               grain_yield.t.ha. = Herm_10$`Kg/ha`,
-              AUDPC = apply(Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1,1, FUN = audpc, dates = c(9*7,11*7,13*7)), # -1 to the data because zero disease = 1 on rating scale
+              #AUDPC = apply(Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1,1, FUN = audpc, dates = c(9*7,11*7,13*7)), # -1 to the data because zero disease = 1 on rating scale
               stringsAsFactors = FALSE
               )
+
+Herm_10_dat <- cbind(Herm_10_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1),
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((Herm_10_dat$first_sign_disease[1]-7)-
+                                                     Herm_10_dat$planting_date[1],
+                                                  9*7,11*7,13*7)
+                                        )
+                          )
 
 
 Herm_10_m <- Herm_10_dat %>%
@@ -271,11 +282,15 @@ Herm_11_dat <-
               harvest_date = as.Date("2011-04-25", format = "%Y-%m-%d"),
               final_assessment = as.Date("2011-04-11", format = "%Y-%m-%d"),
               PM_final_severity = Herm_11$`P.M. 11  w.a.p.`,
+              AUDPC = apply(data.frame(zero = rep(1,42),
+                                       wap11 = Herm_11[,c("P.M. 11  w.a.p.")]-1),1, 
+                            FUN = audpc, dates = c((as.Date("2011-03-28", format = "%Y-%m-%d")-7)- # First sign of disease minus planting date. Gives when there is no disease
+                                                      as.Date("2011-01-24", format = "%Y-%m-%d"),
+                               77)), # -1 to the data because zero disease = 1 on rating scale
               rating_scale = "1-9",
               grain_yield.t.ha. = Herm_11$`Yld Kg/ha`
               )
    
-
 
 Herm_11_m <- Herm_11_dat %>%
    group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
@@ -304,6 +319,8 @@ Herm_11_m <- Herm_11_dat %>%
               raw_graded = NA,
               yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE),
               Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
               meanSq = anova(lm(grain_yield.t.ha./1000 ~ factor(n_treatment) + host_genotype, 
                                 data = Herm_11_dat[Herm_11_dat$fungicide_ai == "tebuconazole" | 
                                                         Herm_11_dat$fungicide_ai == "control" ,]))[1,3]
@@ -392,10 +409,20 @@ King_11_dat <-
               final_assessment = as.Date("2011-05-11", format = "%Y-%m-%d"),
               PM_final_severity = King_11$`14 w.a.p.`,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`),
-              AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")]-1,1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))# -1 to the data because zero disease = 1 on rating scale
+              grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`)
+              #AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")]-1,1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))# -1 to the data because zero disease = 1 on rating scale
               )
-   
+
+King_11_dat <- cbind(King_11_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   King_11[,c("9 w.a.p.", "11 w.a.p.", 
+                                                              "12 w.a.p.", "14 w.a.p.")])-1,
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((King_11_dat$first_sign_disease[1]-7)-
+                                                     King_11_dat$planting_date[1],
+                                           9*7,11*7,12*7, 14*7))
+                     )
 
 
 King_11_m <- King_11_dat %>%
@@ -782,9 +809,20 @@ Goolhi_13_dat <-
               final_assessment = as.Date("2013-04-30", format = "%Y-%m-%d"),
               PM_final_severity = Goolhi_13$Inc_33D,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(Goolhi_13$`Yield Kg/ha`)/1000,
-              AUDPC = apply(Goolhi_13[,c("Inc_16D","Inc_33D")]-1,1, FUN = audpc, dates = c(16,33))# -1 to the data because zero disease = 1 on rating scale
+              grain_yield.t.ha. = as.numeric(Goolhi_13$`Yield Kg/ha`)/1000
+              #AUDPC = apply(Goolhi_13[,c("Inc_16D","Inc_33D")]-1,1, FUN = audpc, dates = c(16,33))# -1 to the data because zero disease = 1 on rating scale
               )
+
+Goolhi_13_dat <- cbind(Goolhi_13_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   Goolhi_13[,c("Inc_16D","Inc_33D")]-1),
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((Goolhi_13_dat$first_sign_disease[1]-7)-
+                                                     Goolhi_13_dat$planting_date[1],
+                                                  16,33)
+                                        )
+                          )
    
 ```   
 
@@ -1181,9 +1219,20 @@ MarysM_13_dat <-
               final_assessment = as.Date("2013-03-26", format = "%Y-%m-%d"),
               PM_final_severity = MarysM_13$Inc_19D,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(MarysM_13$`Yield Kg/ha`)/1000,
-              AUDPC = apply(MarysM_13[,c("Inc_18D","Inc_19D")]-1,1, FUN = audpc, dates = c(12,12+19)) # -1 to the data because zero disease = 1 on rating scale
+              grain_yield.t.ha. = as.numeric(MarysM_13$`Yield Kg/ha`)/1000
+              #AUDPC = apply(MarysM_13[,c("Inc_18D","Inc_19D")]-1,1, FUN = audpc, dates = c(12,12+19)) # -1 to the data because zero disease = 1 on rating scale
               )
+
+MarysM_13_dat <- cbind(MarysM_13_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   MarysM_13[,c("Inc_18D","Inc_19D")]-1),
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((MarysM_13_dat$first_sign_disease[1]-7)-
+                                                     MarysM_13_dat$planting_date[1],
+                                                  12,12+19)
+                                        )
+                          )
 ```   
 
 #### Calculating the treatment means
@@ -1602,6 +1651,17 @@ Premer_13_dat <-
              # AUDPC = apply(Premer_13[,c("Inc_19D","Inc_31D")]-1,1, FUN = audpc, dates = c(19,12+19)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
               )
 
+Premer_13_dat <- cbind(Premer_13_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   Premer_13[,c("Inc_31D")]-1),
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((Premer_13_dat$first_sign_disease[1]-7)-
+                                                     Premer_13_dat$planting_date[1],
+                                                  12+19)
+                                        )
+                          )
+
 ```
 
 
@@ -1635,8 +1695,8 @@ Premer_13_m <- Premer_13_dat %>%
               raw_graded = NA,
               yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
               Y_error_type = "stdev",
-             #AUDPC.m = mean(AUDPC),
-             #AUDPC.sd = sd(AUDPC),
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
               meanSq = anova(lm(grain_yield.t.ha. ~ factor(total_fungicide), 
                                 data = Premer_13_dat[Premer_13_dat$fungicide_ai == "propiconazole" | 
                                                         Premer_13_dat$fungicide_ai == "control" ,]))[1,3]
@@ -1691,7 +1751,7 @@ write.csv(
 
 ### Millmerran 2013
 #### Convert disease scores
-```{r Premer_13_convert_scores}
+```{r Millm_13_convert_scores}
 
 for(D_assess in c("Assessment Sheet 5.4.2013","Assessment Sheet 24.4.2013")){
 
@@ -1922,9 +1982,10 @@ Millm.13Y <-
    )
 Millm.13Y$Treatment <- as.character(Millm.13Y$Treatment)
 Millm.13Y$Treat <- as.double(Millm.13Y$Treat)
-colnames(Millm.13Y)[1:4] <- c("Run", "Plot","Treat", "Rep")
+colnames(Millm.13Y)[1:4] <- c("Run", "Plot","TreatY", "Rep")
 
-Millm_13 <- left_join(Millm_13D,Millm.13Y)
+Millm_13 <- left_join(Millm_13D, Millm.13Y, by = c("Run", "Plot","Treat", "Rep"))
+
 
 ```
 
@@ -2042,10 +2103,21 @@ Millm_13_dat <-
               final_assessment = as.Date("2013-04-24", format = "%Y-%m-%d"),
               PM_final_severity = Millm_13$Inc_42D,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(Millm_13$`kg/Ha`)/1000,
-              AUDPC = apply(Millm_13[,c("Inc_23D","Inc_42D")]-1,1, FUN = audpc, dates = c(23,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
+              grain_yield.t.ha. = as.numeric(Millm_13$`kg/Ha`)/1000
+              #AUDPC = apply(Millm_13[,c("Inc_23D","Inc_42D")]-1,1, FUN = audpc, dates = c(23,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
               )
 
+
+Millm_13_dat <- cbind(Millm_13_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   Millm_13[,c("Inc_23D","Inc_42D")]-1),
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((Millm_13_dat$first_sign_disease[1]-7)-
+                                                     Millm_13_dat$planting_date[1],
+                                                  23,42)
+                                        )
+                          )
 ```
 
 
@@ -2396,7 +2468,7 @@ Herm_16_dat <- Herm_16 %>%
 ```
 
 #### Input trial data
-```{r Herm15_Trialdat}
+```{r Herm16_Trialdat}
 
 Herm_16_dat <- 
    data.frame(trial_ref = "mung1516/01",
@@ -2495,7 +2567,6 @@ names(Herm_16.DR)[1:6] <- c("Treatment", "dae24","dae38","dae48","dae63","Final_
 names(Herm_16.DR)[6] <- "Final_Yield_tHa"
 Herm_16.DR$n_treatment <- c(4,3,7,5,2,6,1)
 
-Herm_16_m
 
 Herm_16_m <- left_join(Herm_16_m,Herm_16.DR)
 Herm_16_m$AUDPC.m <- apply(Herm_16_m[,c("dae24", "dae38", "dae48", "dae63")]-1,1, 
@@ -2807,7 +2878,7 @@ Fogerty_17_dat[Fogerty_17_dat$`2017-03-07` == 0 ,c("2017-03-07")] <- 1
 
 Fogerty_17_dat <- 
    data.frame(trial_ref = "mung1617/02",
-              year = "2016",
+              year = "2017",
               location = "Missen Flats",
               host_genotype = "Jade",
               trial_design = "RCB",
@@ -2917,6 +2988,100 @@ Herm_17 <-
 Herm_17$`Yield.T/Ha` <-
    (Herm_17$`Yield.T/Ha` / Herm_17$`Moisture%`) * 12
 
+```
+
+#### Define treatment data
+```{r Herm_17_treatmentDefine}
+Herm_17_dat <- Herm_17 %>%
+   mutate(trade_name = 
+             case_when(Chemical.Trt == 1 ~ "Folicur",
+                       Chemical.Trt == 2 ~ "Throttle",
+                       Chemical.Trt == 3 ~ "Custodia",
+                       TRUE ~ "other"))%>%
+   mutate(fungicide_ai = 
+             case_when(Chemical.Trt == 1 ~ "tebuconazole",
+                       Chemical.Trt == 2 ~ "propiconazole",
+                       Chemical.Trt == 3 ~ "200 g/L tebuconazole + 120 g/L azoxystrobin",
+                       TRUE ~ "other"))%>%
+   mutate(dose_ai.ha = 
+             case_when(Chemical.Trt == 1 ~ 62,
+                       Chemical.Trt == 2 ~ 125,
+                       Chemical.Trt == 3 ~ 60,
+                       TRUE ~ 9999))%>%
+   mutate(fungicide_application_1 = 
+             case_when(Manage.Trt == "1" ~ as.Date(NA),
+                       Manage.Trt == "T2" ~ as.Date("2017-03-13", format = "%Y-%m-%d"),
+                       Manage.Trt == "T3" ~ as.Date("2017-03-24", format = "%Y-%m-%d"),
+                       Manage.Trt == "T4" ~ as.Date("2017-03-27", format = "%Y-%m-%d"),
+                       Manage.Trt == "T5" ~ as.Date("2017-03-27", format = "%Y-%m-%d"),
+                       Manage.Trt == "T6" ~ as.Date("2017-04-05", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(Manage.Trt == "T3" ~ as.Date("2017-04-07", format = "%Y-%m-%d"),
+                       Manage.Trt == "T5" ~ as.Date("2017-04-11", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(Manage.Trt == "1" ~ 0,
+                       Manage.Trt == "T3" ~ 2,
+                       Manage.Trt == "T5" ~ 2,
+                       TRUE ~ 1))
+
+```
+
+#### Input trial data
+```{r Herm17_Trialdat}
+# Remove zeros
+#Herm_17_dat[Herm_17_dat$`2017-03-07` == 0 ,c("2017-03-07")] <- 1
+
+Herm_17_dat <- 
+   data.frame(trial_ref = "mung1617/01",
+              year = "2017",
+              location = "Hermitage",
+              host_genotype = "Jade",
+              trial_design = "RCB",
+              plot_length = Herm_17_dat$Plot.Length,
+              plot_width = 2,
+              plant_density = NA,
+              row_spacing = Herm_17_dat$`Row.Spacing.(m)`,
+              replicate = Herm_17_dat$Rep,
+              planting_date = as.Date("2017-01-27", format = "%Y-%m-%d"),
+              emergence_date = as.Date("2017-02-01", format = "%Y-%m-%d"),
+              flowering_date = as.Date(NA),
+              pod_fill_date = as.Date(NA),
+              mid_late_pod_fill = as.Date(NA),
+              first_sign_disease = as.Date("2017-03-13", format = "%Y-%m-%d"),
+              trade_name = as.factor(Herm_17_dat$trade_name),
+              fungicide_ai = Herm_17_dat$fungicide_ai,
+              dose_ai.ha = Herm_17_dat$dose_ai.ha,
+              n_treatment = as.numeric(unlist(strsplit(Herm_17_dat$Manage.Trt, "T"))[unlist(strsplit(Herm_17_dat$Manage.Trt, "T")) != ""]),
+              fungicide_application_1 = Herm_17_dat$fungicide_application_1,
+              fungicide_application_2 = Herm_17_dat$fungicide_application_2,
+              total_fungicide = Herm_17_dat$spray_n,
+              harvest_date = as.Date("2017-06-26", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2017-05-11", format = "%Y-%m-%d"),
+              PM_final_severity = Herm_17_dat$`I_11/05/2017`,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(Herm_17_dat$`Yield.T/Ha`)
+               # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
+              )
+
+
+Herm_17_dat <- cbind(Herm_17_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   Herm_17[,c("2017-03-24","I_2/04/2017", "I_11/04/2017", "I_18/04/2017", "I_24/04/2017","I_3/05/2017","I_11/05/2017")]-1),
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((Herm_17_dat$first_sign_disease[1]-7)-
+                                                     Herm_17_dat$planting_date[1],
+                                                  39,48,57,64,70,79,87)
+                                        )
+                          )
+
+```
+
+# Pick up from here
+
+```{r}
 # Columns to keep
 Fogerty_17 <- Fogerty_17[, c('Plot', 'Rep', 'Row', 'Column', 'Chem.Trt',
                            'Chemical', 'Row.Spacing.(m)', 'Treatment.No',
@@ -2927,9 +3092,7 @@ Fogerty_17 <- Fogerty_17[, c('Plot', 'Rep', 'Row', 'Column', 'Chem.Trt',
                            '100.grain.wt.Grams')]
 
 
-Fogerty_17$Treatment.No <- as.numeric(unlist(strsplit(
-   Fogerty_17$Treatment.No, "T"))[
-      seq(from = 2, to = 324, by = 2)])
+
 
 
 # Create summarised data set for collated means meta-dataset
@@ -2961,6 +3124,94 @@ Herm_17 <- Herm_17[, c(1, 2, 4, 5, 7, 10, 9, 11, 12, 13,
 
 
 ```
+
+
+
+
+#### Calculating treatment means
+```{r Missen17_means}
+
+Fogerty_17_m <- Fogerty_17_dat %>%
+   group_by(host_genotype, n_treatment, row_spacing, fungicide_ai) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             dose_ai.ha = unique(dose_ai.ha),
+             trial_ref = unique(trial_ref),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
+             plot_width.m. = mean(plot_width, na.rm = TRUE),
+             plant_density = mean(plant_density, na.rm = TRUE),
+             replicates = length(as.numeric(replicate)),
+             planting_date = unique(planting_date),
+             emergence_date = unique(emergence_date),
+             flowering_date = unique(flowering_date),
+             pod_fill_date = unique(pod_fill_date),
+             mid_late_pod_fill = unique(mid_late_pod_fill),
+             first_sign_disease = unique(first_sign_disease),
+             fungicide_application_1 = unique(fungicide_application_1),
+             fungicide_application_2 = unique(fungicide_application_2),
+             total_fungicide = unique(total_fungicide),
+             harvest_date = unique(harvest_date),
+             final_assessment = unique(final_assessment),
+             PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             rating_scale = unique(rating_scale),
+             disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+             D_error_type = "stdev",
+             grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+             raw_graded = NA,
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+             Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment) + fungicide_ai + row_spacing, data = subset(Fogerty_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
+   )
+
+# For some weird reason standard deviations are comming back NA in the code above
+Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
+   Fogerty_17_dat %>%
+   group_by(n_treatment, row_spacing, fungicide_ai) %>%
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   select(c("disease_error","yield_error"))
+
+
+
+
+write.csv(
+   Fogerty_17_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty_17_mean.csv",
+   row.names = FALSE
+)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Wellcamp 2018
 ```{r Wellcamp2018}
