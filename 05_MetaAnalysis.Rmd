@@ -20,7 +20,7 @@ library(kableExtra)
 
 
 ```{r LME_slimmer_cluster_disease_mod}
-library(lme4)
+
 slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 
 m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
@@ -214,7 +214,8 @@ slimmer_PM_dat %>%
 
 
 
-## Meta-analysis
+## Meta-analysis  
+### metafor package  
 Let's load the metafor package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
 Next we are log transforming the grain yield and calculating the variance from the trial mean squares.  
 Finally we will assign factor classes to the main variables in the meta-analysis. Note that variable trial is a combination of:  
@@ -224,7 +225,7 @@ Finally we will assign factor classes to the main variables in the meta-analysis
    - Host genotype  
    - Trial row spacing  
 
-```{r meta_organisation}
+```{r metafor_organisation}
 library(metafor)
 slimmer_PM_dat$spray_management <-
    factor(slimmer_PM_dat$spray_management,c("control", "Early", "Recommended", "Recommended_plus","Late_plus"))
@@ -237,7 +238,7 @@ slimmer_PM_dat$trial_ref <- factor(slimmer_PM_dat$trial_ref)
 slimmer_PM_dat$trial <- factor(slimmer_PM_dat$trial)
 ```
 
-```{r Meta-analysis}
+```{r Metafor-analysis}
 
 PM_mv_AI <- rma.mv(yi,vi,
                    mods = ~ spray_management,
@@ -260,7 +261,7 @@ summary(lme_PM)
 ```
 
 To make it easier to compare each of the treatments we can compute the contrasts.
-```{r meta_contrasts}
+```{r metafor_contrasts}
 anova(PM_mv_AI, L=rbind(c(0,1,-1,0,0),  # early vs Recomended
                         c(0,1,0,-1,0),  # early vs recommended plus
                         c(0,1,0,0,-1),  # early vs Late plus
@@ -270,7 +271,7 @@ anova(PM_mv_AI, L=rbind(c(0,1,-1,0,0),  # early vs Recomended
 ```
 Results show that early applications are not significantly different to the no spray control or the one and two spray management options at the recommended time. Lets view this on a plot.
 
-```{r meta_results}
+```{r metafor_results}
 results_AI <- data.frame(cbind(exp(PM_mv_AI$b), 
                               exp((PM_mv_AI$ci.lb)),
                               exp(PM_mv_AI$ci.ub)))
@@ -283,11 +284,11 @@ treat <- c("control", "Early", "Recommended", "Recommended_plus","Late_plus")
 efficacy <- tbl_df(results_AI)
 efficacy$treat <- treat
 efficacy$se <- PM_mv_AI$se
-colnames(efficacy) <- c("Mean", "CIsup", "CIinf", "Treatment", "SE")
+colnames(efficacy) <- c("Mean", "CIs_lower", "CI_upper", "Treatment", "SE")
 efficacy
 ```
 
-```{r meta_plot}
+```{r metafor_plot}
 efficacy$Treatment <-
    factor(efficacy$Treatment,c("control", "Early", "Recommended", "Recommended_plus","Late_plus"))
 
@@ -301,6 +302,45 @@ efficacy %>%
 
 ```
 
-What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented accross all experiments. However it could also be because it also has a low number of pooled reps per trial.  
+What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented accross all experiments. However it could also be because it also has a low number of pooled reps per trial. Lets look at how well each of the treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
 
 
+### netmeta package  
+Lets analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust. The netmeta package uses a frequentist approach to the analysis, and focuses on the pairwise comparisons between treatments.  
+
+```{r netmeta-analysis}
+library(netmeta)
+
+datPM3 <- slimmer_PM_dat %>% 
+   group_by(trial, spray_management, n) %>% 
+      summarize(yi_mean = mean(yi), 
+             vi_mean = mean(vi)) %>% 
+   ungroup()
+
+PM_con <- pairwise(treat = spray_management,
+                  n = n,
+                  mean = yi_mean,
+                  sd = sqrt(vi_mean),
+                  studlab= trial,
+                  data = datPM3, 
+                  sm="MD")
+
+net_con <- netmeta(TE, 
+                seTE, 
+                treat1, 
+                treat2, 
+                studlab, 
+                data=PM_con, 
+                sm="MD")
+
+summary(net_con)
+
+```
+Now lets visualise this as a forest plot
+
+```{r netmeta-forest}
+forest(net_con, reference.group = 4,
+       rightcols=c("effect", "ci", "Pscore"),
+       rightlabs="P-Score", small.values = "bad")
+
+```
