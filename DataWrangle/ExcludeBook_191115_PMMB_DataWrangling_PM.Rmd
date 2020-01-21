@@ -3079,59 +3079,11 @@ Herm_17_dat <- cbind(Herm_17_dat,
 
 ```
 
-# Pick up from here
-
-```{r}
-# Columns to keep
-Fogerty_17 <- Fogerty_17[, c('Plot', 'Rep', 'Row', 'Column', 'Chem.Trt',
-                           'Chemical', 'Row.Spacing.(m)', 'Treatment.No',
-                           'Treatment', 'Population.plsnts/ha',
-                           '2017-03-07', '2017-03-19', '2017-03-24',
-                           '2017-04-02', '2017-04-10', '2017-04-18',
-                           'Yield.t/ha', 'Grain.Moisture.%', 'Temp.moisture.Taken',
-                           '100.grain.wt.Grams')]
-
-
-
-
-
-# Create summarised data set for collated means meta-dataset
-# NEXT STEP - sort and copy it to dataset
-Herm_17_sum <- Herm_17 %>%
-   group_by(Chemical,
-            Chemical.Trt,
-            `Row.Spacing.(m)`,
-            Manage.Trt,
-            Management) %>%
-   summarise(
-      PM_final_severity = mean(`I_11/05/2017`, na.rm = TRUE),
-      Disease_error = sd(`I_11/05/2017`, na.rm = TRUE),
-      `grain_yield(t/ha)` = mean(`Yield.T/Ha`, na.rm = TRUE),
-      Yield_error = sd(`Yield.T/Ha`, na.rm = TRUE),
-      meanSq = anova(lm(`Yield.T/Ha` ~ factor(Manage.Trt) + factor(Trt) + `Row.Spacing.(m)`, data = subset(Herm_17, Chemical != "Custodia® 320 SC")))[1,3] # of only triazoles
-   )
-
-Herm_17_sum <-
-   with(Herm_17_sum, Herm_17_sum[order(Manage.Trt, Chemical, `Row.Spacing.(m)`), ])
-
-# inserted meansquare in manually
-
-# Columns to keep
-Herm_17 <- Herm_17[, c(1, 2, 4, 5, 7, 10, 9, 11, 12, 13,
-                       17, 19, 21, 23, 25, 27, 29,
-                       #                      18,20,22,24,26,28,30,
-                       34, 36, 37, 35)]
-
-
-```
-
-
-
 
 #### Calculating treatment means
-```{r Missen17_means}
+```{r Herm17_means}
 
-Fogerty_17_m <- Fogerty_17_dat %>%
+Herm_17_m <- Herm_17_dat %>%
    group_by(host_genotype, n_treatment, row_spacing, fungicide_ai) %>%
    summarise(trial_ref = unique(trial_ref),
              year = unique(year),
@@ -3165,12 +3117,15 @@ Fogerty_17_m <- Fogerty_17_dat %>%
              Y_error_type = "stdev",
              AUDPC.m = mean(AUDPC),
              AUDPC.sd = sd(AUDPC),
-             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment) + fungicide_ai + row_spacing, data = subset(Fogerty_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
+             meanSq = anova(lm(grain_yield.t.ha. ~ 
+                                  factor(n_treatment) + fungicide_ai + row_spacing, 
+                               data = subset(Herm_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
    )
+sd(Herm_17_dat$PM_final_severity)
 
 # For some weird reason standard deviations are comming back NA in the code above
-Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
-   Fogerty_17_dat %>%
+Herm_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
+   Herm_17_dat %>%
    group_by(n_treatment, row_spacing, fungicide_ai) %>%
    summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
              yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
@@ -3180,25 +3135,14 @@ Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
 
 
 write.csv(
-   Fogerty_17_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty_17_mean.csv",
+   Herm_17_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/Hermitage/Hermitage_17_mean.csv",
    row.names = FALSE
 )
 
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
+# Start from here
 
 
 
