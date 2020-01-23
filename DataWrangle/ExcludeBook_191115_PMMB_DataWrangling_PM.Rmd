@@ -3486,7 +3486,7 @@ Herm_19_m <- fold_data(Herm_19_m, PM_MB_means)
 
 write.csv(
    Herm_17_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2019/Hermitage/Hermitage_19_mean.csv",
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2019/Hermitage_19_mean.csv",
    row.names = FALSE
 )
 
