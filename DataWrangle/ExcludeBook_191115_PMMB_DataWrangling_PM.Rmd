@@ -2826,10 +2826,6 @@ Fogerty_17$Treatment.No <- as.numeric(unlist(strsplit(
 # 
 # 
 
-head(Fogerty_17)
-unique(Fogerty_17$Chem.Trt)
-unique(Fogerty_17$Chemical)
-Fogerty_17[,7:11]
 ```
 
 #### Define treatment data
@@ -2959,7 +2955,7 @@ Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
    select(c("disease_error","yield_error"))
 
 
-
+Fogerty_17_m <- fold_data(Fogerty_17_m, PM_MB_means)
 
 write.csv(
    Fogerty_17_m,
@@ -3132,7 +3128,7 @@ Herm_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
    select(c("disease_error","yield_error"))
 
 
-
+Herm_17_m <- fold_data(Herm_17_m, PM_MB_means)
 
 write.csv(
    Herm_17_m,
@@ -3141,17 +3137,6 @@ write.csv(
 )
 
 ```
-
-# Start from here
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3167,89 +3152,165 @@ Well_18 <-
       colNames = TRUE
    )
 
-#dim(Well_18)   # 72 rows , 32 Columns
-#names(Well_18)
-
-
-
-# Columns to keep
-Well_18 <- Well_18[, c('Plot','Rep','Plant.Pop','Row.Spacing',
-            'Fungicide','Treatment','IR.23-3-18',
-            'IR.5-4-18','IR.11-4-18','IR.18-4-18',
-            'IR.26-4-18','IR.2-5-18','S.23-3-18',
-            'S.5-4-18','S.11-4-18','S.18-4-18',
-            'S.26-4-18','S.2-5-18','Row.Length','Yield./.ha')]
-
-
-Well_18_means <- Well_18 %>%
-   group_by(Row.Spacing, Fungicide, Plant.Pop) %>%
-   summarise(
-      Yield = mean(`Yield./.ha`, na.rm = TRUE),
-      Incidence  = max(Well_18.1$Incidence),
-      Severity  = max(Severity, na.rm = TRUE)
-   )
-
-
-# respectively
-# plot and treatment variables
-# Incidence assessment
-# severity assessment
-# Yield assessment
-
-Well_18_inc <-
-   reshape(
-      data = Well_18,
-      idvar = "Plot",
-      direction = "long",
-      varying = list(incidence = names(Well_18)[7:12]),
-      timevar = "ass_date_i"
-   )
-
-Well_18_sev <-
-   reshape(
-      data = Well_18,
-      idvar = "Plot",
-      direction = "long",
-      varying = list(incidence = names(Well_18)[13:18]),
-      timevar = "ass_date_s"
-   )
-
-
-Well_18.1 <- cbind(Well_18_inc[, c(1:6, 13:16)], Well_18_sev[, 15:16])
-
-names(Well_18.1)[10] <- c("Incidence")
-names(Well_18.1)[12] <- c("Severity")
-Well_18.1$ass_date_i <- rep(names(Well_18_inc)[7:12], each = 72)
-Well_18.1$ass_date_i <-
-   as.Date(gsub("S.", "", Well_18.1$ass_date_i), format = "%d-%m-%y")
-names(Well_18.1)[9] <- c("Assessment_date")
-Well_18.1 <- Well_18.1[c(1:10, 12)]
-
-
-Well_18.1$Row.Spacing <-
-   as.numeric(unlist(strsplit(Well_18.1$Row.Spacing, " mtr")))
-
-
-write.csv(
-   Well_18.1,
-   "C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/2018_Wellcamp.csv"
-)
-
-Well_18$FungVCon <- Well_18$Fung.Trt
-Well_18[Well_18$FungVCon == 1,"FungVCon"] <- 3
-Well_18[Well_18$FungVCon == 4,"FungVCon"] <- 1
-Well_18[Well_18$FungVCon == 3,"FungVCon"] <- 2
-
-Well_18_means <- Well_18.1 %>%
-   group_by(Row.Spacing, Fungicide, Plant.Pop) %>%
-   summarise(
-      Yield = mean(`Yield./.ha`, na.rm = TRUE),
-      Incidence  = max(Well_18.1$Incidence),
-      Severity  = max(Severity, na.rm = TRUE),
-      meanSq = anova(lm(`Yield./.ha` ~ factor(Plant.Pop) + factor(FungVCon) + `Row.Spacing`, data = subset(Well_18, Fungicide != "Custodia")))[2,3] # of only triazoles
-   )
+colnames(Well_18)[13:14] <- c("Row.Spacing_ID", "Fungicide_ID")
 
 ```
+
+
+
+#### Define treatment data
+```{r Well_18_treatmentDefine}
+Well_18_dat <- Well_18 %>%
+   mutate(trade_name = 
+             case_when(Fung.Trt == 1 ~ "Folicur",
+                       Fung.Trt == 3 ~ "Throttle",
+                       Fung.Trt == 2 ~ "Custodia",
+                       Fung.Trt == 4 ~ "control",
+                       TRUE ~ "other"))%>%
+   mutate(fungicide_ai = 
+             case_when(Fung.Trt == 1 ~ "tebuconazole",
+                       Fung.Trt == 3 ~ "propiconazole",
+                       Fung.Trt == 2 ~ "200 g/L tebuconazole + 120 g/L azoxystrobin",
+                       Fung.Trt == 4 ~ "control",
+                       TRUE ~ "other"))%>%
+   mutate(dose_ai.ha = 
+             case_when(Fung.Trt == 1 ~ 60,
+                       Fung.Trt == 2 ~ 62,
+                       Fung.Trt == 3 ~ 125,
+                       Fung.Trt == 4 ~ NA_real_,
+                       TRUE ~ 9999))%>%
+   mutate(Row.Spacing = 
+             case_when(Row.Sp.Trt == 1 ~ 0.25,
+                       Row.Sp.Trt == 2 ~ 0.5,
+                       Row.Sp.Trt == 3 ~ 1,
+                       TRUE ~ 9999))%>%
+   mutate(fungicide_application_2 = 
+             case_when(Fung.Trt <= 3 ~ as.Date("2018-04-16", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_1 = 
+             case_when(Fung.Trt == 4 ~ as.Date(NA),
+                       Fung.Trt == 1 ~ as.Date("2018-03-28", format = "%Y-%m-%d"),
+                       Fung.Trt == 2 ~ as.Date("2018-03-28", format = "%Y-%m-%d"),
+                       Fung.Trt == 3 ~ as.Date("2018-03-28", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(Fung.Trt <= 3 ~ 2,
+                       TRUE ~ NA_real_))
+
+```
+
+#### Input trial data
+```{r Well18_Trialdat}
+
+Well_18_dat <- 
+   data.frame(trial_ref = "mung1718/01",
+              year = "2018",
+              location = "Wellcamp",
+              host_genotype = "Jade",
+              trial_design = "RCB",
+              plot_length = Well_18_dat$Row.Length,
+              plot_width = 2,
+              plant_density = Well_18_dat$Plant.Pop,
+              row_spacing = Well_18_dat$Row.Spacing,
+              replicate = Well_18_dat$Rep,
+              planting_date = as.Date("2018-02-13", format = "%Y-%m-%d"),
+              emergence_date = as.Date(NA),
+              flowering_date = as.Date(NA),
+              pod_fill_date = as.Date(NA),
+              mid_late_pod_fill = as.Date(NA),
+              first_sign_disease = as.Date("2018-03-21", format = "%Y-%m-%d"),
+              trade_name = as.factor(Well_18_dat$trade_name),
+              fungicide_ai = Well_18_dat$fungicide_ai,
+              dose_ai.ha = Well_18_dat$dose_ai.ha,
+              n_treatment = Well_18_dat$Treatment,
+              fungicide_application_1 = Well_18_dat$fungicide_application_1,
+              fungicide_application_2 = Well_18_dat$fungicide_application_2,
+              total_fungicide = Well_18_dat$spray_n,
+              harvest_date = as.Date("2018-05-31", format = "%Y-%m-%d"),
+              final_assessment = as.Date("2018-05-02", format = "%Y-%m-%d"),
+              PM_final_severity = Well_18_dat$`IR.2-5-18`,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(Well_18_dat$`Yield./.ha`)
+               # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
+              )
+
+
+Well_18_dat <- cbind(Well_18_dat,
+                          AUDPC = apply(data.frame(zero = 1,
+                                                   Well_18[,c("IR.23-3-18","IR.5-4-18", "IR.11-4-18", "IR.18-4-18","IR.26-4-18","IR.2-5-18")]-1),
+                                        1, 
+                                        FUN = audpc, 
+                                        dates = c((Well_18_dat$first_sign_disease[1]-7)-
+                                                     Well_18_dat$planting_date[1],
+                                                  38,51 ,57,64,72,78)
+                                        )
+                          )
+
+```
+
+
+#### Calculating treatment means
+```{r Well17_means}
+
+Well_18_m <- Well_18_dat %>%
+   group_by(host_genotype, n_treatment, row_spacing, fungicide_ai) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             dose_ai.ha = unique(dose_ai.ha),
+             trial_ref = unique(trial_ref),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
+             plot_width.m. = mean(plot_width, na.rm = TRUE),
+             plant_density = mean(plant_density, na.rm = TRUE),
+             replicates = length(as.numeric(replicate)),
+             planting_date = unique(planting_date),
+             emergence_date = unique(emergence_date),
+             flowering_date = unique(flowering_date),
+             pod_fill_date = unique(pod_fill_date),
+             mid_late_pod_fill = unique(mid_late_pod_fill),
+             first_sign_disease = unique(first_sign_disease),
+             fungicide_application_1 = unique(fungicide_application_1),
+             fungicide_application_2 = unique(fungicide_application_2),
+             total_fungicide = unique(total_fungicide),
+             harvest_date = unique(harvest_date),
+             final_assessment = unique(final_assessment),
+             PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             rating_scale = unique(rating_scale),
+             disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+             D_error_type = "stdev",
+             grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+             raw_graded = NA,
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+             Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+             meanSq = anova(lm(grain_yield.t.ha. ~ 
+                                  factor(n_treatment) + fungicide_ai + row_spacing, 
+                               data = subset(Well_18_dat, trade_name != "Custodia")))[1,3] # of only triazoles
+   )
+
+
+# For some weird reason standard deviations are comming back NA in the code above
+Well_18_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
+   Well_18_dat %>%
+   group_by(n_treatment, row_spacing, fungicide_ai) %>%
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   select(c("disease_error","yield_error"))
+
+
+Well_18_m <- fold_data(Well_18_m, PM_MB_means)
+
+write.csv(
+   Well_18_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2018/Wellcamp/Wellcamp_18_mean.csv",
+   row.names = FALSE
+)
+
+```
+
 
 ### Hermitage 2019
 ```{r Herm19}
@@ -3259,16 +3320,179 @@ PM_MB_19 <-
       startRow = 2,
       cols = c(1:21)
    )
-
+?audpc
 # Remove these plots as the results can't be trusted
 PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 5)
 PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 6)
 
-PM_MB_19$AUDPC <- apply(PM_MB_19[,c("15-4-19.Incedence", "23-4-19.Incedence", "1-5-19.Incedence")]-1,1,FUN = audpc, dates = c(3,8,21))
+# Calculate area under the disease progress curve
+PM_MB_19$AUDPC <- apply(data.frame(zero = 1,PM_MB_19[,c("15-4-19.Incedence", "23-4-19.Incedence", "1-5-19.Incedence")]-1),1,FUN = audpc, dates = c(60, 70,78,86))
+
+
+# Calculate area under the disease progress curve for plots which were not assessed at on 2019-05-01
+PM_MB_19[is.na(PM_MB_19$`1-5-19.Incedence`),"AUDPC"] <- 
+   apply(data.frame(zero = 1,PM_MB_19[is.na(PM_MB_19$`1-5-19.Incedence`) ,c("15-4-19.Incedence", "23-4-19.Incedence")]-1),1,FUN = audpc, dates = c(60, 70,78))
+```
+
+#### Define treatment data
+```{r Well_18_treatmentDefine}
+Herm_19_dat <- PM_MB_19 %>%
+   mutate(fungicide_application_1 = 
+             case_when(`T/ment.NUM` == 1 ~ as.Date("2018-04-15", format = "%Y-%m-%d"),
+                       `T/ment.NUM` == 2 ~ as.Date("2018-04-15", format = "%Y-%m-%d"),
+                       `T/ment.NUM` == 3 ~ as.Date("2018-04-23", format = "%Y-%m-%d"),
+                       `T/ment.NUM` == 4 ~ as.Date(NA),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(fungicide_application_2 = 
+             case_when(`T/ment.NUM` == 2 ~ as.Date("2018-04-29", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(spray_n = 
+             case_when(`T/ment.NUM` == 3 ~ 2,
+                       `T/ment.NUM` <= 2 ~ 1,
+                       TRUE ~ NA_real_))%>%
+   mutate(trial_ref = 
+             case_when(TOS.NUM == 1 ~ "mung1819/01",
+                       TOS.NUM == 2 ~ "mung1819/02",
+                       TRUE ~ NA_character_))%>%
+   mutate(planting_date = 
+             case_when(TOS.NUM == 1 ~ as.Date("2018-02-04", format = "%Y-%m-%d"),
+                       TOS.NUM == 2 ~ as.Date("2018-02-18", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(emergence_date = 
+             case_when(TOS.NUM == 1 ~ as.Date("2018-02-11", format = "%Y-%m-%d"),
+                       TOS.NUM == 2 ~ as.Date("2018-02-25", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(final_assessment = 
+             case_when(TOS.NUM == 1 ~ as.Date("2018-04-24", format = "%Y-%m-%d"),
+                       TOS.NUM == 2 ~ as.Date("2018-05-01", format = "%Y-%m-%d"),
+                       TRUE ~ as.Date(NA)))%>%
+   mutate(PM_final_severity = 
+             case_when(is.na(`1-5-19.Incedence`) ~ `23-4-19.Incedence`,
+                       TRUE ~ `1-5-19.Incedence`))%>%
+   mutate(trade_name = 
+             case_when(`T/ment.NUM` == 4 ~ NA_character_,
+                       TRUE ~ "Folicur"))%>%
+   mutate(fungicide_ai = 
+             case_when(`T/ment.NUM` == 4 ~ NA_character_,
+                       TRUE ~ "tebuconazole"))%>%
    
-PM_MB_19$Yeild
+   mutate(dose_ai.ha = 
+             case_when(`T/ment.NUM` == 4 ~ NA_real_,
+                       TRUE ~ 62))%>%
+   mutate(meanSq = 
+             case_when(TOS.NUM == 1 ~ anova(lm(Yeild/1000 ~ 
+                                  factor(`T/ment.NUM`) , 
+                               data = PM_MB_19[PM_MB_19$TOS.NUM == 1,]))[1,3],
+                       TOS.NUM == 2 ~ anova(lm(Yeild/1000 ~ 
+                                  factor(`T/ment.NUM`) , 
+                               data = PM_MB_19[PM_MB_19$TOS.NUM == 2,]))[1,3],
+                       TRUE ~ NA_real_))
+
+```
+
+#### Input trial data
+```{r Well18_Trialdat}
+
+Herm_19_dat <- 
+   data.frame(trial_ref = Herm_19_dat$trial_ref,
+              year = "2019",
+              location = "Hermitage",
+              host_genotype = "Jade",
+              trial_design = "RCB",
+              plot_length = Herm_19_dat$Plot.Lengths,
+              plot_width = 2,
+              plant_density = NA_character_,
+              row_spacing = 0.25,
+              replicate = Herm_19_dat$Rep.Num,
+              planting_date = Herm_19_dat$planting_date,
+              emergence_date = Herm_19_dat$emergence_date,
+              flowering_date = as.Date(NA),
+              pod_fill_date = as.Date(NA),
+              mid_late_pod_fill = as.Date(NA),
+              first_sign_disease = as.Date("2018-04-12", format = "%Y-%m-%d"),
+              trade_name = as.factor(Herm_19_dat$trade_name),
+              fungicide_ai = Herm_19_dat$fungicide_ai,
+              dose_ai.ha = Herm_19_dat$dose_ai.ha,
+              n_treatment = Herm_19_dat$`T/ment.NUM`,
+              fungicide_application_1 = Herm_19_dat$fungicide_application_1,
+              fungicide_application_2 = Herm_19_dat$fungicide_application_2,
+              total_fungicide = Herm_19_dat$spray_n,
+              harvest_date = as.Date("2018-05-22", format = "%Y-%m-%d"),
+              final_assessment = Herm_19_dat$final_assessment,
+              PM_final_severity = Herm_19_dat$PM_final_severity,
+              rating_scale = "1-9",
+              grain_yield.t.ha. = as.numeric(Herm_19_dat$Yeild)/1000,
+              meanSq = Herm_19_dat$meanSq
+              )
+
+Herm_19_dat$plant_density
+
+unique(Herm_19_dat$plot_length)
+mean(Herm_19_dat$plant_density, na.rm = TRUE)
+
+```
 
 
+```{r Herm19_means}
+
+
+
+Herm_19_m <- Herm_19_dat %>%
+   group_by(trial_ref, n_treatment) %>%
+   summarise(year = unique(year),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             dose_ai.ha = unique(dose_ai.ha),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
+             plot_width.m. = mean(plot_width, na.rm = TRUE),
+             plant_density = NA_character_,
+             replicates = length(as.numeric(replicate)),
+             planting_date = unique(planting_date),
+             emergence_date = unique(emergence_date),
+             flowering_date = unique(flowering_date),
+             pod_fill_date = unique(pod_fill_date),
+             mid_late_pod_fill = unique(mid_late_pod_fill),
+             first_sign_disease = unique(first_sign_disease),
+             fungicide_application_1 = unique(fungicide_application_1),
+             fungicide_application_2 = unique(fungicide_application_2),
+             total_fungicide = unique(total_fungicide),
+             harvest_date = unique(harvest_date),
+             final_assessment = unique(final_assessment),
+             PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             rating_scale = unique(rating_scale),
+             disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+             D_error_type = "stdev",
+             grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
+             raw_graded = NA,
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+             Y_error_type = "stdev",
+             AUDPC.m = mean(AUDPC),
+             AUDPC.sd = sd(AUDPC),
+             meanSq = unique(meanSq)
+   )
+
+
+# For some weird reason standard deviations are comming back NA in the code above
+# Herm_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
+#    Herm_17_dat %>%
+#    group_by(n_treatment, row_spacing, fungicide_ai) %>%
+#    summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+#              yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+#    select(c("disease_error","yield_error"))
+# 
+
+Herm_19_m <- fold_data(Herm_19_m, PM_MB_means)
+
+write.csv(
+   Herm_17_m,
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2019/Hermitage/Hermitage_19_mean.csv",
+   row.names = FALSE
+)
+
+```
+
+```{r}
 PM19_means <- PM_MB_19 %>%
    group_by(TOS.NUM, `T/ment.NUM`) %>%
    summarise(
@@ -3285,7 +3509,6 @@ PM19_means <- PM_MB_19 %>%
       meanSq = anova(lm(Yeild/1000 ~ factor(TOS.NUM) + factor(`T/ment.NUM`), data = PM_MB_19))[2,3]
    )
 
-library(agricolae)
 
 colnames(PM_MB_19)
 
