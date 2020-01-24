@@ -2421,7 +2421,6 @@ Herm_16$Plot <- as.numeric(unlist(strsplit(
    Herm_16$Plot, "P"))[
       seq(from = 2, to = 56, by = 2)])
 
-unique(Herm_16$Treatment)
 ```
 
 #### Define treatment data
@@ -2499,8 +2498,8 @@ Herm_16_dat <-
               final_assessment = as.Date("2015-04-15", format = "%Y-%m-%d"),
               PM_final_severity = NA,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(Herm_16_dat$`Raw.Adjusted.Yeild./.ha`)
-              )
+              grain_yield.t.ha. = as.numeric(Herm_16_dat$`Raw.Adjusted.Yeild./.ha`),
+              stringsAsFactors = FALSE)
 ```
 
 
@@ -2682,8 +2681,8 @@ King_16_dat <-
               final_assessment = as.Date("2016-04-19", format = "%Y-%m-%d"),
               PM_final_severity = NA,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(King_16_dat$`Raw.Adjusted.Yeild./.ha`)
-              )
+              grain_yield.t.ha. = as.numeric(King_16_dat$`Raw.Adjusted.Yeild./.ha`),
+              stringsAsFactors = FALSE)
 ```
 
 
@@ -2726,7 +2725,7 @@ King_16_m <- King_16_dat %>%
              Y_error_type = "stdev",
              #AUDPC.m = mean(AUDPC),
              #AUDPC.sd = sd(AUDPC),
-             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = King_16_dat))[1,3]
+             Y_Msquare = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = King_16_dat))[1,3]
    )
 
 # For some wierd reason standard deviations are comming back NA in the code above
@@ -2750,12 +2749,16 @@ names(King_16.DR)[1:6] <- c("Treatment", "dae20","dae34","dae46","PM_final_sever
 King_16.DR$n_treatment <- c(3,2,7,6,5,4,1)
 
 
+
+
 King_16_m <- left_join(King_16_m,King_16.DR)
-King_16_m$AUDPC.m <- apply(King_16_m[,c("dae20", "dae34", "dae46", "PM_final_severity")]-1,1, 
-                            FUN = audpc, dates = c(1,14,26,40))
+King_16_m$AUDPC_m <- apply(King_16_m[,c("dae20", "dae34", "dae46", "PM_final_severity")]-1,1, 
+                            FUN = audpc, dates = c(20,34,46,60))
+King_16_m$AUDPC_se <- NA
 
 
 King_16_m <- fold_data(King_16_m, PM_MB_means)
+King_16_m <- King_16_m[,!colnames(King_16_m) %in% c('Treatment',"dae20","dae34","dae46","Final_Yield_tHa", "AUDPC.m")]
 
 
 write.csv(
@@ -2829,7 +2832,7 @@ Fogerty_17$Treatment.No <- as.numeric(unlist(strsplit(
 ```
 
 #### Define treatment data
-```{r King16_treatmentDefine}
+```{r Fog17_treatmentDefine}
 Fogerty_17_dat <- Fogerty_17 %>%
    mutate(trade_name = 
              case_when(Chem.Trt == 1 ~ "Folicur",
@@ -2837,10 +2840,10 @@ Fogerty_17_dat <- Fogerty_17 %>%
                        Chem.Trt == 3 ~ "Custodia",
                        TRUE ~ "other"))%>%
    mutate(fungicide_ai = 
-             case_when(Chem.Trt == 1 ~ "tebuconazole",
-                       Chem.Trt == 2 ~ "propiconazole",
-                       Chem.Trt == 3 ~ "200 g/L tebuconazole + 120 g/L azoxystrobin",
-                       TRUE ~ "other"))%>%
+             as.character(case_when(Chem.Trt == 1 ~ "tebuconazole",
+                                    Chem.Trt == 2 ~ "propiconazole",
+                                    Chem.Trt == 3 ~ "200 g/L tebuconazole + 120 g/L azoxystrobin",
+                                    TRUE ~ "other")))%>%
    mutate(dose_ai.ha = 
              case_when(Chem.Trt == 1 ~ 62,
                        Chem.Trt == 2 ~ 125,
@@ -2859,9 +2862,9 @@ Fogerty_17_dat <- Fogerty_17 %>%
                        Treatment.No == 6 ~ as.Date("2017-04-02", format = "%Y-%m-%d"),
                        TRUE ~ as.Date(NA)))%>%
    mutate(spray_n = 
-             case_when(Treatment == 1 ~ 0,
-                       Treatment == 4 ~ 2,
-                       Treatment == 6 ~ 2,
+             case_when(Treatment.No == 1 ~ 0,
+                       Treatment.No == 4 ~ 2,
+                       Treatment.No == 6 ~ 2,
                        TRUE ~ 1))
 
 ```
@@ -2890,7 +2893,7 @@ Fogerty_17_dat <-
               mid_late_pod_fill = as.Date(NA),
               first_sign_disease = as.Date("2017-03-07", format = "%Y-%m-%d"),
               trade_name = as.factor(Fogerty_17_dat$trade_name),
-              fungicide_ai = Fogerty_17_dat$fungicide_ai,
+              fungicide_ai = as.character(Fogerty_17_dat$fungicide_ai),
               dose_ai.ha = Fogerty_17_dat$dose_ai.ha,
               n_treatment = as.numeric(Fogerty_17_dat$Treatment.No),
               fungicide_application_1 = Fogerty_17_dat$fungicide_application_1,
@@ -2903,17 +2906,18 @@ Fogerty_17_dat <-
               grain_yield.t.ha. = as.numeric(Fogerty_17_dat$`Yield.t/ha`),
               AUDPC = apply(Fogerty_17_dat[,c("2017-03-07", "2017-03-19", "2017-03-24", "2017-04-02","2017-04-10","2017-04-18")]-1,1, 
                             FUN = audpc, dates = c(1,12,17,26,34,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
-              )
+              , stringsAsFactors = FALSE)
 ```
 
 #### Calculating treatment means
 ```{r Missen17_means}
 
 Fogerty_17_m <- Fogerty_17_dat %>%
-   group_by(host_genotype, n_treatment, row_spacing, fungicide_ai) %>%
+   group_by(n_treatment, row_spacing, fungicide_ai) %>%
    summarise(trial_ref = unique(trial_ref),
              year = unique(year),
              location = unique(location),
+             host_genotype = unique(host_genotype),
              trial_design = unique(trial_design),
              trade_name = unique(trade_name),
              dose_ai.ha = unique(dose_ai.ha),
@@ -2943,16 +2947,20 @@ Fogerty_17_m <- Fogerty_17_dat %>%
              Y_error_type = "stdev",
              AUDPC.m = mean(AUDPC),
              AUDPC.sd = sd(AUDPC),
-             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment) + fungicide_ai + row_spacing, data = subset(Fogerty_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
+             Y_Msquare = anova(lm(grain_yield.t.ha. ~ factor(n_treatment) + fungicide_ai + row_spacing, data = subset(Fogerty_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
    )
 
 # For some weird reason standard deviations are comming back NA in the code above
-Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
+Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
    Fogerty_17_dat %>%
    group_by(n_treatment, row_spacing, fungicide_ai) %>%
    summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
              yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
-   select(c("disease_error","yield_error"))
+   select(c("n_treatment","row_spacing","disease_error","yield_error"))
+
+Fogerty_17_m[Fogerty_17_m$n_treatment == 1, "fungicide_ai"] <- "control"
+Fogerty_17_m[Fogerty_17_m$n_treatment == 1,"dose_ai.ha"] <- NA_real_
+Fogerty_17_m[Fogerty_17_m$n_treatment == 1, "trade_name"] <- NA
 
 
 Fogerty_17_m <- fold_data(Fogerty_17_m, PM_MB_means)
@@ -3084,6 +3092,7 @@ Herm_17_m <- Herm_17_dat %>%
    summarise(trial_ref = unique(trial_ref),
              year = unique(year),
              location = unique(location),
+             host_genotype = unique(host_genotype),
              trial_design = unique(trial_design),
              trade_name = unique(trade_name),
              dose_ai.ha = unique(dose_ai.ha),
