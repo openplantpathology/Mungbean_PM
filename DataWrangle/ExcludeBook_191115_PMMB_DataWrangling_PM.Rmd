@@ -22,7 +22,7 @@ library(dplyr)
 library(data.table)
 library(agricolae)
 
-source("C:/Users/U8011054/OneDrive - USQ/Cloudstor/R/Mungbean_projects/Mungbean_PM/R/import_data.R")
+source("../R/import_data.R")
 PM_MB_means <- import_data()
 
 ```
@@ -3040,12 +3040,12 @@ Herm_17_dat <-
               plant_density = NA,
               row_spacing = Herm_17_dat$`Row.Spacing.(m)`,
               replicate = Herm_17_dat$Rep,
-              planting_date = as.Date("2017-01-27", format = "%Y-%m-%d"),
-              emergence_date = as.Date("2017-02-01", format = "%Y-%m-%d"),
+              planting_date = as.Date("2017-02-13", format = "%Y-%m-%d"),
+              emergence_date = as.Date("2017-02-20", format = "%Y-%m-%d"),
               flowering_date = as.Date(NA),
               pod_fill_date = as.Date(NA),
               mid_late_pod_fill = as.Date(NA),
-              first_sign_disease = as.Date("2017-03-13", format = "%Y-%m-%d"),
+              first_sign_disease = as.Date("2017-03-24", format = "%Y-%m-%d"),
               trade_name = as.factor(Herm_17_dat$trade_name),
               fungicide_ai = Herm_17_dat$fungicide_ai,
               dose_ai.ha = Herm_17_dat$dose_ai.ha,
@@ -3072,7 +3072,7 @@ Herm_17_dat <- cbind(Herm_17_dat,
                                                   39,48,57,64,70,79,87)
                                         )
                           )
-
+Herm_17_m
 ```
 
 
@@ -3080,7 +3080,7 @@ Herm_17_dat <- cbind(Herm_17_dat,
 ```{r Herm17_means}
 
 Herm_17_m <- Herm_17_dat %>%
-   group_by(host_genotype, n_treatment, row_spacing, fungicide_ai) %>%
+   group_by(n_treatment, fungicide_ai,row_spacing) %>%
    summarise(trial_ref = unique(trial_ref),
              year = unique(year),
              location = unique(location),
@@ -3113,20 +3113,24 @@ Herm_17_m <- Herm_17_dat %>%
              Y_error_type = "stdev",
              AUDPC.m = mean(AUDPC),
              AUDPC.sd = sd(AUDPC),
-             meanSq = anova(lm(grain_yield.t.ha. ~ 
+             Y_Msquare = anova(lm(grain_yield.t.ha. ~ 
                                   factor(n_treatment) + fungicide_ai + row_spacing, 
                                data = subset(Herm_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
    )
-sd(Herm_17_dat$PM_final_severity)
+
 
 # For some weird reason standard deviations are comming back NA in the code above
-Herm_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
+Herm_17_m[,c("n_treatment","fungicide_ai","row_spacing", "disease_error","yield_error")] <-
    Herm_17_dat %>%
-   group_by(n_treatment, row_spacing, fungicide_ai) %>%
+   group_by(n_treatment, fungicide_ai,row_spacing) %>%
    summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
              yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
-   select(c("disease_error","yield_error"))
+   select(c("n_treatment","fungicide_ai","row_spacing","disease_error","yield_error"))
 
+
+Herm_17_m[Herm_17_m$n_treatment == 1, "fungicide_ai"] <- as.factor("control")
+Herm_17_m[Herm_17_m$n_treatment == 1,"dose_ai.ha"] <- NA_real_
+Herm_17_m[Herm_17_m$n_treatment == 1, "trade_name"] <- NA
 
 Herm_17_m <- fold_data(Herm_17_m, PM_MB_means)
 
@@ -3286,7 +3290,7 @@ Well_18_m <- Well_18_dat %>%
              Y_error_type = "stdev",
              AUDPC.m = mean(AUDPC),
              AUDPC.sd = sd(AUDPC),
-             meanSq = anova(lm(grain_yield.t.ha. ~ 
+             Y_Msquare = anova(lm(grain_yield.t.ha. ~ 
                                   factor(n_treatment) + fungicide_ai + row_spacing, 
                                data = subset(Well_18_dat, trade_name != "Custodia")))[1,3] # of only triazoles
    )
@@ -3347,9 +3351,10 @@ Herm_19_dat <- PM_MB_19 %>%
              case_when(`T/ment.NUM` == 2 ~ as.Date("2018-04-29", format = "%Y-%m-%d"),
                        TRUE ~ as.Date(NA)))%>%
    mutate(spray_n = 
-             case_when(`T/ment.NUM` == 3 ~ 2,
-                       `T/ment.NUM` <= 2 ~ 1,
-                       TRUE ~ NA_real_))%>%
+             case_when(`T/ment.NUM` == 2 ~ 2,
+                       `T/ment.NUM` == 1 ~ 1,
+                       `T/ment.NUM` == 3 ~ 1,
+                       TRUE ~ 0))%>%
    mutate(trial_ref = 
              case_when(TOS.NUM == 1 ~ "mung1819/01",
                        TOS.NUM == 2 ~ "mung1819/02",
@@ -3391,7 +3396,7 @@ Herm_19_dat <- PM_MB_19 %>%
 ```
 
 #### Input trial data
-```{r Well18_Trialdat}
+```{r Herm_19_Trialdat}
 
 Herm_19_dat <- 
    data.frame(trial_ref = Herm_19_dat$trial_ref,
@@ -3422,31 +3427,28 @@ Herm_19_dat <-
               PM_final_severity = Herm_19_dat$PM_final_severity,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(Herm_19_dat$Yeild)/1000,
-              meanSq = Herm_19_dat$meanSq
+              meanSq = Herm_19_dat$meanSq,
+              AUDPC = Herm_19_dat$AUDPC
               )
 
-Herm_19_dat$plant_density
-
-unique(Herm_19_dat$plot_length)
-mean(Herm_19_dat$plant_density, na.rm = TRUE)
-
+Herm_19_m
 ```
 
 
 ```{r Herm19_means}
 
-
-
 Herm_19_m <- Herm_19_dat %>%
    group_by(trial_ref, n_treatment) %>%
    summarise(year = unique(year),
              location = unique(location),
+             host_genotype = "Jade",
              trial_design = unique(trial_design),
              trade_name = unique(trade_name),
              dose_ai.ha = unique(dose_ai.ha),
              plot_length.m. = mean(plot_length, na.rm = TRUE),
              plot_width.m. = mean(plot_width, na.rm = TRUE),
-             plant_density = NA_character_,
+             plant_density = "40k",
+             row_spacing = unique(row_spacing),
              replicates = length(as.numeric(replicate)),
              planting_date = unique(planting_date),
              emergence_date = unique(emergence_date),
@@ -3457,6 +3459,7 @@ Herm_19_m <- Herm_19_dat %>%
              fungicide_application_1 = unique(fungicide_application_1),
              fungicide_application_2 = unique(fungicide_application_2),
              total_fungicide = unique(total_fungicide),
+             fungicide_ai = unique(fungicide_ai),
              harvest_date = unique(harvest_date),
              final_assessment = unique(final_assessment),
              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
@@ -3469,64 +3472,25 @@ Herm_19_m <- Herm_19_dat %>%
              Y_error_type = "stdev",
              AUDPC.m = mean(AUDPC),
              AUDPC.sd = sd(AUDPC),
-             meanSq = unique(meanSq)
+             Y_Msquare = unique(meanSq)
    )
 
 
 # For some weird reason standard deviations are comming back NA in the code above
-# Herm_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
-#    Herm_17_dat %>%
-#    group_by(n_treatment, row_spacing, fungicide_ai) %>%
-#    summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
-#              yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
-#    select(c("disease_error","yield_error"))
-# 
+Herm_19_m[,c("trial_ref","disease_error","yield_error")] <-
+   Herm_19_dat %>%
+   group_by(trial_ref, n_treatment) %>%
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   select(c("disease_error","yield_error"))
+
 
 Herm_19_m <- fold_data(Herm_19_m, PM_MB_means)
 
 write.csv(
-   Herm_17_m,
+   Herm_19_m,
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2019/Hermitage_19_mean.csv",
    row.names = FALSE
 )
 
 ```
-
-```{r}
-PM19_means <- PM_MB_19 %>%
-   group_by(TOS.NUM, `T/ment.NUM`) %>%
-   summarise(
-      Incidence190423 = mean(`23-4-19.Incedence`, na.rm = TRUE),
-      Inc.sd.190423 = sd(`23-4-19.Incedence`, na.rm = TRUE),
-      Inc.error.190423 = "Stdev",
-      Incidence190501 = mean(`1-5-19.Incedence`, na.rm = TRUE),
-      Inc.sd.190501 = sd(`1-5-19.Incedence`, na.rm = TRUE),
-      Inc.error.190501 = "Stdev",
-      Plot_length = mean(Plot.Lengths, na.rm = TRUE),
-      Yield = mean(Yeild/1000, na.rm = TRUE),
-      Yield_error = sd(Yeild/1000, na.rm = TRUE),
-      AUDPC = mean(AUDPC, na.rm = TRUE),
-      meanSq = anova(lm(Yeild/1000 ~ factor(TOS.NUM) + factor(`T/ment.NUM`), data = PM_MB_19))[2,3]
-   )
-
-
-colnames(PM_MB_19)
-
-audpc(PM_MB_19[PM_MB_19$TOS.NUM == 2 , c(5, 7, 9)], c(70, 78, 86))
-
-PM_MB_19$AUDPC <- NA
-PM_MB_19[PM_MB_19$TOS.NUM == 1 , "AUDPC"] <-
-   audpc(PM_MB_19[PM_MB_19$TOS.NUM == 1 , c(5, 7)], c(70, 78))
-PM_MB_19[PM_MB_19$TOS.NUM == 2 , "AUDPC"] <-
-   audpc(PM_MB_19[PM_MB_19$TOS.NUM == 2 , c(5, 7, 9)], c(70, 78, 86))
-
-boxplot(AUDPC ~ as.factor(`T/ment.NUM`) * as.factor(TOS.NUM) , data = PM_MB_19)
-
-
-as.Date("2019-05-22") - as.Date("2019-02-04")
-as.Date("2019-04-15") - as.Date("2019-02-04")
-as.Date("2019-04-23") - as.Date("2019-02-04")
-as.Date("2019-05-01") - as.Date("2019-02-04")
-
-```
-
