@@ -2542,14 +2542,15 @@ Herm_16_m <- Herm_16_dat %>%
              Y_error_type = "stdev",
              #AUDPC.m = mean(AUDPC),
              #AUDPC.sd = sd(AUDPC),
-             meanSq = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = Herm_16_dat))[1,3]
+             Y_Msquare = anova(lm(grain_yield.t.ha. ~ factor(n_treatment), data = Herm_16_dat))[1,3]
    )
 
 # For some wierd reason standard deviations are comming back NA in the code above
 Herm_16_m[,"yield_error"] <- 
    Herm_16_dat %>%
    group_by(n_treatment) %>%
-   summarise(yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
+   summarise(PM_final_severity = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
    select(c("yield_error"))
 
 
@@ -2568,12 +2569,14 @@ Herm_16.DR$n_treatment <- c(4,3,7,5,2,6,1)
 
 
 Herm_16_m <- left_join(Herm_16_m,Herm_16.DR)
-Herm_16_m$AUDPC.m <- apply(Herm_16_m[,c("dae24", "dae38", "dae48", "dae63")]-1,1, 
-                            FUN = audpc, dates = c(0,14,24,39))
+Herm_16_m$AUDPC_m <- apply(Herm_16_m[,c("dae24", "dae38", "dae48", "dae63")]-1,1, 
+                            FUN = audpc, dates = c(9,13,23,38))
+Herm_16_m$AUDPC_se <- NA
 
+Herm_16_m$PM_final_severity <- Herm_16_m$dae63
 
 Herm_16_m <- fold_data(Herm_16_m, PM_MB_means)
-
+Herm_16_m <- Herm_16_m[,!colnames(Herm_16_m) %in% c('Treatment',"dae24","dae38","dae48","dae63","Final_Yield_tHa", "AUDPC.m")]
 
 write.csv(
    Herm_16_m,
