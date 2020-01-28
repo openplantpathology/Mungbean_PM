@@ -818,8 +818,7 @@ Goolhi_13_dat <- cbind(Goolhi_13_dat,
                                                    Goolhi_13[,c("Inc_16D","Inc_33D")]-1),
                                         1, 
                                         FUN = audpc, 
-                                        dates = c((Goolhi_13_dat$first_sign_disease[1]-7)-
-                                                     Goolhi_13_dat$planting_date[1],
+                                        dates = c(1,
                                                   16,33)
                                         )
                           )
@@ -836,7 +835,7 @@ Goolhi_13_m <- Goolhi_13_dat %>%
               plot_width.m. = mean(plot_width, na.rm = TRUE),
               plant_density = unique(plant_density),
               row_spacing = unique(row_spacing),
-              replicates = sum(replicate),
+              replicates = length(replicate),
               planting_date = unique(planting_date),
               emergence_date = NA,
               flowering_date = unique(flowering_date),
@@ -851,11 +850,11 @@ Goolhi_13_m <- Goolhi_13_dat %>%
               final_assessment = unique(final_assessment),
               PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
               rating_scale = unique(rating_scale),
-              disease_error = sd(PM_final_severity, na.rm = TRUE),
+              #disease_error = sd(PM_final_severity, na.rm = TRUE),
               D_error_type = "stdev",
               grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
               raw_graded = NA,
-              yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              #yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
               Y_error_type = "stdev",
              AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
@@ -864,7 +863,16 @@ Goolhi_13_m <- Goolhi_13_dat %>%
                                                         Goolhi_13_dat$fungicide_ai == "control" ,]))[1,3]
    )
 
-#!!!!!!!!!!!!!!!!!! Check to see if errors are calculated
+# For some wierd reason standard deviations are comming back NA in the code above
+# Because of n_treatment being converted to a factor I need to wrangle carefully here
+Goolhi_tmp <- Goolhi_13_dat %>%
+   group_by(n_treatment) %>%
+   summarise(#PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE))
+
+Goolhi_13_m <- left_join(Goolhi_13_m, Goolhi_tmp)
+
 Goolhi_13_m <- fold_data(Goolhi_13_m, PM_MB_means)
 
 Goolhi_13_m <- Goolhi_13_m[Goolhi_13_m$trade_name != "other",]
@@ -1228,9 +1236,7 @@ MarysM_13_dat <- cbind(MarysM_13_dat,
                                                    MarysM_13[,c("Inc_18D","Inc_19D")]-1),
                                         1, 
                                         FUN = audpc, 
-                                        dates = c((MarysM_13_dat$first_sign_disease[1]-7)-
-                                                     MarysM_13_dat$planting_date[1],
-                                                  12,12+19)
+                                        dates = c(1,12,12+19)
                                         )
                           )
 ```   
@@ -1238,9 +1244,16 @@ MarysM_13_dat <- cbind(MarysM_13_dat,
 #### Calculating the treatment means
 ```{r Marys_means}
 MarysM_13_m <- MarysM_13_dat %>%
-   group_by(trial_ref, year, location, host_genotype, trial_design, 
-            trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
-   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+   group_by(n_treatment) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             location = unique(location),
+             host_genotype = unique(host_genotype),
+             trial_design = unique(trial_design),
+             trade_name = unique(trade_name),
+             fungicide_ai = unique(fungicide_ai),
+             dose_ai.ha = unique(dose_ai.ha),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
               plot_width.m. = mean(plot_width, na.rm = TRUE),
               plant_density = unique(plant_density),
               row_spacing = unique(row_spacing),
