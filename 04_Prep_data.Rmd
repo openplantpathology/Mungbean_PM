@@ -391,14 +391,23 @@ summary(lm(grain_yield.t.ha ~ AUDPC_m, data = subset(slimmer_PM_dat, AUDPC_m <= 
 plot(grain_yield.t.ha. ~ AUDPC_m,data = subset(PM_MB_means, AUDPC_m <= 280) )
 abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = subset(PM_MB_means, AUDPC_m <= 280)))
 
-for(i in unique(PM_MB_means$trial_ref)){
-   
+sm2lg <- PM_MB_means%>%
+   group_by(trial_ref)%>%
+   summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE))%>%
+   arrange(TY)
+
+
+
+for(i in sm2lg$trial_ref){
    dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
    if(any(is.na(dat1$grain_yield.t.ha.))){next}
    if(any(is.na(dat1$AUDPC_m))){next}
    
    
-plot(grain_yield.t.ha. ~ AUDPC_m, data = dat1, main = paste(dat1$location[1],(dat1$year[1])),ylim = c(0,2.5) , xlim = c(0,300))
+plot(grain_yield.t.ha. ~ AUDPC_m, 
+     data = dat1, main = paste(dat1$location[1],(dat1$year[1])),
+     ylim = c(0,max(PM_MB_means$grain_yield.t.ha., na.rm = TRUE)), 
+     xlim = c(0,max(PM_MB_means$AUDPC_m, na.rm = TRUE)))
 abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = dat1))
 points(grain_yield.t.ha. ~ AUDPC_m, data = dat1[dat1$fungicide_ai == "control",], col = "red")
    
