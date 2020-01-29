@@ -1723,7 +1723,7 @@ Premer_13_dat <- cbind(Premer_13_dat,
                                         1, 
                                         FUN = audpc, 
                                         dates = c((Premer_13_dat$first_sign_disease[1]-7)-
-                                                     Premer_13_dat$planting_date[1],
+                                                     as.Date("2013-01-28", format = "%Y-%m-%d"),
                                                   12+19)
                                         )
                           )
