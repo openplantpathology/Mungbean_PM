@@ -97,7 +97,9 @@ Herm_10 <- Herm_10 %>%
                                       `Schedule!` == "U/S" ~ 0,
                                       TRUE ~ 9999))
    
+```
 
+```{r Herm10_dataInput}
 Herm_10_dat <- 
    data.frame(trial_ref = "mung0910/01",
               year = "2010",
@@ -131,7 +133,7 @@ Herm_10_dat <-
               final_assessment = as.Date("2010-04-20"),
               PM_final_severity = Herm_10$P.M.13wap,
               rating_scale = "1-9",
-              grain_yield.t.ha. = Herm_10$`Kg/ha`,
+              grain_yield.t.ha. = Herm_10$`Kg/ha`/1000,
               #AUDPC = apply(Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1,1, FUN = audpc, dates = c(9*7,11*7,13*7)), # -1 to the data because zero disease = 1 on rating scale
               stringsAsFactors = FALSE
               )
@@ -147,6 +149,10 @@ Herm_10_dat <- cbind(Herm_10_dat,
                                         )
                           )
 
+```
+
+#### Treatment means  
+```{r Herm10_means}
 
 Herm_10_m <- Herm_10_dat %>%
    group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
@@ -154,7 +160,7 @@ Herm_10_m <- Herm_10_dat %>%
               plot_width.m. = mean(plot_width, na.rm = TRUE),
               plant_density = unique(plant_density),
               row_spacing = unique(row_spacing),
-              replicates = sum(replicate),
+              replicates = length(replicate),
               planting_date = unique(planting_date),
               emergence_date = NA,
               flowering_date = NA,
@@ -185,6 +191,13 @@ Herm_10_m <- Herm_10_dat %>%
    )
 
 
+Herm_tentmp <- Herm_10_dat %>% 
+   group_by(host_genotype,n_treatment)%>%
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha., na.rm = TRUE))
+
+Herm_10_m[order(Herm_10_m$n_treatment),"disease_error"] <- Herm_tentmp[order(Herm_tentmp$n_treatment),"disease_error"]
+Herm_10_m[order(Herm_10_m$n_treatment),"yield_error"] <- Herm_tentmp[order(Herm_tentmp$n_treatment),"yield_error"]
 
 
 Herm_10_m <- fold_data(Herm_10_m, PM_MB_means)
