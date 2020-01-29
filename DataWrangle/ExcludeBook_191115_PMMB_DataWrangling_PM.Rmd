@@ -199,6 +199,7 @@ write.csv(
 ```
 
 ### Hermitage 2011
+#### Define treatments
 ```{r Herm_2011}
 
 Herm_11 <-
@@ -253,7 +254,10 @@ Herm_11 <- Herm_11 %>%
                        TRUE ~ 0))
 
 
+```
 
+#### Input trial data  
+```{r Herm11_dataInput}
 Herm_11_dat <- 
    data.frame(trial_ref = "mung1011/01",
               year = "2011",
@@ -288,9 +292,15 @@ Herm_11_dat <-
                                                       as.Date("2011-01-24", format = "%Y-%m-%d"),
                                77)), # -1 to the data because zero disease = 1 on rating scale
               rating_scale = "1-9",
-              grain_yield.t.ha. = Herm_11$`Yld Kg/ha`
-              )
+              grain_yield.t.ha. = Herm_11$`Yld Kg/ha`,
+              stringsAsFactors = FALSE)
    
+```
+
+#### Treatment means
+```{r Herm11_means}
+Herm_11_dat[Herm_11_dat$n_treatment == 5, "n_treatment"] <- 1
+Herm_11_dat[Herm_11_dat$n_treatment == 12, "n_treatment"] <- 8
 
 Herm_11_m <- Herm_11_dat %>%
    group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
@@ -298,7 +308,7 @@ Herm_11_m <- Herm_11_dat %>%
               plot_width.m. = mean(plot_width, na.rm = TRUE),
               plant_density = unique(plant_density),
               row_spacing = unique(row_spacing),
-              replicates = sum(replicate),
+              replicates = length(replicate),
               planting_date = unique(planting_date),
               emergence_date = NA,
               flowering_date = unique(flowering_date),
@@ -326,6 +336,13 @@ Herm_11_m <- Herm_11_dat %>%
                                                         Herm_11_dat$fungicide_ai == "control" ,]))[1,3]
    )
 
+Herm_tmp <- Herm_11_dat %>% 
+   group_by(host_genotype,n_treatment)%>%
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE))
+
+Herm_11_m[order(Herm_11_m$n_treatment),"disease_error"] <- Herm_tmp[order(Herm_tmp$n_treatment),"disease_error"]
+Herm_11_m[order(Herm_11_m$n_treatment),"yield_error"] <- Herm_tmp[order(Herm_tmp$n_treatment),"yield_error"]
 
 Herm_11_m <- fold_data(Herm_11_m, PM_MB_means)
 
@@ -347,7 +364,10 @@ King_11 <-
 tmp1 <- do.call(rbind.data.frame, strsplit(King_11$`Treatment!`, " "))
 colnames(tmp1) <- c("cultivar" , "spray_n", "spray", "fungicide")
 King_11 <- cbind(tmp1, King_11)
+```
 
+#### Define treatment data
+```{r King_11_define}
 King_11 <- King_11 %>%
    mutate(trade_name = 
              case_when(fungicide == "AMIS-X" ~ "Amistar Xtra",
@@ -378,8 +398,10 @@ King_11 <- King_11 %>%
              case_when(spray_n == 3 ~ as.Date("2011-04-12", format = "%Y-%m-%d"),
                        TRUE ~ as.Date(NA)))
 
+```
 
-
+#### Input trial data
+```{r King_11_input}
 King_11_dat <- 
    data.frame(trial_ref = "mung1011/02",
               year = "2011",
@@ -409,9 +431,9 @@ King_11_dat <-
               final_assessment = as.Date("2011-05-11", format = "%Y-%m-%d"),
               PM_final_severity = King_11$`14 w.a.p.`,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`)
+              grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`),
               #AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")]-1,1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))# -1 to the data because zero disease = 1 on rating scale
-              )
+              stringsAsFactors = FALSE)
 
 King_11_dat <- cbind(King_11_dat,
                           AUDPC = apply(data.frame(zero = 1,
@@ -423,15 +445,23 @@ King_11_dat <- cbind(King_11_dat,
                                                      King_11_dat$planting_date[1],
                                            9*7,11*7,12*7, 14*7))
                      )
+```
 
-
+#### Treatment means  
+```{r King_11_means}
 King_11_m <- King_11_dat %>%
-   group_by(trial_ref, year, location, host_genotype, trial_design, trade_name,fungicide_ai,dose_ai.ha,n_treatment) %>%
-   summarise(plot_length.m. = mean(plot_length, na.rm = TRUE),
+   group_by(host_genotype, fungicide_ai,n_treatment) %>%
+   summarise(trial_ref = unique(trial_ref),
+             year = unique(year),
+             trade_name = unique(trade_name),
+             location = unique(location),
+             trial_design = unique(trial_design),
+             dose_ai.ha = unique(dose_ai.ha),
+             plot_length.m. = mean(plot_length, na.rm = TRUE),
               plot_width.m. = mean(plot_width, na.rm = TRUE),
               plant_density = unique(plant_density),
               row_spacing = unique(row_spacing),
-              replicates = sum(replicate),
+              replicates = length(replicate),
               planting_date = unique(planting_date),
               emergence_date = NA,
               flowering_date = unique(flowering_date),
@@ -446,11 +476,11 @@ King_11_m <- King_11_dat %>%
               final_assessment = unique(final_assessment),
               PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
               rating_scale = unique(rating_scale),
-              disease_error = sd(PM_final_severity, na.rm = TRUE),
+              #disease_error = sd(PM_final_severity, na.rm = TRUE),
               D_error_type = "stdev",
               grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE)/1000,
               raw_graded = NA,
-              yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE),
+              #yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE),
               Y_error_type = "stdev",
              AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
@@ -459,13 +489,22 @@ King_11_m <- King_11_dat %>%
                                                         King_11_dat$fungicide_ai == "control" ,]))[1,3]
    )
 
+# For some wierd reason standard deviations are comming back NA in the code above
+# Because of n_treatment being converted to a factor I need to wrangle carefully here
+King_tmp <- King_11_dat %>%
+   group_by(host_genotype, fungicide_ai,n_treatment) %>%
+   summarise(#PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
+             disease_error = sd(PM_final_severity, na.rm = TRUE),
+             yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE))
 
+
+King_11_m <- left_join(King_11_m,King_tmp)
 King_11_m <- fold_data(King_11_m, PM_MB_means)
 
 
 write.csv(
    King_11_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/2011 PMmung Kingaroy means.csv"
+   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung King/2011 PMmung Kingaroy means.csv"
 )
 
 
