@@ -44,7 +44,7 @@ for(i in levels(slim_PM_dat$trial_ref)){
       rows_to_delete <- c(rows_to_delete, which(slim_PM_dat$trial_ref == i))
 }
 
-#slim_PM_dat <- slim_PM_dat[-rows_to_delete,]
+slim_PM_dat <- slim_PM_dat[-rows_to_delete,]
 
 
 slim_PM_dat <- slim_PM_dat[slim_PM_dat$fungicide_ai == "control" |
