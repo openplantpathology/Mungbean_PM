@@ -26,7 +26,9 @@ slim_PM_dat <- data.frame(
    prop_yield_gain = as.double(PM_MB_means$prop_YG),
    PM_final_severity = as.double(PM_MB_means$PM_final_severity),
    PM_final_severity_error = as.double(PM_MB_means$disease_error),
-   Y_Msquare = as.double(PM_MB_means$Y_Msquare)
+   Y_Msquare = as.double(PM_MB_means$Y_Msquare),
+   AUDPC_m = as.double(PM_MB_means$AUDPC_m),
+   AUDPC_se = as.double(PM_MB_means$AUDPC_m)
 )
 
 
@@ -42,7 +44,7 @@ for(i in levels(slim_PM_dat$trial_ref)){
       rows_to_delete <- c(rows_to_delete, which(slim_PM_dat$trial_ref == i))
 }
 
-slim_PM_dat <- slim_PM_dat[-rows_to_delete,]
+#slim_PM_dat <- slim_PM_dat[-rows_to_delete,]
 
 
 slim_PM_dat <- slim_PM_dat[slim_PM_dat$fungicide_ai == "control" |
