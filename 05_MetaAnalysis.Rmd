@@ -13,15 +13,16 @@ library(theme.usq)
 library(bomrang)
 library(lme4)
 library(kableExtra)
+
+# Data
+slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 ```
 
 # Meta-analysis
-## Preliminary meta-analysis
+## Grain yield meta-analysis
 
 
 ```{r LME_slimmer_cluster_disease_mod}
-
-slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 
 m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
               (factor(spray_management) | trial_ref), 
@@ -342,5 +343,37 @@ Now lets visualise this as a forest plot
 forest(net_con, reference.group = 4,
        rightcols=c("effect", "ci", "Pscore"),
        rightlabs="P-Score", small.values = "bad")
+
+```
+
+
+## AUPDC and PM severity meta-analysis
+
+```{r LMER_AUDPC}
+
+Me_mod1 <- lmer(grain_yield.t.ha ~ AUDPC_m + (1|trial),
+              data = slimmer_PM_dat)
+summary(Me_mod1)
+
+Me_mod2 <- lmer(grain_yield.t.ha ~ AUDPC_m + (AUDPC_m|trial),
+              data = slimmer_PM_dat)
+summary(Me_mod2)
+
+anova(Me_mod1, Me_mod2)
+
+```
+
+
+```{r LMER_finalSev}
+
+Me_mod3 <- lmer(grain_yield.t.ha ~ PM_final_severity + (1|trial),
+              data = slimmer_PM_dat)
+summary(Me_mod3)
+
+Me_mod4 <- lmer(grain_yield.t.ha ~ PM_final_severity + (PM_final_severity|trial),
+              data = slimmer_PM_dat)
+summary(Me_mod4)
+
+anova(Me_mod1, Me_mod2)
 
 ```
