@@ -11,6 +11,8 @@ library(ggplot2)
 source("R/import_data.R")
 PM_MB_means <- import_data()
 
+# Calculate AUDPC using final severity and first sign of disease - 7 days
+source("R/AUDPC_for_single_obs.R") 
 ```
 
 
@@ -414,4 +416,6 @@ points(grain_yield.t.ha. ~ AUDPC_m, data = dat1[dat1$fungicide_ai == "control",]
 }
 
 ```
+
+
 

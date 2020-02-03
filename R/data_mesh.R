@@ -20,7 +20,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    
    if(all(new_data_column != colnames(template_data))){warning("\nCan't find index column in template dataset ")
       stop()}
-   if(class(ignore_columns) == "numeric"){
+   if(is.numeric(ignore_columns)){
       ignore_columns <- colnames(template_data)[ignore_columns]
    }
    
@@ -48,6 +48,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    
    #iterator1 <- 1
    report_rows <- vector(mode = "numeric")
+   matched_rows <- vector(mode = "numeric")
    
    for(i in 1:dim(dat1)[1]){
       for(j in 1:dim(dat2)[1]){
@@ -56,8 +57,12 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
          if(any(is.na(dat1[i,]) != is.na(dat2[j,])) == FALSE){
             if(all(dat1[i,!is.na(dat1[i,])] == dat2[j,!is.na(dat2[j,])])){
                
+               matched_rows <- c(matched_rows,i)
+               
+               
+               if(template_data[i,new_data_column] == new_data[j,new_data_column]){next()}
                template_data[i,new_data_column] <- new_data[j,new_data_column]
-               j <- j +1 
+               
                report_rows <- c(report_rows,i)
                #message("working")
          
@@ -69,9 +74,10 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    }
    
       
-   if(length(report_rows)==0){message("No data changed")}else{
+   if(length(report_rows)==0){message("No data changed ", 
+                                      length(report_rows),"/",length(matched_rows))}else{
       message("\nRows from template data replaced\n",paste(report_rows, collapse = ", "),
-              "\ntotal replacements = ",length(report_rows))}
+              "\ntotal replacements = ",length(report_rows),"/",length(matched_rows))}
    
 return(template_data)
    }
