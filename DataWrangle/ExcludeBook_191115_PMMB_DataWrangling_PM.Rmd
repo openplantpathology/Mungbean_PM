@@ -46,6 +46,8 @@ fold_data <- function(new_DataFrame, template_DataFrame){
       new_DataFrame[,c(cnames2, cnames1[is.na(x1)])]  # adding column names to new_DataFrame not in template_DataFrame
    return(new_DataFrame)
 }
+
+source("../R/data_mesh.R")
 ```
 
 
@@ -139,7 +141,7 @@ Herm_10_dat <-
               )
 
 Herm_10_dat <- cbind(Herm_10_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1),
                                         1, 
                                         FUN = audpc, 
@@ -202,12 +204,27 @@ Herm_10_m[order(Herm_10_m$n_treatment),"yield_error"] <- Herm_tentmp[order(Herm_
 
 Herm_10_m <- fold_data(Herm_10_m, PM_MB_means)
 
+source("../R/data_mesh.R")
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_10_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(6,17,30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_10_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(6,17,30:46))
+
 
 
 write.csv(
    as.data.frame(Herm_10_m),
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2010/2010 PMmung Herm/2010 PMmung Hermitage means.csv"
 )
+
+PM_MB_means[PM_MB_means$trial_ref == "mung0910/01",]
+Herm_10_m
 
 ```
 
