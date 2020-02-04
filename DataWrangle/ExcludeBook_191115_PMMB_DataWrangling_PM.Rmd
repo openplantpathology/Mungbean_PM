@@ -223,9 +223,6 @@ write.csv(
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2010/2010 PMmung Herm/2010 PMmung Hermitage means.csv"
 )
 
-PM_MB_means[PM_MB_means$trial_ref == "mung0910/01",]
-Herm_10_m
-
 ```
 
 ### Hermitage 2011
@@ -316,7 +313,7 @@ Herm_11_dat <-
               harvest_date = as.Date("2011-04-25", format = "%Y-%m-%d"),
               final_assessment = as.Date("2011-04-11", format = "%Y-%m-%d"),
               PM_final_severity = Herm_11$`P.M. 11  w.a.p.`,
-              AUDPC = apply(data.frame(zero = rep(1,42),
+              AUDPC = apply(data.frame(zero = rep(0,42),
                                        wap11 = Herm_11[,c("P.M. 11  w.a.p.")]-1),1, 
                             FUN = audpc, dates = c((as.Date("2011-03-28", format = "%Y-%m-%d")-7)- # First sign of disease minus planting date. Gives when there is no disease
                                                       as.Date("2011-01-24", format = "%Y-%m-%d"),
@@ -375,6 +372,23 @@ Herm_11_m[order(Herm_11_m$n_treatment),"disease_error"] <- Herm_tmp[order(Herm_t
 Herm_11_m[order(Herm_11_m$n_treatment),"yield_error"] <- Herm_tmp[order(Herm_tmp$n_treatment),"yield_error"]
 
 Herm_11_m <- fold_data(Herm_11_m, PM_MB_means)
+
+
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_11_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_11_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(6,17,30:46))
+
+
+
+
+
 
 write.csv(
    as.data.frame(Herm_11_m),
@@ -466,7 +480,7 @@ King_11_dat <-
               stringsAsFactors = FALSE)
 
 King_11_dat <- cbind(King_11_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    King_11[,c("9 w.a.p.", "11 w.a.p.", 
                                                               "12 w.a.p.", "14 w.a.p.")])-1,
                                         1, 
@@ -530,13 +544,24 @@ King_tmp <- King_11_dat %>%
 
 King_11_m <- left_join(King_11_m,King_tmp)
 King_11_m <- fold_data(King_11_m, PM_MB_means)
+King_11_m <- copy_class(PM_MB_means,King_11_m)
+
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = King_11_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:10,30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = King_11_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(5:10,30:46))
 
 
 write.csv(
    King_11_m,
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung King/2011 PMmung Kingaroy means.csv"
 )
-
 
 
 ```
@@ -883,7 +908,7 @@ Goolhi_13_dat <-
               )
 
 Goolhi_13_dat <- cbind(Goolhi_13_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    Goolhi_13[,c("Inc_16D","Inc_33D")]-1),
                                         1, 
                                         FUN = audpc, 
@@ -943,8 +968,18 @@ Goolhi_tmp <- Goolhi_13_dat %>%
 Goolhi_13_m <- left_join(Goolhi_13_m, Goolhi_tmp)
 
 Goolhi_13_m <- fold_data(Goolhi_13_m, PM_MB_means)
-
 Goolhi_13_m <- Goolhi_13_m[Goolhi_13_m$trade_name != "other",]
+
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Goolhi_13_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:10,30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Goolhi_13_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(5:10,30:46))
 
 
 write.csv(
@@ -1301,7 +1336,7 @@ MarysM_13_dat <-
               )
 
 MarysM_13_dat <- cbind(MarysM_13_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    MarysM_13[,c("Inc_18D","Inc_19D")]-1),
                                         1, 
                                         FUN = audpc, 
@@ -1374,6 +1409,16 @@ MarysM_13_m <- MarysM_13_m[MarysM_13_m$trade_name != "other",]
 MarysM_13_m$n_treatment <- as.numeric(as.character(MarysM_13_m$n_treatment))
 MarysM_13_m <- fold_data(MarysM_13_m, PM_MB_means)
 
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = MarysM_13_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:10,30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = MarysM_13_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(5:10,30:46))
 
 
 write.csv(
@@ -1824,7 +1869,16 @@ Premer_13_m[,c("disease_error","yield_error")] <-
 
 Premer_13_m <- fold_data(Premer_13_m, PM_MB_means)
 
-#Premer_13_m <- Premer_13_m[Premer_13_m$trade_name != "other",]
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Premer_13_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:10,30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Premer_13_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(5:10,30:46))
 
 write.csv(
    Premer_13_m,
@@ -2195,7 +2249,7 @@ Millm_13_dat <-
 
 
 Millm_13_dat <- cbind(Millm_13_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    Millm_13[,c("Inc_23D","Inc_42D")]-1),
                                         1, 
                                         FUN = audpc, 
@@ -2260,6 +2314,18 @@ Millm_13_m <- Millm_13_m[Millm_13_m$trade_name != "other",]
 
 Millm_13_m$n_treatment <- as.numeric(as.character(Millm_13_m$n_treatment))
 Millm_13_m <- fold_data(Millm_13_m, PM_MB_means)
+
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Millm_13_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:10,30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Millm_13_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(5:10,30:46))
+
 
 write.csv(
    Millm_13_m[order(as.numeric(Millm_13_m$n_treatment)),],
@@ -2475,6 +2541,16 @@ Herm_15_m[,c("disease_error","yield_error")] <-
 
 Herm_15_m <- fold_data(Herm_15_m, PM_MB_means)
 
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_15_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:10,30:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_15_m, 
+                            new_data_column = "AUDPC_sd", 
+                            ignore_columns = c(5:10,30:46))
 
 write.csv(
    Herm_15_m,
@@ -2653,14 +2729,23 @@ Herm_16.DR$n_treatment <- c(4,3,7,5,2,6,1)
 
 
 Herm_16_m <- left_join(Herm_16_m,Herm_16.DR)
+
+# dae24 recorded no incidence
 Herm_16_m$AUDPC_m <- apply(Herm_16_m[,c("dae24", "dae38", "dae48", "dae63")]-1,1, 
                             FUN = audpc, dates = c(9,13,23,38))
-Herm_16_m$AUDPC_se <- NA
-
+Herm_16_m$AUDPC_sd <- NA
 Herm_16_m$PM_final_severity <- Herm_16_m$dae63
 
 Herm_16_m <- fold_data(Herm_16_m, PM_MB_means)
-Herm_16_m <- Herm_16_m[,!colnames(Herm_16_m) %in% c('Treatment',"dae24","dae38","dae48","dae63","Final_Yield_tHa", "AUDPC_m")]
+Herm_16_m <- Herm_16_m[,!colnames(Herm_16_m) %in%
+                          c('Treatment',"dae24","dae38","dae48","dae63","Final_Yield_tHa")]
+
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_16_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:8,30:46))
+
 
 write.csv(
    Herm_16_m,
@@ -2841,12 +2926,18 @@ King_16.DR$n_treatment <- c(3,2,7,6,5,4,1)
 King_16_m <- left_join(King_16_m,King_16.DR)
 King_16_m$AUDPC_m <- apply(King_16_m[,c("dae20", "dae34", "dae46", "PM_final_severity")]-1,1, 
                             FUN = audpc, dates = c(20,34,46,60))
-King_16_m$AUDPC_se <- NA
+King_16_m$AUDPC_sd <- NA
 
 
 King_16_m <- fold_data(King_16_m, PM_MB_means)
-King_16_m <- King_16_m[,!colnames(King_16_m) %in% c('Treatment',"dae20","dae34","dae46","Final_Yield_tHa", "AUDPC_m")]
+King_16_m <- King_16_m[,!colnames(King_16_m) %in% c('Treatment',"dae20","dae34","dae46","Final_Yield_tHa")]
 
+
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = King_16_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:10,30:46))
 
 write.csv(
    King_16_m,
@@ -2979,7 +3070,7 @@ Fogerty_17_dat <-
               pod_fill_date = as.Date(NA),
               mid_late_pod_fill = as.Date(NA),
               first_sign_disease = as.Date("2017-03-07", format = "%Y-%m-%d"),
-              trade_name = as.factor(Fogerty_17_dat$trade_name),
+              trade_name = as.character(Fogerty_17_dat$trade_name),
               fungicide_ai = as.character(Fogerty_17_dat$fungicide_ai),
               dose_ai.ha = Fogerty_17_dat$dose_ai.ha,
               n_treatment = as.numeric(Fogerty_17_dat$Treatment.No),
@@ -2994,6 +3085,11 @@ Fogerty_17_dat <-
               AUDPC = apply(Fogerty_17_dat[,c("2017-03-07", "2017-03-19", "2017-03-24", "2017-04-02","2017-04-10","2017-04-18")]-1,1, 
                             FUN = audpc, dates = c(1,12,17,26,34,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
               , stringsAsFactors = FALSE)
+
+Fogerty_17_dat[Fogerty_17_dat$n_treatment == 1, "fungicide_ai"] <- "control"
+Fogerty_17_dat[Fogerty_17_dat$n_treatment == 1,"dose_ai.ha"] <- 0
+Fogerty_17_dat[Fogerty_17_dat$n_treatment == 1, "trade_name"] <- "control"
+
 ```
 
 #### Calculating treatment means
@@ -3045,18 +3141,28 @@ Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
              yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
    select(c("n_treatment","row_spacing","disease_error","yield_error"))
 
-Fogerty_17_m[Fogerty_17_m$n_treatment == 1, "fungicide_ai"] <- "control"
-Fogerty_17_m[Fogerty_17_m$n_treatment == 1,"dose_ai.ha"] <- NA_real_
-Fogerty_17_m[Fogerty_17_m$n_treatment == 1, "trade_name"] <- NA
-
 
 Fogerty_17_m <- fold_data(Fogerty_17_m, PM_MB_means)
+Fogerty_17_m <- copy_class(PM_MB_means, Fogerty_17_m)
 
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Fogerty_17_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:8,10:16,29:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means,
+                            new_data = Fogerty_17_m,
+                            new_data_column = "AUDPC_sd",
+                            ignore_columns = c(5:8,10:16,29:46))
+
+dim(Fogerty_17_m)
 write.csv(
    Fogerty_17_m,
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty_17_mean.csv",
    row.names = FALSE
 )
+
 
 ```
 
@@ -3141,7 +3247,7 @@ Herm_17_dat <-
               pod_fill_date = as.Date(NA),
               mid_late_pod_fill = as.Date(NA),
               first_sign_disease = as.Date("2017-03-24", format = "%Y-%m-%d"),
-              trade_name = as.factor(Herm_17_dat$trade_name),
+              trade_name = as.character(Herm_17_dat$trade_name),
               fungicide_ai = Herm_17_dat$fungicide_ai,
               dose_ai.ha = Herm_17_dat$dose_ai.ha,
               n_treatment = as.numeric(unlist(strsplit(Herm_17_dat$Manage.Trt, "T"))[unlist(strsplit(Herm_17_dat$Manage.Trt, "T")) != ""]),
@@ -3152,13 +3258,15 @@ Herm_17_dat <-
               final_assessment = as.Date("2017-05-11", format = "%Y-%m-%d"),
               PM_final_severity = Herm_17_dat$`I_11/05/2017`,
               rating_scale = "1-9",
-              grain_yield.t.ha. = as.numeric(Herm_17_dat$`Yield.T/Ha`)
+              grain_yield.t.ha. = as.numeric(Herm_17_dat$`Yield.T/Ha`),
                # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
-              )
+              stringsAsFactors = FALSE)
+
+
 
 
 Herm_17_dat <- cbind(Herm_17_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    Herm_17[,c("2017-03-24","I_2/04/2017", "I_11/04/2017", "I_18/04/2017", "I_24/04/2017","I_3/05/2017","I_11/05/2017")]-1),
                                         1, 
                                         FUN = audpc, 
@@ -3167,7 +3275,7 @@ Herm_17_dat <- cbind(Herm_17_dat,
                                                   39,48,57,64,70,79,87)
                                         )
                           )
-Herm_17_m
+
 ```
 
 
@@ -3223,12 +3331,33 @@ Herm_17_m[,c("n_treatment","fungicide_ai","row_spacing", "disease_error","yield_
              yield_error = sd(grain_yield.t.ha., na.rm = TRUE)) %>%
    select(c("n_treatment","fungicide_ai","row_spacing","disease_error","yield_error"))
 
+Herm_17_m <- data.frame(Herm_17_m)
+Herm_17_m[Herm_17_m$n_treatment == 1, "fungicide_ai"] <- "control"
+Herm_17_m[Herm_17_m$n_treatment == 1,"dose_ai.ha"] <- 0
+Herm_17_m[Herm_17_m$n_treatment == 1, "trade_name"] <- "control"
 
-Herm_17_m[Herm_17_m$n_treatment == 1, "fungicide_ai"] <- as.factor("control")
-Herm_17_m[Herm_17_m$n_treatment == 1,"dose_ai.ha"] <- NA_real_
-Herm_17_m[Herm_17_m$n_treatment == 1, "trade_name"] <- NA
+
 
 Herm_17_m <- fold_data(Herm_17_m, PM_MB_means)
+Herm_17_m <- copy_class(PM_MB_means,Herm_17_m)
+
+# COULD NOT GET TO MATCH
+# insert new calculations into data
+# #PM_MB_means <- 
+#    replace_data(template_data = PM_MB_means, 
+#                             new_data = Herm_17_m, 
+#                             new_data_column = "AUDPC_m", 
+#                             ignore_columns = c(4,5,7,8,10:16,29:46))
+# 
+# PM_MB_means <- replace_data(template_data = PM_MB_means,
+#                             new_data = Herm_17_m,
+#                             new_data_column = "AUDPC_sd",
+#                             ignore_columns = c(5:8,10:16,29:46))
+
+Herm_17_m
+PM_MB_means[PM_MB_means$trial_ref == "mung1617/01",]
+
+colnames(PM_MB_means)
 
 write.csv(
    Herm_17_m,
@@ -3277,7 +3406,7 @@ Well_18_dat <- Well_18 %>%
              case_when(Fung.Trt == 1 ~ 60,
                        Fung.Trt == 2 ~ 62,
                        Fung.Trt == 3 ~ 125,
-                       Fung.Trt == 4 ~ NA_real_,
+                       Fung.Trt == 4 ~ 0,
                        TRUE ~ 9999))%>%
    mutate(Row.Spacing = 
              case_when(Row.Sp.Trt == 1 ~ 0.25,
@@ -3336,7 +3465,7 @@ Well_18_dat <-
 
 
 Well_18_dat <- cbind(Well_18_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    Well_18[,c("IR.23-3-18","IR.5-4-18", "IR.11-4-18", "IR.18-4-18","IR.26-4-18","IR.2-5-18")]-1),
                                         1, 
                                         FUN = audpc, 
@@ -3403,6 +3532,18 @@ Well_18_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
 
 Well_18_m <- fold_data(Well_18_m, PM_MB_means)
 
+# insert new calculations into data
+PM_MB_means <- replace_data(template_data = PM_MB_means, 
+                            new_data = Well_18_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:8,10:16,29:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means,
+                            new_data = Well_18_m,
+                            new_data_column = "AUDPC_sd",
+                            ignore_columns = c(5:8,10:16,29:46))
+
+
 write.csv(
    Well_18_m,
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2018/Wellcamp/Wellcamp_18_mean.csv",
@@ -3420,7 +3561,7 @@ PM_MB_19 <-
       startRow = 2,
       cols = c(1:21)
    )
-?audpc
+
 # Remove these plots as the results can't be trusted
 PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 5)
 PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 6)
@@ -3431,7 +3572,7 @@ PM_MB_19$AUDPC <- apply(data.frame(zero = 1,PM_MB_19[,c("15-4-19.Incedence", "23
 
 # Calculate area under the disease progress curve for plots which were not assessed at on 2019-05-01
 PM_MB_19[is.na(PM_MB_19$`1-5-19.Incedence`),"AUDPC"] <- 
-   apply(data.frame(zero = 1,PM_MB_19[is.na(PM_MB_19$`1-5-19.Incedence`) ,c("15-4-19.Incedence", "23-4-19.Incedence")]-1),1,FUN = audpc, dates = c(60, 70,78))
+   apply(data.frame(zero = 0,PM_MB_19[is.na(PM_MB_19$`1-5-19.Incedence`) ,c("15-4-19.Incedence", "23-4-19.Incedence")]-1),1,FUN = audpc, dates = c(60, 70,78))
 ```
 
 #### Define treatment data
@@ -3471,14 +3612,14 @@ Herm_19_dat <- PM_MB_19 %>%
              case_when(is.na(`1-5-19.Incedence`) ~ `23-4-19.Incedence`,
                        TRUE ~ `1-5-19.Incedence`))%>%
    mutate(trade_name = 
-             case_when(`T/ment.NUM` == 4 ~ NA_character_,
+             case_when(`T/ment.NUM` == 4 ~ "control",
                        TRUE ~ "Folicur"))%>%
    mutate(fungicide_ai = 
-             case_when(`T/ment.NUM` == 4 ~ NA_character_,
+             case_when(`T/ment.NUM` == 4 ~ "control",
                        TRUE ~ "tebuconazole"))%>%
    
    mutate(dose_ai.ha = 
-             case_when(`T/ment.NUM` == 4 ~ NA_real_,
+             case_when(`T/ment.NUM` == 4 ~ 0,
                        TRUE ~ 62))%>%
    mutate(Y_Msquare = 
              case_when(TOS.NUM == 1 ~ anova(lm(Yeild/1000 ~ 
@@ -3527,7 +3668,6 @@ Herm_19_dat <-
               AUDPC = Herm_19_dat$AUDPC
               )
 
-Herm_19_m
 ```
 
 
@@ -3582,6 +3722,19 @@ Herm_19_m[,c("trial_ref","disease_error","yield_error")] <-
 
 
 Herm_19_m <- fold_data(Herm_19_m, PM_MB_means)
+
+# insert new calculations into data
+PM_MB_means <- 
+   replace_data(template_data = PM_MB_means, 
+                            new_data = Herm_19_m, 
+                            new_data_column = "AUDPC_m", 
+                            ignore_columns = c(5:8,10:16,29:46))
+
+PM_MB_means <- replace_data(template_data = PM_MB_means,
+                            new_data = Herm_19_m,
+                            new_data_column = "AUDPC_sd",
+                            ignore_columns = c(5:8,10:16,29:46))
+
 
 write.csv(
    Herm_19_m,
