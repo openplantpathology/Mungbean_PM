@@ -1,7 +1,7 @@
 # This script takes the large dataset and slims it down
 # The slimed down dataset will be used for the Meta-analysis
 
-source("R/import_data.R")
+#source("R/import_data.R")
 # PM_MB_means <- import_data()
 PM_MB_means <- read.csv("data/1911_PM_MB_means&Ygains.csv")
 
