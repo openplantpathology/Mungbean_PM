@@ -8,7 +8,7 @@ output: html_document
 
 
 ## Who are the intended readers? - list 3 to 5 of them by name  
-   * Adam Sparks – disease modeler  
+   * Adam Sparks – disease modeller  
    * Levente Kiss – Powdery mildew taxonomist  
    * Lisa Kelly – Plant pathologist  
    * Paul MacIntosh – Mungbean/ pulse agronomist  
