@@ -297,7 +297,7 @@ efficacy %>%
    ggplot(aes(Treatment, Mean))+
    geom_hline(yintercept = c(0.8,1,1.2,1.4), color = "grey80", linetype = 3)+
    geom_point(aes(size=1/SE), shape=15)+
-   geom_linerange(aes(ymin = CIinf, ymax = CIsup))+
+   geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper))+
    coord_flip()+
    theme_usq()
 
@@ -347,6 +347,10 @@ forest(net_con, reference.group = 4,
 ```
 
 
+
+
+
+
 ## AUPDC and PM severity meta-analysis
 
 ```{r LMER_AUDPC}
@@ -361,9 +365,10 @@ summary(Me_mod2)
 
 anova(Me_mod1, Me_mod2)
 
+coef(Me_mod2)
 ```
 
-
+Lets compare the area under the disease progress curve (AUDPC) to final severity.
 ```{r LMER_finalSev}
 
 Me_mod3 <- lmer(grain_yield.t.ha ~ PM_final_severity + (1|trial),
@@ -374,6 +379,8 @@ Me_mod4 <- lmer(grain_yield.t.ha ~ PM_final_severity + (PM_final_severity|trial)
               data = slimmer_PM_dat)
 summary(Me_mod4)
 
-anova(Me_mod1, Me_mod2)
+anova(Me_mod3, Me_mod4)
 
 ```
+
+Final severity as a measurement does not model as well as AUDPC. Also it is less significant of a predictor.
