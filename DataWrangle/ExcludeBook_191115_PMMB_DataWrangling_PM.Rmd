@@ -46,7 +46,7 @@ fold_data <- function(new_DataFrame, template_DataFrame){
       new_DataFrame[,c(cnames2, cnames1[is.na(x1)])]  # adding column names to new_DataFrame not in template_DataFrame
    return(new_DataFrame)
 }
-
+source("../copy_class.R")
 source("../R/data_mesh.R")
 ```
 
@@ -408,6 +408,7 @@ King_11 <-
 tmp1 <- do.call(rbind.data.frame, strsplit(King_11$`Treatment!`, " "))
 colnames(tmp1) <- c("cultivar" , "spray_n", "spray", "fungicide")
 King_11 <- cbind(tmp1, King_11)
+King_11$spray_n <- as.numeric(as.character(King_11$spray_n))
 ```
 
 #### Define treatment data
@@ -550,7 +551,7 @@ King_11_m <- copy_class(PM_MB_means,King_11_m)
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = King_11_m, 
                             new_data_column = "AUDPC_m", 
-                            ignore_columns = c(5:10,30:46))
+                            ignore_columns = c(5:8,10:16,29:46))
 
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = King_11_m, 
@@ -1427,8 +1428,6 @@ write.csv(
    row.names = FALSE
 )
 
-sd(MarysM_13_dat[MarysM_13_dat$n_treatment == 9,"grain_yield.t.ha."])
-
 ```
 
 
@@ -1780,7 +1779,7 @@ Premer_13_dat <-
               )
 
 Premer_13_dat <- cbind(Premer_13_dat,
-                          AUDPC = apply(data.frame(zero = 1,
+                          AUDPC = apply(data.frame(zero = 0,
                                                    Premer_13[,c("Inc_31D")]-1),
                                         1, 
                                         FUN = audpc, 
@@ -2557,7 +2556,7 @@ write.csv(
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2015 PMmung Herm/Herm_15_means.csv"
 )
 
-Herm_16
+
 ```
 
 
@@ -2948,7 +2947,7 @@ write.csv(
 ```
 
 ### Missen Flats 2017
-```{r Missen2017}
+```{r fog2017}
 # ____________________________________________________________
 # _____________   Missen Flats (Fogarty's) 2017     ____________
 Fogerty_17 <-
@@ -2972,7 +2971,7 @@ Fogerty_17 <- Fogerty_17[, c('Plot', 'Rep', 'Row', 'Column', 'Chem.Trt',
                            'Yield.t/ha', 'Grain.Moisture.%', 'Temp.moisture.Taken',
                            '100.grain.wt.Grams')]
 
-
+# could also use gsub to remove Ts
 Fogerty_17$Treatment.No <- as.numeric(unlist(strsplit(
    Fogerty_17$Treatment.No, "T"))[
       seq(from = 2, to = 324, by = 2)])
@@ -3026,7 +3025,7 @@ Fogerty_17_dat <- Fogerty_17 %>%
              case_when(Chem.Trt == 1 ~ 62,
                        Chem.Trt == 2 ~ 125,
                        Chem.Trt == 3 ~ 60,
-                       TRUE ~ 9999))%>%
+                       TRUE ~ NA_real_))%>%
    mutate(fungicide_application_1 = 
              case_when(Treatment.No == 1 ~ as.Date(NA),
                        Treatment.No == 2 ~ as.Date("2017-02-22", format = "%Y-%m-%d"),
@@ -3048,8 +3047,8 @@ Fogerty_17_dat <- Fogerty_17 %>%
 ```
 
 #### Input trial data
-```{r King16_Trialdat}
-# Remove zeros
+```{r Fog17_Trialdat}
+# Remove zeros because of recording errors (some people recorded zero for no incidence when it should be 1)
 Fogerty_17_dat[Fogerty_17_dat$`2017-03-07` == 0 ,c("2017-03-07")] <- 1
 
 
@@ -3086,14 +3085,13 @@ Fogerty_17_dat <-
                             FUN = audpc, dates = c(1,12,17,26,34,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
               , stringsAsFactors = FALSE)
 
-Fogerty_17_dat[Fogerty_17_dat$n_treatment == 1, "fungicide_ai"] <- "control"
-Fogerty_17_dat[Fogerty_17_dat$n_treatment == 1,"dose_ai.ha"] <- 0
-Fogerty_17_dat[Fogerty_17_dat$n_treatment == 1, "trade_name"] <- "control"
+
+
 
 ```
 
 #### Calculating treatment means
-```{r Missen17_means}
+```{r Fog17_means}
 
 Fogerty_17_m <- Fogerty_17_dat %>%
    group_by(n_treatment, row_spacing, fungicide_ai) %>%
@@ -3130,8 +3128,12 @@ Fogerty_17_m <- Fogerty_17_dat %>%
              Y_error_type = "stdev",
              AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
-             Y_Msquare = anova(lm(grain_yield.t.ha. ~ factor(n_treatment) + fungicide_ai + row_spacing, data = subset(Fogerty_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
+             Y_Msquare = anova(lm(grain_yield.t.ha. ~ factor(n_treatment) + fungicide_ai + row_spacing, 
+                                  data = subset(Fogerty_17_dat, trade_name != "Custodia")))[1,3] # of only triazoles
    )
+
+dim(Fogerty_17_m)
+
 
 # For some weird reason standard deviations are comming back NA in the code above
 Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
@@ -3142,21 +3144,32 @@ Fogerty_17_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
    select(c("n_treatment","row_spacing","disease_error","yield_error"))
 
 
+Fogerty_17_m[Fogerty_17_m$n_treatment == 1, "fungicide_ai"] <- "control"
+Fogerty_17_m[Fogerty_17_m$n_treatment == 1,"dose_ai.ha"] <- 0
+Fogerty_17_m[Fogerty_17_m$n_treatment == 1, "trade_name"] <- "control"
+
+
 Fogerty_17_m <- fold_data(Fogerty_17_m, PM_MB_means)
 Fogerty_17_m <- copy_class(PM_MB_means, Fogerty_17_m)
 
+# I have comment out this code because it does not replace the control plots properly
 # insert new calculations into data
-PM_MB_means <- replace_data(template_data = PM_MB_means, 
-                            new_data = Fogerty_17_m, 
-                            new_data_column = "AUDPC_m", 
-                            ignore_columns = c(5:8,10:16,29:46))
+# PM_MB_means <-   replace_data(template_data = PM_MB_means, 
+#                             new_data = Fogerty_17_m, 
+#                             new_data_column = "AUDPC_m", 
+#                             ignore_columns = c(5:8,10:16,29:46))
+# 
+# PM_MB_means <- replace_data(template_data = PM_MB_means,
+#                             new_data = Fogerty_17_m,
+#                             new_data_column = "AUDPC_sd",
+#                             ignore_columns = c(5:8,10:16,29:46))
 
-PM_MB_means <- replace_data(template_data = PM_MB_means,
-                            new_data = Fogerty_17_m,
-                            new_data_column = "AUDPC_sd",
-                            ignore_columns = c(5:8,10:16,29:46))
 
-dim(Fogerty_17_m)
+
+PM_MB_means[PM_MB_means$trial_ref == "mung1617/02",] <- 
+   Fogerty_17_m
+
+
 write.csv(
    Fogerty_17_m,
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty_17_mean.csv",
@@ -3567,7 +3580,7 @@ PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 5)
 PM_MB_19 <- subset(PM_MB_19, Harvest.Plot.Number != 6)
 
 # Calculate area under the disease progress curve
-PM_MB_19$AUDPC <- apply(data.frame(zero = 1,PM_MB_19[,c("15-4-19.Incedence", "23-4-19.Incedence", "1-5-19.Incedence")]-1),1,FUN = audpc, dates = c(60, 70,78,86))
+PM_MB_19$AUDPC <- apply(data.frame(zero = 0,PM_MB_19[,c("15-4-19.Incedence", "23-4-19.Incedence", "1-5-19.Incedence")]-1),1,FUN = audpc, dates = c(60, 70,78,86))
 
 
 # Calculate area under the disease progress curve for plots which were not assessed at on 2019-05-01
