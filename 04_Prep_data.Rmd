@@ -235,7 +235,6 @@ slim_PM_dat %<>%
   filter(!is.na(grain_yield.t.ha)) %>% 
   filter(!is.na(PM_final_severity))
 
-head(slim_PM_dat)
 ```
 
 ### Cluster fungicide applications  
@@ -417,5 +416,6 @@ points(grain_yield.t.ha. ~ AUDPC_m, data = dat1[dat1$fungicide_ai == "control",]
 
 ```
 
-
+This sequence of graphs show that AUDPC and disease incidence does not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
+The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding and a large AUDPC.  
 
