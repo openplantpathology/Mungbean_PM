@@ -3357,20 +3357,16 @@ Herm_17_m <- copy_class(PM_MB_means,Herm_17_m)
 # COULD NOT GET TO MATCH
 # insert new calculations into data
 # #PM_MB_means <- 
-#    replace_data(template_data = PM_MB_means, 
-#                             new_data = Herm_17_m, 
-#                             new_data_column = "AUDPC_m", 
-#                             ignore_columns = c(4,5,7,8,10:16,29:46))
-# 
+   # replace_data(template_data = PM_MB_means,
+   #                          new_data = Herm_17_m,
+   #                          new_data_column = "AUDPC_m",
+   #                          ignore_columns = c(4,5,7,8,10:16,29:46))
+
 # PM_MB_means <- replace_data(template_data = PM_MB_means,
 #                             new_data = Herm_17_m,
 #                             new_data_column = "AUDPC_sd",
 #                             ignore_columns = c(5:8,10:16,29:46))
 
-Herm_17_m
-PM_MB_means[PM_MB_means$trial_ref == "mung1617/01",]
-
-colnames(PM_MB_means)
 
 write.csv(
    Herm_17_m,
@@ -3754,5 +3750,12 @@ write.csv(
    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2019/Hermitage_19_mean.csv",
    row.names = FALSE
 )
+
+```
+
+
+```{r Save_PM_MB_means}
+
+write.csv(PM_MB_means, file = "/data/PM_MB_updated.csv")
 
 ```
