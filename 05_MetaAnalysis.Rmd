@@ -251,17 +251,20 @@ PM_mv_AI <- rma.mv(yi,vi,
 summary(PM_mv_AI)
 
 ```
+Results show that yields in single early spray treatments are not significantly different to the no spray control. Commencing spray manangement schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. On average a spray scheduale with two or more applications stating late (7-19 days after first sign of powdery mildew) produced the highest yields.
 
-When we compare these results to those of the linear mixed effect model we notice the metafor model is less certain about the `recommended` and `recommended_plus` treatments. Subsequently there is no signiciant difference between the `recommended` and `recommended_plus` treatments and the no spray control.
+
+When we compare these results to those of the linear mixed effect model there is little difference in the outcome. The most noteable difference is the linear mixed-effect model is somewhat less certain about the `Late_plus` treatment, and the mean yield lower than the `recommended_plus` treatment.
 
 ```{r compare_meta&lmer}
 lme_PM <- lmer(yi ~ spray_management + (spray_management | trial), data = slimmer_PM_dat)
 
 summary(lme_PM)
 
+
 ```
 
-To make it easier to compare each of the treatments we can compute the contrasts.
+To make it easier to compare each of the treatments we can compute the meta-analysis contrasts.
 ```{r metafor_contrasts}
 anova(PM_mv_AI, L=rbind(c(0,1,-1,0,0),  # early vs Recomended
                         c(0,1,0,-1,0),  # early vs recommended plus
@@ -270,7 +273,7 @@ anova(PM_mv_AI, L=rbind(c(0,1,-1,0,0),  # early vs Recomended
                         c(0,0,-1,0,1),  # Recommended vs Late_Plus
                         c(0,0,0,-1,1))) # recommended_plus vs Late_plus
 ```
-Results show that early applications are not significantly different to the no spray control or the one and two spray management options at the recommended time. Lets view this on a plot.
+Results show with the exclusion of the no spray control, none of the treatments are significantly different, however, early applications treatments on average produced lower yields. Lets view this on a plot.
 
 ```{r metafor_results}
 results_AI <- data.frame(cbind(exp(PM_mv_AI$b), 
@@ -303,11 +306,11 @@ efficacy %>%
 
 ```
 
-What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented accross all experiments. However it could also be because it also has a low number of pooled reps per trial. Lets look at how well each of the treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
+What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented across all experiments. However it could also be because it also has a low number of pooled reps per trial. Lets look at how well each of the treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
 
 
 ### netmeta package  
-Lets analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust. The netmeta package uses a frequentist approach to the analysis, and focuses on the pairwise comparisons between treatments.  
+Lets analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust. The `netmeta` package uses a frequentist approach to the analysis, and focuses on the pairwise comparisons between treatments.  
 
 ```{r netmeta-analysis}
 library(netmeta)
@@ -346,27 +349,43 @@ forest(net_con, reference.group = 4,
 
 ```
 
-
+The `netmeta` analysis suggests the spray scheduale commencing early are no different to any other treatment including the no spray control. It estimates the mean is very similar to the recommended treatments. The recommended plus and late_plus treatments show higher mean estimates, however not significantly different from the early estimate.  
 
 
 
 
 ## AUPDC and PM severity meta-analysis
 
-```{r LMER_AUDPC}
+```{r LM_AUDPC}
+summary(lm(grain_yield.t.ha ~ AUDPC_m, data = slimmer_PM_dat))
 
+```
+
+Area under the disease progress curve (AUDPC) shows no linear relationship with the grain yield data when analysed without respect to any other factor. Lets use a mixed effect model which incorporates `trial` as a random effect. This makes sense given when we plotted the data subset by trial we could see a better relationship between grain yield and AUDPC.
+
+```{r LMER_AUDPC1}
 Me_mod1 <- lmer(grain_yield.t.ha ~ AUDPC_m + (1|trial),
               data = slimmer_PM_dat)
 summary(Me_mod1)
+```
 
+AUDPC becomes a significant predictor of grain yield when the random effect `trial` is accounted for. However we noticed in the plots earlier that not only the intercept but the slope varies depending on the trial. Lets see if the model improves when AUDPC is used as a random slope for trial.  
+
+```{r LMER_AUDPC2}
 Me_mod2 <- lmer(grain_yield.t.ha ~ AUDPC_m + (AUDPC_m|trial),
               data = slimmer_PM_dat)
-summary(Me_mod2)
-
 anova(Me_mod1, Me_mod2)
 
-coef(Me_mod2)
 ```
+The model is significantly improved, lower AIC and a higher log likelihood. 
+
+```{r LMER_AUDPC2_results}
+summary(Me_mod2)
+coef(Me_mod2)[["trial"]][
+   order(coef(Me_mod2)[["trial"]]$AUDPC_m),]
+```
+Here the intercept represents an estimate of the trial yield without the limitation of the disease. AUDPC_m shows the slope of the regression for grain yield as AUDPC increases. The coefficients of the model (ordered by AUDPC) show that higher yielding trials had a steeper negative slope. In other words higher yielding mungbean crops were likely to see greater losses from disease.
+
 
 Lets compare the area under the disease progress curve (AUDPC) to final severity.
 ```{r LMER_finalSev}
@@ -383,4 +402,23 @@ anova(Me_mod3, Me_mod4)
 
 ```
 
-Final severity as a measurement does not model as well as AUDPC. Also it is less significant of a predictor.
+Powdery mildew incidence at the end of the season was a significant covariate for grain yield, however was a weeker predictor compared to AUDPC.  
+
+We shall proceed by including the spray management predictor into the analysis.  
+
+
+```{r AUDPC_spraymanagement}
+Me_mod5 <- lmer(grain_yield.t.ha ~ AUDPC_m + spray_management+ (AUDPC_m|trial),
+              data = slimmer_PM_dat)
+
+Me_mod6 <- lmer(grain_yield.t.ha ~  AUDPC_m : spray_management+ (AUDPC_m|trial),
+              data = slimmer_PM_dat)
+summary(Me_mod6)
+anova(Me_mod2, Me_mod5)
+anova(Me_mod5, Me_mod6)
+
+Me_mod7 <- lmer(grain_yield.t.ha ~  AUDPC_m : spray_management+ (AUDPC_m|trial),
+              data = slimmer_PM_dat)
+
+```
+
