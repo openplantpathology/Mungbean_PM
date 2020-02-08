@@ -1,6 +1,6 @@
 # estimating_AUDPC_for_trials with no raw data
 
-
+library(agricolae)
 
 estAUDPC <- PM_MB_means[is.na(PM_MB_means$AUDPC_m) &
                            !is.na(PM_MB_means$PM_final_severity),]
