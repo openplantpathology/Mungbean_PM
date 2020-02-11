@@ -24,7 +24,6 @@ library(agricolae)
 
 source("../R/import_data.R")
 PM_MB_means <- import_data()
-
 ```
 
 ## Functions
@@ -101,6 +100,7 @@ Herm_10 <- Herm_10 %>%
    
 ```
 
+
 ```{r Herm10_dataInput}
 Herm_10_dat <- 
    data.frame(trial_ref = "mung0910/01",
@@ -140,18 +140,51 @@ Herm_10_dat <-
               stringsAsFactors = FALSE
               )
 
+```
+
+#### AUDPC curve
+```{r}
+library(ggplot2)
+
 Herm_10_dat <- cbind(Herm_10_dat,
-                          AUDPC = apply(data.frame(zero = 0,
+                     AUDPC = apply(data.frame(zero = 0,
+                                              Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1),
+                                   1, 
+                                   FUN = audpc,
+                                   dates = c((Herm_10_dat$first_sign_disease[1]-7)-
+                                                Herm_10_dat$planting_date[1],
+                                             9*7,11*7,13*7)
+                                   ),
+                     AUDPS = apply(data.frame(zero = 0,
                                                    Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1),
                                         1, 
-                                        FUN = audpc, 
+                                        FUN = audps, 
                                         dates = c((Herm_10_dat$first_sign_disease[1]-7)-
                                                      Herm_10_dat$planting_date[1],
                                                   9*7,11*7,13*7)
                                         )
                           )
 
+Herm_10$PM_zero <- 1
+Herm_plot <- melt(Herm_10, id.vars = c("Description!","Treat!", "Rep!","Cultivar!","fungicide","total_fungicide"),
+                  measure.vars = c("PM_zero","P.M.9wap","P.M.11wap","P.M.13wap"))
+
+Herm_plot <- Herm_plot %>%
+   mutate(T_var = case_when(variable == "PM_zero" ~ 
+                               as.numeric((Herm_10_dat$first_sign_disease[1]-7) - Herm_10_dat$planting_date[1]),
+                            variable == "P.M.9wap" ~ 9*7,
+                            variable == "P.M.11wap" ~ 11*7,
+                            variable == "P.M.13wap" ~ 13 * 7)
+   )
+Herm_plot$`Treat!` <- as.factor(Herm_plot$`Treat!`)
+Herm_plot %>%
+   ggplot(aes(x = T_var, y = value, color = `Treat!`, shape = `Treat!`))+
+   geom_jitter(width = 1)+
+   geom_smooth()
+
 ```
+
+
 
 #### Treatment means  
 ```{r Herm10_means}
@@ -313,15 +346,52 @@ Herm_11_dat <-
               harvest_date = as.Date("2011-04-25", format = "%Y-%m-%d"),
               final_assessment = as.Date("2011-04-11", format = "%Y-%m-%d"),
               PM_final_severity = Herm_11$`P.M. 11  w.a.p.`,
-              AUDPC = apply(data.frame(zero = rep(0,42),
-                                       wap11 = Herm_11[,c("P.M. 11  w.a.p.")]-1),1, 
-                            FUN = audpc, dates = c((as.Date("2011-03-28", format = "%Y-%m-%d")-7)- # First sign of disease minus planting date. Gives when there is no disease
-                                                      as.Date("2011-01-24", format = "%Y-%m-%d"),
-                               77)), # -1 to the data because zero disease = 1 on rating scale
+              # AUDPC = apply(data.frame(zero = rep(0,42),
+              #                          wap11 = Herm_11[,c("P.M. 11  w.a.p.")]-1),1, 
+              #               FUN = audpc, dates = c((as.Date("2011-03-28", format = "%Y-%m-%d")-7)- # First sign of disease minus planting date. Gives when there is no disease
+              #                                         as.Date("2011-01-24", format = "%Y-%m-%d"),
+              #                  77)), # -1 to the data because zero disease = 1 on rating scale
               rating_scale = "1-9",
               grain_yield.t.ha. = Herm_11$`Yld Kg/ha`,
               stringsAsFactors = FALSE)
    
+```
+
+#### AUDPC curve
+```{r}
+
+Herm_11_dat <- cbind(Herm_11_dat,
+                     AUDPC = apply(data.frame(zero = rep(0,42),
+                                       wap11 = Herm_11[,c("P.M. 11  w.a.p.")]-1),1, 
+                            FUN = audpc, dates = c((as.Date("2011-03-28", format = "%Y-%m-%d")-7)- 
+                                                      as.Date("2011-01-24", format = "%Y-%m-%d"),
+                                                   77)
+                     ),
+                     AUDPS = apply(data.frame(zero = rep(0,42),
+                                       wap11 = Herm_11[,c("P.M. 11  w.a.p.")]-1),
+                                        1, 
+                                   FUN = audps, 
+                                        dates = c((as.Date("2011-03-28", format = "%Y-%m-%d")-7)- 
+                                                      as.Date("2011-01-24", format = "%Y-%m-%d"),
+                                                  77)
+                                        )
+                          )
+Herm_11$`P.M. 11  w.a.p.`
+Herm_11$PM_zero <- 1
+Herm11_plot <- melt(Herm_11, id.vars = c("Treatment!", "Cultivar!","Tr","Rep!","fungicide_ai","total_fungicide"),
+                  measure.vars = c("PM_zero","P.M. 11  w.a.p."))
+
+Herm11_plot <- Herm11_plot %>%
+   mutate(T_var = case_when(variable == "PM_zero" ~ 
+                               as.numeric((Herm_11_dat$first_sign_disease[1]-7) - Herm_11_dat$planting_date[1]),
+                            variable == "P.M. 11  w.a.p." ~ 11*7)
+   )
+Herm11_plot$`Treatment!` <- as.factor(Herm11_plot$`Treatment!`)
+Herm11_plot %>%
+   ggplot(aes(x = T_var, y = value, color = `Treatment!`, shape = `Treatment!`))+
+   geom_jitter(width = .5, height = 0.05)+
+   geom_smooth(method = "lm")
+
 ```
 
 #### Treatment means
@@ -479,17 +549,50 @@ King_11_dat <-
               grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`),
               #AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")]-1,1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))# -1 to the data because zero disease = 1 on rating scale
               stringsAsFactors = FALSE)
+```
+
+#### AUDPC curve
+```{r}
+library(ggplot2)
 
 King_11_dat <- cbind(King_11_dat,
-                          AUDPC = apply(data.frame(zero = 0,
-                                                   King_11[,c("9 w.a.p.", "11 w.a.p.", 
-                                                              "12 w.a.p.", "14 w.a.p.")])-1,
+                     AUDPC = apply(data.frame(zero = 0,
+                                              King_11[,c("9 w.a.p.","11 w.a.p.","14 w.a.p.")]-1),
+                                   1, 
+                                   FUN = audpc,
+                                   dates = c((King_11_dat$first_sign_disease[1]-7)-
+                                                King_11_dat$planting_date[1],
+                                             9*7,11*7,14*7)
+                                   ),
+                     AUDPS = apply(data.frame(zero = 0,
+                                                   King_11[,c("9 w.a.p.","11 w.a.p.","14 w.a.p.")]-1),
                                         1, 
-                                        FUN = audpc, 
+                                        FUN = audps, 
                                         dates = c((King_11_dat$first_sign_disease[1]-7)-
                                                      King_11_dat$planting_date[1],
-                                           9*7,11*7,12*7, 14*7))
-                     )
+                                                  9*7,11*7,14*7)
+                                        )
+                          )
+
+King_11$PM_zero <- 1
+King11_plot <- melt(King_11, id.vars = c("Treatment!","cultivar","rep!","spray_n","fungicide"),
+                  measure.vars = c("PM_zero","9 w.a.p.","11 w.a.p.","14 w.a.p."))
+
+King11_plot <- King11_plot %>%
+   mutate(T_var = case_when(variable == "PM_zero" ~ 
+                               as.numeric((King_11_dat$first_sign_disease[1]-7) - King_11_dat$planting_date[1]),
+                            variable == "9 w.a.p." ~ 9*7,
+                            variable == "11 w.a.p." ~ 11*7,
+                            variable == "14 w.a.p." ~ 14 *7)
+   )
+
+King11_plot$Treat <- paste0(King11_plot$fungicide,King11_plot$spray_n)
+
+King11_plot %>%
+   ggplot(aes(x = T_var, y = value, color = Treat, shape = Treat))+
+   geom_jitter(width = 0.7, height = 0.07)+
+   geom_smooth()
+
 ```
 
 #### Treatment means  
@@ -3756,6 +3859,6 @@ write.csv(
 
 ```{r Save_PM_MB_means}
 
-write.csv(PM_MB_means, file = "/data/PM_MB_updated.csv")
+write.csv(PM_MB_means, file = "../data/PM_MB_updated.csv")
 
 ```
