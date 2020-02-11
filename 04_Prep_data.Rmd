@@ -5,6 +5,7 @@ library(dplyr)
 library(readr)
 library(kableExtra)
 library(ggplot2)
+library(agricolae)
 ```
 
 ```{r import_data}
@@ -421,7 +422,21 @@ points(grain_yield.t.ha. ~ AUDPC_m, data = dat1[dat1$fungicide_ai == "control",]
 This sequence of graphs show that AUDPC and disease incidence does not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
 The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding and a large AUDPC.  
 
-```{r}
+```{r delete_this_chunk}
+PM_MB_means$infected_days <- as.numeric(PM_MB_means$harvest_date - PM_MB_means$first_sign_disease)
 
+plot(AUDPC_m ~ infected_days, data = PM_MB_means)
+plot(grain_yield.t.ha. ~ infected_days, data = PM_MB_means)
+
+PM_MB_means$harvest_date - PM_MB_means$first_sign_disease
+PM_MB_means[0 > as.Date(PM_MB_means$harvest_date, format = "%Y-%m-%d")-
+as.Date(PM_MB_means$first_sign_disease, format = "%Y-%m-%d"),]
+
+
+# correct dates (this has been done in wrangle file but not updated yet in the data-set)
+PM_MB_means[PM_MB_means$trial_ref == "mung1516/01", "harvest_date"] <- as.Date("2016-05-06", format = "%Y-%m-%d")
+PM_MB_means[PM_MB_means$trial_ref == "mung1516/01", "final_assessment"] <- final_assessment = as.Date("2016-04-15", format = "%Y-%m-%d")
+              
+#curiouspw10-
 ```
 
