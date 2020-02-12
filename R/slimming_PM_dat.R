@@ -27,8 +27,12 @@ slim_PM_dat <- data.frame(
    PM_final_severity = as.double(PM_MB_Mtemp$PM_final_severity),
    PM_final_severity_error = as.double(PM_MB_Mtemp$disease_error),
    Y_Msquare = as.double(PM_MB_Mtemp$Y_Msquare),
+   Inc_Ms = as.double(PM_MB_Mtemp$Inc_Ms),
    AUDPC_m = as.double(PM_MB_Mtemp$AUDPC_m),
-   AUDPC_se = as.double(PM_MB_Mtemp$AUDPC_m)
+   AUDPC_sd = as.double(PM_MB_Mtemp$AUDPC_sd),
+   AUDPS_m = as.double(PM_MB_Mtemp$AUDPS_m),
+   AUDPS_sd = as.double(PM_MB_Mtemp$AUDPS_sd)
+   
 )
 
 
