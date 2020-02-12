@@ -136,7 +136,6 @@ Herm_10_dat <-
               PM_final_severity = Herm_10$P.M.13wap,
               rating_scale = "1-9",
               grain_yield.t.ha. = Herm_10$`Kg/ha`/1000,
-              #AUDPC = apply(Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1,1, FUN = audpc, dates = c(9*7,11*7,13*7)), # -1 to the data because zero disease = 1 on rating scale
               stringsAsFactors = FALSE
               )
 
@@ -222,7 +221,11 @@ Herm_10_m <- Herm_10_dat %>%
               Y_error_type = "stdev",
               AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
-              Y_Msquare = anova(lm(grain_yield.t.ha. ~ host_genotype + factor(n_treatment), data = Herm_10_dat))[2,3]
+             AUDPS_m = mean(AUDPS),
+             AUDPS_sd = sd(AUDPS),
+             Inc_Ms = anova(lm(AUDPC ~ host_genotype + factor(n_treatment), data = Herm_10_dat))[2,3],
+             Y_Msquare = anova(lm(grain_yield.t.ha. ~ host_genotype + factor(n_treatment), data = Herm_10_dat))[2,3]
+             
    )
 
 
@@ -241,14 +244,10 @@ source("../R/data_mesh.R")
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = Herm_10_m, 
-                            new_data_column = "AUDPC_m", 
-                            ignore_columns = c(6,17,30:46))
-
-PM_MB_means <- replace_data(template_data = PM_MB_means, 
-                            new_data = Herm_10_m, 
-                            new_data_column = "AUDPC_sd", 
-                            ignore_columns = c(6,17,30:46))
-
+                            new_data_column = c("AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
+                            filter_cols = c("trial_ref", "year", "location", "host_genotype", 
+                                           "fungicide_ai", "dose_ai.ha","n_treatment"))
+                            #ignore_columns = c(6,17,30:ncol(Herm_10_m))
 
 
 write.csv(
@@ -376,7 +375,8 @@ Herm_11_dat <- cbind(Herm_11_dat,
                                                   77)
                                         )
                           )
-Herm_11$`P.M. 11  w.a.p.`
+
+
 Herm_11$PM_zero <- 1
 Herm11_plot <- melt(Herm_11, id.vars = c("Treatment!", "Cultivar!","Tr","Rep!","fungicide_ai","total_fungicide"),
                   measure.vars = c("PM_zero","P.M. 11  w.a.p."))
@@ -384,8 +384,8 @@ Herm11_plot <- melt(Herm_11, id.vars = c("Treatment!", "Cultivar!","Tr","Rep!","
 Herm11_plot <- Herm11_plot %>%
    mutate(T_var = case_when(variable == "PM_zero" ~ 
                                as.numeric((Herm_11_dat$first_sign_disease[1]-7) - Herm_11_dat$planting_date[1]),
-                            variable == "P.M. 11  w.a.p." ~ 11*7)
-   )
+                            variable == "P.M. 11  w.a.p." ~ 11*7))
+
 Herm11_plot$`Treatment!` <- as.factor(Herm11_plot$`Treatment!`)
 Herm11_plot %>%
    ggplot(aes(x = T_var, y = value, color = `Treatment!`, shape = `Treatment!`))+
@@ -428,6 +428,11 @@ Herm_11_m <- Herm_11_dat %>%
               Y_error_type = "stdev",
              AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
+             AUDPS_m = mean(AUDPS),
+             AUDPS_sd = sd(AUDPS),
+             Inc_Ms = anova(lm(AUDPC ~ host_genotype + factor(n_treatment), 
+                               data = Herm_11_dat[Herm_11_dat$fungicide_ai == "tebuconazole" | 
+                                                        Herm_11_dat$fungicide_ai == "control" ,]))[2,3],
               Y_Msquare = anova(lm(grain_yield.t.ha./1000 ~ factor(n_treatment) + host_genotype, 
                                 data = Herm_11_dat[Herm_11_dat$fungicide_ai == "tebuconazole" | 
                                                         Herm_11_dat$fungicide_ai == "control" ,]))[1,3]
@@ -447,16 +452,9 @@ Herm_11_m <- fold_data(Herm_11_m, PM_MB_means)
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = Herm_11_m, 
-                            new_data_column = "AUDPC_m", 
-                            ignore_columns = c(30:46))
-
-PM_MB_means <- replace_data(template_data = PM_MB_means, 
-                            new_data = Herm_11_m, 
-                            new_data_column = "AUDPC_sd", 
-                            ignore_columns = c(6,17,30:46))
-
-
-
+                            new_data_column = c("AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
+                            filter_cols = c("trial_ref", "year", "location", "host_genotype", 
+                                           "fungicide_ai", "dose_ai.ha","n_treatment"))
 
 
 
@@ -552,7 +550,7 @@ King_11_dat <-
 ```
 
 #### AUDPC curve
-```{r}
+```{r King11_AUDPC}
 library(ggplot2)
 
 King_11_dat <- cbind(King_11_dat,
@@ -632,10 +630,14 @@ King_11_m <- King_11_dat %>%
               Y_error_type = "stdev",
              AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
+             AUDPS_m = mean(AUDPS),
+             AUDPS_sd = sd(AUDPS),
+             Inc_Ms = anova(lm(AUDPC ~ host_genotype + factor(n_treatment), 
+                               data = King_11_dat[King_11_dat$fungicide_ai == "tebuconazole" | 
+                                                        King_11_dat$fungicide_ai == "control" ,]))[2,3],
               Y_Msquare = anova(lm(grain_yield.t.ha./1000 ~ factor(n_treatment) + host_genotype, 
                                 data = King_11_dat[King_11_dat$fungicide_ai == "tebuconazole" | 
-                                                        King_11_dat$fungicide_ai == "control" ,]))[1,3]
-   )
+                                                        King_11_dat$fungicide_ai == "control" ,]))[1,3])
 
 # For some wierd reason standard deviations are comming back NA in the code above
 # Because of n_treatment being converted to a factor I need to wrangle carefully here
@@ -653,13 +655,10 @@ King_11_m <- copy_class(PM_MB_means,King_11_m)
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = King_11_m, 
-                            new_data_column = "AUDPC_m", 
-                            ignore_columns = c(5:8,10:16,29:46))
+                            new_data_column = c("AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
+                            filter_cols = c("trial_ref", "year", "location", "host_genotype", 
+                                           "fungicide_ai", "dose_ai.ha","n_treatment"))
 
-PM_MB_means <- replace_data(template_data = PM_MB_means, 
-                            new_data = King_11_m, 
-                            new_data_column = "AUDPC_sd", 
-                            ignore_columns = c(5:10,30:46))
 
 
 write.csv(
@@ -1011,17 +1010,28 @@ Goolhi_13_dat <-
               #AUDPC = apply(Goolhi_13[,c("Inc_16D","Inc_33D")]-1,1, FUN = audpc, dates = c(16,33))# -1 to the data because zero disease = 1 on rating scale
               )
 
+```   
+
+#### AUDPC curve
+```{r King11_AUDPC}
 Goolhi_13_dat <- cbind(Goolhi_13_dat,
                           AUDPC = apply(data.frame(zero = 0,
                                                    Goolhi_13[,c("Inc_16D","Inc_33D")]-1),
                                         1, 
                                         FUN = audpc, 
-                                        dates = c(1,
-                                                  16,33)
+                                        dates = c(1,16,33)
+                                        ),
+                     AUDPS = apply(data.frame(zero = 0,
+                                                   Goolhi_13[,c("Inc_16D","Inc_33D")]-1),
+                                        1, 
+                                        FUN = audps, 
+                                        dates = c(1,16,33)
                                         )
                           )
-   
-```   
+
+```
+
+
 
 #### Calculating the treatment means
 ```{r Goolhis_means}
