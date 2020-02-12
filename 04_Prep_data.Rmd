@@ -422,6 +422,45 @@ points(grain_yield.t.ha. ~ AUDPC_m, data = dat1[dat1$fungicide_ai == "control",]
 This sequence of graphs show that AUDPC and disease incidence does not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
 The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding and a large AUDPC.  
 
+
+```{r Yield_vs_AUDPS}
+
+slimmer_PM_dat %>%
+   #filter(AUDPC_m <=280)%>%
+#   filter(fungicide_ai == "control")%>%
+   ggplot(aes(x = grain_yield.t.ha, y = AUDPS_m))+
+   geom_point()
+
+summary(lm(grain_yield.t.ha ~ AUDPS_m, data = slimmer_PM_dat, AUDPS_m <= 280))
+
+plot(grain_yield.t.ha. ~ AUDPS_m,data = PM_MB_means)
+abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means))
+
+sm2lg <- PM_MB_means%>%
+   group_by(trial_ref)%>%
+   summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE))%>%
+   arrange(TY)
+
+
+
+for(i in sm2lg$trial_ref){
+   dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
+   if(any(is.na(dat1$grain_yield.t.ha.))){next}
+   if(any(is.na(dat1$AUDPS_m))){next}
+   
+   
+plot(grain_yield.t.ha. ~ AUDPS_m, 
+     data = dat1, main = paste(dat1$location[1],(dat1$year[1])),
+     ylim = c(0,max(PM_MB_means$grain_yield.t.ha., na.rm = TRUE)), 
+     xlim = c(0,max(PM_MB_means$AUDPS_m, na.rm = TRUE)))
+abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = dat1))
+points(grain_yield.t.ha. ~ AUDPS_m, data = dat1[dat1$fungicide_ai == "control",], col = "red")
+   
+}
+
+```
+
+
 ```{r delete_this_chunk}
 PM_MB_means$infected_days <- as.numeric(PM_MB_means$harvest_date - PM_MB_means$first_sign_disease)
 
@@ -433,10 +472,5 @@ PM_MB_means[0 > as.Date(PM_MB_means$harvest_date, format = "%Y-%m-%d")-
 as.Date(PM_MB_means$first_sign_disease, format = "%Y-%m-%d"),]
 
 
-# correct dates (this has been done in wrangle file but not updated yet in the data-set)
-PM_MB_means[PM_MB_means$trial_ref == "mung1516/01", "harvest_date"] <- as.Date("2016-05-06", format = "%Y-%m-%d")
-PM_MB_means[PM_MB_means$trial_ref == "mung1516/01", "final_assessment"] <- final_assessment = as.Date("2016-04-15", format = "%Y-%m-%d")
-              
-#curiouspw10-
 ```
 
