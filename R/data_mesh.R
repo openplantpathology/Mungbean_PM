@@ -4,7 +4,7 @@
 #     dataframe new_data into the column with the same name in template_data.
 # returns a dataframe
 
-replace_data <- function(template_data, new_data, new_data_column, ignore_columns = NULL, trial_ref = NULL){
+replace_data <- function(template_data, new_data, new_data_column, ignore_columns = NULL, filter_cols = NULL,trial_ref = NULL){
    if(any(colnames(template_data) != colnames(new_data))){warning("columns don't match ")
       stop()}
    
@@ -18,28 +18,41 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    template_data <- data.frame(template_data, stringsAsFactors = FALSE)
    new_data <- as.data.frame(new_data, stringsAsFactors = FALSE)
    
-   if(all(new_data_column != colnames(template_data))){warning("\nCan't find index column in template dataset ")
+   if(any(!new_data_column %in% colnames(template_data))){warning("\nCan't find index column in template dataset ")
       stop()}
-   if(is.numeric(ignore_columns)){
-      ignore_columns <- colnames(template_data)[ignore_columns]
-   }
    
    if(any(colnames(template_data) != colnames(new_data))){warning("\nColumns from data don't match")
       stop()}
+   if(all(!is.null(ignore_columns) & !is.null(filter_cols))){warning("\nSpecify only one criteria, not both filter_cols and ignore_columns ")
+      stop()}
    
+   if(is.numeric(ignore_columns)){
+      ignore_columns <- colnames(template_data)[ignore_columns]
+   }
    if(!is.null(ignore_columns)){
       if(class(ignore_columns) != "character"){warning("\nignore_columns not a character vector ")
          
       }
       if(any(colnames(template_data) %in% ignore_columns) == FALSE){
          message(paste("\nNone of the specified columns",ignore_columns,"are included in the template_data "))
-      }   
-     
+      }
+      
+      #specify the columns to match
+      cols1 <- colnames(template_data)[colnames(template_data) %in% c(new_data_column,ignore_columns)]
+      message("\nExcluding columns from match: \n",paste(cols1, collapse = ", "))
+      
+   }else{# when ignore_columns is NULL
+         if(is.numeric(filter_cols)){
+            filter_cols <- colnames(template_data)[filter_cols]
+            
+            #specify the columns to match
+            message("\n Matching by columns: \n",paste(filter_cols, collapse = ", "))
+            
+               }
+      cols1 <- colnames(template_data)[!(colnames(template_data) %in% filter_cols)]
       }
    
-   #specify the columns to match
-   cols1 <- colnames(template_data)[colnames(template_data) %in% c(new_data_column,ignore_columns)]
-   message("\nExcluding columns from match: \n",paste(cols1, collapse = ", "))
+   
    
    
    # subset datasets
@@ -93,7 +106,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
                   matched_rows <- c(matched_rows,i)
                   
                   
-                  if(template_data[i,new_data_column] == new_data[j,new_data_column]){next()}
+                  if(all(template_data[i,new_data_column] == new_data[j,new_data_column])){next()}
                   template_data[i,new_data_column] <- new_data[j,new_data_column]
                   
                   report_rows <- c(report_rows,i)
@@ -126,7 +139,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
                        "\n previous matched rows:", matched_rows)
                }
                
-               if(template_data[i,new_data_column] == new_data[j,new_data_column]){next()}
+               if(all(template_data[i,new_data_column] == new_data[j,new_data_column])){next()}
                template_data[i,new_data_column] <- new_data[j,new_data_column]
                
                report_rows <- c(report_rows,i)
@@ -146,7 +159,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
       
    if(length(report_rows)==0){message("No data changed ", 
                                       length(report_rows),"/",length(matched_rows))}else{
-      message("\nRows from template data replaced\n",paste(report_rows, collapse = ", "),
+      message("\nRow number/s from template data replaced: c(",paste(report_rows, collapse = ", "),")",
               "\ntotal replacements = ",length(report_rows),"/",length(matched_rows))}
    if(dim(new_data)[1] != length(matched_rows)){warning("\n\n NEW_DATA AND MATCHED ROWS ARE DIFFERENT DIMENSIONS\n",
                                                 "Matched rows =",length(matched_rows),
