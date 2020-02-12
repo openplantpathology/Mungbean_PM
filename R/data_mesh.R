@@ -66,15 +66,15 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    
    
    
-   if(is.null(trial_ref) == FALSE){
+   if(is.null(trial_ref) == FALSE){ # this functionality has not been complete, it seems it is an attempt to speed up the function by using the trial_ref to filter the match
       NMC <- vector()
      if(any(trial_ref %in% unique(template_data$trial_ref))){
         
         dat3 <- template_data[template_data$trial_ref == unique(new_data$trial_ref),]
         
-        for(i2 in 1:length(colnames(template_data))){
+        for(i2 in 1:ncol(template_data)){
            message(colnames(template_data)[i2], "match = ",
-              unique(template_data[template_data$trial_ref == trial_ref,1]) != unique(King_11_m[,1])
+              unique(template_data[template_data$trial_ref == trial_ref,1]) != unique(new_data[,1])
            )
            
         }
@@ -125,8 +125,8 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    
    
    
-   for(i in 1:dim(dat1)[1]){
-      for(j in 1:dim(dat2)[1]){
+   for(i in 1:nrow(dat1)){
+      for(j in 1:nrow(dat2)){
    
                
          if(any(is.na(dat1[i,]) != is.na(dat2[j,])) == FALSE){
