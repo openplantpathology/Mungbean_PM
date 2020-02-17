@@ -453,7 +453,7 @@ Lets have a look again at the same sequance of graphs and analyses for area unde
 plot(grain_yield.t.ha. ~ AUDPS_m,data = PM_MB_means)
 abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means))
 
-summary(lm(grain_yield.t.ha ~ AUDPS_m, data = PM_MB_means))
+summary(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means))
 
 sm2lg <- PM_MB_means%>%
    group_by(trial_ref)%>%
