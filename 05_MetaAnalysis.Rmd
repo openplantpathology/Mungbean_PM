@@ -2,10 +2,8 @@
 ```{r MEsummary_Libraries2, message=FALSE}
 # install.packages("tidyverse")
 # install.packages("devtools")
-# devtools::install_github("https://github.com/PaulMelloy/bomrang")
 # devtools::install_github("https://github.com/adamhsparks/theme.usq", dependencies = TRUE)
 # install.packages("lme4")
-
 
 library(RColorBrewer)
 library(tidyverse)
@@ -21,7 +19,14 @@ slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 # Meta-analysis
 ## Grain yield meta-analysis
 
+Lets get started with the analysis by first finding the best model fit that answers our research question.  
 
+> Which spray management scenario provides the greatest yield protection from powdery mildew.  
+
+   - Grain yield is our response variable.  
+   - Trial, which resolves combinations of categorical variables: year, location, row spacing and cultivar; is set as a random intercept.  
+   - We will test spray management (our treatment) as a fixed effect and random slope to trial.  
+   
 ```{r LME_slimmer_cluster_disease_mod}
 
 m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
@@ -44,8 +49,12 @@ anova(m8,m9) # m9 is significantly better model
 anova(m9,m10) # m9 is significantly better model
 anova(m9,m11) # m11 is a simpler model which is no different to m9
 
-summary(m9)
+```
 
+The best model from the four above is `m9` with the lower AIC of -29.357. 
+
+```{r}
+summary(m9)
 ```
 
 This linear mixed effect model shows indicates:  
@@ -264,7 +273,8 @@ summary(lme_PM)
 
 
 ```
-
+&nbsp;  
+&nbsp;  
 To make it easier to compare each of the treatments we can compute the meta-analysis contrasts.
 ```{r metafor_contrasts}
 anova(PM_mv_AI, L=rbind(c(0,1,-1,0,0),  # early vs Recomended

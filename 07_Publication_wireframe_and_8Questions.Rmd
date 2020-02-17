@@ -6,6 +6,7 @@ date: "31/01/2020"
 output: html_document
 ---
 
+# Manuscript wireframe  
 
 ## Who are the intended readers? - list 3 to 5 of them by name  
    * Adam Sparks – disease modeller  
