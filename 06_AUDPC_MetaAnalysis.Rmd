@@ -112,7 +112,7 @@ anova(Me_mod5, Me_mod6)
 
 I will try to use the AUDPC:spray_management interative term as a random effect slope to trial, however I think this may overfit the model preventing convergance.  
 
-```{r AUDPC:spraymangement}
+```{r AUDPC:spraymangement2}
 Me_mod8 <- lmer(grain_yield.t.ha ~ AUDPC_m : spray_management + (AUDPC_m: spray_management|trial),
               data = PM_Mdat)
 
