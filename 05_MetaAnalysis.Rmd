@@ -352,6 +352,44 @@ forest(net_con, reference.group = 4,
 
 The `netmeta` analysis suggests the spray scheduale commencing early are no different to any other treatment including the no spray control. It estimates the mean is very similar to the recommended treatments. The recommended plus and late_plus treatments show higher mean estimates, however not significantly different from the early estimate.  
 
+```{r netgraphGW}
+netgraph(net_con, 
+         plastic = FALSE,
+         col = "orange",
+         thickness =  "number.of.studies",
+         points = FALSE, 
+         col.points = "black", 
+         cex.points = 1,
+         number.of.studies = TRUE,
+         cex.number.of.studies = 1,
+         col.number.of.studies = "black",
+         bg.number.of.studies = "orange",
+         multiarm = FALSE,
+         col.multiarm = "lightblue",
+         pos.number.of.studies = 0.5)
+```
+
+
+```{r}
+netleague(net_con)
+```
+
+```{r}
+decomp.design(net_con)
+```
+
+
+```{r}
+netsplit(net_con)
+```
+```{r}
+nm1 <- netmeasures(net_con)
+
+plot(nm1$meanpath, nm1$minpar, pch="",
+     xlab="Mean path length", ylab="Minimal parallelism")
+text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex=0.8)
+```
+
 
 
 ```{r Save_meta_data}
