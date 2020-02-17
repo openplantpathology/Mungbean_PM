@@ -343,13 +343,18 @@ slim_PM_dat[slim_PM_dat$fungicide_ai == "control",
             c("fungicide_timing_1", "fungicide_timing_2", "fungicide_timing_3",
               "spray_management"
               )] <- "control"
+```
 
+Now to view the number break-down of the `spray_management` treatments
 
+```{r tableSprayManagement}
 table(slim_PM_dat$spray_management)
 
+# For each treatment, when were the first fungicide applications made 
+# relative to the first sign of disease
 table(slim_PM_dat$spray_management,slim_PM_dat$fungicide_timing_1)
-
 ```
+
 There are few 'Early_plus' and 'late' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to be provide accurate results. Therefore we will remove 'Early_plus' and 'Late' from the analysis.  
 
 
@@ -383,19 +388,38 @@ slimmer_PM_dat %>%
 
 ```
 
+&nbsp;  
+&nbsp;  
+&nbsp;  
+
+## AUDPC visualise raw data  
+
+>How well does 'area under the disease progress curve' (AUDPC) predict grain yield?  
+
+and _Does spray_management scenario mitigate yield loss through reducing AUDPC?_  
+
+We would expect to see grain yield decline with increasing AUDPC. Lets just plot yield vs AUDPC.  
+
 ```{r Yield_vs_AUDPC}
 
-slimmer_PM_dat %>%
-   filter(AUDPC_m <=280)%>%
-#   filter(fungicide_ai == "control")%>%
-   ggplot(aes(x = grain_yield.t.ha, y = AUDPC_m))+
-   geom_point()
+plot(grain_yield.t.ha. ~ AUDPC_m,data = PM_MB_means)
+abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
 
-summary(lm(grain_yield.t.ha ~ AUDPC_m, data = subset(slimmer_PM_dat, AUDPC_m <= 280)))
+```
 
-plot(grain_yield.t.ha. ~ AUDPC_m,data = subset(PM_MB_means, AUDPC_m <= 280) )
-abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = subset(PM_MB_means, AUDPC_m <= 280)))
+There appears to be no relationship between the two continuous variables.  
+Does a linear model confirm this?  
 
+```{r AUDPClm}
+summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
+```
+
+There is no relationship as per the linear model.  
+
+Perhaps the variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing a relationship. Lets do the plot again for each trial where there are no missing values.  
+Note: The plots are ordered by mean yield of the trial.
+
+```{r AUDPCxTrial}
 sm2lg <- PM_MB_means%>%
    group_by(trial_ref)%>%
    summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE))%>%
@@ -421,21 +445,15 @@ points(grain_yield.t.ha. ~ AUDPC_m, data = dat1[dat1$fungicide_ai == "control",]
 ```
 
 This sequence of graphs show that AUDPC and disease incidence does not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
-The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding and a large AUDPC.  
+The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.  
 
+Lets have a look again at the same sequance of graphs and analyses for area under the disease progress _stairs_.  
 
 ```{r Yield_vs_AUDPS}
-
-slimmer_PM_dat %>%
-   #filter(AUDPC_m <=280)%>%
-#   filter(fungicide_ai == "control")%>%
-   ggplot(aes(x = grain_yield.t.ha, y = AUDPS_m))+
-   geom_point()
-
-summary(lm(grain_yield.t.ha ~ AUDPS_m, data = slimmer_PM_dat, AUDPS_m <= 280))
-
 plot(grain_yield.t.ha. ~ AUDPS_m,data = PM_MB_means)
 abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means))
+
+summary(lm(grain_yield.t.ha ~ AUDPS_m, data = PM_MB_means))
 
 sm2lg <- PM_MB_means%>%
    group_by(trial_ref)%>%
@@ -462,7 +480,7 @@ points(grain_yield.t.ha. ~ AUDPS_m, data = dat1[dat1$fungicide_ai == "control",]
 ```
 
 
-```{r delete_this_chunk}
+```{r delete_this_chunk, eval=FALSE, include=FALSE}
 PM_MB_means$infected_days <- as.numeric(PM_MB_means$harvest_date - PM_MB_means$first_sign_disease)
 
 plot(AUDPC_m ~ infected_days, data = PM_MB_means)
