@@ -1,4 +1,4 @@
-# Prepare data for meta-anlysys
+# Prepare data for meta-anlysis
 ## Set environment and import data  
 
 ```{r load_libraries}
