@@ -1,4 +1,4 @@
-# Studies considered in meta-analysis  
+# Studies considered in meta-analysis
 
 This meta-analysis uses data collected by a number of researchers from the
 Department of Agriculture and Primary Industries and the University of Southern
@@ -69,8 +69,9 @@ source("R/import_data.R")
 **2001 - 2004 trials**  
 Trial data were obtained from a non-published manuscript.  
 Ratings for powdery mildew were on a 1-5 rating scale and can be read in the
-file "Powdery mildew paper#1.doc". Comparing trials which have not used the same
-rating scale will be done using a percentage change.  
+file "Powdery mildew paper#1.doc".  
+Comparing trials which have not used the same rating scale will be done using a
+percentage change.  
 
 **2013 Field trials**  
 Trials were conducted by the National Growers Alliance (NGA). The raw data were
@@ -80,7 +81,6 @@ existing data rating and scales in the R script `Cleaning historical data.R`.
 ## Summary of data  
 
 ```{r data_summary, echo=TRUE, message=FALSE, warning=FALSE}
-
 PM.dat <- import_data()
 
 kable(
@@ -97,9 +97,9 @@ kable(
       ) %>%
       summarise(treatments = length(n_treatment)),
    caption = "Description of Experiments"
- ) # %>%  #commented as was redering empty, needs a look in
-#    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
-#    scroll_box(width = "900px", height = "500px")
+)  %>%
+   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
+   scroll_box(width = "900px", height = "500px")
 
 ```
 
