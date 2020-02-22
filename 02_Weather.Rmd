@@ -4,7 +4,7 @@ The mungbean DSS determines the need to spray on:
    1. The presence of the disease
    2. The forecasted maximum temperatures in the next seven days
    3. The number of days over the next seven days with rainfall
-   
+
 Below I am plotting the mean maximum temperatures over 7 days during the growing
 season at each mungbean trial site.
 The vertical lines indicate when powdery mildew was first observed in that
@@ -27,6 +27,7 @@ silo_war_Tmax <- read.csv("./data/silo_war_Tmax.csv")
 silo_king_Tmax <- read.csv("./data/silo_king_Tmax.csv")
 silo_gatton_Tmax <- read.csv("./data/silo_gatton_Tmax.csv")
 silo_emerald_Tmax <- read.csv("./data/silo_emerald_Tmax.csv")
+
 ```
 
 
@@ -77,6 +78,28 @@ king_Tm_aver[king_Tm_aver$year == "2002" |
                 king_Tm_aver$year == "2011" |
                 king_Tm_aver$year == "2012" |
                 king_Tm_aver$year == "2016",] %>%
+
+
+
+# Create data subset of powdery mildew data means for the first sign of the disease by location
+PM.dat_sum <- as.data.frame(do.call(rbind,
+                   by(PM.dat, PM.dat$trial_ref, function(x){
+                      c(location = unique(as.character(x$location)),
+                        year = unique(as.character(x$year)),
+                        first_sign = unique(as.character(x$first_sign_disease)),
+                        day = as.numeric(unique(sapply(x$first_sign_disease,year2day))))
+                   }
+                      )), stringsAsFactors = FALSE)
+
+King_FS <- PM.dat_sum[PM.dat_sum$location == "Kingaroy",]
+King_FS$day <- as.numeric(King_FS$day)
+
+
+king_Tm_aver[king_Tm_aver$year == "2002"|
+                king_Tm_aver$year == "2010"|
+                king_Tm_aver$year == "2011"|
+                king_Tm_aver$year == "2012"|
+                king_Tm_aver$year == "2016", ] %>%
    ggplot(aes(x = day)) +
    geom_line(aes(y = max_T, colour = year)) +
    geom_line(aes(y = min_T, colour = year)) +
@@ -139,7 +162,7 @@ war_Tm_aver <-
 # Add columns for Year and date to data
 war_Tm_aver$year <- substr(war_Tm_aver$date, start = 1, stop = 4)
 war_Tm_aver$day <- sapply(war_Tm_aver$date,year2day)
-   
+
 
 # Create data subset of powdery mildew data means for the first sign of the disease by location
 
@@ -231,7 +254,7 @@ Gat_Tm_aver <-
 # Add columns for Year and date to data
 Gat_Tm_aver$year <- substr(Gat_Tm_aver$date, start = 1, stop = 4)
 Gat_Tm_aver$day <- sapply(Gat_Tm_aver$date,year2day)
-   
+
 
 # Create data subset of powdery mildew data means for the first sign of the disease by location
 Gatton_FS <- PM.dat_sum[PM.dat_sum$location == "Gatton",]

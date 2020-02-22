@@ -1,711 +1,408 @@
----
-title: "Meta-analysis"
-author: "P. Melloy"
-date: "`r Sys.Date()`"
-output: html_document
----
 
-
-```{r MEsummary_Libraries, message=FALSE}
+```{r MEsummary_Libraries2, message=FALSE}
 # install.packages("tidyverse")
 # install.packages("devtools")
-# devtools::install_github("https://github.com/PaulMelloy/bomrang")
-# devtools::install_github("https://github.com/adamhsparks/theme.usq")
+# devtools::install_github("https://github.com/adamhsparks/theme.usq", dependencies = TRUE)
 # install.packages("lme4")
-
 
 library(RColorBrewer)
 library(tidyverse)
 library(theme.usq)
 library(bomrang)
+library(lme4)
+library(kableExtra)
 
+# Data
+slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
 ```
 
 # Meta-analysis
+## Grain yield meta-analysis
 
-```{r data_import, message=FALSE, echo=FALSE}
-source("R/import_data.R")
-PM_MB_means <- import_data()
+Lets get started with the analysis by first finding the best model fit that answers our research question.  
 
-# see Yield vs in-season rain section on the influence of rain and irrigation on grain yield
-PM_MB_means$irrigation <- NA
-PM_MB_means[PM_MB_means$location == "Hermitage", "irrigation"] <- TRUE
-PM_MB_means[PM_MB_means$location != "Hermitage", "irrigation"] <- FALSE
+> Which spray management scenario provides the greatest yield protection from powdery mildew.  
+
+   - Grain yield is our response variable.  
+   - Trial, which resolves combinations of categorical variables: year, location, row spacing and cultivar; is set as a random intercept.  
+   - We will test spray management (our treatment) as a fixed effect and random slope to trial.  
+   
+```{r LME_slimmer_cluster_disease_mod}
+
+m8 <- lmer(grain_yield.t.ha*1000 ~ factor(spray_management) +
+              (factor(spray_management) | trial_ref), 
+           data = slimmer_PM_dat)
+
+m9 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + 
+              (factor(spray_management) | trial_ref), 
+           data = slimmer_PM_dat)
+
+m10 <- lmer(log(grain_yield.t.ha*1000) ~ 
+               (factor(spray_management) | trial_ref), 
+           data = slimmer_PM_dat)
+
+m11 <- lmer(log(grain_yield.t.ha*1000) ~ factor(spray_management) + 
+              (1 | trial_ref), 
+           data = slimmer_PM_dat)
+
+anova(m8,m9) # m9 is significantly better model
+anova(m9,m10) # m9 is significantly better model
+anova(m9,m11) # m11 is a simpler model which is no different to m9
 
 ```
 
-## Explore and visualise Data
+The best model from the four above is `m9` with the lower AIC of -29.357. 
 
-Visualise and inspect the number of factors represented in each trial.
+```{r}
+summary(m9)
+```
 
-### Fungicides
+This linear mixed effect model shows indicates:  
+   - A single early spray before first sign of powdery mildew is not likely to increase yields.  
+   - A single or single spray with one or more follow sprays starting  at the `recommended` first spray , within 3 days of powdery mildew first sign are likely to produce significantly higher grain yields compared to the no spray control.  
+   - The `recommended_plus` spray which has one or more follow-up sprays after first sign are likley to increase the mean grain yield.  
+   - `Late_plus` spray treatments showed the highest mean grain yield, and was significantly higher than the no spray control. However showed no difference to either of the `recommended` treatments.  
 
-When investigating previous studies into powdery mildew fungicide efficacy on mungbean `r length(unique(PM_MB_means$trial_ref))` trials were found.
-However, only eleven tebuconazole were used for the following meta-analysis, followed by the next most common fungicide, propiconazole. Sulphur was disregarded due to its inconsistency in efficacy.
 
-```{r Fungicides}
-PM_MB_means %>%
-   group_by(fungicide_ai, trial_ref) %>%
-   summarise() %>%
-   count(sort = TRUE) %>%
-   rename(Trials = n) %>%
-   ggplot(aes(x = reorder(fungicide_ai, Trials), y = Trials)) +
-   xlab("Fungicide active ingredient") +
-   ylab("N Trials") +
-   geom_col() +
-   scale_fill_usq() +
-   ggtitle(label = "Number of trials in which the\nspecified fungicide was used") +
-   scale_colour_usq() +
-   theme_usq() +
+
+### Imputing sample variances  
+
+We need to impute the variances which are missing for a few of the trials. These trials `r unique(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),c("location","year", "trial_ref")])$trial_ref` were analysed and reported that there was no significant difference between the treatments in each trial. So therefore we need the imputed variances not to show a significant difference.  
+
+There are `r sum(is.na(slimmer_PM_dat$yield_error))` treatments without yield error in our data, and `r sum(!is.na(slimmer_PM_dat$yield_error))` where yield error was recorded.  
+
+Plotting a histogram of the variances show that the yield is not normally distributed. A log transformation, however, shows a normal disrtubution. We can use the mean and standard deviation of the log(V) to sample variances for the treatments where V is missing.  
+
+```{r variance_histograms}
+hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
+hist(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
+```
+
+We will evaluate wheather the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, infering signicifant difference, the imputed variances are discarded and resampled until all treatment variances show no significant differences.
+
+```{r imputing_variances}
+
+# generate yield error values
+for(i in 0:500){
+
+   # Imputing missing log variances
+   log_Yerror <- rnorm(n = sum(is.na(slimmer_PM_dat$yield_error)),
+               mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE),
+               sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)) 
+   
+   
+   # First lets convert Variance to standard error for all the variables that have variance recorded
+   slimmer_PM_dat$yield_SE <- 
+      sqrt(slimmer_PM_dat$yield_error)/sqrt(slimmer_PM_dat$n)
+   
+   
+   # Second; adding the imputed standard errors
+   slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"] <-
+      sqrt(exp(log_Yerror))/sqrt(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"n"]) 
+
+
+# all errorbars should overlap so they are consistant with the meta-data describing no significant difference bettween treatments
+# lets test to make sure
+if(
+   max(outer(X = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] -
+               (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+             Y = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] +
+               (2*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+             FUN = "-")
+       ) > 0){
+   
+   message(paste("\nWarning!!: Imputed yield errors show significant differences when they should not, imputation will automatically rerun - iteration", "i =",i))
+   next()
+   }else{
+      message(paste(i,"iterations: ", "imputed variances now show no significant distances :)\n Now adding variances to data "))
+      
+      # Plot the imputed errors for each trial
+      Vplot <- slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),] %>%
+         ggplot(aes(y = grain_yield.t.ha, trial))+
+         #geom_point()+
+         geom_pointrange(ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] -
+                            (1.95*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                         ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"grain_yield.t.ha"] +
+                            (1.95*slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),"yield_SE"]),
+                         position = "jitter"
+                         )+
+         ylim(0.2,1.5)
+      
+      slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_error"] <- exp(log_Yerror)
+      print(Vplot)
+      break()}
+}
+
+```
+
+The imputed variances calculated above don't show the expected positive correlation between grain yield and variance. This is unexpected and reflects the inherent variability of the data. Therefore we will calculate the trial mean squares and use this to calculate the variance for each sample.  
+
+#### Imputing sample variances from Mean squares
+```{r imputing_MSE_dataSpread}
+slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
+hist(unique(slimmer_PM_dat$Y_Msquare))
+hist(log(unique(slimmer_PM_dat$Y_Msquare))) # log mean square has a more normal distribution
+
+```
+
+Imputing using a log transformation of the data is required. Which trials need variance imputation?  
+
+```{r imputing_MSE}
+TrialMSQ <- slimmer_PM_dat %>%
+   group_by(trial_ref)%>%
+   summarise(unique(Y_Msquare))
+
+TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), "trial_ref"]
+```
+
+
+
+```{r imputation_MSE}
+
+
+for(i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`),]$trial_ref){
+   slimmer_PM_dat[slimmer_PM_dat$trial_ref == i,"Y_Msquare"] <- 
+      exp(
+         rnorm(n = 1,
+               mean = mean(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE),
+               sd(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE)
+         )
+      )
+   }
+
+
+```
+
+Before analysis lets have a look at the trimmed down modified data.  
+
+```{r treatment_means_plot}
+slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management, levels(slimmer_PM_dat$spray_management)[rev(c(1,2,4,5,3))])
+
+slimmer_PM_dat %>%
+   ggplot(aes(y = grain_yield.t.ha, x = spray_management))+
+   geom_boxplot()+
+   #geom_point(position = "jitter", alpha = 1/5)+
+   geom_jitter(width = 0.1, alpha = 1/5)+
+   theme_usq()+
+   labs(x = "Spray management variable", 
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario")+
+   theme(plot.title = element_text(hjust = 0.5))+
+   geom_hline(yintercept = 0, linetype = 2)+
    coord_flip()
 ```
 
-Tebuconazole and propiconazole might be able to be pooled as a triazole fungicide treatment. 
-Amistar Xtra is a combination of azoxystrobin and cyproconazole.
-Custodia is a combination of tebuconazole and azoxystrobin.
-Amistar Xtra and Custodia might be able to be pooled given they both contain strobilurin and triazole, however, they contain differing dose ratios (inverted).
+There seems like no difference between the treatments, with exception to Late_plus. Lets do this plot again, but use the proportion of yield increase compared to the no spray control as the response variable.  
 
-Perhaps best way forward is to do an analysis of only the triazoles. Then do another including azoxystrobin as a comparison.
+It is also important to visualise how well the data is compared across the trial years and trials.  
 
-Preliminary analysis of fungicides show there is a difference the effect of fungicide in proportion of yield saved.
+```{r table_of_nTreatments}
+kableExtra::kable(table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year), align=rep('c', 8))%>%  #commented as was redering empty, needs a look in
+   kable_styling("striped", fixed_thead = TRUE, full_width = FALSE, position = "center")
 
-### Fungicide Doses
-
-All trials that used tebuconazole used approximately the same dose.
-Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare. 
-
-```{r tebu_dose}
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole") %>%
-   select(trial_ref,
-          year,
-          location,
-          first_sign_disease,
-          dose_ai.ha,
-          total_fungicide) %>%
-   ggplot(aes(x = as.factor(dose_ai.ha))) +
-   xlab("Dose (g ai/ha)") +
-   ggtitle(label = "Total number of treatments for each respective tebuconazole dose") +
-   geom_bar() +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   theme_usq()
 ```
+Treatments Late_plus and early don't have very good comparison to other treatments.  
+  
 
-### Row spacing
+```{r plot_yieldProportion}
+slimmer_PM_dat$spray_management <-
+   factor(slimmer_PM_dat$spray_management,rev(c("control", "Early", "Recommended", "Recommended_plus","Late_plus")))
 
-Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease.
-The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly. This finding has also been shown by Kerry McKenzie's work as well.
-Eight trials used a row spacing of 0.75&nbsp;meters and tebuconazole as an active ingredient (AI).
-
-```{r row_spacing.m}
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole" | fungicide_ai == "propiconazole") %>%
-   group_by(fungicide_ai, row_spacing, trial_ref) %>%
-   summarise() %>%
-   count() %>%
-   rename(Trials = n) %>%
-   ggplot(aes(x = as.factor(row_spacing), y = Trials)) +
-   xlab("Row Spacing (m)") +
-   ylab("N Trials") +
-   ggtitle(label = "Trial row spacings using tebuconazole") +
-   geom_col(aes(fill = fungicide_ai),
-            position = "dodge") +
-   scale_fill_usq(name = "Fungicide AI") +
-   theme_usq()
-
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-         row_spacing == 0.75) %>% 
-   glimpse()
-```
-
-Were there any statistical difference between all row spacing or only some?
-Can we pool certain row spacings that have no significant difference?
-From the preliminary analysis, the graphs seem to imply that if there is a lower overall yield there is no effect of row spacing on yield.
-However, if the average yield is more than approximately 0.6 - 1 t/ha then smaller row spacing has the potential to provide greater yield.
-
-### Host genotypes
-
-Host genotype may need to be analysed to determine the effect.
-
-```{r Host_genotype}
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-         row_spacing == 0.75) %>%
-   group_by(host_genotype, trial_ref) %>%
-   summarise() %>%
-   count() %>%
-   rename(Treatments = n) %>%
-   ggplot(aes(x = host_genotype, y = Treatments)) +
-   xlab("Cultivar") +
-   ylab("N Trials") +
-   ggtitle(label = "Cultivars used in tebuconazole trials with 0.75 m row spacing") +
-   geom_col() +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   theme_usq()
-```
-
-In general the mungbean varieties have the following resistance to powdery mildew.
-
-   - Berken: Highly susceptible
-   
-   - Crystal: Susceptible
-   
-   - Jade: Moderately susceptible
-
-#### Genotype yield variability
-
-Host genotype seems to contribute to the variation in yield. Berken shows higher yields compared to crystal and jade.
-```{r yield_vol}
-source("R/yield_volatility.r") #function to investigate the volatility in yields
-
-yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
-yield_volatility(genotype_by_trial = FALSE, control_only = TRUE)
-yield_volatility(genotype_by_trial = FALSE, control_only = FALSE, location = "Hermitage")
-
-yield_volatility("Crystal",control_only = TRUE)
-yield_volatility("Crystal",control_only = FALSE)
-
-yield_volatility("Jade",control_only = TRUE)
-yield_volatility("Jade",control_only = FALSE, location = "Hermitage")
-
+slimmer_PM_dat %>%
+   ggplot(aes(y = prop_yield_gain, x = spray_management))+
+   geom_boxplot()+
+   #geom_point(position = "jitter", alpha = 1/5)+
+   geom_jitter(width = 0.1, alpha = 1/5)+
+   theme_usq()+
+   labs(x = "Spray management variable", 
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario")+
+   theme(plot.title = element_text(hjust = 0.5))+
+   geom_hline(yintercept = 0, linetype = 2)+
+   coord_flip()
 ```
 
 
-### Yield vs in-season rain  
 
-In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate any relationship I will loop a linear model over time periods from 20 days prior to planting, to 100 days after planting.
+## Meta-analysis  
+### metafor package  
+Let's load the metafor package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
+Next we are log transforming the grain yield and calculating the variance from the trial mean squares.  
+Finally we will assign factor classes to the main variables in the meta-analysis. Note that variable trial is a combination of:  
+   - Trial identifier  
+   - Trial year  
+   - Trial location  
+   - Host genotype  
+   - Trial row spacing  
 
-#### Best start day for in-crop rainfall
+```{r metafor_organisation}
+library(metafor)
+slimmer_PM_dat$spray_management <-
+   factor(slimmer_PM_dat$spray_management,c("control", "Early", "Recommended", "Recommended_plus","Late_plus"))
 
-Loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time. The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run. For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
+slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
+slimmer_PM_dat$vi <- slimmer_PM_dat$Y_Msquare/(slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha^2)
 
-```{r rainfall_sum_Sstart}
-# The four data files were created from four scripts run as four jobs in Rstudio
-# when the four jobs are finished they can be imported and combined into one data.frame
-# source(Rainfall_x_cropYield_s-10.09_e30.65.R)
-# source(Rainfall_x_cropYield_s-10.09_e65.100.R)
-# source(Rainfall_x_cropYield_s10.30_e30.65.R)
-# source(Rainfall_x_cropYield_s10.30_e65.10.R)
+slimmer_PM_dat$spray_management <- factor(slimmer_PM_dat$spray_management)
+slimmer_PM_dat$trial_ref <- factor(slimmer_PM_dat$trial_ref)
+slimmer_PM_dat$trial <- factor(slimmer_PM_dat$trial)
+```
 
-lm_rain1 <- read.csv("data/lmInSeasonRainfall_-10.09_30.64.csv",stringsAsFactors = FALSE)
-lm_rain2 <- read.csv("data/lmInSeasonRainfall_-10.09_65.100.csv",stringsAsFactors = FALSE)
-lm_rain3 <- read.csv("data/lmInSeasonRainfall_10.30_30.64.csv",stringsAsFactors = FALSE)
-lm_rain4 <- read.csv("data/lmInSeasonRainfall_10.30_65.100.csv",stringsAsFactors = FALSE)
+```{r Metafor-analysis}
 
-lm_rain <- rbind(lm_rain1,lm_rain2,lm_rain3,lm_rain4)
+PM_mv_AI <- rma.mv(yi,vi,
+                   mods = ~ spray_management,
+                   method = "ML",
+                   random = list(~ spray_management | trial),
+                   struct = "UN",
+                   data = slimmer_PM_dat)
 
-lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),]
-lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),]
-lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)),]
-
-
-
-ggplot(lm_rain, aes(x = start_day, y = end_day, z = log(lm_pval)))+
-   geom_raster(aes(fill = log(lm_pval)), interpolate = TRUE)+
-   geom_contour(bins = 15, colour = "white")+
-   geom_abline(intercept = 0, slope = 1, colour = "red")+
-   geom_point(data = lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)),], aes(x = start_day, y = end_day), colour =" red")+
-   scale_fill_distiller(palette ="RdBu", direction = -1) 
-
-
-
-ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_rsquared))+
-   geom_raster(aes(fill = lm_rsquared), interpolate = TRUE)+
-   geom_contour(bins = 15, colour = "white")+
-   geom_abline(intercept = 0, slope = 1, colour = "red")+
-   geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),], aes(x = start_day, y = end_day), colour =" red")+
-   scale_fill_distiller(palette ="RdBu") 
-
-
-
-ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared))+
-   geom_raster(aes(fill = lm_adj_rsquared), interpolate = TRUE)+
-   geom_contour(bins = 15, colour = "white")+
-   geom_abline(intercept = 0, slope = 1, colour = "red")+
-   geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)),], aes(x = start_day, y = end_day), colour =" red")+
-   scale_fill_distiller(palette ="RdBu") 
-
-
+summary(PM_mv_AI)
 
 ```
 
-The approximate period when in-crop rainfall impacts the most on the mean harvest is bettween 11 - 88 days after planting.
+Results show that yields in single early spray treatments are not significantly different to the no spray control. Commencing spray manangement schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. On average a spray scheduale with two or more applications stating late (7-19 days after first sign of powdery mildew) produced the highest yields.
 
 
+When we compare these results to those of the linear mixed effect model there is little difference in the outcome. The most noteable difference is the linear mixed-effect model is somewhat less certain about the `Late_plus` treatment, and the mean yield lower than the `recommended_plus` treatment.
+
+```{r compare_meta&lmer}
+lme_PM <- lmer(yi ~ spray_management + (spray_management | trial), data = slimmer_PM_dat)
+
+summary(lme_PM)
 
 
-### Season range and first incidence
+```
+&nbsp;  
+&nbsp;  
+To make it easier to compare each of the treatments we can compute the meta-analysis contrasts.
+```{r metafor_contrasts}
+anova(PM_mv_AI, L=rbind(c(0,1,-1,0,0),  # early vs Recomended
+                        c(0,1,0,-1,0),  # early vs recommended plus
+                        c(0,1,0,0,-1),  # early vs Late plus
+                        c(0,0,-1,1,0),  # Recommended vs recommended_plus
+                        c(0,0,-1,0,1),  # Recommended vs Late_Plus
+                        c(0,0,0,-1,1))) # recommended_plus vs Late_plus
+```
+Results show with the exclusion of the no spray control, none of the treatments are significantly different, however, early applications treatments on average produced lower yields. Lets view this on a plot.
 
-```{r first_incidence}
-# Here I want to build a plot of horizontal lines indicating the season length and
-# place a dot on the line to indicating the day of the year first sign was observed for that trial
+```{r metafor_results}
+results_AI <- data.frame(cbind(exp(PM_mv_AI$b), 
+                              exp((PM_mv_AI$ci.lb)),
+                              exp(PM_mv_AI$ci.ub)))
 
-season_dates <- PM_MB_means %>%
-   group_by(trial_ref)%>%
-   summarise(Planting_date = unique(planting_date),
-             Harvest_date = unique(harvest_date),
-             First_sign_PM = unique(first_sign_disease),
-             season_length = as.integer(as.Date(unique(harvest_date)) - as.Date(unique(planting_date)))
-             )
+# results_AI <- data.frame(cbind(PM_mv_AI$b, 
+#                               (PM_mv_AI$ci.lb),
+#                               PM_mv_AI$ci.ub))
 
+treat <- c("control", "Early", "Recommended", "Recommended_plus","Late_plus")
+efficacy <- tbl_df(results_AI)
+efficacy$treat <- treat
+efficacy$se <- PM_mv_AI$se
+colnames(efficacy) <- c("Mean", "CIs_lower", "CI_upper", "Treatment", "SE")
+efficacy
+```
 
-# function to extract date from the year
-# format should be Universal time format
-source("R/year2day.r")
+```{r metafor_plot}
+efficacy$Treatment <-
+   factor(efficacy$Treatment,c("control", "Early", "Recommended", "Recommended_plus","Late_plus"))
 
-
-season_dates$Planting_day <- unlist(lapply(season_dates$Planting_date,year2day))
-season_dates$Disease_day <- unlist(lapply(season_dates$First_sign_PM,year2day))
-season_dates$Harvest_day <- season_dates$Planting_day + season_dates$season_length
-
-season_dates[1,"Planting_day"] <- year2day(as.Date("2012-02-28")-7) # planted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
-
-
-first_day_month <- c(0, 31, 59, 90, 120, 151, 181, 211, 243, 273)
-axis_labels_date <- c(format(Sys.Date() - year2day(Sys.Date()) + first_day_month[1], "%b-%d"),  # Jan
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[2], "%b-%d"), # Feb
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[3], "%b-%d"), # March
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[4], "%b-%d"), # April
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[5], "%b-%d"), # May
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[6], "%b-%d"), # June
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[7], "%b-%d"), # July
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[8], "%b-%d"), # August
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[9], "%b-%d"), # Sept
-                         format(Sys.Date() - year2day(Sys.Date()) + first_day_month[10], "%b-%d") # October
-                         )
-
-# reorder the factors so they will appear in chronilogical order
-# I used First sign because all trials have recorded this
-season_dates$trial_ref <- factor(season_dates$trial_ref, levels = levels(season_dates$trial_ref)[rev(order(season_dates$First_sign_PM))])
-
-
-season_dates %>%
-   ggplot()+
-   geom_pointrange(aes(x = trial_ref, y = Disease_day, ymin = Planting_day, ymax = Harvest_day))+
-   scale_y_continuous(
-      limits = c(0, max(season_dates$Planting_day + 
-                           season_dates$season_length, 
-                        na.rm = TRUE)),
-      labels = axis_labels_date,
-      breaks = first_day_month
-   )+
-   geom_point(aes(x = trial_ref, y = Disease_day))+
+efficacy %>% 
+   ggplot(aes(Treatment, Mean))+
+   geom_hline(yintercept = c(0.8,1,1.2,1.4), color = "grey80", linetype = 3)+
+   geom_point(aes(size=1/SE), shape=15)+
+   geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper))+
    coord_flip()+
-   ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
-   
+   theme_usq()
+
 ```
 
+What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented across all experiments. However it could also be because it also has a low number of pooled reps per trial. Lets look at how well each of the treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
 
 
-## Standardising sample variance  
+### netmeta package  
+Lets analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust. The `netmeta` package uses a frequentist approach to the analysis, and focuses on the pairwise comparisons between treatments.  
 
-The type of variance needs to be standardised between trials and treatments for the meta-analysis. 
+```{r netmeta-analysis}
+library(netmeta)
 
-```{r variance}
-# PM_MB_means$Y_error_type <- forcats::fct_explicit_na(PM_MB_means$Y_error_type, na_level = NA)
-# Trials using tebuconazole
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-         row_spacing == 0.75) %>%
-   group_by(trial_ref, location, Y_error_type) %>%
-   summarise(tebuconazole_trts = length(Y_error_type))
+datPM3 <- slimmer_PM_dat %>% 
+   group_by(trial, spray_management, n) %>% 
+      summarize(yi_mean = mean(yi), 
+             vi_mean = mean(vi)) %>% 
+   ungroup()
 
+PM_con <- pairwise(treat = spray_management,
+                  n = n,
+                  mean = yi_mean,
+                  sd = sqrt(vi_mean),
+                  studlab= trial,
+                  data = datPM3, 
+                  sm="MD")
 
-# Trials using propiconazole
-PM_MB_means %>%
-   filter(fungicide_ai == "propiconazole",
-          row_spacing == 0.75) %>%
-   group_by(trial_ref, location, Y_error_type) %>%
-   summarise(propiconazole_trts = length(Y_error_type))
+net_con <- netmeta(TE, 
+                seTE, 
+                treat1, 
+                treat2, 
+                studlab, 
+                data=PM_con, 
+                sm="MD")
+
+summary(net_con)
+
+```
+Now lets visualise this as a forest plot
+
+```{r netmeta-forest}
+forest(net_con, reference.group = 4,
+       rightcols=c("effect", "ci", "Pscore"),
+       rightlabs="P-Score", small.values = "bad")
+
 ```
 
+The `netmeta` analysis suggests the spray scheduale commencing early are no different to any other treatment including the no spray control. It estimates the mean is very similar to the recommended treatments. The recommended plus and late_plus treatments show higher mean estimates, however not significantly different from the early estimate.  
 
-### Converting least-squares tp sample variance
-
-```{r all_LSD_trials}
-Trials <- PM_MB_means %>%
-   filter(
-      #fungicide_ai == "tebuconazole",
-      #    row_spacing == 0.75,
-          Y_error_type == "lsd (P=0.05)") %>%
-   select(trial_ref) %>%
-   distinct()
-Trials
+```{r netgraphGW}
+netgraph(net_con, 
+         plastic = FALSE,
+         col = "orange",
+         thickness =  "number.of.studies",
+         points = FALSE, 
+         col.points = "black", 
+         cex.points = 1,
+         number.of.studies = TRUE,
+         cex.number.of.studies = 1,
+         col.number.of.studies = "black",
+         bg.number.of.studies = "orange",
+         multiarm = FALSE,
+         col.multiarm = "lightblue",
+         pos.number.of.studies = 0.5)
 ```
 
-
-The trial, `mung1112/02` uses Least Square Differences (LSD) to describe the variation within the experiment.
-The following code attempts to convert this to sampling variance as per the method in [Nugugi et.al (2011)](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221).
-Ideas for using a T-critical value of 1.697 came from reading a [statisics-how-to website](https://www.statisticshowto.datasciencecentral.com/how-to-calculate-the-least-significant-difference-lsd/).
-A [table of T-critical values](https://www.statisticshowto.datasciencecentral.com/tables/t-distribution-table/) was consulted where 30 degrees of freedom within experiment was used to find the 'T-crit' value of 1.697.
-
-![Calculating sampling variance from mean squared error Paul et al. (2008)](Paul_etal_2008.PNG)
-
-```{r LSD_2_Sampling Variance}
-# Formula and modifications based off information found at https://www.statisticshowto.datasciencecentral.com/how-to-calculate-the-least-significant-difference-lsd/
-
-for (Trial2012 in Trials$trial_ref) {
-   Tcrit <-
-      1.697  # 0.05 and DFw = 30 # T critical value for which there is significant difference between two groups; This value is the same for both trials "mung1112/01" and "mung1112/02"
-   DFw <-
-      sum(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates) -
-      length(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates) # degrees of freedom within groups
-   # n.A <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$replicates[1]
-   # n.B <- PM_MB_means[PM_MB_means$trial_ref == "Trial2012,]$replicates[2]
-   LSD <-
-      PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$yield_error[1]
-   
-   
-   # SSwithin <- #unknown
-   # MSW <- SSwithin / DFw # mean square within (SS within / DF within)
-   
-   
-   #  LSD = (Tcrit) * sqrt(MSW * (1/n.A + 1/n.B))
-   #  (LSD/Tcrit) = sqrt(MSW * (1/n.A + 1/n.B))
-   #  (LSD/Tcrit)^2 = MSW * (1/n.A + 1/n.B)
-   #  (LSD/Tcrit)^2/(1/n.A + 1/n.B) = MSW
-   #  MSE <- (LSD/Tcrit)^2/(1/n.A + 1/n.B) # This formula was abandon in favor for the formula in Nugugi et. at (2011)
-   MSE <-
-      PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates[1] * (LSD /
-                                                                            Tcrit) ^ 2 / 2 # method for finding variance in Nugugi et.al (2011) DOI: 10.1094/phyto-08-10-0221
-   
-   
-   for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates)) {
-      if (j == 1) {
-         Sv <-
-            vector(length = length(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates))
-      }
-      #  Sv[j]^2 = MSE/(PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$replicates[j] *
-      #                   PM_MB_means[PM_MB_means$trial_ref == Trial2012,]$grain_yield.t.ha[j])
-      # Balance equation
-      Sv[j] = sqrt(MSE / (
-         PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$replicates[j] *
-            as.numeric(PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$grain_yield.t.ha[j])
-      ))
-      
-   }
-   
-   # and replacing the values in the dataset
-   
-   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$yield_error <-
-      Sv
-   PM_MB_means[PM_MB_means$trial_ref == Trial2012, ]$Y_error_type <-
-      "SamplingVariance"
-   
-}
-```
-
-
-### Converting standard deviation to sample variance
-Now to estimate the variance from the standard deviation
-
-```{r stdev2SampVariance}
-# subset data by those which describe the Yield error with standard deviation
-Trials <- PM_MB_means %>%
-   filter(#fungicide_ai == "tebuconazole",
-      #row_spacing.m == 0.75,
-      Y_error_type == "stdev") %>%
-   select(trial_ref) %>%
-   distinct()
-
-
-# calculate the Sampling variance from the standard deviation
-# standard error of the mean equals the standard deviation divided by the square root of the number of samples
-# Sv <- sem^2 <- stdev/sqrt(n)
-# Sampling variance equals the square of the standard error.
-# Sv <- (stdev/sqrt(n))^2
-
-# Therefore
-
-for (j in seq_along(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error)) {
-   # create empty vector at first iteration with length of j
-   if (j == 1) {
-      Sv <-
-         vector(length = length(PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error))
-   }
-   
-   # Equation to convert standard deviation to Sampling Variance
-   Sv[j] = (PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error[j]) ^
-      2
-}
-
-# and replacing the values in the dataset
-PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$yield_error <-
-   Sv
-PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref,]$Y_error_type <-
-   "SamplingVariance"
-```
-
-
-### Estimating variance for trials without reported error
-
-Now for the trickier part creating 'Sampling Variance' for treatments where only mean yield is recorded.  
-The trial which does not report any type of variance also reports that there is no significant difference between the means.
 
 ```{r}
-NATrials <- PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-          row_spacing == 0.75,
-          is.na(Y_error_type)) %>%
-   select(trial_ref) %>%
-   distinct()
+netleague(net_con)
 ```
 
-A single trial `mung1516/03` within the current scope of the meta-analysis fails to report a variance statistic. According to [Machado F. et. al (2017)](http://apsjournals.apsnet.org/doi/10.1094/PDIS-03-17-0340-RE) [Paul et al. (2007)](https://apsjournals.apsnet.org/doi/pdfplus/10.1094/PHYTO-97-2-0211) uses linear regression model to estimate sampling variance.  
-
-#### Mixed effect model to estimate variance
-
-```{r na2Sampling_variance, message=FALSE}
-library(lme4)
-library(scales)
-
-# for(i in PM_MB_means$trial_ref){
-#
-# log(V)[i] = a + b * log(
-#    mean(subset(PM_MB_means$grain_yield.t.ha[i], fungicide_ai == "control"),
-#         subset(PM_MB_means$grain_yield.t.ha[i], fungicide_ai == "tebuconazole")))
-# # need to know what parameters a and b are here
-# # I am guessing they represent prediction parameters for each "study" for each of the treatments, "control" and tebuconazole"
-# }
-
-# method as described by Emerson
-PM_MB_train <- PM_MB_means %>%
-   filter(Y_error_type == "SamplingVariance")
-
-PM_MB_train$trial_ref <- as.factor(PM_MB_train$trial_ref)
-
-plot(PM_MB_train$yield_error,
-     log(PM_MB_train$grain_yield.t.ha))
-
-length(unique(PM_MB_train$trial_ref))
-
-# Run a linear model with grain_yield.t.ha as a fixed effect predictor and trial as a random intercept
-PM_MB_trainLMER <- lmer(yield_error ~ grain_yield.t.ha. +
-                           (1 | trial_ref), data = PM_MB_train)
-summary(PM_MB_trainLMER)
-
-# grain yield (in this model) IS a significant predictor for yield error
-# (t value = 5.826)
-# And the variance increases as the mean increases does log transformation
-# improve the model?
+```{r}
+decomp.design(net_con)
+```
 
 
-PM_MB_trainLMER.1 <- lmer(log(yield_error) ~ `grain_yield.t.ha` +
-                             (1 | trial_ref), data = PM_MB_train)
-summary(PM_MB_trainLMER.1) # grain yield a significant predictor of log(yield error)
-anova(PM_MB_trainLMER, PM_MB_trainLMER.1) # no significant difference between the models
+```{r}
+netsplit(net_con)
+```
+```{r}
+nm1 <- netmeasures(net_con)
 
-
-PM_MB_trainLMER.2 <- lmer(yield_error ~ log(`grain_yield.t.ha`) +
-                             (1 | trial_ref), data = PM_MB_train)
-summary(PM_MB_trainLMER.2) # log(grain yeild) is a significant predictor of yield error
-anova(PM_MB_trainLMER, PM_MB_trainLMER.2) # no significant difference between the models
-
-
-PM_MB_trainLMER.3 <-
-   lmer(log(yield_error) ~ log(`grain_yield.t.ha`) +
-           (1 | trial_ref),
-        data = PM_MB_train)
-summary(PM_MB_trainLMER.3) # log(grain yeild) is a significant predictor of log(yielderror)
-anova(PM_MB_trainLMER, PM_MB_trainLMER.3) # no significant difference between the models
-
-
-# Lets try with Fungicide as a fixed effect
-PM_MB_trainLMER.4 <-
-   lmer(yield_error ~ `grain_yield.t.ha` + as.factor(fungicide_ai) +
-           (1 | trial_ref),
-        data = PM_MB_train)
-summary(PM_MB_trainLMER.4)
-anova(PM_MB_trainLMER, PM_MB_trainLMER.4) # no significant difference between the models
-
-
-
-#log transforming the response or predictor variables did not improve the model therefore I will leave it untransformed
-# I will be using the first model PM_MB_trainLMER for further analyses beyond this point
-
-# Extract the model coefficients
-paramA <-
-   (summary(PM_MB_trainLMER)$coef)[2, 1] # Extract the overall mean slope to predict Yield error
-InterC <-
-   (summary(PM_MB_trainLMER)$coef)[1, 1] # Extract the overall mean intercept to predict Yield error
-lmer.coef <-
-   coef(PM_MB_trainLMER) # extracting the mean random intercept for each of trial variables
-
-
-
-
-
-
-# for(i in NATrials$Trial_ref){
-# #Sv <- (log(PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
-# 
-# Sv <- (PM_MB_means[PM_MB_means$Trial_ref == i,]$`grain_yield.t.ha.` * paramA) + InterC
-# 
-# PM_MB_means[PM_MB_means$Trial_ref == i,]$Yield_error <- Sv
-# PM_MB_means[PM_MB_means$Trial_ref == i,]$Y_error.type <- "SamplingVariance"
-# }
-
-# plot of the mixed effect model, Black line shows the mean lmer regression line
-ggplot(PM_MB_train) +
-   geom_point(aes(y = yield_error, x = grain_yield.t.ha, colour = trial_ref)) +
-   geom_abline(
-      intercept = c(InterC, lmer.coef$trial_ref[, 1]),
-      slope = c(paramA, lmer.coef$trial_ref[, 2]),
-      size = 1,
-      colour = c("Black", hue_pal()(length(unique(PM_MB_train$trial_ref))))
-   ) +
-   coord_cartesian(xlim = c(0, 3)) +
-   theme_usq()
+plot(nm1$meanpath, nm1$minpar, pch="",
+     xlab="Mean path length", ylab="Minimal parallelism")
+text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex=0.8)
 ```
 
 
 
-```{r na2Sv_formula}
-# commented until a reliable model can be written
-
-
-# for (i in NATrials$trial_ref) {
-#    #Sv <- (log(PM_MB_means[PM_MB_means$trial_ref == i,]$`grain_yield.t.ha`) - InterC)/ paramA  # parameter from when I had the predictor and response variable flipped
-#    
-#    Sv <-
-#       (PM_MB_means[PM_MB_means$trial_ref == i,]$`grain_yield.t.ha` * paramA) + InterC
-#    
-#    PM_MB_means[PM_MB_means$trial_ref == i,]$yield_error <- Sv
-#    PM_MB_means[PM_MB_means$trial_ref == i,]$Y_error_type <-
-#       "SamplingVariance"
-# }
-
-```
-
-
-Let's look at the model without the trial mung1718/01, as it looks to be adding some skew.
-
-```{r lmer_remove_mung1718-01}
-# remove from mung1718/01 from training dataset
-PM_MB_train.2 <-
-   PM_MB_train[PM_MB_train$trial_ref != "mung1718/01",]
-
-# Rerun the model
-PM_MB_trainLMER.5 <- lmer(yield_error ~ `grain_yield.t.ha` +
-                             (1 | trial_ref), data = PM_MB_train.2)
-summary(PM_MB_trainLMER.5) # no significant effect of mean grain yield on yield error
-
-
-# Extract the cooeficients
-paramA <-
-   (summary(PM_MB_trainLMER.5)$coef)[2, 1] # Extract the overall mean Slope to predict Yield error
-InterC <-
-   (summary(PM_MB_trainLMER.5)$coef)[1, 1] # Extract the overall mean intercept to predict Yield error
-lmer.coef <-
-   coef(PM_MB_trainLMER.5) # extracting the mean random intercept for each of trial variables
-
-
-# plot the data with the predicted slopes overlayed
-
-ggplot(PM_MB_train.2) +
-   geom_point(aes(y = yield_error, x = grain_yield.t.ha, colour = trial_ref)) +
-   geom_abline(
-      intercept = c(InterC, lmer.coef$trial_ref[, 1]),
-      slope = c(paramA, lmer.coef$trial_ref[, 2]),
-      size = 1,
-      colour = c("Black", hue_pal()(length(unique(PM_MB_train.2$Trial_ref))))
-   ) +
-   coord_cartesian(ylim = c(0, 0.33)) +
-   xlab("Grain Yield (t/ha)") +
-   ylab("Yield Error") +
-   scale_colour_discrete("Trial Reference") +
-   theme_usq()
-
-```
-
-
-#### Random effects model to predict trial variance
-Just for kicks lets look at the linear regression model as a random effects model where `grain_yield.t.ha` is set as a random slope to the random intercept `trial_ref`.
-
-The model fits better as shown by an ANOVA comparison. But how to impute from this model if mean variance for a trial is unknown...
-
-```{r random_slope_model} 
-# This code chunk broke with the addition of new data, I will re-inspect the data and remodel.
-
-# Run a linear model with yield error as a fixed effect predictor and trial as a random intercept
-PM_MB_trainLMERx <- lmer(yield_error ~ 1 +
-                            (grain_yield.t.ha |
-                                trial_ref), data = PM_MB_train)
-
-
-anova(PM_MB_trainLMER, PM_MB_trainLMERx) # random slope model NOT significantly better # P = 0.6677
-
-summary(PM_MB_trainLMERx)
-
-InterC <-
-   (summary(PM_MB_trainLMER)$coef)[1, 1] # Extract the overall mean intercept
-
-lmer.coefx <- coef(PM_MB_trainLMERx)
-
-# plot of the mixed effect model, Black line shows the mean lmer regression line
-ggplot(PM_MB_train) +
-   geom_point(aes(y = yield_error, x = grain_yield.t.ha, colour = trial_ref)) +
-   geom_abline(
-      intercept = lmer.coefx$trial_ref[, 2],
-      slope = lmer.coefx$trial_ref[, 1],
-      size = 1,
-      colour = hue_pal()(length(unique(PM_MB_train$Trial_ref)))
-   ) +
-   coord_cartesian(xlim = c(0, 3),
-                   ylim = c(0, 1)) +
-   xlab("Grain Yield (t/ha)") +
-   ylab("Yield Error") +
-   scale_colour_discrete("Trial Reference") +
-   theme_usq()
-```
-After much deliberation I don't think this is possible to use the model with grain yield t/ha as a random slope. Even though we know the grain yields and the mean of the grain yields, we still can't predict the effect of the random intercept trial on the yield error.
-
-
-I also re-ran the model without including the trial in which we used LSD to interpret the sampling variance and the model lost a lot of significance.  
-
-
-
-## Between trial variation
-
-Emerson proposed I look at the between trial variation
-```{r between_trial_variation}
-unique(PM_MB_means$Y_error_type)
-
-PM_MB_means.SV <- PM_MB_means[PM_MB_means$Y_error_type == "SamplingVariance",]
-meta_mean.GY <- mean(PM_MB_means.SV$grain_yield.t.ha.,na.rm = TRUE)
-
-
-# find the mean and variance of each trial
-PM_MB_means_T <- PM_MB_means %>%
-   filter(Y_error_type == "SamplingVariance") %>%
-   group_by(trial_ref) %>%
-   summarise(trial_mean = mean(grain_yield.t.ha., na.rm = TRUE),
-             BW_trial_variance = sd(grain_yield.t.ha., na.rm = TRUE) ^ 2
-             ) # I am not sure I have calculated between trial variance or trial variance// Should I be using a denominator (N-1) or (N), sd by default uses (N-1)
-
-# by excluding the standard deviation of each treatment I have discarded much of the variance. Should I simulate a larger number of samples for each treatment to reflect the sample distribution of each treatment and then take the mean and standard deviation of the whole trial of the simulated data?
-
-
-
-# update the main data set with Trial variance
-SV_Trials <- unique(PM_MB_means_T$Trial_ref)
-PM_MB_means$TrialVariance <- NA
-
-for(i in SV_Trials){
-   PM_MB_means[PM_MB_means$Trial_ref == i, "TrialVariance"] <- PM_MB_means_T[PM_MB_means_T$Trial_ref == i,"BW_trial_variance"]
-}
-PM_MB_means$TrialVariance
-# OR ?
-PM_MB_means <- left_join(PM_MB_means, PM_MB_means_T, by = "trial_ref")
-
-SV_mod1 <- lm(Trial_variance ~ trial_mean, data = PM_MB_means_T)
-summary(SV_mod1)
-
-plot(Trial_variance ~ trial_mean, data = PM_MB_means_T)
-abline(SV_mod1)
-
+```{r Save_meta_data}
+write.csv(slimmer_PM_dat, file = "data/GYmeta_data.csv")
 
 ```

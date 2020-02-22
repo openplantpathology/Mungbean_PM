@@ -1,0 +1,212 @@
+---
+title: "analysis"
+author: "Emerson"
+date: "10/29/2019"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+```{r}
+datPM <- read_csv("data/slimmer_PM_clusterdat.csv")
+
+
+```
+
+# Fungicide treatments
+
+```{r}
+datPM %>% 
+   tabyl(fungicide_ai)
+
+```
+
+
+
+
+
+
+
+
+
+```{r}
+datPM <- datPM %>% 
+   mutate(V = case_when(is.na(Y_Msquare) ~ mean(datPM$Y_Msquare, na.rm = TRUE),
+                    TRUE ~ Y_Msquare),
+          yi = grain_yield.t.ha,
+          vi = V/n, 
+          id = 1:nrow(datPM)) 
+
+
+
+```
+
+
+
+```{r}
+control <- datPM %>% 
+   filter(spray_management == "control") %>% 
+group_by(trial) %>% 
+summarize(sev_control = mean(PM_final_severity)) 
+
+control %>% 
+   ggplot(aes(sev_control))+
+   geom_histogram()
+
+datPM2 <- left_join(control, datPM) %>% 
+   filter(year != 2019)
+
+datPM2 %>% 
+   ggplot(aes(spray_management, yi, size = 1/vi, color = sev_control))+
+   geom_jitter(width = 0.1)+
+   facet_wrap(~year)
+
+
+datPM2 %>% 
+   filter(spray_management == "control") %>% 
+   ggplot(aes(row_spacing, yi, size = 1/vi, color = sev_control))+
+   geom_jitter(width = 0.1)
+
+```
+
+
+```{r}
+library(metafor)
+
+PM_mv1 <- rma.mv(yi, vi, 
+                    mods = ~ spray_management, 
+                    random = list(~ spray_management | trial, ~1 | id), 
+                    struct="UN", data=datPM2)
+
+```
+
+```{r}
+PM_mv1
+
+anova(PM_mv1, L=rbind(c(0,1,-1,0,0), 
+                        c(0,0,1,-1,0),
+                        c(0,0,1,0,-1),
+                        c(0,0,0,-1,1),
+                        c(0,1,0,0,1)))
+```
+
+```{r}
+results <- data.frame(cbind(PM_mv1$b, 
+                             PM_mv1$ci.lb,
+                             PM_mv1$ci.ub))
+results <- cbind(rownames(results), results)
+rownames(results) <- NULL
+colnames(results)<- c("treat","mean","lci", "uci")
+
+results$treat <- factor(results$treat, levels = results$treat[c(1,3,5,4,2)])
+
+results %>%
+   filter(treat != "intrcpt") %>% 
+   ggplot(aes(treat, mean))+
+   geom_point(aes(size = 1/(uci-lci)), shape =15)+
+   scale_size(name = "1/(upper - lower\nconfidence intervals)")+
+   geom_errorbar(aes(ymin = lci, ymax = uci), width = 0.1)+
+   scale_x_discrete(labels = c("Late with \n follow spray/s","Recommended with\n follow spray/s","Recommended\n single spray","Early single spray"))+
+   labs(y = "Mean yield difference (t/Ha) relative to no spray control",
+        x = " ") +
+   geom_hline(yintercept = seq(from =  0,to = 0.5, by = 0.1), colour = "grey")+
+   coord_flip()+
+   theme_usq()
+
+
+
+
+```
+
+```{r}
+library(netmeta)
+
+datPM3 <- datPM2 %>% 
+   group_by(trial, spray_management, n) %>% 
+      summarize(yi_mean = mean(yi), 
+             vi_mean = mean(vi)) %>% 
+   ungroup()
+
+PM_con <- pairwise(treat = spray_management,
+                  n = n,
+                  mean = yi_mean,
+                  sd = sqrt(vi_mean),
+                  studlab= trial,
+                  data = datPM3, 
+                  sm="MD")
+
+
+```
+
+```{r}
+net_con <- netmeta(TE, 
+                seTE, 
+                treat1, 
+                treat2, 
+                studlab, 
+                data=PM_con, 
+                sm="MD")
+
+summary(net_con)
+```
+
+
+```{r}
+forest(net_con, reference.group = 4,
+       rightcols=c("effect", "ci", "Pscore"),
+       rightlabs="P-Score", small.values = "bad")
+```
+
+```{r}
+netrank(net_con, small.values = "bad")
+```
+
+```{r}
+netgraph(net_con, 
+         plastic = FALSE,
+         col = "orange",
+         thickness =  "number.of.studies",
+         points = FALSE, 
+         col.points = "black", 
+         cex.points = 1,
+         number.of.studies = TRUE,
+         cex.number.of.studies = 1,
+         col.number.of.studies = "black",
+         bg.number.of.studies = "orange",
+         multiarm = FALSE,
+         col.multiarm = "lightblue",
+         pos.number.of.studies = 0.5)
+```
+
+```{r}
+netleague(net_con)
+```
+
+```{r}
+decomp.design(net_con)
+```
+
+
+```{r}
+netsplit(net_con)
+```
+```{r}
+nm1 <- netmeasures(net_con)
+
+plot(nm1$meanpath, nm1$minpar, pch="",
+     xlab="Mean path length", ylab="Minimal parallelism")
+text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex=0.8)
+```
+

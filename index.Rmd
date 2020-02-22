@@ -1,10 +1,15 @@
 ---
 title: "Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis."
-author: "Paul Melloy, Emerson Del Ponte, Charles T. Gray and Adam H. Sparks"
-date: "`r Sys.Date()`"
-output:
-  bookdown::html_book:
-    theme: united
+author: "Paul Melloy, Emerson Del Ponte and Adam H. Sparks"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: 
+biblio-style: apalike
+link-citations: yes
+github-repo: OpenPlantPathology/Mungbean_PM
+description: "A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew."
 ---
 
 

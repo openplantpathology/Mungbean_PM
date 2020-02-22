@@ -1,0 +1,160 @@
+
+```{r MEsummary_Libraries1, message=FALSE}
+# install.packages("tidyverse")
+# install.packages("devtools")
+# devtools::install_github("https://github.com/PaulMelloy/bomrang")
+# devtools::install_github("https://github.com/adamhsparks/theme.usq", dependencies = TRUE)
+# install.packages("lme4")
+
+
+library(RColorBrewer)
+library(tidyverse)
+library(theme.usq)
+library(bomrang)
+library(lme4)
+library(kableExtra)
+
+# Data
+PM_Mdat <- read.csv("data/GYmeta_data.csv")
+```
+
+
+
+# AUPDC meta-analysis
+Now it's time to look at how the spray managment scenarios might impact disease pressure on the mungbean yields. First lets evaulate which measure of disease is the most robust predictor for yield loss, AUDPC, AUDPS or disease incidence at the end of the season.  
+```{r LM_AUDPC}
+library(MuMIn)
+summary(lm(grain_yield.t.ha ~ AUDPC_m, data = PM_Mdat))
+summary(lm(grain_yield.t.ha ~ AUDPS_m, data = PM_Mdat))
+```
+
+Area under the disease progress stairs (AUDPS) shows almost the same fit as the AUDPC linear model. AUDPC and AUDPS are not good predictors of loss in yield overall, without the inclusion of a `trial` parameter. Lets test the model with the inclusion of `trial` as a random effect.  
+
+```{r LMER_AUDPC1}
+Me_mod1 <- lmer(grain_yield.t.ha ~ AUDPC_m + (1|trial),
+              data = PM_Mdat)
+summary(Me_mod1)
+r.squaredGLMM(Me_mod1)
+
+
+Me_mod1.s <- lmer(grain_yield.t.ha ~ AUDPS_m + (1|trial),
+              data = PM_Mdat)
+summary(Me_mod1.s)
+r.squaredGLMM(Me_mod1)
+r.squaredGLMM(Me_mod1.s)
+anova(Me_mod1,Me_mod1.s)
+```
+
+AUDPC becomes a significant predictor of grain yield when the random effect when accounting for `trial`. However we noticed in the plots earlier that not only the intercept but the slope varies depending on the trial. Lets see if the model improves when AUDPC is used as a random slope for trial.  
+
+```{r LMER_AUDPC2}
+Me_mod2 <- lmer(grain_yield.t.ha ~ AUDPC_m + (AUDPC_m|trial),
+              data = PM_Mdat)
+anova(Me_mod1, Me_mod2)
+
+```
+The model is significantly improved, lower AIC and a higher log likelihood. Lets see if AUDPS improves in the same way.
+
+```{r LMER_AUDPS2}
+Me_mod2.s <- lmer(grain_yield.t.ha ~ AUDPS_m + (AUDPS_m|trial),
+              data = PM_Mdat)
+anova(Me_mod1.s, Me_mod2.s)
+
+```
+The model did improve, however AUDPC still shows a better fit as shown by a lower AIC and a model which converged.  
+
+```{r AUDPCvsAUPDS}
+r.squaredGLMM(Me_mod2.s) # Rsquared for AUDPStairs
+r.squaredGLMM(Me_mod2)# Rsquared for AUDPCurve
+```
+
+The R-squared of the AUDPC model is a better fit compared to the AUDPS model.  
+> From here on we will use AUDPC.  
+
+Lets compare the area under the disease progress curve (AUDPC) to final severity.
+```{r LMER_finalSev}
+
+Me_mod3 <- lmer(grain_yield.t.ha ~ PM_final_severity + (1|trial),
+              data = PM_Mdat)
+Me_mod4 <- lmer(grain_yield.t.ha ~ PM_final_severity + (PM_final_severity|trial),
+              data = PM_Mdat)
+anova(Me_mod3, Me_mod4)
+
+summary(Me_mod4)
+r.squaredGLMM(Me_mod4)
+
+# PM_final_incidence vs AUDPC
+anova(Me_mod4,Me_mod2)
+```
+
+Powdery mildew incidence at the end of the season was a significant covariate for grain yield, however was a weeker predictor compared to AUDPC. In addition model comparison shows AUDPC is significantly better at predicting grain yield.  
+### Spray management and AUDPC
+We shall proceed by including the spray management predictor into the analysis.  
+First lets assess the `spray_management` variable as an additive fixed effect.  
+
+```{r AUDPC_spraymanagement}
+Me_mod5 <- lmer(grain_yield.t.ha ~ AUDPC_m + spray_management+ (AUDPC_m|trial),
+              data = PM_Mdat)
+
+anova(Me_mod2, Me_mod5)
+
+```
+This model is significantly better and shows a lower AIC. However makes more sense to use `spray_management` as a interactive term with AUDPC_m. As you would assume AUDPC would be dependant on the `spray_management`.  
+
+It is also worth noting there is no reason to include these parameters individually in the model to assess their independant effect on grain yield as we know the application of fungicide to mitigate yield loss is aimed at reducing the disease in the crop.  
+
+```{r AUDPC:spraymangement}
+Me_mod6 <- lmer(grain_yield.t.ha ~ AUDPC_m : spray_management+ (AUDPC_m|trial),
+              data = PM_Mdat)
+
+anova(Me_mod5, Me_mod6)
+```
+
+I will try to use the AUDPC:spray_management interative term as a random effect slope to trial, however I think this may overfit the model preventing convergance.  
+
+```{r AUDPC:spraymangement2}
+Me_mod8 <- lmer(grain_yield.t.ha ~ AUDPC_m : spray_management + (AUDPC_m: spray_management|trial),
+              data = PM_Mdat)
+
+anova(Me_mod6, Me_mod8)
+
+Me_mod9 <- lmer(grain_yield.t.ha ~ AUDPC_m : spray_management + (1|trial),
+              data = PM_Mdat)
+
+anova(Me_mod6, Me_mod8)
+anova(Me_mod6, Me_mod9)
+```
+As expected the model produced an error warning stating the maximum number of evaluations were exceeded. Also the model comparisons show that the newer Me_mod7 was not a better model. We we proceed with Me_mod6 as the model with the best fit.  
+
+
+```{r LMER_AUDPC2_results}
+summary(Me_mod6)
+coef(Me_mod6)[["trial"]][
+   order(coef(Me_mod6)[["trial"]]$AUDPC_m),]
+
+```
+The first output shows our random effects do a good job of explaining the variation leaving less residual variation than what is explained by the random intercept, trial.  
+In the fixed effects the intercept gives an estimate of the average yield across all treatments (1.29 t/Ha). The other fixed effects show the change in predicted yield as AUDPC increases under each of the spray_management factors. Spray_management treatments, control, Early, and recommended show significant declines in grain_yields as AUDPC increases. Recommended_plus and Late_plus show no significant decline in grain yield as AUDPC increases.   
+
+The second output is the random effect coeficients. Here the intercept represents a yield estimate for each trial without the limitation of the disease. AUDPC_m shows the slope of the regression for grain yield as AUDPC increases. The coefficients of the model (ordered by AUDPC) show that higher yielding trials had a steeper negative slope. In other words higher yielding mungbean crops were likely to see greater losses from disease.  
+
+
+## AUPDC impact on grain yield meta-analysis
+
+```{r Metafor-analysis_withAUDPC}
+PM_Mdat$AUDPC_log <- log(PM_Mdat$AUDPC_m)
+
+PM_mv_AI <- rma.mv(yi,vi,
+                   mods = ~ log(AUDPC_m+1):spray_management,
+                   method = "ML",
+                   random = list(~ spray_management | trial),
+                   struct = "UN",
+                   data = PM_Mdat)
+
+summary(PM_mv_AI)
+
+```
+```{r}
+exp(-0.1196)
+
+```
