@@ -165,7 +165,7 @@ experiment_sites <- data.frame(
 )
 
 write.csv(experiment_sites,
-          "data/Mungbean_experiment_sites.csv",
+          "cache/Mungbean_experiment_sites.csv",
           row.names = FALSE)
 
 leaflet(experiment_sites) %>%
