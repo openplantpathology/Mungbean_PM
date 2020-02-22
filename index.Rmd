@@ -15,23 +15,32 @@ description: "A meta-analysis of fungicide use in mungbean to control for yield 
 
 # Research questions
 
-+ When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yields?  
++ When is the optimum time to spray fungicide to limit the impact of powdery
+mildew on mungbean yields?  
 
-+ How has the first sign of powdery mildew changed over the seasons and between experimental sites?  
++ How has the first sign of powdery mildew changed over the seasons and between
+experimental sites?  
 
-+ Is there an ideal planting time, or fungicide management strategy, which could make use of powdery mildew defoliation during pod maturation resulting in an increased yield?  
++ Is there an ideal planting time, or fungicide management strategy, which could
+make use of powdery mildew defoliation during pod maturation resulting in an
+increased yield?  
 
 + Do infections that occur before flowering increase the probable yield loss?  
 
 + What is the length of a mungbean season and how has it varied in this trial?  
-   - This data has not been collected or is not accurate enough to be useful to answer this question.  
+   - This data has not been collected or is not accurate enough to be useful to
+   answer this question.  
 
 
 ## Parts of analysis that need checking
 
 + Variability among host genotypes.  
-   + The probable influence of season might be influenced by host genotype. This is because newer varieties were adopted into experimental trials as they were released.  
-   + Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken, Crystal to Jade. Jade was the only cultivar used between 2015 and 2019.  
+   + The probable influence of season might be influenced by host genotype. This
+   is because newer varieties were adopted into experimental trials as they were
+   released.  
+   + Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken,
+   Crystal to Jade. Jade was the only cultivar used between 2015 and 2019.  
    
-+ Estimations of plant maturity stages over each growing season. These estimations might able to be computed using APSIM.  
++ Estimations of plant maturity stages over each growing season. These
+estimations might able to be computed using APSIM.  
 
