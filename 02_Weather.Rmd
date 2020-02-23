@@ -1,23 +1,29 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
 # Weather data
 
 The mungbean DSS determines the need to spray on:  
-   1. The presence of the disease
-   2. The forecasted maximum temperatures in the next seven days
-   3. The number of days over the next seven days with rainfall
+   1. The presence of the disease  
+   2. The forecasted maximum temperatures in the next seven days  
+   3. The number of days over the next seven days with rainfall  
 
 Below I am plotting the mean maximum temperatures over 7 days during the growing
 season at each mungbean trial site.
 The vertical lines indicate when powdery mildew was first observed in that
-season. Variation may exist in the sowing date of each trial.
+season.
+Variation may exist in the sowing date of each trial.
 
 ```{r import_libraries_&_data}
 library(ggplot2)
 library(dplyr)
 library(lubridate)
+library(theme.usq)
 source("R/import_data.R")
 PM.dat <-
-   import_data()  # importing means yield and disease severity for each treatment within each powdery mildew trial on mungbean
-source("R/year2day.r")
+   import_data()  # importing means yield and disease severity for each
+# treatment within each powdery mildew trial on mungbean
 source("R/gg_color_hue_function.R")
 
 cols1 <- gg_color_hue(4)
@@ -30,17 +36,26 @@ silo_emerald_Tmax <- read.csv("./data/silo_emerald_Tmax.csv")
 
 ```
 
+Let's have a look at the weather for the main field experiment sites.
 
-Lets have a look at the climate for the main field experiment sites
+```{r first-sign}
+# Create data subset of powdery mildew data means for the first sign of the
+# disease by location
+
+PM.dat_sum <- 
+   PM.dat %>% 
+   distinct(location, year, first_sign_disease) %>% 
+   mutate(day = yday(first_sign_disease))
+```
 
 ### Kingaroy historical weather
 ```{r Kingaroy_weather, echo=FALSE}
-# Smoothing temperatures by taking a rolling7 day average
-max_T <- vector()
-min_T <- vector()
+# Smoothing temperatures by taking a rolling 7-day average
+min_T <- max_T <- vector(mode = "double", length = length(silo_king_Tmax[, 1]))
+
 for (i in 1:length(silo_king_Tmax[, 1])) {
-   max_T <- c(max_T, mean(silo_king_Tmax$max_temp[i:(i + 7)]))
-   min_T <- c(min_T, mean(silo_king_Tmax$min_temp[i:(i + 7)]))
+   max_T <- c(max_T, mean(silo_king_Tmax$max_temp[i:(i + 7)], na.rm = TRUE))
+   min_T <- c(min_T, mean(silo_king_Tmax$min_temp[i:(i + 7)], na.rm = TRUE))
 }
 
 king_Tm_aver <-
@@ -56,50 +71,16 @@ king_Tm_aver <-
 king_Tm_aver$year <- year(king_Tm_aver$date)
 king_Tm_aver$day <- yday(king_Tm_aver$date)
 
-# Create data subset of powdery mildew data means for the first sign of the disease by location
-PM.dat_sum <- as.data.frame(do.call(rbind,
-                                    by(PM.dat, PM.dat$trial_ref, function(x) {
-                                       c(
-                                          location = unique(as.character(x$location)),
-                                          year = unique(as.character(x$year)),
-                                          first_sign = unique(as.character(x$first_sign_disease)),
-                                          day = as.numeric(unique(
-                                             sapply(x$first_sign_disease, year2day)
-                                          ))
-                                       )
-                                    })), stringsAsFactors = FALSE)
+# set year to factor
+king_Tm_aver$year <- as.factor(king_Tm_aver$year)
 
-King_FS <- PM.dat_sum[PM.dat_sum$location == "Kingaroy", ]
-King_FS$day <- as.numeric(King_FS$day)
-
+King_FS <- PM.dat_sum[PM.dat_sum$location == "Kingaroy",]
 
 king_Tm_aver[king_Tm_aver$year == "2002" |
                 king_Tm_aver$year == "2010" |
                 king_Tm_aver$year == "2011" |
                 king_Tm_aver$year == "2012" |
                 king_Tm_aver$year == "2016",] %>%
-
-
-
-# Create data subset of powdery mildew data means for the first sign of the disease by location
-PM.dat_sum <- as.data.frame(do.call(rbind,
-                   by(PM.dat, PM.dat$trial_ref, function(x){
-                      c(location = unique(as.character(x$location)),
-                        year = unique(as.character(x$year)),
-                        first_sign = unique(as.character(x$first_sign_disease)),
-                        day = as.numeric(unique(sapply(x$first_sign_disease,year2day))))
-                   }
-                      )), stringsAsFactors = FALSE)
-
-King_FS <- PM.dat_sum[PM.dat_sum$location == "Kingaroy",]
-King_FS$day <- as.numeric(King_FS$day)
-
-
-king_Tm_aver[king_Tm_aver$year == "2002"|
-                king_Tm_aver$year == "2010"|
-                king_Tm_aver$year == "2011"|
-                king_Tm_aver$year == "2012"|
-                king_Tm_aver$year == "2016", ] %>%
    ggplot(aes(x = day)) +
    geom_line(aes(y = max_T, colour = year)) +
    geom_line(aes(y = min_T, colour = year)) +
@@ -141,13 +122,12 @@ king_Tm_aver[king_Tm_aver$year == "2002"|
 ### Hermitage historical weather
 ```{r Hermitage_weather, echo=FALSE}
 # ______  Hermitage  _______
-max_T <- vector()
-min_T <- vector()
-for (i in 1:length(silo_war_Tmax[, 1])) {
-   max_T <- c(max_T, mean(silo_war_Tmax$max_temp[i:(i + 7)]))
-   min_T <- c(min_T, mean(silo_war_Tmax$min_temp[i:(i + 7)]))
-}
+min_T <- max_T <- vector(mode = "double", length = length(silo_war_Tmax[, 1]))
 
+for (i in 1:length(silo_king_Tmax[, 1])) {
+   max_T <- c(max_T, mean(silo_war_Tmax$max_temp[i:(i + 7)], na.rm = TRUE))
+   min_T <- c(min_T, mean(silo_war_Tmax$min_temp[i:(i + 7)], na.rm = TRUE))
+}
 
 war_Tm_aver <-
    data.frame(
@@ -159,24 +139,21 @@ war_Tm_aver <-
    )
 
 
-# Add columns for Year and date to data
-war_Tm_aver$year <- substr(war_Tm_aver$date, start = 1, stop = 4)
-war_Tm_aver$day <- sapply(war_Tm_aver$date,year2day)
+# Add columns for year and day of year to data
+war_Tm_aver$year <- year(war_Tm_aver$date)
+war_Tm_aver$day <- yday(war_Tm_aver$date)
 
 
 # Create data subset of powdery mildew data means for the first sign of the disease by location
-
 Herm_FS <- PM.dat_sum[PM.dat_sum$location == "Hermitage",]
-Herm_FS$day <- as.numeric(Herm_FS$day)
 
 
-
-
-ggplot(subset(war_Tm_aver, year == levels(factor(Herm_FS$year))),
+ggplot(data = subset(war_Tm_aver, war_Tm_aver$year %in% levels(Herm_FS$year)),
        aes(day)) +
    geom_line(aes(y = max_T, colour = year)) +
    geom_line(aes(y = min_T, color = year)) +
-   labs(x = "Date", y = "Daily maximum temperature averaged over 7 days",
+   labs(x = "Date",
+        y = "Daily maximum temperature averaged over 7 days",
         title = "Maximum and minimum daily temperatures in Hermitage") +
    theme(
       panel.grid.major = element_line(colour = "grey80"),
