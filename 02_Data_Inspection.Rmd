@@ -1,0 +1,16 @@
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.width = 12, fig.height = 9) 
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, skimr)
+
+source("R/import_data.R")
+PM.dat <- import_data()
+```
+
+## Data inspection
+
+```{r}
+skim(PM.dat)
+```
