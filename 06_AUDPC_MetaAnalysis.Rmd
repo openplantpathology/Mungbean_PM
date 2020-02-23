@@ -21,6 +21,19 @@ PM_Mdat <- read.csv("data/GYmeta_data.csv")
 
 
 # AUPDC meta-analysis
+
+```{r AUDPC_funnel}
+PM_Mdat$slope <- NA
+PM_Mdat$SE <- NA
+for(i in PM_Mdat$trial){
+   PM_Mdat[PM_Mdat$trial == i,c("slope", "SE")] <-
+      coef(summary(lm(grain_yield.t.ha ~ AUDPC_m,data = PM_Mdat[PM_Mdat$trial == i,])))[2,1:2]
+}
+
+plot(1/SE ~ slope, data = PM_Mdat, ylim = c(-3000,6000))
+```
+
+
 Now it's time to look at how the spray managment scenarios might impact disease pressure on the mungbean yields. First lets evaulate which measure of disease is the most robust predictor for yield loss, AUDPC, AUDPS or disease incidence at the end of the season.  
 ```{r LM_AUDPC}
 library(MuMIn)
