@@ -32,6 +32,7 @@
   
 <link rel="prev" href="weather-data.html"/>
 <link rel="next" href="prepare-data-for-meta-anlysis.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -49,39 +50,30 @@
 
 
 
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -90,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -137,21 +129,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Research questions</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Research questions</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#parts-of-analysis-that-need-checking"><i class="fa fa-check"></i><b>1.1</b> Parts of analysis that need checking</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a><ul>
+<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#summary-of-data"><i class="fa fa-check"></i><b>2.1</b> Summary of data</a></li>
 <li class="chapter" data-level="2.2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#powdery-mildew-ratings"><i class="fa fa-check"></i><b>2.2</b> Powdery mildew ratings</a></li>
 <li class="chapter" data-level="2.3" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#experimental-locations"><i class="fa fa-check"></i><b>2.3</b> Experimental locations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="weather-data.html"><a href="weather-data.html"><i class="fa fa-check"></i><b>3</b> Weather data</a><ul>
+<li class="chapter" data-level="3" data-path="weather-data.html"><a href="weather-data.html"><i class="fa fa-check"></i><b>3</b> Weather data</a>
+<ul>
 <li class="chapter" data-level="3.0.1" data-path="weather-data.html"><a href="weather-data.html#kingaroy-historical-weather"><i class="fa fa-check"></i><b>3.0.1</b> Kingaroy historical weather</a></li>
 <li class="chapter" data-level="3.0.2" data-path="weather-data.html"><a href="weather-data.html#hermitage-historical-weather"><i class="fa fa-check"></i><b>3.0.2</b> Hermitage historical weather</a></li>
 <li class="chapter" data-level="3.0.3" data-path="weather-data.html"><a href="weather-data.html#gatton-historical-weather"><i class="fa fa-check"></i><b>3.0.3</b> Gatton historical weather</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>4</b> Preliminary Analysis</a><ul>
-<li class="chapter" data-level="4.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>4.1</b> Explore and visualise Data</a><ul>
+<li class="chapter" data-level="4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>4</b> Preliminary Analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>4.1</b> Explore and Visualise Data</a>
+<ul>
 <li class="chapter" data-level="4.1.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#fungicides"><i class="fa fa-check"></i><b>4.1.1</b> Fungicides</a></li>
 <li class="chapter" data-level="4.1.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#mungbean-cultivars"><i class="fa fa-check"></i><b>4.1.2</b> Mungbean cultivars</a></li>
 <li class="chapter" data-level="4.1.3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.1.3</b> Row spacing</a></li>
@@ -159,31 +156,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1.5" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#season-range-and-first-incidence"><i class="fa fa-check"></i><b>4.1.5</b> Season range and first incidence</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html"><i class="fa fa-check"></i><b>5</b> Prepare data for meta-anlysis</a><ul>
+<li class="chapter" data-level="5" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html"><i class="fa fa-check"></i><b>5</b> Prepare data for meta-anlysis</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>5.1</b> Set environment and import data</a></li>
-<li class="chapter" data-level="5.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>5.2</b> Standardising sample variance</a><ul>
+<li class="chapter" data-level="5.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>5.2</b> Standardising sample variance</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>5.2.1</b> Converting least-squares to sample variance</a></li>
 <li class="chapter" data-level="5.2.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>5.2.2</b> Converting standard deviation to sample variance</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#yield-saving"><i class="fa fa-check"></i><b>5.3</b> Yield saving</a></li>
-<li class="chapter" data-level="5.4" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>5.4</b> Reduce data set to required variables</a><ul>
+<li class="chapter" data-level="5.4" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>5.4</b> Reduce data set to required variables</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>5.4.1</b> Cluster fungicide applications</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>5.5</b> AUDPC visualise raw data</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="meta-analysis.html"><a href="meta-analysis.html"><i class="fa fa-check"></i><b>6</b> Meta-analysis</a><ul>
-<li class="chapter" data-level="6.1" data-path="meta-analysis.html"><a href="meta-analysis.html#grain-yield-meta-analysis"><i class="fa fa-check"></i><b>6.1</b> Grain yield meta-analysis</a><ul>
+<li class="chapter" data-level="6" data-path="meta-analysis.html"><a href="meta-analysis.html"><i class="fa fa-check"></i><b>6</b> Meta-analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="meta-analysis.html"><a href="meta-analysis.html#grain-yield-meta-analysis"><i class="fa fa-check"></i><b>6.1</b> Grain yield meta-analysis</a>
+<ul>
 <li class="chapter" data-level="6.1.1" data-path="meta-analysis.html"><a href="meta-analysis.html#imputing-sample-variances"><i class="fa fa-check"></i><b>6.1.1</b> Imputing sample variances</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="meta-analysis.html"><a href="meta-analysis.html#meta-analysis-1"><i class="fa fa-check"></i><b>6.2</b> Meta-analysis</a><ul>
+<li class="chapter" data-level="6.2" data-path="meta-analysis.html"><a href="meta-analysis.html#meta-analysis-1"><i class="fa fa-check"></i><b>6.2</b> Meta-analysis</a>
+<ul>
 <li class="chapter" data-level="6.2.1" data-path="meta-analysis.html"><a href="meta-analysis.html#metafor-package"><i class="fa fa-check"></i><b>6.2.1</b> metafor package</a></li>
 <li class="chapter" data-level="6.2.2" data-path="meta-analysis.html"><a href="meta-analysis.html#netmeta-package"><i class="fa fa-check"></i><b>6.2.2</b> netmeta package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>7</b> AUPDC meta-analysis</a><ul>
+<li class="chapter" data-level="7" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>7</b> AUPDC meta-analysis</a>
+<ul>
+<li class="chapter" data-level="7.0.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#spray-management-and-audpc"><i class="fa fa-check"></i><b>7.0.1</b> Spray management and AUDPC</a></li>
 <li class="chapter" data-level="7.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#aupdc-impact-on-grain-yield-meta-analysis"><i class="fa fa-check"></i><b>7.1</b> AUPDC impact on grain yield meta-analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html"><i class="fa fa-check"></i><b>8</b> Manuscript wireframe</a><ul>
+<li class="chapter" data-level="8" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html"><i class="fa fa-check"></i><b>8</b> Manuscript wireframe</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#who-are-the-intended-readers---list-3-to-5-of-them-by-name"><i class="fa fa-check"></i><b>8.1</b> Who are the intended readers? - list 3 to 5 of them by name</a></li>
 <li class="chapter" data-level="8.2" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-did-you-do-limit---50-words"><i class="fa fa-check"></i><b>8.2</b> what did you do? (limit - 50 words)</a></li>
 <li class="chapter" data-level="8.3" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#why-did-you-do-it-limit---50-words"><i class="fa fa-check"></i><b>8.3</b> Why did you do it? (limit - 50 words)</a></li>
@@ -210,14 +216,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="preliminary-analysis" class="section level1">
+<div id="preliminary-analysis" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Preliminary Analysis</h1>
-<div id="explore-and-visualise-data" class="section level2">
-<h2><span class="header-section-number">4.1</span> Explore and visualise Data</h2>
+<div id="explore-and-visualise-data" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Explore and Visualise Data</h2>
 <p>Various factors have been studied in the previous experiments which may influence the following results. However unless stated the following plots and analyses were made disregarding effects from other factors not mentioned.</p>
 <ol style="list-style-type: decimal">
-<li><p>Fungicide type</p>
-<ol start="2" style="list-style-type: decimal">
+<li><p>Fungicide type</p></li>
 <li><p>Fungicide dose (varies only slightly within some fungicide types)</p></li>
 <li><p>Number of fungicide sprays</p></li>
 <li><p>Timing of fungicide spray/s relative to first sign of disease (<em>i.e</em>. when pathogen is present)</p></li>
@@ -229,55 +234,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Mean daily temperature in the weeks following spray application</p></li>
 <li><p>Final disease rating</p></li>
 <li><p>Two pathogen species cause PM (new discovery in 2018)</p></li>
-</ol></li>
 </ol>
 <p>The data plotted below are from 26 field trials between (2001 - 2019) of which the details are described in <a href="studies-considered-in-meta-analysis.html#studies-considered-in-meta-analysis">Studies considered in meta-analysis section</a>.<br />
 All data explored below are a list of mean values from each treatment applied in each experiment. Some experiments have in-season observations of disease incidence and severity, however here we have summarised the data to show only the end of season observations.</p>
-<div id="fungicides" class="section level3">
+<div id="fungicides" class="section level3" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Fungicides</h3>
-<div id="fungicide-type" class="section level4">
+<div id="fungicide-type" class="section level4" number="4.1.1.1">
 <h4><span class="header-section-number">4.1.1.1</span> Fungicide type</h4>
 <p>Let’s explore how many different types of fungicide were used and at what frequency.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, trial_ref) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="st">   </span><span class="kw">count</span>(<span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Trials =</span> n) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(fungicide_ai, Trials), <span class="dt">y =</span> Trials)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Fungicide active ingredient&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-9" title="9"><span class="st">   </span><span class="kw">geom_col</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-10" title="10"><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-11" title="11"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Number of trials in which the</span><span class="ch">\n</span><span class="st">specified fungicide was used&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-12" title="12"><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-13" title="13"><span class="st">   </span><span class="kw">theme_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-14" title="14"><span class="st">   </span><span class="kw">coord_flip</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="preliminary-analysis.html#cb1-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb1-2"><a href="preliminary-analysis.html#cb1-2"></a><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb1-3"><a href="preliminary-analysis.html#cb1-3"></a><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></span>
+<span id="cb1-4"><a href="preliminary-analysis.html#cb1-4"></a><span class="st">   </span><span class="kw">count</span>(<span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb1-5"><a href="preliminary-analysis.html#cb1-5"></a><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Trials =</span> n) <span class="op">%&gt;%</span></span>
+<span id="cb1-6"><a href="preliminary-analysis.html#cb1-6"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(fungicide_ai, Trials), <span class="dt">y =</span> Trials)) <span class="op">+</span></span>
+<span id="cb1-7"><a href="preliminary-analysis.html#cb1-7"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Fungicide active ingredient&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-8"><a href="preliminary-analysis.html#cb1-8"></a><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-9"><a href="preliminary-analysis.html#cb1-9"></a><span class="st">   </span><span class="kw">geom_col</span>() <span class="op">+</span></span>
+<span id="cb1-10"><a href="preliminary-analysis.html#cb1-10"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb1-11"><a href="preliminary-analysis.html#cb1-11"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Number of trials in which the</span><span class="ch">\n</span><span class="st">specified fungicide was used&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-12"><a href="preliminary-analysis.html#cb1-12"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
+<span id="cb1-13"><a href="preliminary-analysis.html#cb1-13"></a><span class="st">   </span><span class="kw">coord_flip</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/Fungicides-1.png" width="672" /></p>
 <ul>
-<li><p>Tebuconazole and propiconazole could be pooled as a triazole or demethylation inhibitors (DMI) fungicide treatment.</p>
-<ul>
-<li><p>Amistar Xtra and Custodia are both contain strobilurin and triazole, however, they because they contain differing dose ratios (inverted) pooling may not be appropriate.</p></li>
-<li><p>Perhaps best way forward is to do an analysis of only the triazoles/DMIs. Then do another including azoxystrobin as a comparison.</p></li>
-</ul></li>
+<li><p>Tebuconazole and propiconazole could be pooled as a triazole or demethylation inhibitors (DMI) fungicide treatment.</p></li>
+<li><p>Amistar Xtra and Custodia are both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.</p></li>
+<li><p>Perhaps best way forward is to do an analysis of only the triazoles/DMIs.
+Then do another including azoxystrobin as a comparison.</p></li>
 </ul>
-<p> <br />
- </p>
-<p>The primary focus of this research is the effect of fungicide on mitigating yield loss to disease. To reduce the affect of location and seasonal influences we will investigate the proportion of grain yield saved, relative to the no spray controls.</p>
-<p>First lets investigate the difference in the effect of the type of fungicide on proportion of yield saved. Proportion of yield saved is used in attempt to reduce variation between trials.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, total_fungicide) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="st">   </span><span class="kw">summarise</span>(</a>
-<a class="sourceLine" id="cb13-4" title="4">      <span class="dt">n =</span> <span class="kw">length</span>(prop_YG),</a>
-<a class="sourceLine" id="cb13-5" title="5">      <span class="dt">lower_2.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.025</span>)),</a>
-<a class="sourceLine" id="cb13-6" title="6">      <span class="dt">median =</span> <span class="kw">median</span>(prop_YG, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb13-7" title="7">      <span class="dt">mean =</span> <span class="kw">mean</span>(prop_YG, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb13-8" title="8">      <span class="dt">upper_97.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.975</span>))</a>
-<a class="sourceLine" id="cb13-9" title="9">   ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-10" title="10"><span class="st">   </span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove any fungicide groups with less than 5 observations</span></a>
-<a class="sourceLine" id="cb13-11" title="11"><span class="st">   </span><span class="kw">arrange</span>(<span class="kw">desc</span>(median)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-12" title="12"><span class="st">   </span><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Fungicide effect on proportion of yield gain.&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-13" title="13"><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> T, <span class="dt">full_width =</span> T) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-14" title="14"><span class="st">   </span><span class="kw">footnote</span>(<span class="dt">general =</span> <span class="st">&quot;Fungicides with less than five observations were omitted from this table&quot;</span>)</a></code></pre></div>
+<hr />
+<p>The primary focus of this research is the effect of fungicide on mitigating yield loss to disease. To reduce the effect of location and seasonal influences we will investigate the proportion of grain yield saved relative to the no spray control.</p>
+<p>First, let’s investigate the difference in the effect of the type of fungicide on proportion of yield saved. Proportion of yield saved is used in attempt to reduce variation between trials.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="preliminary-analysis.html#cb2-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb2-2"><a href="preliminary-analysis.html#cb2-2"></a><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, total_fungicide) <span class="op">%&gt;%</span></span>
+<span id="cb2-3"><a href="preliminary-analysis.html#cb2-3"></a><span class="st">   </span><span class="kw">summarise</span>(</span>
+<span id="cb2-4"><a href="preliminary-analysis.html#cb2-4"></a>      <span class="dt">n =</span> <span class="kw">length</span>(prop_YG),</span>
+<span id="cb2-5"><a href="preliminary-analysis.html#cb2-5"></a>      <span class="dt">lower_2.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.025</span>)),</span>
+<span id="cb2-6"><a href="preliminary-analysis.html#cb2-6"></a>      <span class="dt">median =</span> <span class="kw">median</span>(prop_YG, <span class="dt">na.rm =</span> T),</span>
+<span id="cb2-7"><a href="preliminary-analysis.html#cb2-7"></a>      <span class="dt">mean =</span> <span class="kw">mean</span>(prop_YG, <span class="dt">na.rm =</span> T),</span>
+<span id="cb2-8"><a href="preliminary-analysis.html#cb2-8"></a>      <span class="dt">upper_97.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.975</span>))</span>
+<span id="cb2-9"><a href="preliminary-analysis.html#cb2-9"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb2-10"><a href="preliminary-analysis.html#cb2-10"></a><span class="st">   </span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove any fungicide groups with less than 5 observations</span></span>
+<span id="cb2-11"><a href="preliminary-analysis.html#cb2-11"></a><span class="st">   </span><span class="kw">arrange</span>(<span class="kw">desc</span>(median)) <span class="op">%&gt;%</span></span>
+<span id="cb2-12"><a href="preliminary-analysis.html#cb2-12"></a><span class="st">   </span><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Fungicide effect on proportion of yield gain.&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb2-13"><a href="preliminary-analysis.html#cb2-13"></a><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> T, <span class="dt">full_width =</span> T) <span class="op">%&gt;%</span></span>
+<span id="cb2-14"><a href="preliminary-analysis.html#cb2-14"></a><span class="st">   </span><span class="kw">footnote</span>(<span class="dt">general =</span> <span class="st">&quot;Fungicides with less than five observations were omitted from this table&quot;</span>)</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 (#tab:Fungicide_x_nSprays_tble2)Fungicide effect on proportion of yield gain.
@@ -319,16 +320,16 @@ propiconazole
 27
 </td>
 <td style="text-align:right;">
-0.2553184
+0.2553
 </td>
 <td style="text-align:right;">
-0.4391669
+0.4392
 </td>
 <td style="text-align:right;">
-0.4733431
+0.4733
 </td>
 <td style="text-align:right;">
-0.7494674
+0.7495
 </td>
 </tr>
 <tr>
@@ -342,16 +343,16 @@ propiconazole
 12
 </td>
 <td style="text-align:right;">
--0.0406504
+-0.0407
 </td>
 <td style="text-align:right;">
-0.4300923
+0.4301
 </td>
 <td style="text-align:right;">
-0.3200283
+0.3200
 </td>
 <td style="text-align:right;">
-0.5680759
+0.5681
 </td>
 </tr>
 <tr>
@@ -365,16 +366,16 @@ propiconazole
 18
 </td>
 <td style="text-align:right;">
-0.0106707
+0.0107
 </td>
 <td style="text-align:right;">
-0.3257382
+0.3257
 </td>
 <td style="text-align:right;">
-0.3115725
+0.3116
 </td>
 <td style="text-align:right;">
-0.6589547
+0.6590
 </td>
 </tr>
 <tr>
@@ -388,16 +389,16 @@ propiconazole
 26
 </td>
 <td style="text-align:right;">
-0.1703930
+0.1704
 </td>
 <td style="text-align:right;">
-0.3062782
+0.3063
 </td>
 <td style="text-align:right;">
-0.2963312
+0.2963
 </td>
 <td style="text-align:right;">
-0.4053595
+0.4054
 </td>
 </tr>
 <tr>
@@ -411,16 +412,16 @@ sulphur
 34
 </td>
 <td style="text-align:right;">
-0.1563882
+0.1564
 </td>
 <td style="text-align:right;">
-0.2588933
+0.2589
 </td>
 <td style="text-align:right;">
-0.3146122
+0.3146
 </td>
 <td style="text-align:right;">
-0.6305019
+0.6305
 </td>
 </tr>
 <tr>
@@ -434,16 +435,16 @@ carbendazim
 5
 </td>
 <td style="text-align:right;">
-0.1620553
+0.1621
 </td>
 <td style="text-align:right;">
-0.1620553
+0.1621
 </td>
 <td style="text-align:right;">
-0.1620553
+0.1621
 </td>
 <td style="text-align:right;">
-0.1620553
+0.1621
 </td>
 </tr>
 <tr>
@@ -457,16 +458,16 @@ tebuconazole
 36
 </td>
 <td style="text-align:right;">
-0.0820065
+0.0820
 </td>
 <td style="text-align:right;">
-0.1239358
+0.1239
 </td>
 <td style="text-align:right;">
-0.1950038
+0.1950
 </td>
 <td style="text-align:right;">
-0.4288166
+0.4288
 </td>
 </tr>
 <tr>
@@ -480,16 +481,16 @@ tebuconazole
 36
 </td>
 <td style="text-align:right;">
--0.0228261
+-0.0228
 </td>
 <td style="text-align:right;">
-0.0440994
+0.0441
 </td>
 <td style="text-align:right;">
-0.1347859
+0.1348
 </td>
 <td style="text-align:right;">
-0.4398634
+0.4399
 </td>
 </tr>
 <tr>
@@ -503,16 +504,16 @@ sulphur
 30
 </td>
 <td style="text-align:right;">
--0.1325323
+-0.1325
 </td>
 <td style="text-align:right;">
-0.0148148
+0.0148
 </td>
 <td style="text-align:right;">
-0.0337396
+0.0337
 </td>
 <td style="text-align:right;">
-0.1700486
+0.1700
 </td>
 </tr>
 <tr>
@@ -526,16 +527,16 @@ carbendazim
 10
 </td>
 <td style="text-align:right;">
--0.0891679
+-0.0892
 </td>
 <td style="text-align:right;">
--0.0114778
+-0.0115
 </td>
 <td style="text-align:right;">
-0.0004782
+0.0005
 </td>
 <td style="text-align:right;">
-0.1002869
+0.1003
 </td>
 </tr>
 <tr>
@@ -549,16 +550,16 @@ sulphur
 7
 </td>
 <td style="text-align:right;">
--0.1026901
+-0.1027
 </td>
 <td style="text-align:right;">
--0.0774749
+-0.0775
 </td>
 <td style="text-align:right;">
--0.0435198
+-0.0435
 </td>
 <td style="text-align:right;">
-0.0445122
+0.0445
 </td>
 </tr>
 <tr>
@@ -690,76 +691,81 @@ NA
 </tr>
 </tfoot>
 </table>
-<p> <br />
- </p>
-<p>Lets visualise this in a plot for one and two sprays only.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_ai =</span> <span class="kw">as.factor</span>(PM_MB_means<span class="op">$</span>fungicide_ai)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">   </span><span class="kw">filter</span>(total_fungicide <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>total_fungicide <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-4" title="4"><span class="st">   </span><span class="kw">filter</span>(</a>
-<a class="sourceLine" id="cb14-5" title="5">      fungicide_ai <span class="op">!=</span><span class="st"> &quot;pyrazophos&quot;</span> <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb14-6" title="6"><span class="st">         </span>fungicide_ai <span class="op">!=</span><span class="st"> &quot;control&quot;</span> <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="st">         </span>fungicide_ai <span class="op">!=</span><span class="st"> &quot;benomyl&quot;</span> <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb14-8" title="8"><span class="st">         </span>fungicide_ai <span class="op">!=</span><span class="st"> &quot;Acibenzolar-S-methyl&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-9" title="9"><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_ai =</span> <span class="kw">factor</span>(fungicide_ai, </a>
-<a class="sourceLine" id="cb14-10" title="10">                             <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;carbendazim&quot;</span>, <span class="st">&quot;pyraclostrobin&quot;</span>,</a>
-<a class="sourceLine" id="cb14-11" title="11">                                        <span class="st">&quot;sulphur&quot;</span>, <span class="st">&quot;200 g/L azoxystrobin + 80 g/L cyproconazole&quot;</span>,</a>
-<a class="sourceLine" id="cb14-12" title="12">                                        <span class="st">&quot;tebuconazole&quot;</span>, <span class="st">&quot;propiconazole&quot;</span>, </a>
-<a class="sourceLine" id="cb14-13" title="13">                                        <span class="st">&quot;200 g/L tebuconazole + 120 g/L azoxystrobin&quot;</span>))) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-14" title="14"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> prop_YG, <span class="dt">x =</span> fungicide_ai)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-15" title="15"><span class="st">   </span><span class="kw">facet_grid</span>(<span class="dt">rows =</span> <span class="kw">vars</span>(total_fungicide)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-16" title="16"><span class="st">   </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> fungicide_ai, <span class="dt">alpha =</span> <span class="fl">0.5</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-17" title="17"><span class="st">   </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>), <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-18" title="18"><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Proportion of grain yield saved&quot;</span>,</a>
-<a class="sourceLine" id="cb14-19" title="19">        <span class="dt">title =</span> <span class="st">&quot;Grain yield proportion saved</span><span class="ch">\n</span><span class="st">grouped by Fungicide type&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-20" title="20"><span class="st">   </span><span class="kw">theme_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-21" title="21"><span class="st">   </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-22" title="22"><span class="st">   </span><span class="kw">coord_flip</span>()</a></code></pre></div>
+<hr />
+<p>Let’s visualise this in a plot for one and two sprays only.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="preliminary-analysis.html#cb3-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb3-2"><a href="preliminary-analysis.html#cb3-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_ai =</span> <span class="kw">as.factor</span>(PM_MB_means<span class="op">$</span>fungicide_ai)) <span class="op">%&gt;%</span></span>
+<span id="cb3-3"><a href="preliminary-analysis.html#cb3-3"></a><span class="st">   </span><span class="kw">filter</span>(total_fungicide <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>total_fungicide <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb3-4"><a href="preliminary-analysis.html#cb3-4"></a><span class="st">   </span><span class="kw">filter</span>(</span>
+<span id="cb3-5"><a href="preliminary-analysis.html#cb3-5"></a>      fungicide_ai <span class="op">!=</span><span class="st"> &quot;pyrazophos&quot;</span> <span class="op">&amp;</span></span>
+<span id="cb3-6"><a href="preliminary-analysis.html#cb3-6"></a><span class="st">         </span>fungicide_ai <span class="op">!=</span><span class="st"> &quot;control&quot;</span> <span class="op">&amp;</span></span>
+<span id="cb3-7"><a href="preliminary-analysis.html#cb3-7"></a><span class="st">         </span>fungicide_ai <span class="op">!=</span><span class="st"> &quot;benomyl&quot;</span> <span class="op">&amp;</span></span>
+<span id="cb3-8"><a href="preliminary-analysis.html#cb3-8"></a><span class="st">         </span>fungicide_ai <span class="op">!=</span><span class="st"> &quot;Acibenzolar-S-methyl&quot;</span></span>
+<span id="cb3-9"><a href="preliminary-analysis.html#cb3-9"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb3-10"><a href="preliminary-analysis.html#cb3-10"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_ai =</span> <span class="kw">factor</span>(</span>
+<span id="cb3-11"><a href="preliminary-analysis.html#cb3-11"></a>      fungicide_ai,</span>
+<span id="cb3-12"><a href="preliminary-analysis.html#cb3-12"></a>      <span class="dt">levels =</span> <span class="kw">c</span>(</span>
+<span id="cb3-13"><a href="preliminary-analysis.html#cb3-13"></a>         <span class="st">&quot;carbendazim&quot;</span>,</span>
+<span id="cb3-14"><a href="preliminary-analysis.html#cb3-14"></a>         <span class="st">&quot;pyraclostrobin&quot;</span>,</span>
+<span id="cb3-15"><a href="preliminary-analysis.html#cb3-15"></a>         <span class="st">&quot;sulphur&quot;</span>,</span>
+<span id="cb3-16"><a href="preliminary-analysis.html#cb3-16"></a>         <span class="st">&quot;200 g/L azoxystrobin +</span><span class="ch">\n</span><span class="st">80 g/L cyproconazole&quot;</span>,</span>
+<span id="cb3-17"><a href="preliminary-analysis.html#cb3-17"></a>         <span class="st">&quot;tebuconazole&quot;</span>,</span>
+<span id="cb3-18"><a href="preliminary-analysis.html#cb3-18"></a>         <span class="st">&quot;propiconazole&quot;</span>,</span>
+<span id="cb3-19"><a href="preliminary-analysis.html#cb3-19"></a>         <span class="st">&quot;200 g/L tebuconazole +</span><span class="ch">\n</span><span class="st">120 g/L azoxystrobin&quot;</span></span>
+<span id="cb3-20"><a href="preliminary-analysis.html#cb3-20"></a>      )</span>
+<span id="cb3-21"><a href="preliminary-analysis.html#cb3-21"></a>   )) <span class="op">%&gt;%</span></span>
+<span id="cb3-22"><a href="preliminary-analysis.html#cb3-22"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> prop_YG, <span class="dt">x =</span> fungicide_ai)) <span class="op">+</span></span>
+<span id="cb3-23"><a href="preliminary-analysis.html#cb3-23"></a><span class="st">   </span><span class="kw">facet_grid</span>(<span class="dt">rows =</span> <span class="kw">vars</span>(total_fungicide)) <span class="op">+</span></span>
+<span id="cb3-24"><a href="preliminary-analysis.html#cb3-24"></a><span class="st">   </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> fungicide_ai, <span class="dt">alpha =</span> <span class="fl">0.5</span>)) <span class="op">+</span></span>
+<span id="cb3-25"><a href="preliminary-analysis.html#cb3-25"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>), <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb3-26"><a href="preliminary-analysis.html#cb3-26"></a><span class="st">   </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Proportion of grain yield saved&quot;</span>,</span>
+<span id="cb3-27"><a href="preliminary-analysis.html#cb3-27"></a>        <span class="dt">title =</span> <span class="st">&quot;Grain yield proportion saved</span><span class="ch">\n</span><span class="st">grouped by fungicide type&quot;</span>) <span class="op">+</span></span>
+<span id="cb3-28"><a href="preliminary-analysis.html#cb3-28"></a><span class="st">   </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb3-29"><a href="preliminary-analysis.html#cb3-29"></a><span class="st">   </span><span class="kw">coord_flip</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 228 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="_main_files/figure-html/Fungicide_x_nSprays_tble1-1.png" width="672" /></p>
-<p>There is a small yield effect when applying fungicide and it is unclear how much a second spray improves yield saved. Interestingly Sulphur sprays might be worth investigating when sprayed twice.</p>
-<p> <br />
- </p>
+<p>There is a small yield effect when applying fungicide and it is unclear how much a second spray improves yield saved. Interestingly sulphur sprays might be worth investigating when sprayed twice.</p>
+<hr />
 </div>
-<div id="fungicide-doses" class="section level4">
+<div id="fungicide-doses" class="section level4" number="4.1.1.2">
 <h4><span class="header-section-number">4.1.1.2</span> Fungicide Doses</h4>
 <p>We should check that all fungicide doses that were used were roughly the same if we are to compare between trials were dose might be different.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span><span class="op">|</span></a>
-<a class="sourceLine" id="cb16-3" title="3"><span class="st">             </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-4" title="4"><span class="st">   </span><span class="kw">select</span>(trial_ref,</a>
-<a class="sourceLine" id="cb16-5" title="5">          year,</a>
-<a class="sourceLine" id="cb16-6" title="6">          location,</a>
-<a class="sourceLine" id="cb16-7" title="7">          first_sign_disease,</a>
-<a class="sourceLine" id="cb16-8" title="8">          fungicide_ai,</a>
-<a class="sourceLine" id="cb16-9" title="9">          dose_ai.ha,</a>
-<a class="sourceLine" id="cb16-10" title="10">          total_fungicide) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-11" title="11"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.factor</span>(dose_ai.ha), <span class="dt">fill =</span> fungicide_ai)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-12" title="12"><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Dose (g ai/ha)&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-13" title="13"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Total number of treatments for each respective tebuconazole dose&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-14" title="14"><span class="st">   </span><span class="kw">geom_bar</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-15" title="15"><span class="st">   </span><span class="kw">facet_grid</span>(<span class="dt">rows =</span> <span class="kw">vars</span>(fungicide_ai))<span class="op">+</span></a>
-<a class="sourceLine" id="cb16-16" title="16"><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-17" title="17"><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-18" title="18"><span class="st">   </span><span class="kw">theme_usq</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="preliminary-analysis.html#cb5-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb5-2"><a href="preliminary-analysis.html#cb5-2"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
+<span id="cb5-3"><a href="preliminary-analysis.html#cb5-3"></a><span class="st">             </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb5-4"><a href="preliminary-analysis.html#cb5-4"></a><span class="st">   </span><span class="kw">select</span>(</span>
+<span id="cb5-5"><a href="preliminary-analysis.html#cb5-5"></a>      trial_ref,</span>
+<span id="cb5-6"><a href="preliminary-analysis.html#cb5-6"></a>      year,</span>
+<span id="cb5-7"><a href="preliminary-analysis.html#cb5-7"></a>      location,</span>
+<span id="cb5-8"><a href="preliminary-analysis.html#cb5-8"></a>      first_sign_disease,</span>
+<span id="cb5-9"><a href="preliminary-analysis.html#cb5-9"></a>      fungicide_ai,</span>
+<span id="cb5-10"><a href="preliminary-analysis.html#cb5-10"></a>      dose_ai.ha,</span>
+<span id="cb5-11"><a href="preliminary-analysis.html#cb5-11"></a>      total_fungicide</span>
+<span id="cb5-12"><a href="preliminary-analysis.html#cb5-12"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb5-13"><a href="preliminary-analysis.html#cb5-13"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.factor</span>(dose_ai.ha), <span class="dt">fill =</span> fungicide_ai)) <span class="op">+</span></span>
+<span id="cb5-14"><a href="preliminary-analysis.html#cb5-14"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Dose (g ai/ha)&quot;</span>) <span class="op">+</span></span>
+<span id="cb5-15"><a href="preliminary-analysis.html#cb5-15"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Total number of treatments for each respective tebuconazole dose&quot;</span>) <span class="op">+</span></span>
+<span id="cb5-16"><a href="preliminary-analysis.html#cb5-16"></a><span class="st">   </span><span class="kw">geom_bar</span>() <span class="op">+</span></span>
+<span id="cb5-17"><a href="preliminary-analysis.html#cb5-17"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb5-18"><a href="preliminary-analysis.html#cb5-18"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
+<span id="cb5-19"><a href="preliminary-analysis.html#cb5-19"></a><span class="st">   </span><span class="kw">theme_usq</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/tebuAndPropi_dose-1.png" width="672" /></p>
 <p>All trials that used tebuconazole used approximately the same dose. Dose of the active ingredient ranged from 62.35 g per hectare to 60 g per hectare.</p>
-<p>There is a large amount of variation in the propiconazole dose, lets inspect the difference in yields for each dose.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">relevel</span>(<span class="kw">as.factor</span>(dose_ai.ha),<span class="st">&quot;62.5&quot;</span>), <span class="dt">y =</span> prop_YG)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-4" title="4"><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Dose (g ai/ha)&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-5" title="5"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Yield for each respective propiconazole dose&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-6" title="6"><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-7" title="7"><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-8" title="8"><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-9" title="9"><span class="st">   </span><span class="kw">theme_usq</span>()</a></code></pre></div>
+<p>There is a large amount of variation in the propiconazole dose, let’s inspect the difference in yields for each dose.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="preliminary-analysis.html#cb6-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb6-2"><a href="preliminary-analysis.html#cb6-2"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb6-3"><a href="preliminary-analysis.html#cb6-3"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">relevel</span>(<span class="kw">as.factor</span>(dose_ai.ha), <span class="st">&quot;62.5&quot;</span>), <span class="dt">y =</span> prop_YG)) <span class="op">+</span></span>
+<span id="cb6-4"><a href="preliminary-analysis.html#cb6-4"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Dose (g ai/ha)&quot;</span>) <span class="op">+</span></span>
+<span id="cb6-5"><a href="preliminary-analysis.html#cb6-5"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Yield for each respective propiconazole dose&quot;</span>) <span class="op">+</span></span>
+<span id="cb6-6"><a href="preliminary-analysis.html#cb6-6"></a><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb6-7"><a href="preliminary-analysis.html#cb6-7"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb6-8"><a href="preliminary-analysis.html#cb6-8"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
+<span id="cb6-9"><a href="preliminary-analysis.html#cb6-9"></a><span class="st">   </span><span class="kw">theme_usq</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 48 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="_main_files/figure-html/PropiDoseEffect-1.png" width="672" />
- </p>
+<p><img src="_main_files/figure-html/PropiDoseEffect-1.png" width="672" /></p>
 <p>This dose effect should be acknowledged in the meta-analysis. How many treatments of each dose have been investigated per trial?</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">table</span>(<span class="kw">as.character</span>(PM_MB_means[PM_MB_means<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>,]<span class="op">$</span>trial_ref), </a>
-<a class="sourceLine" id="cb19-2" title="2">      PM_MB_means[PM_MB_means<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>,]<span class="op">$</span>dose_ai.ha)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="preliminary-analysis.html#cb8-1"></a><span class="kw">table</span>(<span class="kw">as.character</span>(PM_MB_means[PM_MB_means<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>, ]<span class="op">$</span>trial_ref),</span>
+<span id="cb8-2"><a href="preliminary-analysis.html#cb8-2"></a>      PM_MB_means[PM_MB_means<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>, ]<span class="op">$</span>dose_ai.ha)</span></code></pre></div>
 <pre><code>##              
 ##               62.5 125
 ##   AM1303         3   0
@@ -772,19 +778,18 @@ NA
 ##   mung1617/02    0  15
 ##   mung1718/01    0   6</code></pre>
 <p>Two trials show both doses were applied in the same trial, mung1112/01 and mung1112/02. Let look at the difference in proportion of yield saved in these trials.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">boxplot</span>(prop_YG <span class="op">~</span><span class="st"> </span>dose_ai.ha, </a>
-<a class="sourceLine" id="cb21-2" title="2">        <span class="dt">data =</span> PM_MB_means[(PM_MB_means<span class="op">$</span>trial_ref <span class="op">==</span><span class="st"> &quot;mung1112/01&quot;</span> <span class="op">|</span></a>
-<a class="sourceLine" id="cb21-3" title="3"><span class="st">                              </span>PM_MB_means<span class="op">$</span>trial_ref <span class="op">==</span><span class="st"> &quot;mung1112/02&quot;</span>) <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb21-4" title="4"><span class="st">                              </span>PM_MB_means<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>,])</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="preliminary-analysis.html#cb10-1"></a><span class="kw">boxplot_usq</span>(prop_YG <span class="op">~</span><span class="st"> </span>dose_ai.ha,</span>
+<span id="cb10-2"><a href="preliminary-analysis.html#cb10-2"></a>            <span class="dt">data =</span> PM_MB_means[(PM_MB_means<span class="op">$</span>trial_ref <span class="op">==</span><span class="st"> &quot;mung1112/01&quot;</span> <span class="op">|</span></span>
+<span id="cb10-3"><a href="preliminary-analysis.html#cb10-3"></a><span class="st">                                   </span>PM_MB_means<span class="op">$</span>trial_ref <span class="op">==</span><span class="st"> &quot;mung1112/02&quot;</span>) <span class="op">&amp;</span></span>
+<span id="cb10-4"><a href="preliminary-analysis.html#cb10-4"></a><span class="st">                                  </span>PM_MB_means<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>,])</span></code></pre></div>
 <p><img src="_main_files/figure-html/PropiDoses_TrialCompar-1.png" width="672" /></p>
 <p>This plot plot, however, indicated the previous plot might be skewed by high yielding trials.</p>
-<p> <br />
- </p>
+<hr />
 </div>
-<div id="number-of-fungicide-sprays" class="section level4">
+<div id="number-of-fungicide-sprays" class="section level4" number="4.1.1.3">
 <h4><span class="header-section-number">4.1.1.3</span> Number of fungicide sprays</h4>
-<p>Lets look at the frequency of sprays per fungicide.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">table</span>(PM_MB_means<span class="op">$</span>fungicide_ai, PM_MB_means<span class="op">$</span>total_fungicide)</a></code></pre></div>
+<p>Let’s look at the frequency of sprays per fungicide.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="preliminary-analysis.html#cb11-1"></a><span class="kw">table</span>(PM_MB_means<span class="op">$</span>fungicide_ai, PM_MB_means<span class="op">$</span>total_fungicide)</span></code></pre></div>
 <pre><code>##                                              
 ##                                                0  1  2  3  7
 ##   200 g/L azoxystrobin + 80 g/L cyproconazole  0 18 12  4  0
@@ -801,382 +806,431 @@ NA
 ##   sulphur (Ultra SC)                           0  0  0  0  0
 ##   sulphur (WP)                                 0  0  0  0  0
 ##   tebuconazole                                 0 36 36  5  0</code></pre>
-<p> <br />
- </p>
+<hr />
 </div>
-<div id="timing-of-fungicide-sprays" class="section level4">
+<div id="timing-of-fungicide-sprays" class="section level4" number="4.1.1.4">
 <h4><span class="header-section-number">4.1.1.4</span> Timing of fungicide sprays</h4>
 <p>When are fungicides sprayed in relation to first sign.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-2" title="2"><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">s1_DfromFS =</span> fungicide_application_<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</a>
-<a class="sourceLine" id="cb24-3" title="3">          <span class="dt">s2_DfromFS =</span> fungicide_application_<span class="dv">2</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</a>
-<a class="sourceLine" id="cb24-4" title="4">          <span class="dt">s3_DfromFS =</span> fungicide_application_<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</a>
-<a class="sourceLine" id="cb24-5" title="5">          <span class="dt">s4_DfromFS =</span> fungicide_application_<span class="dv">4</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</a>
-<a class="sourceLine" id="cb24-6" title="6">          <span class="dt">s5_DfromFS =</span> fungicide_application_<span class="dv">5</span> <span class="op">-</span><span class="st"> </span>first_sign_disease) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-7" title="7"><span class="st">   </span><span class="kw">gather</span>(<span class="dt">key =</span> spray, <span class="dt">value =</span> n_days, s1_DfromFS, s2_DfromFS, s3_DfromFS, s4_DfromFS, s5_DfromFS)<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-8" title="8"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> spray, <span class="dt">y =</span> n_days))<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-9" title="9"><span class="st">   </span><span class="kw">geom_violin</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb24-10" title="10"><span class="st">   </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;First</span><span class="ch">\n</span><span class="st">spray&quot;</span>, <span class="st">&quot;Second</span><span class="ch">\n</span><span class="st">spray&quot;</span>,<span class="st">&quot;Third</span><span class="ch">\n</span><span class="st">spray&quot;</span>,<span class="st">&quot;Fourth</span><span class="ch">\n</span><span class="st">spray&quot;</span>,<span class="st">&quot;Fifth</span><span class="ch">\n</span><span class="st">spray&quot;</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-11" title="11"><span class="st">   </span><span class="kw">theme_usq</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="preliminary-analysis.html#cb13-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb13-2"><a href="preliminary-analysis.html#cb13-2"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
+<span id="cb13-3"><a href="preliminary-analysis.html#cb13-3"></a>      <span class="dt">s1_DfromFS =</span> fungicide_application_<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</span>
+<span id="cb13-4"><a href="preliminary-analysis.html#cb13-4"></a>      <span class="dt">s2_DfromFS =</span> fungicide_application_<span class="dv">2</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</span>
+<span id="cb13-5"><a href="preliminary-analysis.html#cb13-5"></a>      <span class="dt">s3_DfromFS =</span> fungicide_application_<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</span>
+<span id="cb13-6"><a href="preliminary-analysis.html#cb13-6"></a>      <span class="dt">s4_DfromFS =</span> fungicide_application_<span class="dv">4</span> <span class="op">-</span><span class="st"> </span>first_sign_disease,</span>
+<span id="cb13-7"><a href="preliminary-analysis.html#cb13-7"></a>      <span class="dt">s5_DfromFS =</span> fungicide_application_<span class="dv">5</span> <span class="op">-</span><span class="st"> </span>first_sign_disease</span>
+<span id="cb13-8"><a href="preliminary-analysis.html#cb13-8"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb13-9"><a href="preliminary-analysis.html#cb13-9"></a><span class="st">   </span><span class="kw">gather</span>(</span>
+<span id="cb13-10"><a href="preliminary-analysis.html#cb13-10"></a>      <span class="dt">key =</span> spray,</span>
+<span id="cb13-11"><a href="preliminary-analysis.html#cb13-11"></a>      <span class="dt">value =</span> n_days,</span>
+<span id="cb13-12"><a href="preliminary-analysis.html#cb13-12"></a>      s1_DfromFS,</span>
+<span id="cb13-13"><a href="preliminary-analysis.html#cb13-13"></a>      s2_DfromFS,</span>
+<span id="cb13-14"><a href="preliminary-analysis.html#cb13-14"></a>      s3_DfromFS,</span>
+<span id="cb13-15"><a href="preliminary-analysis.html#cb13-15"></a>      s4_DfromFS,</span>
+<span id="cb13-16"><a href="preliminary-analysis.html#cb13-16"></a>      s5_DfromFS</span>
+<span id="cb13-17"><a href="preliminary-analysis.html#cb13-17"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb13-18"><a href="preliminary-analysis.html#cb13-18"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> spray, <span class="dt">y =</span> n_days)) <span class="op">+</span></span>
+<span id="cb13-19"><a href="preliminary-analysis.html#cb13-19"></a><span class="st">   </span><span class="kw">geom_violin</span>() <span class="op">+</span></span>
+<span id="cb13-20"><a href="preliminary-analysis.html#cb13-20"></a><span class="st">   </span><span class="kw">scale_x_discrete</span>(</span>
+<span id="cb13-21"><a href="preliminary-analysis.html#cb13-21"></a>      <span class="dt">labels =</span> <span class="kw">c</span>(</span>
+<span id="cb13-22"><a href="preliminary-analysis.html#cb13-22"></a>         <span class="st">&quot;First</span><span class="ch">\n</span><span class="st">spray&quot;</span>,</span>
+<span id="cb13-23"><a href="preliminary-analysis.html#cb13-23"></a>         <span class="st">&quot;Second</span><span class="ch">\n</span><span class="st">spray&quot;</span>,</span>
+<span id="cb13-24"><a href="preliminary-analysis.html#cb13-24"></a>         <span class="st">&quot;Third</span><span class="ch">\n</span><span class="st">spray&quot;</span>,</span>
+<span id="cb13-25"><a href="preliminary-analysis.html#cb13-25"></a>         <span class="st">&quot;Fourth</span><span class="ch">\n</span><span class="st">spray&quot;</span>,</span>
+<span id="cb13-26"><a href="preliminary-analysis.html#cb13-26"></a>         <span class="st">&quot;Fifth</span><span class="ch">\n</span><span class="st">spray&quot;</span></span>
+<span id="cb13-27"><a href="preliminary-analysis.html#cb13-27"></a>      )</span>
+<span id="cb13-28"><a href="preliminary-analysis.html#cb13-28"></a>   ) <span class="op">+</span></span>
+<span id="cb13-29"><a href="preliminary-analysis.html#cb13-29"></a><span class="st">   </span><span class="kw">theme_usq</span>()</span></code></pre></div>
 <pre><code>## Don&#39;t know how to automatically pick scale for object of type difftime. Defaulting to continuous.</code></pre>
 <pre><code>## Warning: Removed 1282 rows containing non-finite values (stat_ydensity).</code></pre>
 <p><img src="_main_files/figure-html/spray_relative2FS-1.png" width="672" /></p>
-<p> <br />
- </p>
+<hr />
 </div>
 </div>
-<div id="mungbean-cultivars" class="section level3">
+<div id="mungbean-cultivars" class="section level3" number="4.1.2">
 <h3><span class="header-section-number">4.1.2</span> Mungbean cultivars</h3>
 <p>In general, the mungbean varieties have the following resistance to powdery mildew.</p>
 <ul>
-<li><p>Berken: Highly susceptible</p>
-<ul>
+<li><p>Berken: Highly susceptible</p></li>
 <li><p>Crystal: Susceptible</p></li>
 <li><p>Jade: Moderately susceptible</p></li>
-</ul></li>
 </ul>
 <p>Let’s view a stacked bar plot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-2" title="2"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span><span class="op">|</span></a>
-<a class="sourceLine" id="cb27-3" title="3"><span class="st">             </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>)<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-4" title="4"><span class="st">   </span><span class="kw">group_by</span>(host_genotype, fungicide_ai, trial_ref) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-5" title="5"><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-6" title="6"><span class="st">   </span><span class="kw">count</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-7" title="7"><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Treatments =</span> n) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-8" title="8"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> host_genotype, <span class="dt">y =</span> Treatments, <span class="dt">fill =</span> fungicide_ai)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-9" title="9"><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Cultivar&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-10" title="10"><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-11" title="11"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Cultivars used in either tebuconazole or propiconazole trials&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-12" title="12"><span class="st">   </span><span class="kw">geom_col</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-13" title="13"><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-14" title="14"><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb27-15" title="15"><span class="st">   </span><span class="kw">theme_usq</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="preliminary-analysis.html#cb16-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb16-2"><a href="preliminary-analysis.html#cb16-2"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
+<span id="cb16-3"><a href="preliminary-analysis.html#cb16-3"></a><span class="st">             </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb16-4"><a href="preliminary-analysis.html#cb16-4"></a><span class="st">   </span><span class="kw">group_by</span>(host_genotype, fungicide_ai, trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb16-5"><a href="preliminary-analysis.html#cb16-5"></a><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></span>
+<span id="cb16-6"><a href="preliminary-analysis.html#cb16-6"></a><span class="st">   </span><span class="kw">count</span>() <span class="op">%&gt;%</span></span>
+<span id="cb16-7"><a href="preliminary-analysis.html#cb16-7"></a><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Treatments =</span> n) <span class="op">%&gt;%</span></span>
+<span id="cb16-8"><a href="preliminary-analysis.html#cb16-8"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> host_genotype, <span class="dt">y =</span> Treatments, <span class="dt">fill =</span> fungicide_ai)) <span class="op">+</span></span>
+<span id="cb16-9"><a href="preliminary-analysis.html#cb16-9"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Cultivar&quot;</span>) <span class="op">+</span></span>
+<span id="cb16-10"><a href="preliminary-analysis.html#cb16-10"></a><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></span>
+<span id="cb16-11"><a href="preliminary-analysis.html#cb16-11"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Cultivars used in either tebuconazole or propiconazole trials&quot;</span>) <span class="op">+</span></span>
+<span id="cb16-12"><a href="preliminary-analysis.html#cb16-12"></a><span class="st">   </span><span class="kw">geom_col</span>() <span class="op">+</span></span>
+<span id="cb16-13"><a href="preliminary-analysis.html#cb16-13"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb16-14"><a href="preliminary-analysis.html#cb16-14"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
+<span id="cb16-15"><a href="preliminary-analysis.html#cb16-15"></a><span class="st">   </span><span class="kw">theme_usq</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/Host_genotype-1.png" width="672" /></p>
 <p> </p>
-<div id="genotype-yield-variability" class="section level4">
+<div id="genotype-yield-variability" class="section level4" number="4.1.2.1">
 <h4><span class="header-section-number">4.1.2.1</span> Genotype yield variability</h4>
-<p>Does host cultivar significantly impact the yield? Lets look at the volatility in yields to see if any cultivar yields better or has greater tolerance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar.</p>
-<p>First lets look at overall yields for each cultivar , where trial is not a factor, for all treatments (spray and no spray).</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># this could be converted into a shiny app as a chunk. Make each input for the function a shiny option</span></a>
-<a class="sourceLine" id="cb28-2" title="2"><span class="co"># Outputs the table and graph</span></a>
-<a class="sourceLine" id="cb28-3" title="3"><span class="kw">source</span>(<span class="st">&quot;R/yield_volatility.r&quot;</span>) <span class="co">#function to investigate the volatility in yields</span></a>
-<a class="sourceLine" id="cb28-4" title="4"><span class="co"># Volitility is the range between the upper and lower 97.5 and 2.5 % quartiles</span></a>
-<a class="sourceLine" id="cb28-5" title="5"></a>
-<a class="sourceLine" id="cb28-6" title="6">YV1 &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="dt">genotype_by_trial =</span> <span class="ot">FALSE</span>, <span class="dt">control_only =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb28-7" title="7">YV1[[<span class="dv">2</span>]]</a></code></pre></div>
-<pre><code>## Warning: Removed 12618 rows containing non-finite values (stat_density).</code></pre>
+<p>Does host cultivar significantly impact the yield? Let’s look at the volatility in yields to see if any cultivar yields better or has greater tolerance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar.</p>
+<p>First lets look at overall yields for each cultivar, where trial is not a factor, for all treatments (spray and no spray).</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="preliminary-analysis.html#cb17-1"></a><span class="co"># this could be converted into a shiny app as a chunk. Make each input for the function a shiny option</span></span>
+<span id="cb17-2"><a href="preliminary-analysis.html#cb17-2"></a><span class="co"># Outputs the table and graph</span></span>
+<span id="cb17-3"><a href="preliminary-analysis.html#cb17-3"></a><span class="kw">source</span>(<span class="st">&quot;R/yield_volatility.r&quot;</span>) <span class="co">#function to investigate the volatility in yields</span></span>
+<span id="cb17-4"><a href="preliminary-analysis.html#cb17-4"></a><span class="co"># Volitility is the range between the upper and lower 97.5 and 2.5 % quartiles</span></span>
+<span id="cb17-5"><a href="preliminary-analysis.html#cb17-5"></a></span>
+<span id="cb17-6"><a href="preliminary-analysis.html#cb17-6"></a>YV1 &lt;-</span>
+<span id="cb17-7"><a href="preliminary-analysis.html#cb17-7"></a><span class="st">   </span><span class="kw">yield_volatility</span>(<span class="dt">genotype_by_trial =</span> <span class="ot">FALSE</span>, <span class="dt">control_only =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb17-8"><a href="preliminary-analysis.html#cb17-8"></a>YV1[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## Warning: Removed 12553 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="_main_files/figure-html/yield_vol-1.png" width="672" /></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">YV1[[<span class="dv">3</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="preliminary-analysis.html#cb19-1"></a>YV1[[<span class="dv">3</span>]]</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 2
 ##   trial   volatility
 ##   &lt;fct&gt;        &lt;dbl&gt;
 ## 1 Berken       1.31 
-## 2 Crystal      1.39 
-## 3 G. Diam      0.507
-## 4 Jade         2.35</code></pre>
+## 2 Crystal      1.40 
+## 3 G. Diam      0.490
+## 4 Jade         2.36</code></pre>
 <p>Now lets look at overall yields for each cultivar, where trial is not a factor, in only the no spray treatments.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">YV2 &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="dt">genotype_by_trial =</span> <span class="ot">FALSE</span>, <span class="dt">control_only =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb32-2" title="2">YV2[[<span class="dv">2</span>]]</a></code></pre></div>
-<pre><code>## Warning: Removed 1345 rows containing non-finite values (stat_density).</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="preliminary-analysis.html#cb21-1"></a>YV2 &lt;-</span>
+<span id="cb21-2"><a href="preliminary-analysis.html#cb21-2"></a><span class="st">   </span><span class="kw">yield_volatility</span>(<span class="dt">genotype_by_trial =</span> <span class="ot">FALSE</span>, <span class="dt">control_only =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb21-3"><a href="preliminary-analysis.html#cb21-3"></a>YV2[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## Warning: Removed 1399 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="_main_files/figure-html/yieldVol_control-1.png" width="672" /></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">YV2[[<span class="dv">3</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="preliminary-analysis.html#cb23-1"></a>YV2[[<span class="dv">3</span>]]</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 2
 ##   trial   volatility
 ##   &lt;fct&gt;        &lt;dbl&gt;
-## 1 Berken       1.25 
-## 2 Crystal      1.23 
-## 3 G. Diam      0.306
-## 4 Jade         2.19</code></pre>
-<p>Volatility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments). Green diamond shows little volatility however this cultivar is only featured in 1 trials.<br />
- </p>
+## 1 Berken       1.28 
+## 2 Crystal      1.24 
+## 3 G. Diam      0.293
+## 4 Jade         2.20</code></pre>
+<p>Volatility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments). Green Diamond shows little volatility however this cultivar is only featured in 1 trials.</p>
+<hr />
 <p>Lets examine the same plots as above but only for the most commonly used trial site, Hermitage.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">YV1_herm &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="dt">genotype_by_trial =</span> <span class="ot">FALSE</span>, <span class="dt">control_only =</span> <span class="ot">FALSE</span>, <span class="dt">location =</span> <span class="st">&quot;Hermitage&quot;</span>)</a>
-<a class="sourceLine" id="cb36-2" title="2">YV1_herm[[<span class="dv">2</span>]]</a></code></pre></div>
-<pre><code>## Warning: Removed 8015 rows containing non-finite values (stat_density).</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="preliminary-analysis.html#cb25-1"></a>YV1_herm &lt;-</span>
+<span id="cb25-2"><a href="preliminary-analysis.html#cb25-2"></a><span class="st">   </span><span class="kw">yield_volatility</span>(</span>
+<span id="cb25-3"><a href="preliminary-analysis.html#cb25-3"></a>      <span class="dt">genotype_by_trial =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb25-4"><a href="preliminary-analysis.html#cb25-4"></a>      <span class="dt">control_only =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb25-5"><a href="preliminary-analysis.html#cb25-5"></a>      <span class="dt">location =</span> <span class="st">&quot;Hermitage&quot;</span></span>
+<span id="cb25-6"><a href="preliminary-analysis.html#cb25-6"></a>   )</span>
+<span id="cb25-7"><a href="preliminary-analysis.html#cb25-7"></a>YV1_herm[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## Warning: Removed 7903 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="_main_files/figure-html/yieldVol_Herm-1.png" width="672" /></p>
 <p>Jade shows a large amount of volatility, excluding Green Diamond, Crystal shows the next least volatility.</p>
 <p>Lets take a closer look at Crystal with spray management treatments and without.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1">YV1_crystal &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="dt">genotype =</span> <span class="st">&quot;Crystal&quot;</span>,<span class="dt">control_only =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb38-2" title="2">YV1_crystal[[<span class="dv">2</span>]]</a></code></pre></div>
-<pre><code>## Warning: Removed 75 rows containing non-finite values (stat_density).</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="preliminary-analysis.html#cb27-1"></a>YV1_crystal &lt;-</span>
+<span id="cb27-2"><a href="preliminary-analysis.html#cb27-2"></a><span class="st">   </span><span class="kw">yield_volatility</span>(<span class="dt">genotype =</span> <span class="st">&quot;Crystal&quot;</span>, <span class="dt">control_only =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb27-3"><a href="preliminary-analysis.html#cb27-3"></a>YV1_crystal[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## Warning: Removed 68 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="_main_files/figure-html/YieldVol_Crystal-1.png" width="672" /></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1">YV1_crystal &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="dt">genotype =</span> <span class="st">&quot;Crystal&quot;</span>,<span class="dt">control_only =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb40-2" title="2">YV1_crystal[[<span class="dv">2</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="preliminary-analysis.html#cb29-1"></a>YV1_crystal &lt;-</span>
+<span id="cb29-2"><a href="preliminary-analysis.html#cb29-2"></a><span class="st">   </span><span class="kw">yield_volatility</span>(<span class="dt">genotype =</span> <span class="st">&quot;Crystal&quot;</span>, <span class="dt">control_only =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb29-3"><a href="preliminary-analysis.html#cb29-3"></a>YV1_crystal[[<span class="dv">2</span>]]</span></code></pre></div>
 <p><img src="_main_files/figure-html/YieldVol_Crystal-2.png" width="672" /></p>
 <p>There is a lot of variation between field trials for Crystal, but little variation within field trials.</p>
 <p>Lets look at Jade, to see if it differs.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">YV2_crystal &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="st">&quot;Jade&quot;</span>,<span class="dt">control_only =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb41-2" title="2">YV2_crystal[[<span class="dv">2</span>]]</a></code></pre></div>
-<pre><code>## Warning: Removed 12657 rows containing non-finite values (stat_density).</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="preliminary-analysis.html#cb30-1"></a>YV2_crystal &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="st">&quot;Jade&quot;</span>,<span class="dt">control_only =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb30-2"><a href="preliminary-analysis.html#cb30-2"></a>YV2_crystal[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## Warning: Removed 12451 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="_main_files/figure-html/YieldVol_Jade-1.png" width="672" /></p>
 <p>For Jade there is high variation between trials and with in. Perhaps indicating lower tolerance. Lets look at the same plot with data only from no spray controls to see if the variation is the same.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">YV3_crystal &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="st">&quot;Jade&quot;</span>,<span class="dt">control_only =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb43-2" title="2">YV3_crystal[[<span class="dv">2</span>]]</a></code></pre></div>
-<pre><code>## Warning: Removed 1369 rows containing non-finite values (stat_density).</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="preliminary-analysis.html#cb32-1"></a>YV3_crystal &lt;-<span class="st"> </span><span class="kw">yield_volatility</span>(<span class="st">&quot;Jade&quot;</span>, <span class="dt">control_only =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb32-2"><a href="preliminary-analysis.html#cb32-2"></a>YV3_crystal[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## Warning: Removed 1388 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="_main_files/figure-html/YieldVol_JadeControl-1.png" width="672" /></p>
 <p>There seems to be a noticeable shift in the probability curves between the two plots. Indicating that the tolerance in Jade may not as good as Crystal. A comparison between the fungicide efficacy for reducing powdery mildew severity and fungicide efficacy at mitigating yield loss.</p>
 <p>Overall there seems to be an influence of cultivar however this variation is not as distinct as the variation between trials.</p>
-<p> </p>
+<hr />
 </div>
 </div>
-<div id="row-spacing" class="section level3">
+<div id="row-spacing" class="section level3" number="4.1.3">
 <h3><span class="header-section-number">4.1.3</span> Row spacing</h3>
 <p>Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease.
 The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly. This finding has also been shown by Kerry McKenzie’s work as well.
 Eight trials used a row spacing of 0.75 meters and tebuconazole as an active ingredient (AI).</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-2" title="2"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span><span class="st"> </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-3" title="3"><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, row_spacing, trial_ref) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-4" title="4"><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-5" title="5"><span class="st">   </span><span class="kw">count</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-6" title="6"><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Trials =</span> n) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-7" title="7"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.factor</span>(row_spacing), <span class="dt">y =</span> Trials)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb45-8" title="8"><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Row Spacing (m)&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb45-9" title="9"><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb45-10" title="10"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Trial row spacing using tebuconazole&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb45-11" title="11"><span class="st">   </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> fungicide_ai),</a>
-<a class="sourceLine" id="cb45-12" title="12">            <span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb45-13" title="13"><span class="st">   </span><span class="kw">scale_fill_usq</span>(<span class="dt">name =</span> <span class="st">&quot;Fungicide AI&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb45-14" title="14"><span class="st">   </span><span class="kw">theme_usq</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="preliminary-analysis.html#cb34-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb34-2"><a href="preliminary-analysis.html#cb34-2"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
+<span id="cb34-3"><a href="preliminary-analysis.html#cb34-3"></a><span class="st">             </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb34-4"><a href="preliminary-analysis.html#cb34-4"></a><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, row_spacing, trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb34-5"><a href="preliminary-analysis.html#cb34-5"></a><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></span>
+<span id="cb34-6"><a href="preliminary-analysis.html#cb34-6"></a><span class="st">   </span><span class="kw">count</span>() <span class="op">%&gt;%</span></span>
+<span id="cb34-7"><a href="preliminary-analysis.html#cb34-7"></a><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Trials =</span> n) <span class="op">%&gt;%</span></span>
+<span id="cb34-8"><a href="preliminary-analysis.html#cb34-8"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.factor</span>(row_spacing), <span class="dt">y =</span> Trials)) <span class="op">+</span></span>
+<span id="cb34-9"><a href="preliminary-analysis.html#cb34-9"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Row Spacing (m)&quot;</span>) <span class="op">+</span></span>
+<span id="cb34-10"><a href="preliminary-analysis.html#cb34-10"></a><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></span>
+<span id="cb34-11"><a href="preliminary-analysis.html#cb34-11"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Trial row spacing using tebuconazole&quot;</span>) <span class="op">+</span></span>
+<span id="cb34-12"><a href="preliminary-analysis.html#cb34-12"></a><span class="st">   </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> fungicide_ai),</span>
+<span id="cb34-13"><a href="preliminary-analysis.html#cb34-13"></a>            <span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="op">+</span></span>
+<span id="cb34-14"><a href="preliminary-analysis.html#cb34-14"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>(<span class="dt">name =</span> <span class="st">&quot;Fungicide AI&quot;</span>) <span class="op">+</span></span>
+<span id="cb34-15"><a href="preliminary-analysis.html#cb34-15"></a><span class="st">   </span><span class="kw">theme_usq</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/row_spacing.m-1.png" width="672" /></p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb46-2" title="2"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span>,</a>
-<a class="sourceLine" id="cb46-3" title="3">         row_spacing <span class="op">==</span><span class="st"> </span><span class="fl">0.75</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb46-4" title="4"><span class="st">   </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="preliminary-analysis.html#cb35-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb35-2"><a href="preliminary-analysis.html#cb35-2"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span>,</span>
+<span id="cb35-3"><a href="preliminary-analysis.html#cb35-3"></a>          row_spacing <span class="op">==</span><span class="st"> </span><span class="fl">0.75</span>) <span class="op">%&gt;%</span></span>
+<span id="cb35-4"><a href="preliminary-analysis.html#cb35-4"></a><span class="st">   </span><span class="kw">glimpse</span>()</span></code></pre></div>
 <pre><code>## Observations: 35
 ## Variables: 49
-## $ trial_ref               &lt;fct&gt; mung1011/01, mung1011/01, mung1011/02, mung...
-## $ year                    &lt;fct&gt; 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2...
-## $ location                &lt;fct&gt; Hermitage, Hermitage, Kingaroy, Kingaroy, K...
-## $ host_genotype           &lt;fct&gt; Berken, Crystal, Berken, Crystal, Berken, C...
-## $ trial_design            &lt;fct&gt; RCB, RCB, RCB, RCB, RCB, RCB, RCB, RCB, RCB...
-## $ plot_length.m.          &lt;dbl&gt; 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12,...
-## $ plot_width.m.           &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4...
-## $ plant_density           &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, , , , , NA,...
-## $ row_spacing             &lt;dbl&gt; 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0...
-## $ replicates              &lt;dbl&gt; 3, 3, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 5, 5, 5...
-## $ planting_date           &lt;date&gt; 2011-01-24, 2011-01-24, 2011-02-02, 2011-0...
-## $ emergence_date          &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ flowering_date          &lt;date&gt; 2011-03-22, 2011-03-22, NA, NA, NA, NA, NA...
-## $ pod_fill_date           &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ mid_late_pod_fill       &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ first_sign_disease      &lt;date&gt; 2011-03-28, 2011-03-28, 2011-03-22, 2011-0...
-## $ trade_name              &lt;fct&gt; Folicur, Folicur, Folicur, Folicur, Folicur...
-## $ fungicide_ai            &lt;fct&gt; tebuconazole, tebuconazole, tebuconazole, t...
-## $ dose_ai.ha              &lt;dbl&gt; 62.35, 62.35, 62.35, 62.35, 62.35, 62.35, 6...
-## $ n_treatment             &lt;int&gt; 11, 4, 14, 4, 17, 7, 20, 10, 2, 3, 2, 3, 2,...
-## $ fungicide_application_1 &lt;date&gt; 2011-03-28, 2011-03-28, 2011-03-23, 2011-0...
-## $ fungicide_application_2 &lt;date&gt; NA, NA, NA, NA, 2011-04-13, 2011-04-13, 20...
-## $ fungicide_application_3 &lt;date&gt; NA, NA, NA, NA, NA, NA, 2011-04-12, 2011-0...
-## $ fungicide_application_4 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ fungicide_application_5 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ fungicide_application_6 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ fungicide_application_7 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ total_fungicide         &lt;int&gt; 1, 1, 1, 1, 2, 2, 3, 3, 1, 2, 1, 2, 3, 1, 2...
-## $ harvest_date            &lt;date&gt; 2011-04-25, 2011-04-25, NA, NA, NA, NA, NA...
-## $ final_assessment        &lt;date&gt; 2011-04-11, 2011-04-11, 2011-05-11, 2011-0...
-## $ PM_final_severity       &lt;dbl&gt; 2.000000, 2.333333, 5.333333, 4.333333, 3.3...
-## $ rating_scale            &lt;fct&gt; &quot;&quot;1-9&quot;&quot;, &quot;&quot;1-9&quot;&quot;, &quot;&quot;1-9&quot;&quot;, &quot;&quot;1-9&quot;&quot;, &quot;&quot;1-9&quot;&quot;...
-## $ disease_error           &lt;dbl&gt; 0.0000000, 0.5773503, 1.1547005, 0.5773503,...
-## $ D_error_type            &lt;fct&gt; stdev, stdev, stdev, stdev, stdev, stdev, s...
-## $ grain_yield.t.ha.       &lt;dbl&gt; 1.769312, 1.543895, 1.058570, 0.730195, 0.9...
-## $ raw_graded              &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, , , , , NA,...
-## $ Y_Msquare               &lt;dbl&gt; 0.12381667, 0.12381667, 0.05400643, 0.05400...
-## $ yield_error             &lt;dbl&gt; 0.19441956, 0.12832602, 0.08244381, 0.18686...
-## $ Y_error_type            &lt;chr&gt; &quot;stdev&quot;, &quot;stdev&quot;, &quot;stdev&quot;, &quot;stdev&quot;, &quot;stdev&quot;...
-## $ yield_gain              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 0.072, 0.21...
-## $ prop_YG                 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 0.09756098,...
-## $ raw_data_avail          &lt;fct&gt; Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, no,...
-## $ comments                &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, final asses...
-## $ days_harvest.planting   &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, -40959, -40...
-## $ AUDPC_m                 &lt;dbl&gt; 10.50000, 14.00000, 98.66667, 46.83333, 60....
-## $ AUDPC_sd                &lt;dbl&gt; 0.000000, 6.062178, 9.358597, 18.236867, 6....
-## $ AUDPS_m                 &lt;dbl&gt; 21.00000, 28.00000, 144.66667, 81.66667, 84...
-## $ AUDPS_sd                &lt;dbl&gt; 0.000000, 12.124356, 14.571662, 17.616280, ...
-## $ Inc_Ms                  &lt;dbl&gt; 1568.000, 1568.000, 15945.177, 15945.177, 1...</code></pre>
+## $ trial_ref               &lt;fct&gt; mung1011/01, mung1011/01, mung1011/02, mung10…
+## $ year                    &lt;fct&gt; 2011, 2011, 2011, 2011, 2011, 2011, 2011, 201…
+## $ location                &lt;fct&gt; Hermitage, Hermitage, Kingaroy, Kingaroy, Kin…
+## $ host_genotype           &lt;fct&gt; Berken, Crystal, Berken, Crystal, Berken, Cry…
+## $ trial_design            &lt;fct&gt; RCB, RCB, RCB, RCB, RCB, RCB, RCB, RCB, RCB, …
+## $ plot_length.m.          &lt;dbl&gt; 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 1…
+## $ plot_width.m.           &lt;dbl&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, …
+## $ plant_density           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+## $ row_spacing             &lt;dbl&gt; 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.7…
+## $ replicates              &lt;dbl&gt; 3, 3, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 5, 5, 5, …
+## $ planting_date           &lt;date&gt; 2011-01-24, 2011-01-24, 2011-02-02, 2011-02-…
+## $ emergence_date          &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ flowering_date          &lt;date&gt; 2011-03-22, 2011-03-22, NA, NA, NA, NA, NA, …
+## $ pod_fill_date           &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ mid_late_pod_fill       &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ first_sign_disease      &lt;date&gt; 2011-03-28, 2011-03-28, 2011-03-22, 2011-03-…
+## $ trade_name              &lt;fct&gt; Folicur, Folicur, Folicur, Folicur, Folicur, …
+## $ fungicide_ai            &lt;fct&gt; tebuconazole, tebuconazole, tebuconazole, teb…
+## $ dose_ai.ha              &lt;dbl&gt; 62.35, 62.35, 62.35, 62.35, 62.35, 62.35, 62.…
+## $ n_treatment             &lt;int&gt; 11, 4, 14, 4, 17, 7, 20, 10, 2, 3, 2, 3, 2, 3…
+## $ fungicide_application_1 &lt;date&gt; 2011-03-28, 2011-03-28, 2011-03-23, 2011-03-…
+## $ fungicide_application_2 &lt;date&gt; NA, NA, NA, NA, 2011-04-13, 2011-04-13, 2011…
+## $ fungicide_application_3 &lt;date&gt; NA, NA, NA, NA, NA, NA, 2011-04-12, 2011-04-…
+## $ fungicide_application_4 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ fungicide_application_5 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ fungicide_application_6 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ fungicide_application_7 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ total_fungicide         &lt;int&gt; 1, 1, 1, 1, 2, 2, 3, 3, 1, 2, 1, 2, 3, 1, 2, …
+## $ harvest_date            &lt;date&gt; 2011-04-25, 2011-04-25, NA, NA, NA, NA, NA, …
+## $ final_assessment        &lt;date&gt; 2011-04-11, 2011-04-11, 2011-05-11, 2011-05-…
+## $ PM_final_severity       &lt;dbl&gt; 2.000, 2.333, 5.333, 4.333, 3.333, 4.000, 3.6…
+## $ rating_scale            &lt;fct&gt; 1-9, 1-9, 1-9, 1-9, 1-9, 1-9, 1-9, 1-9, 1-9, …
+## $ disease_error           &lt;dbl&gt; 0.0000, 0.5774, 1.1547, 0.5774, 0.5774, 0.000…
+## $ D_error_type            &lt;fct&gt; stdev, stdev, stdev, stdev, stdev, stdev, std…
+## $ grain_yield.t.ha.       &lt;dbl&gt; 1.7693, 1.5439, 1.0586, 0.7302, 0.9862, 0.875…
+## $ raw_graded              &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+## $ Y_Msquare               &lt;dbl&gt; 0.12382, 0.12382, 0.05401, 0.05401, 0.05401, …
+## $ yield_error             &lt;dbl&gt; 0.19442, 0.12833, 0.08244, 0.18687, 0.14650, …
+## $ Y_error_type            &lt;chr&gt; &quot;stdev&quot;, &quot;stdev&quot;, &quot;stdev&quot;, &quot;stdev&quot;, &quot;stdev&quot;, …
+## $ yield_gain              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 0.072, 0.210,…
+## $ prop_YG                 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 0.09756, 0.28…
+## $ raw_data_avail          &lt;fct&gt; Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, no, n…
+## $ comments                &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, final assessm…
+## $ days_harvest.planting   &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, -40959, -4095…
+## $ AUDPC_m                 &lt;dbl&gt; 10.50, 14.00, 98.67, 46.83, 60.00, 49.00, 28.…
+## $ AUDPC_sd                &lt;dbl&gt; 0.000, 6.062, 9.359, 18.237, 6.062, 0.000, 6.…
+## $ AUDPS_m                 &lt;dbl&gt; 21.00, 28.00, 144.67, 81.67, 84.00, 84.00, 56…
+## $ AUDPS_sd                &lt;dbl&gt; 0.000, 12.124, 14.572, 17.616, 12.124, 0.000,…
+## $ Inc_Ms                  &lt;dbl&gt; 1568.0, 1568.0, 15945.2, 15945.2, 15945.2, 15…</code></pre>
 <p>Lets plot the row spacing treatments for the response variables yield and disease severity. The main questions are:<br />
 - Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?<br />
 - Can we pool certain row spacing that have no significant difference?</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="co"># Which row spacing leads to the higher disease severity</span></a>
-<a class="sourceLine" id="cb48-2" title="2">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb48-3" title="3"><span class="st">   </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2017</span> <span class="op">|</span></a>
-<a class="sourceLine" id="cb48-4" title="4"><span class="st">             </span>year <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb48-5" title="5"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb48-6" title="6"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> PM_final_severity, <span class="dt">x =</span> <span class="kw">factor</span>(row_spacing))) <span class="op">+</span></a>
-<a class="sourceLine" id="cb48-7" title="7"><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb48-8" title="8"><span class="st">   </span><span class="co">#  geom_smooth()+</span></a>
-<a class="sourceLine" id="cb48-9" title="9"><span class="st"> </span><span class="co">#  scale_y_continuous(limits = c(-5, 15)) +</span></a>
-<a class="sourceLine" id="cb48-10" title="10"><span class="st">   </span><span class="kw">theme_usq</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb48-11" title="11"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Powdery mildew variation between different row spacing&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="preliminary-analysis.html#cb37-1"></a><span class="co"># Which row spacing leads to the higher disease severity</span></span>
+<span id="cb37-2"><a href="preliminary-analysis.html#cb37-2"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb37-3"><a href="preliminary-analysis.html#cb37-3"></a><span class="st">   </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2017</span> <span class="op">|</span></span>
+<span id="cb37-4"><a href="preliminary-analysis.html#cb37-4"></a><span class="st">             </span>year <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></span>
+<span id="cb37-5"><a href="preliminary-analysis.html#cb37-5"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb37-6"><a href="preliminary-analysis.html#cb37-6"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> PM_final_severity, <span class="dt">x =</span> <span class="kw">factor</span>(row_spacing))) <span class="op">+</span></span>
+<span id="cb37-7"><a href="preliminary-analysis.html#cb37-7"></a><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb37-8"><a href="preliminary-analysis.html#cb37-8"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Powdery mildew variation between different row spacing&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/RS_severity-1.png" width="672" /></p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># Which row spacing leads to the higher disease severity</span></a>
-<a class="sourceLine" id="cb49-2" title="2">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb49-3" title="3"><span class="st">   </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2017</span> <span class="op">|</span></a>
-<a class="sourceLine" id="cb49-4" title="4"><span class="st">             </span>year <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb49-5" title="5"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb49-6" title="6"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> PM_final_severity, <span class="dt">x =</span> <span class="kw">factor</span>(row_spacing))) <span class="op">+</span></a>
-<a class="sourceLine" id="cb49-7" title="7"><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb49-8" title="8"><span class="st">   </span><span class="co">#  geom_smooth()+</span></a>
-<a class="sourceLine" id="cb49-9" title="9"><span class="st"> </span><span class="co">#  scale_y_continuous(limits = c(-5, 15)) +</span></a>
-<a class="sourceLine" id="cb49-10" title="10"><span class="st">   </span><span class="kw">theme_usq</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb49-11" title="11"><span class="st">   </span><span class="kw">facet_grid</span>(<span class="dt">cols =</span> <span class="kw">vars</span>(location))<span class="op">+</span></a>
-<a class="sourceLine" id="cb49-12" title="12"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Powdery mildew variation between different row spacing&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="preliminary-analysis.html#cb38-1"></a><span class="co"># Which row spacing leads to the higher disease severity</span></span>
+<span id="cb38-2"><a href="preliminary-analysis.html#cb38-2"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb38-3"><a href="preliminary-analysis.html#cb38-3"></a><span class="st">   </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2017</span> <span class="op">|</span></span>
+<span id="cb38-4"><a href="preliminary-analysis.html#cb38-4"></a><span class="st">             </span>year <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></span>
+<span id="cb38-5"><a href="preliminary-analysis.html#cb38-5"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb38-6"><a href="preliminary-analysis.html#cb38-6"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> PM_final_severity, <span class="dt">x =</span> <span class="kw">factor</span>(row_spacing))) <span class="op">+</span></span>
+<span id="cb38-7"><a href="preliminary-analysis.html#cb38-7"></a><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb38-8"><a href="preliminary-analysis.html#cb38-8"></a><span class="st">   </span><span class="kw">facet_grid</span>(<span class="dt">cols =</span> <span class="kw">vars</span>(location)) <span class="op">+</span></span>
+<span id="cb38-9"><a href="preliminary-analysis.html#cb38-9"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Powdery mildew variation between different row spacing&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/RS_severity_x_trial-1.png" width="672" /></p>
 <p>In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="co"># Which row spacing leads to the higher yeild potential</span></a>
-<a class="sourceLine" id="cb50-2" title="2">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb50-3" title="3"><span class="st">   </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2017</span><span class="op">|</span></a>
-<a class="sourceLine" id="cb50-4" title="4"><span class="st">             </span>year <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb50-5" title="5"><span class="st">   </span><span class="co">#   filter(Fungicide == &quot;control&quot;) %&gt;%</span></a>
-<a class="sourceLine" id="cb50-6" title="6"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(</a>
-<a class="sourceLine" id="cb50-7" title="7">      <span class="dt">y =</span> <span class="kw">as.numeric</span>(grain_yield.t.ha.),</a>
-<a class="sourceLine" id="cb50-8" title="8">      <span class="dt">x =</span> row_spacing,</a>
-<a class="sourceLine" id="cb50-9" title="9">      <span class="dt">colour =</span> location</a>
-<a class="sourceLine" id="cb50-10" title="10">   )) <span class="op">+</span></a>
-<a class="sourceLine" id="cb50-11" title="11"><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;gam&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb50-12" title="12"><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="fl">0.01</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb50-13" title="13"><span class="st">   </span><span class="co">#   scale_y_continuous(limits = c(-5,15))+</span></a>
-<a class="sourceLine" id="cb50-14" title="14"><span class="st">   </span><span class="kw">theme_usq</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-15" title="15"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Grain yield results for different row spacing at three locations&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-16" title="16"><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Row spacing (m)&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-17" title="17"><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;Grain yield - tonne per hectare&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="preliminary-analysis.html#cb39-1"></a><span class="co"># Which row spacing leads to the higher yeild potential</span></span>
+<span id="cb39-2"><a href="preliminary-analysis.html#cb39-2"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb39-3"><a href="preliminary-analysis.html#cb39-3"></a><span class="st">   </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2017</span> <span class="op">|</span></span>
+<span id="cb39-4"><a href="preliminary-analysis.html#cb39-4"></a><span class="st">             </span>year <span class="op">==</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span></span>
+<span id="cb39-5"><a href="preliminary-analysis.html#cb39-5"></a><span class="st">   </span><span class="co">#   filter(Fungicide == &quot;control&quot;) %&gt;%</span></span>
+<span id="cb39-6"><a href="preliminary-analysis.html#cb39-6"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(</span>
+<span id="cb39-7"><a href="preliminary-analysis.html#cb39-7"></a>      <span class="dt">y =</span> <span class="kw">as.numeric</span>(grain_yield.t.ha.),</span>
+<span id="cb39-8"><a href="preliminary-analysis.html#cb39-8"></a>      <span class="dt">x =</span> row_spacing,</span>
+<span id="cb39-9"><a href="preliminary-analysis.html#cb39-9"></a>      <span class="dt">colour =</span> location</span>
+<span id="cb39-10"><a href="preliminary-analysis.html#cb39-10"></a>   )) <span class="op">+</span></span>
+<span id="cb39-11"><a href="preliminary-analysis.html#cb39-11"></a><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;gam&quot;</span>) <span class="op">+</span></span>
+<span id="cb39-12"><a href="preliminary-analysis.html#cb39-12"></a><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="fl">0.01</span>) <span class="op">+</span></span>
+<span id="cb39-13"><a href="preliminary-analysis.html#cb39-13"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Grain yield results for different row spacing at three locations&quot;</span>) <span class="op">+</span></span>
+<span id="cb39-14"><a href="preliminary-analysis.html#cb39-14"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Row spacing (m)&quot;</span>) <span class="op">+</span></span>
+<span id="cb39-15"><a href="preliminary-analysis.html#cb39-15"></a><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;Grain yield - tonnes per hectare&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/RS_yield-1.png" width="672" /></p>
 <p>The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial. However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.</p>
 <p>Overall row spacing may influence both powdery mildew severity and yield.</p>
-<p> <br />
- </p>
+<hr />
 </div>
-<div id="yield-vs-in-season-rain" class="section level3">
+<div id="yield-vs-in-season-rain" class="section level3" number="4.1.4">
 <h3><span class="header-section-number">4.1.4</span> Yield vs in-season rain</h3>
 <p>In crop rain could be a significant factor which contributes to the end of season grain yield. To investigate this effect I will use a linear model (GY ~ SR) where seasonal rainfall represents a specific time frame with respect to planting time. Multiple time frames were tested from 20 days prior to planting, to 100 days after planting.</p>
 <p>The multiple time frames were tested by a loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall. The code for this process was moved to be contained within it’s own script and can be run as a job as it can take a long time. To speed up the computation I split the script into four, ran the jobs and bound the data into one frame. The output of the script is saved with the prefix <code>lmInSeasonRainfall</code> followed by the time windows the model is run. For example <code>lmInSeasonRainfall_20.40_50.80.csv</code> holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co"># The four data files were created from four scripts run as four jobs in Rstudio</span></a>
-<a class="sourceLine" id="cb51-2" title="2"><span class="co"># when the four jobs are finished they can be imported and combined into one data.frame</span></a>
-<a class="sourceLine" id="cb51-3" title="3"><span class="co"># source(Rainfall_x_cropYield_s-10.09_e30.65.R)</span></a>
-<a class="sourceLine" id="cb51-4" title="4"><span class="co"># source(Rainfall_x_cropYield_s-10.09_e65.100.R)</span></a>
-<a class="sourceLine" id="cb51-5" title="5"><span class="co"># source(Rainfall_x_cropYield_s10.30_e30.65.R)</span></a>
-<a class="sourceLine" id="cb51-6" title="6"><span class="co"># source(Rainfall_x_cropYield_s10.30_e65.10.R)</span></a>
-<a class="sourceLine" id="cb51-7" title="7"></a>
-<a class="sourceLine" id="cb51-8" title="8">lm_rain1 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_-10.09_30.64.csv&quot;</span>,<span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb51-9" title="9">lm_rain2 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_-10.09_65.100.csv&quot;</span>,<span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb51-10" title="10">lm_rain3 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_10.30_30.64.csv&quot;</span>,<span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb51-11" title="11">lm_rain4 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_10.30_65.100.csv&quot;</span>,<span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb51-12" title="12"></a>
-<a class="sourceLine" id="cb51-13" title="13">lm_rain &lt;-<span class="st"> </span><span class="kw">rbind</span>(lm_rain1,lm_rain2,lm_rain3,lm_rain4)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="preliminary-analysis.html#cb40-1"></a><span class="co"># The four data files were created from four scripts run as four jobs in Rstudio</span></span>
+<span id="cb40-2"><a href="preliminary-analysis.html#cb40-2"></a><span class="co"># when the four jobs are finished they can be imported and combined into one data.frame</span></span>
+<span id="cb40-3"><a href="preliminary-analysis.html#cb40-3"></a><span class="co"># source(Rainfall_x_cropYield_s-10.09_e30.65.R)</span></span>
+<span id="cb40-4"><a href="preliminary-analysis.html#cb40-4"></a><span class="co"># source(Rainfall_x_cropYield_s-10.09_e65.100.R)</span></span>
+<span id="cb40-5"><a href="preliminary-analysis.html#cb40-5"></a><span class="co"># source(Rainfall_x_cropYield_s10.30_e30.65.R)</span></span>
+<span id="cb40-6"><a href="preliminary-analysis.html#cb40-6"></a><span class="co"># source(Rainfall_x_cropYield_s10.30_e65.10.R)</span></span>
+<span id="cb40-7"><a href="preliminary-analysis.html#cb40-7"></a></span>
+<span id="cb40-8"><a href="preliminary-analysis.html#cb40-8"></a>lm_rain1 &lt;-</span>
+<span id="cb40-9"><a href="preliminary-analysis.html#cb40-9"></a><span class="st">   </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_-10.09_30.64.csv&quot;</span>,</span>
+<span id="cb40-10"><a href="preliminary-analysis.html#cb40-10"></a>            <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb40-11"><a href="preliminary-analysis.html#cb40-11"></a>lm_rain2 &lt;-</span>
+<span id="cb40-12"><a href="preliminary-analysis.html#cb40-12"></a><span class="st">   </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_-10.09_65.100.csv&quot;</span>,</span>
+<span id="cb40-13"><a href="preliminary-analysis.html#cb40-13"></a>            <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb40-14"><a href="preliminary-analysis.html#cb40-14"></a>lm_rain3 &lt;-</span>
+<span id="cb40-15"><a href="preliminary-analysis.html#cb40-15"></a><span class="st">   </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_10.30_30.64.csv&quot;</span>,</span>
+<span id="cb40-16"><a href="preliminary-analysis.html#cb40-16"></a>            <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb40-17"><a href="preliminary-analysis.html#cb40-17"></a>lm_rain4 &lt;-</span>
+<span id="cb40-18"><a href="preliminary-analysis.html#cb40-18"></a><span class="st">   </span><span class="kw">read.csv</span>(<span class="st">&quot;data/lmInSeasonRainfall_10.30_65.100.csv&quot;</span>,</span>
+<span id="cb40-19"><a href="preliminary-analysis.html#cb40-19"></a>            <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb40-20"><a href="preliminary-analysis.html#cb40-20"></a></span>
+<span id="cb40-21"><a href="preliminary-analysis.html#cb40-21"></a>lm_rain &lt;-<span class="st"> </span><span class="kw">rbind</span>(lm_rain1, lm_rain2, lm_rain3, lm_rain4)</span></code></pre></div>
 <p>Now we have read in the data from the previously computed models lets find the linear model which has:<br />
 - The lowest P value<br />
 - the highest adjusted r squared value</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_pval <span class="op">==</span><span class="st"> </span><span class="kw">min</span>(lm_rain<span class="op">$</span>lm_pval)),]</a></code></pre></div>
-<pre><code>##      start_day end_day     lm_pval lm_rsquared lm_adj_rsquared
-## 2202        14      67 0.000523266   0.6800095       0.6509195</code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_rsquared)),]</a></code></pre></div>
-<pre><code>##      start_day end_day     lm_pval lm_rsquared lm_adj_rsquared
-## 2202        14      67 0.000523266   0.6800095       0.6509195</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1">lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_adj_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_adj_rsquared)),]</a></code></pre></div>
-<pre><code>##      start_day end_day     lm_pval lm_rsquared lm_adj_rsquared
-## 2202        14      67 0.000523266   0.6800095       0.6509195</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="preliminary-analysis.html#cb41-1"></a>lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_pval <span class="op">==</span><span class="st"> </span><span class="kw">min</span>(lm_rain<span class="op">$</span>lm_pval)), ]</span></code></pre></div>
+<pre><code>##      start_day end_day   lm_pval lm_rsquared lm_adj_rsquared
+## 2202        14      67 0.0005233        0.68          0.6509</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="preliminary-analysis.html#cb43-1"></a>lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_rsquared)), ]</span></code></pre></div>
+<pre><code>##      start_day end_day   lm_pval lm_rsquared lm_adj_rsquared
+## 2202        14      67 0.0005233        0.68          0.6509</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="preliminary-analysis.html#cb45-1"></a>lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_adj_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_adj_rsquared)), ]</span></code></pre></div>
+<pre><code>##      start_day end_day   lm_pval lm_rsquared lm_adj_rsquared
+## 2202        14      67 0.0005233        0.68          0.6509</code></pre>
 <p>To visualise the model fits we will use a heat map to describe how the models faired in relation to the rainfall windows. log of the p value was used to improve the resolution of small very small p values.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1"><span class="kw">ggplot</span>(lm_rain, <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day, <span class="dt">z =</span> <span class="kw">log</span>(lm_pval)))<span class="op">+</span></a>
-<a class="sourceLine" id="cb58-2" title="2"><span class="st">   </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> <span class="kw">log</span>(lm_pval)), <span class="dt">interpolate =</span> <span class="ot">TRUE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb58-3" title="3"><span class="st">   </span><span class="kw">geom_contour</span>(<span class="dt">bins =</span> <span class="dv">15</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb58-4" title="4"><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data =</span> lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_pval <span class="op">==</span><span class="st"> </span><span class="kw">min</span>(lm_rain<span class="op">$</span>lm_pval)),], <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day), <span class="dt">colour =</span><span class="st">&quot; red&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb58-5" title="5"><span class="st">   </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span><span class="st">&quot;RdBu&quot;</span>, <span class="dt">direction =</span> <span class="dv">-1</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="preliminary-analysis.html#cb47-1"></a><span class="kw">ggplot</span>(lm_rain, <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day, <span class="dt">z =</span> <span class="kw">log</span>(lm_pval))) <span class="op">+</span></span>
+<span id="cb47-2"><a href="preliminary-analysis.html#cb47-2"></a><span class="st">   </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> <span class="kw">log</span>(lm_pval)), <span class="dt">interpolate =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb47-3"><a href="preliminary-analysis.html#cb47-3"></a><span class="st">   </span><span class="kw">geom_contour</span>(<span class="dt">bins =</span> <span class="dv">15</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span></span>
+<span id="cb47-4"><a href="preliminary-analysis.html#cb47-4"></a><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data =</span> lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_pval <span class="op">==</span><span class="st"> </span><span class="kw">min</span>(lm_rain<span class="op">$</span>lm_pval)), ],</span>
+<span id="cb47-5"><a href="preliminary-analysis.html#cb47-5"></a>              <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day),</span>
+<span id="cb47-6"><a href="preliminary-analysis.html#cb47-6"></a>              <span class="dt">colour =</span> <span class="st">&quot; red&quot;</span>) <span class="op">+</span></span>
+<span id="cb47-7"><a href="preliminary-analysis.html#cb47-7"></a><span class="st">   </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;RdBu&quot;</span>, <span class="dt">direction =</span> <span class="dv">-1</span>) </span></code></pre></div>
 <p><img src="_main_files/figure-html/rainLMpvalue-1.png" width="672" /></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1"><span class="kw">ggplot</span>(lm_rain, <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day, <span class="dt">z =</span> lm_rsquared))<span class="op">+</span></a>
-<a class="sourceLine" id="cb59-2" title="2"><span class="st">   </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> lm_rsquared), <span class="dt">interpolate =</span> <span class="ot">TRUE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb59-3" title="3"><span class="st">   </span><span class="kw">geom_contour</span>(<span class="dt">bins =</span> <span class="dv">15</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb59-4" title="4"><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data =</span> lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_rsquared)),], <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day), <span class="dt">colour =</span><span class="st">&quot; red&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb59-5" title="5"><span class="st">   </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span><span class="st">&quot;RdBu&quot;</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="preliminary-analysis.html#cb48-1"></a><span class="kw">ggplot</span>(lm_rain, <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day, <span class="dt">z =</span> lm_rsquared)) <span class="op">+</span></span>
+<span id="cb48-2"><a href="preliminary-analysis.html#cb48-2"></a><span class="st">   </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> lm_rsquared), <span class="dt">interpolate =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb48-3"><a href="preliminary-analysis.html#cb48-3"></a><span class="st">   </span><span class="kw">geom_contour</span>(<span class="dt">bins =</span> <span class="dv">15</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span></span>
+<span id="cb48-4"><a href="preliminary-analysis.html#cb48-4"></a><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data =</span> lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_rsquared)), ],</span>
+<span id="cb48-5"><a href="preliminary-analysis.html#cb48-5"></a>              <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day),</span>
+<span id="cb48-6"><a href="preliminary-analysis.html#cb48-6"></a>              <span class="dt">colour =</span> <span class="st">&quot; red&quot;</span>) <span class="op">+</span></span>
+<span id="cb48-7"><a href="preliminary-analysis.html#cb48-7"></a><span class="st">   </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;RdBu&quot;</span>) </span></code></pre></div>
 <p><img src="_main_files/figure-html/rainLMrsquared-1.png" width="672" /></p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1"><span class="kw">ggplot</span>(lm_rain, <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day, <span class="dt">z =</span> lm_adj_rsquared))<span class="op">+</span></a>
-<a class="sourceLine" id="cb60-2" title="2"><span class="st">   </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> lm_adj_rsquared), <span class="dt">interpolate =</span> <span class="ot">TRUE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb60-3" title="3"><span class="st">   </span><span class="kw">geom_contour</span>(<span class="dt">bins =</span> <span class="dv">15</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb60-4" title="4"><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data =</span> lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_rsquared)),], <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day), <span class="dt">colour =</span><span class="st">&quot; red&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb60-5" title="5"><span class="st">   </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span><span class="st">&quot;RdBu&quot;</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="preliminary-analysis.html#cb49-1"></a><span class="kw">ggplot</span>(lm_rain, <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day, <span class="dt">z =</span> lm_adj_rsquared)) <span class="op">+</span></span>
+<span id="cb49-2"><a href="preliminary-analysis.html#cb49-2"></a><span class="st">   </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> lm_adj_rsquared), <span class="dt">interpolate =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb49-3"><a href="preliminary-analysis.html#cb49-3"></a><span class="st">   </span><span class="kw">geom_contour</span>(<span class="dt">bins =</span> <span class="dv">15</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span></span>
+<span id="cb49-4"><a href="preliminary-analysis.html#cb49-4"></a><span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">data =</span> lm_rain[<span class="kw">which</span>(lm_rain<span class="op">$</span>lm_rsquared <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(lm_rain<span class="op">$</span>lm_rsquared)), ],</span>
+<span id="cb49-5"><a href="preliminary-analysis.html#cb49-5"></a>              <span class="kw">aes</span>(<span class="dt">x =</span> start_day, <span class="dt">y =</span> end_day),</span>
+<span id="cb49-6"><a href="preliminary-analysis.html#cb49-6"></a>              <span class="dt">colour =</span> <span class="st">&quot; red&quot;</span>) <span class="op">+</span></span>
+<span id="cb49-7"><a href="preliminary-analysis.html#cb49-7"></a><span class="st">   </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;RdBu&quot;</span>) </span></code></pre></div>
 <p><img src="_main_files/figure-html/rainLMadjrsquared-1.png" width="672" /></p>
 <p>The approximate period when in-crop rainfall impacts the most on the mean harvest is between 14 - 67 days after planting.</p>
+<hr />
 </div>
-<div id="season-range-and-first-incidence" class="section level3">
+<div id="season-range-and-first-incidence" class="section level3" number="4.1.5">
 <h3><span class="header-section-number">4.1.5</span> Season range and first incidence</h3>
-<p>Mungbean is a summer crop and powdery mildew is requires cool conditions to establish. Therefore the disease can be avoided by planting early in summer or spring, avoiding cooler temperatures at the end of some seasons. Can we visualise when PM is most likely to establish over the calender year.</p>
+<p>Mungbean is a summer crop and powdery mildew requires cool conditions to establish.
+Therefore the disease can be avoided by planting early in summer or spring, avoiding cooler temperatures at the end of some seasons.
+Can we visualise when PM is most likely to establish over the calender year?</p>
 <p>I’ll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1"><span class="co"># Create the data frame for the plot</span></a>
-<a class="sourceLine" id="cb61-2" title="2">season_dates &lt;-<span class="st"> </span>PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb61-3" title="3"><span class="st">   </span><span class="kw">group_by</span>(trial_ref)<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb61-4" title="4"><span class="st">   </span><span class="kw">summarise</span>(<span class="dt">Planting_date =</span> <span class="kw">unique</span>(planting_date),</a>
-<a class="sourceLine" id="cb61-5" title="5">             <span class="dt">Harvest_date =</span> <span class="kw">unique</span>(harvest_date),</a>
-<a class="sourceLine" id="cb61-6" title="6">             <span class="dt">First_sign_PM =</span> <span class="kw">unique</span>(first_sign_disease),</a>
-<a class="sourceLine" id="cb61-7" title="7">             <span class="dt">season_length =</span> <span class="kw">as.integer</span>(<span class="kw">as.Date</span>(<span class="kw">unique</span>(harvest_date)) <span class="op">-</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="kw">unique</span>(planting_date)))</a>
-<a class="sourceLine" id="cb61-8" title="8">             )</a>
-<a class="sourceLine" id="cb61-9" title="9"></a>
-<a class="sourceLine" id="cb61-10" title="10"><span class="co"># function to extract date from the year</span></a>
-<a class="sourceLine" id="cb61-11" title="11"><span class="co"># format should be Universal time format</span></a>
-<a class="sourceLine" id="cb61-12" title="12"><span class="kw">source</span>(<span class="st">&quot;R/year2day.r&quot;</span>)</a>
-<a class="sourceLine" id="cb61-13" title="13"></a>
-<a class="sourceLine" id="cb61-14" title="14"></a>
-<a class="sourceLine" id="cb61-15" title="15">season_dates<span class="op">$</span>Planting_day &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(season_dates<span class="op">$</span>Planting_date,year2day))</a>
-<a class="sourceLine" id="cb61-16" title="16">season_dates<span class="op">$</span>Disease_day &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(season_dates<span class="op">$</span>First_sign_PM,year2day))</a>
-<a class="sourceLine" id="cb61-17" title="17">season_dates<span class="op">$</span>Harvest_day &lt;-<span class="st"> </span>season_dates<span class="op">$</span>Planting_day <span class="op">+</span><span class="st"> </span>season_dates<span class="op">$</span>season_length</a>
-<a class="sourceLine" id="cb61-18" title="18"></a>
-<a class="sourceLine" id="cb61-19" title="19">season_dates[<span class="dv">1</span>,<span class="st">&quot;Planting_day&quot;</span>] &lt;-<span class="st"> </span><span class="kw">year2day</span>(<span class="kw">as.Date</span>(<span class="st">&quot;2012-02-28&quot;</span>)<span class="op">-</span><span class="dv">7</span>) <span class="co"># planted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day</span></a>
-<a class="sourceLine" id="cb61-20" title="20"></a>
-<a class="sourceLine" id="cb61-21" title="21"></a>
-<a class="sourceLine" id="cb61-22" title="22">first_day_month &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">31</span>, <span class="dv">59</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">151</span>, <span class="dv">181</span>, <span class="dv">211</span>, <span class="dv">243</span>, <span class="dv">273</span>)</a>
-<a class="sourceLine" id="cb61-23" title="23">axis_labels_date &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">1</span>], <span class="st">&quot;%b-%d&quot;</span>),  <span class="co"># Jan</span></a>
-<a class="sourceLine" id="cb61-24" title="24">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">2</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># Feb</span></a>
-<a class="sourceLine" id="cb61-25" title="25">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">3</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># March</span></a>
-<a class="sourceLine" id="cb61-26" title="26">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">4</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># April</span></a>
-<a class="sourceLine" id="cb61-27" title="27">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">5</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># May</span></a>
-<a class="sourceLine" id="cb61-28" title="28">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">6</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># June</span></a>
-<a class="sourceLine" id="cb61-29" title="29">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">7</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># July</span></a>
-<a class="sourceLine" id="cb61-30" title="30">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">8</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># August</span></a>
-<a class="sourceLine" id="cb61-31" title="31">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">9</span>], <span class="st">&quot;%b-%d&quot;</span>), <span class="co"># Sept</span></a>
-<a class="sourceLine" id="cb61-32" title="32">                         <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">year2day</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">10</span>], <span class="st">&quot;%b-%d&quot;</span>) <span class="co"># October</span></a>
-<a class="sourceLine" id="cb61-33" title="33">                         )</a>
-<a class="sourceLine" id="cb61-34" title="34"></a>
-<a class="sourceLine" id="cb61-35" title="35"><span class="co"># reorder the factors so they will appear in chronilogical order</span></a>
-<a class="sourceLine" id="cb61-36" title="36"><span class="co"># I used First sign because all trials have recorded this</span></a>
-<a class="sourceLine" id="cb61-37" title="37">season_dates<span class="op">$</span>trial_ref &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb61-38" title="38"><span class="st">   </span><span class="kw">factor</span>(season_dates<span class="op">$</span>trial_ref, </a>
-<a class="sourceLine" id="cb61-39" title="39">          <span class="dt">levels =</span> <span class="kw">levels</span>(season_dates<span class="op">$</span>trial_ref)[<span class="kw">rev</span>(<span class="kw">order</span>(season_dates<span class="op">$</span>First_sign_PM))])</a>
-<a class="sourceLine" id="cb61-40" title="40"></a>
-<a class="sourceLine" id="cb61-41" title="41"><span class="co"># Plot</span></a>
-<a class="sourceLine" id="cb61-42" title="42">season_dates <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb61-43" title="43"><span class="st">   </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-44" title="44"><span class="st">   </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(<span class="dt">x =</span> trial_ref, <span class="dt">y =</span> Disease_day, <span class="dt">ymin =</span> Planting_day, <span class="dt">ymax =</span> Harvest_day))<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-45" title="45"><span class="st">   </span><span class="kw">scale_y_continuous</span>(</a>
-<a class="sourceLine" id="cb61-46" title="46">      <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">max</span>(season_dates<span class="op">$</span>Planting_day <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb61-47" title="47"><span class="st">                           </span>season_dates<span class="op">$</span>season_length, </a>
-<a class="sourceLine" id="cb61-48" title="48">                        <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)),</a>
-<a class="sourceLine" id="cb61-49" title="49">      <span class="dt">labels =</span> axis_labels_date,</a>
-<a class="sourceLine" id="cb61-50" title="50">      <span class="dt">breaks =</span> first_day_month</a>
-<a class="sourceLine" id="cb61-51" title="51">   )<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-52" title="52"><span class="st">   </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> trial_ref, <span class="dt">y =</span> Disease_day))<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-53" title="53"><span class="st">   </span><span class="kw">coord_flip</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-54" title="54"><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Season length and when powdery mildew was first spotted</span><span class="ch">\n</span><span class="st">in each respective trial&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="preliminary-analysis.html#cb50-1"></a><span class="co"># Create the data frame for the plot</span></span>
+<span id="cb50-2"><a href="preliminary-analysis.html#cb50-2"></a>season_dates &lt;-<span class="st"> </span>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb50-3"><a href="preliminary-analysis.html#cb50-3"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb50-4"><a href="preliminary-analysis.html#cb50-4"></a><span class="st">   </span><span class="kw">summarise</span>(</span>
+<span id="cb50-5"><a href="preliminary-analysis.html#cb50-5"></a>      <span class="dt">Planting_date =</span> <span class="kw">unique</span>(planting_date),</span>
+<span id="cb50-6"><a href="preliminary-analysis.html#cb50-6"></a>      <span class="dt">Harvest_date =</span> <span class="kw">unique</span>(harvest_date),</span>
+<span id="cb50-7"><a href="preliminary-analysis.html#cb50-7"></a>      <span class="dt">First_sign_PM =</span> <span class="kw">unique</span>(first_sign_disease),</span>
+<span id="cb50-8"><a href="preliminary-analysis.html#cb50-8"></a>      <span class="dt">season_length =</span> <span class="kw">as.integer</span>(<span class="kw">as.Date</span>(<span class="kw">unique</span>(harvest_date)) <span class="op">-</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="kw">unique</span>(planting_date)))</span>
+<span id="cb50-9"><a href="preliminary-analysis.html#cb50-9"></a>   )</span>
+<span id="cb50-10"><a href="preliminary-analysis.html#cb50-10"></a></span>
+<span id="cb50-11"><a href="preliminary-analysis.html#cb50-11"></a>season_dates<span class="op">$</span>Planting_day &lt;-<span class="st"> </span><span class="kw">yday</span>(season_dates<span class="op">$</span>Planting_date)</span>
+<span id="cb50-12"><a href="preliminary-analysis.html#cb50-12"></a>season_dates<span class="op">$</span>Disease_day &lt;-<span class="st"> </span><span class="kw">yday</span>(season_dates<span class="op">$</span>First_sign_PM)</span>
+<span id="cb50-13"><a href="preliminary-analysis.html#cb50-13"></a>season_dates<span class="op">$</span>Harvest_day &lt;-</span>
+<span id="cb50-14"><a href="preliminary-analysis.html#cb50-14"></a><span class="st">   </span>season_dates<span class="op">$</span>Planting_day <span class="op">+</span><span class="st"> </span>season_dates<span class="op">$</span>season_length</span>
+<span id="cb50-15"><a href="preliminary-analysis.html#cb50-15"></a></span>
+<span id="cb50-16"><a href="preliminary-analysis.html#cb50-16"></a></span>
+<span id="cb50-17"><a href="preliminary-analysis.html#cb50-17"></a>season_dates[<span class="dv">1</span>, <span class="st">&quot;Planting_day&quot;</span>] &lt;-</span>
+<span id="cb50-18"><a href="preliminary-analysis.html#cb50-18"></a><span class="st">   </span><span class="kw">yday</span>(<span class="kw">as.Date</span>(<span class="st">&quot;2012-02-28&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="dv">7</span>) <span class="co"># planted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day</span></span>
+<span id="cb50-19"><a href="preliminary-analysis.html#cb50-19"></a></span>
+<span id="cb50-20"><a href="preliminary-analysis.html#cb50-20"></a></span>
+<span id="cb50-21"><a href="preliminary-analysis.html#cb50-21"></a>first_day_month &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">31</span>, <span class="dv">59</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">151</span>, <span class="dv">181</span>, <span class="dv">211</span>, <span class="dv">243</span>, <span class="dv">273</span>)</span>
+<span id="cb50-22"><a href="preliminary-analysis.html#cb50-22"></a>axis_labels_date &lt;-</span>
+<span id="cb50-23"><a href="preliminary-analysis.html#cb50-23"></a><span class="st">   </span><span class="kw">c</span>(</span>
+<span id="cb50-24"><a href="preliminary-analysis.html#cb50-24"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">1</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-25"><a href="preliminary-analysis.html#cb50-25"></a>      <span class="co"># Jan</span></span>
+<span id="cb50-26"><a href="preliminary-analysis.html#cb50-26"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">2</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-27"><a href="preliminary-analysis.html#cb50-27"></a>      <span class="co"># Feb</span></span>
+<span id="cb50-28"><a href="preliminary-analysis.html#cb50-28"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">3</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-29"><a href="preliminary-analysis.html#cb50-29"></a>      <span class="co"># March</span></span>
+<span id="cb50-30"><a href="preliminary-analysis.html#cb50-30"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">4</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-31"><a href="preliminary-analysis.html#cb50-31"></a>      <span class="co"># April</span></span>
+<span id="cb50-32"><a href="preliminary-analysis.html#cb50-32"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">5</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-33"><a href="preliminary-analysis.html#cb50-33"></a>      <span class="co"># May</span></span>
+<span id="cb50-34"><a href="preliminary-analysis.html#cb50-34"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">6</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-35"><a href="preliminary-analysis.html#cb50-35"></a>      <span class="co"># June</span></span>
+<span id="cb50-36"><a href="preliminary-analysis.html#cb50-36"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">7</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-37"><a href="preliminary-analysis.html#cb50-37"></a>      <span class="co"># July</span></span>
+<span id="cb50-38"><a href="preliminary-analysis.html#cb50-38"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">8</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-39"><a href="preliminary-analysis.html#cb50-39"></a>      <span class="co"># August</span></span>
+<span id="cb50-40"><a href="preliminary-analysis.html#cb50-40"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">9</span>], <span class="st">&quot;%b-%d&quot;</span>),</span>
+<span id="cb50-41"><a href="preliminary-analysis.html#cb50-41"></a>      <span class="co"># Sept</span></span>
+<span id="cb50-42"><a href="preliminary-analysis.html#cb50-42"></a>      <span class="kw">format</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="kw">yday</span>(<span class="kw">Sys.Date</span>()) <span class="op">+</span><span class="st"> </span>first_day_month[<span class="dv">10</span>], <span class="st">&quot;%b-%d&quot;</span>) <span class="co"># October</span></span>
+<span id="cb50-43"><a href="preliminary-analysis.html#cb50-43"></a>   )</span>
+<span id="cb50-44"><a href="preliminary-analysis.html#cb50-44"></a></span>
+<span id="cb50-45"><a href="preliminary-analysis.html#cb50-45"></a><span class="co"># reorder the factors so they will appear in chronilogical order</span></span>
+<span id="cb50-46"><a href="preliminary-analysis.html#cb50-46"></a><span class="co"># I used First sign because all trials have recorded this</span></span>
+<span id="cb50-47"><a href="preliminary-analysis.html#cb50-47"></a>season_dates<span class="op">$</span>trial_ref &lt;-</span>
+<span id="cb50-48"><a href="preliminary-analysis.html#cb50-48"></a><span class="st">   </span><span class="kw">factor</span>(season_dates<span class="op">$</span>trial_ref,</span>
+<span id="cb50-49"><a href="preliminary-analysis.html#cb50-49"></a>          <span class="dt">levels =</span> <span class="kw">levels</span>(season_dates<span class="op">$</span>trial_ref)[<span class="kw">rev</span>(<span class="kw">order</span>(season_dates<span class="op">$</span>First_sign_PM))])</span>
+<span id="cb50-50"><a href="preliminary-analysis.html#cb50-50"></a></span>
+<span id="cb50-51"><a href="preliminary-analysis.html#cb50-51"></a><span class="co"># Plot</span></span>
+<span id="cb50-52"><a href="preliminary-analysis.html#cb50-52"></a>season_dates <span class="op">%&gt;%</span></span>
+<span id="cb50-53"><a href="preliminary-analysis.html#cb50-53"></a><span class="st">   </span><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb50-54"><a href="preliminary-analysis.html#cb50-54"></a><span class="st">   </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(</span>
+<span id="cb50-55"><a href="preliminary-analysis.html#cb50-55"></a>      <span class="dt">x =</span> trial_ref,</span>
+<span id="cb50-56"><a href="preliminary-analysis.html#cb50-56"></a>      <span class="dt">y =</span> Disease_day,</span>
+<span id="cb50-57"><a href="preliminary-analysis.html#cb50-57"></a>      <span class="dt">ymin =</span> Planting_day,</span>
+<span id="cb50-58"><a href="preliminary-analysis.html#cb50-58"></a>      <span class="dt">ymax =</span> Harvest_day</span>
+<span id="cb50-59"><a href="preliminary-analysis.html#cb50-59"></a>   )) <span class="op">+</span></span>
+<span id="cb50-60"><a href="preliminary-analysis.html#cb50-60"></a><span class="st">   </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(</span>
+<span id="cb50-61"><a href="preliminary-analysis.html#cb50-61"></a>      <span class="dv">0</span>,</span>
+<span id="cb50-62"><a href="preliminary-analysis.html#cb50-62"></a>      <span class="kw">max</span>(</span>
+<span id="cb50-63"><a href="preliminary-analysis.html#cb50-63"></a>         season_dates<span class="op">$</span>Planting_day <span class="op">+</span></span>
+<span id="cb50-64"><a href="preliminary-analysis.html#cb50-64"></a><span class="st">            </span>season_dates<span class="op">$</span>season_length,</span>
+<span id="cb50-65"><a href="preliminary-analysis.html#cb50-65"></a>         <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb50-66"><a href="preliminary-analysis.html#cb50-66"></a>      )</span>
+<span id="cb50-67"><a href="preliminary-analysis.html#cb50-67"></a>   ),</span>
+<span id="cb50-68"><a href="preliminary-analysis.html#cb50-68"></a>   <span class="dt">labels =</span> axis_labels_date,</span>
+<span id="cb50-69"><a href="preliminary-analysis.html#cb50-69"></a>   <span class="dt">breaks =</span> first_day_month) <span class="op">+</span></span>
+<span id="cb50-70"><a href="preliminary-analysis.html#cb50-70"></a><span class="st">   </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> trial_ref, <span class="dt">y =</span> Disease_day)) <span class="op">+</span></span>
+<span id="cb50-71"><a href="preliminary-analysis.html#cb50-71"></a><span class="st">   </span><span class="kw">coord_flip</span>() <span class="op">+</span></span>
+<span id="cb50-72"><a href="preliminary-analysis.html#cb50-72"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Season length and when powdery mildew was first spotted</span><span class="ch">\n</span><span class="st">in each respective trial&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 7 rows containing missing values (geom_pointrange).</code></pre>
 <p><img src="_main_files/figure-html/first_incidence-1.png" width="672" /></p>
-<p>In most years, regardless of the age of the crop, powdery mildew establishes in March.</p>
-<p> <br />
- </p>
-<div id="effect-of-fungicide" class="section level4">
+<p>In most years, regardless of the age of the crop, PM establishes in March.</p>
+<hr />
+<div id="effect-of-fungicide" class="section level4" number="4.1.5.1">
 <h4><span class="header-section-number">4.1.5.1</span> Effect of Fungicide</h4>
 <p><strong>Fungicide effect on proportional yield gain with respect to time of application</strong><br />
 First lets look at the quantiles for each fungicide irrespective of other factors.
 We will focus on proportional yield gain, compared to no treatment control, as this should partially correct for some spatial and seasonal effects.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb63-2" title="2"><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb63-3" title="3"><span class="st">   </span><span class="kw">summarise</span>(</a>
-<a class="sourceLine" id="cb63-4" title="4">      <span class="dt">n =</span> <span class="kw">length</span>(prop_YG),</a>
-<a class="sourceLine" id="cb63-5" title="5">      <span class="dt">lower_2.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.025</span>)),</a>
-<a class="sourceLine" id="cb63-6" title="6">      <span class="dt">median =</span> <span class="kw">median</span>(prop_YG, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb63-7" title="7">      <span class="dt">mean =</span> <span class="kw">mean</span>(prop_YG, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb63-8" title="8">      <span class="dt">upper_97.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.975</span>))</a>
-<a class="sourceLine" id="cb63-9" title="9">   ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb63-10" title="10"><span class="st">   </span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove any fungicide groups with less than 5 observations</span></a>
-<a class="sourceLine" id="cb63-11" title="11"><span class="st">   </span><span class="kw">arrange</span>(<span class="kw">desc</span>(median)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb63-12" title="12"><span class="st">   </span><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Fungicide effect on proportion of yield gain&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb63-13" title="13"><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> T, <span class="dt">full_width =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="preliminary-analysis.html#cb52-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb52-2"><a href="preliminary-analysis.html#cb52-2"></a><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai) <span class="op">%&gt;%</span></span>
+<span id="cb52-3"><a href="preliminary-analysis.html#cb52-3"></a><span class="st">   </span><span class="kw">summarise</span>(</span>
+<span id="cb52-4"><a href="preliminary-analysis.html#cb52-4"></a>      <span class="dt">n =</span> <span class="kw">length</span>(prop_YG),</span>
+<span id="cb52-5"><a href="preliminary-analysis.html#cb52-5"></a>      <span class="dt">lower_2.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.025</span>)),</span>
+<span id="cb52-6"><a href="preliminary-analysis.html#cb52-6"></a>      <span class="dt">median =</span> <span class="kw">median</span>(prop_YG, <span class="dt">na.rm =</span> T),</span>
+<span id="cb52-7"><a href="preliminary-analysis.html#cb52-7"></a>      <span class="dt">mean =</span> <span class="kw">mean</span>(prop_YG, <span class="dt">na.rm =</span> T),</span>
+<span id="cb52-8"><a href="preliminary-analysis.html#cb52-8"></a>      <span class="dt">upper_97.5 =</span> <span class="kw">quantile</span>(prop_YG, <span class="dt">na.rm =</span> T, <span class="kw">c</span>(<span class="fl">0.975</span>))</span>
+<span id="cb52-9"><a href="preliminary-analysis.html#cb52-9"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb52-10"><a href="preliminary-analysis.html#cb52-10"></a><span class="st">   </span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove any fungicide groups with less than 5 observations</span></span>
+<span id="cb52-11"><a href="preliminary-analysis.html#cb52-11"></a><span class="st">   </span><span class="kw">arrange</span>(<span class="kw">desc</span>(median)) <span class="op">%&gt;%</span></span>
+<span id="cb52-12"><a href="preliminary-analysis.html#cb52-12"></a><span class="st">   </span><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Fungicide effect on proportion of yield gain&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb52-13"><a href="preliminary-analysis.html#cb52-13"></a><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> T, <span class="dt">full_width =</span> T)</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 (#tab:fungicide_proportion_yield)Fungicide effect on proportion of yield gain
@@ -1212,16 +1266,16 @@ upper_97.5
 34
 </td>
 <td style="text-align:right;">
--0.0390244
+-0.0390
 </td>
 <td style="text-align:right;">
-0.3541935
+0.3542
 </td>
 <td style="text-align:right;">
-0.3158004
+0.3158
 </td>
 <td style="text-align:right;">
-0.6525632
+0.6526
 </td>
 </tr>
 <tr>
@@ -1232,16 +1286,16 @@ propiconazole
 56
 </td>
 <td style="text-align:right;">
-0.1771680
+0.1772
 </td>
 <td style="text-align:right;">
-0.3293134
+0.3293
 </td>
 <td style="text-align:right;">
-0.3848372
+0.3848
 </td>
 <td style="text-align:right;">
-0.7332224
+0.7332
 </td>
 </tr>
 <tr>
@@ -1252,16 +1306,16 @@ tebuconazole
 77
 </td>
 <td style="text-align:right;">
--0.0202174
+-0.0202
 </td>
 <td style="text-align:right;">
-0.0891532
+0.0892
 </td>
 <td style="text-align:right;">
-0.1588730
+0.1589
 </td>
 <td style="text-align:right;">
-0.4596538
+0.4597
 </td>
 </tr>
 <tr>
@@ -1272,16 +1326,16 @@ sulphur
 74
 </td>
 <td style="text-align:right;">
--0.1324247
+-0.1324
 </td>
 <td style="text-align:right;">
-0.0636856
+0.0637
 </td>
 <td style="text-align:right;">
-0.0954546
+0.0955
 </td>
 <td style="text-align:right;">
-0.5070321
+0.5070
 </td>
 </tr>
 <tr>
@@ -1292,16 +1346,16 @@ carbendazim
 15
 </td>
 <td style="text-align:right;">
--0.0871234
+-0.0871
 </td>
 <td style="text-align:right;">
-0.0473458
+0.0473
 </td>
 <td style="text-align:right;">
-0.0408725
+0.0409
 </td>
 <td style="text-align:right;">
-0.1578639
+0.1579
 </td>
 </tr>
 <tr>
@@ -1366,43 +1420,43 @@ NA
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1"><span class="co"># plot table as a box plot</span></a>
-<a class="sourceLine" id="cb64-2" title="2">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-3" title="3"><span class="st">   </span><span class="kw">filter</span>(</a>
-<a class="sourceLine" id="cb64-4" title="4">      fungicide_ai <span class="op">==</span><span class="st"> </span><span class="kw">c</span>(</a>
-<a class="sourceLine" id="cb64-5" title="5">         <span class="st">&quot;200 g/L tebuconazole + 120 g/L azoxystrobin&quot;</span> ,</a>
-<a class="sourceLine" id="cb64-6" title="6">         <span class="st">&quot;200 g/L azoxystrobin + 80 g/L cyproconazole&quot;</span>,</a>
-<a class="sourceLine" id="cb64-7" title="7">         <span class="st">&quot;tebuconazole&quot;</span>,</a>
-<a class="sourceLine" id="cb64-8" title="8">         <span class="st">&quot;propiconazole&quot;</span>,</a>
-<a class="sourceLine" id="cb64-9" title="9">         <span class="st">&quot;sulphur&quot;</span></a>
-<a class="sourceLine" id="cb64-10" title="10">      )</a>
-<a class="sourceLine" id="cb64-11" title="11">   ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-12" title="12"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> prop_YG, <span class="dt">x =</span> fungicide_ai)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-13" title="13"><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-14" title="14"><span class="st">   </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>), <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-15" title="15"><span class="st">   </span><span class="co">#scale_fill_discrete(labels = c(&quot;15-7 days before&quot;,&quot;same day&quot;,&quot;one day after&quot;,&quot;8-9 days after&quot;,&quot;13-19 days after&quot;))+</span></a>
-<a class="sourceLine" id="cb64-16" title="16"><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Proportion of grain yield saved&quot;</span>,</a>
-<a class="sourceLine" id="cb64-17" title="17">        <span class="dt">title =</span> <span class="st">&quot;Grain yield proportion saved grouped by</span><span class="ch">\n</span><span class="st">fungicide type&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-18" title="18"><span class="st">   </span><span class="kw">theme</span>(</a>
-<a class="sourceLine" id="cb64-19" title="19">      <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;grey80&quot;</span>),</a>
-<a class="sourceLine" id="cb64-20" title="20">      <span class="dt">panel.grid.minor =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;grey50&quot;</span>),</a>
-<a class="sourceLine" id="cb64-21" title="21">      <span class="dt">panel.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb64-22" title="22">   ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-23" title="23"><span class="st">   </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_legend</span>(<span class="dt">title =</span> <span class="st">&quot;Fungicide&quot;</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-24" title="24"><span class="st">   </span><span class="kw">coord_flip</span>()</a></code></pre></div>
-<pre><code>## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="preliminary-analysis.html#cb53-1"></a><span class="co"># plot table as a box plot</span></span>
+<span id="cb53-2"><a href="preliminary-analysis.html#cb53-2"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb53-3"><a href="preliminary-analysis.html#cb53-3"></a><span class="st">   </span><span class="kw">filter</span>(</span>
+<span id="cb53-4"><a href="preliminary-analysis.html#cb53-4"></a>      fungicide_ai <span class="op">==</span><span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb53-5"><a href="preliminary-analysis.html#cb53-5"></a>         <span class="st">&quot;200 g/L tebuconazole +</span><span class="ch">\n</span><span class="st">120 g/L azoxystrobin&quot;</span> ,</span>
+<span id="cb53-6"><a href="preliminary-analysis.html#cb53-6"></a>         <span class="st">&quot;200 g/L azoxystrobin +</span><span class="ch">\n</span><span class="st">80 g/L cyproconazole&quot;</span>,</span>
+<span id="cb53-7"><a href="preliminary-analysis.html#cb53-7"></a>         <span class="st">&quot;tebuconazole&quot;</span>,</span>
+<span id="cb53-8"><a href="preliminary-analysis.html#cb53-8"></a>         <span class="st">&quot;propiconazole&quot;</span>,</span>
+<span id="cb53-9"><a href="preliminary-analysis.html#cb53-9"></a>         <span class="st">&quot;sulphur&quot;</span></span>
+<span id="cb53-10"><a href="preliminary-analysis.html#cb53-10"></a>      )</span>
+<span id="cb53-11"><a href="preliminary-analysis.html#cb53-11"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb53-12"><a href="preliminary-analysis.html#cb53-12"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> prop_YG, <span class="dt">x =</span> fungicide_ai)) <span class="op">+</span></span>
+<span id="cb53-13"><a href="preliminary-analysis.html#cb53-13"></a><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb53-14"><a href="preliminary-analysis.html#cb53-14"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>), <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb53-15"><a href="preliminary-analysis.html#cb53-15"></a><span class="st">   </span><span class="co">#scale_fill_discrete(labels = c(&quot;15-7 days before&quot;,&quot;same day&quot;,&quot;one day after&quot;,&quot;8-9 days after&quot;,&quot;13-19 days after&quot;))+</span></span>
+<span id="cb53-16"><a href="preliminary-analysis.html#cb53-16"></a><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Proportion of grain yield saved&quot;</span>,</span>
+<span id="cb53-17"><a href="preliminary-analysis.html#cb53-17"></a>        <span class="dt">title =</span> <span class="st">&quot;Grain yield proportion saved grouped by</span><span class="ch">\n</span><span class="st">fungicide type&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-18"><a href="preliminary-analysis.html#cb53-18"></a><span class="st">   </span><span class="kw">theme</span>(</span>
+<span id="cb53-19"><a href="preliminary-analysis.html#cb53-19"></a>      <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;grey80&quot;</span>),</span>
+<span id="cb53-20"><a href="preliminary-analysis.html#cb53-20"></a>      <span class="dt">panel.grid.minor =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;grey50&quot;</span>),</span>
+<span id="cb53-21"><a href="preliminary-analysis.html#cb53-21"></a>      <span class="dt">panel.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="ot">NA</span>)</span>
+<span id="cb53-22"><a href="preliminary-analysis.html#cb53-22"></a>   ) <span class="op">+</span></span>
+<span id="cb53-23"><a href="preliminary-analysis.html#cb53-23"></a><span class="st">   </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_legend</span>(<span class="dt">title =</span> <span class="st">&quot;Fungicide&quot;</span>)) <span class="op">+</span></span>
+<span id="cb53-24"><a href="preliminary-analysis.html#cb53-24"></a><span class="st">   </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 36 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="_main_files/figure-html/fungicide_proportion_yield-1.png" width="672" /></p>
 <p>There was some hope groups of fungicide could be combined, <em>i.e.</em> propiconazole and tebuconazole, however it seems that they have different efficacies. Let us look to see if there is anything skewing the above.</p>
 <p>We need to also define the relationship between yield loss and disease severity. When exploring this data we should look primarily at the no spray control plots</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1">PM_MB_means <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb66-2" title="2"><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb66-3" title="3"><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> PM_final_severity, <span class="dt">y =</span> grain_yield.t.ha.)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb66-4" title="4"><span class="st">   </span><span class="kw">geom_point</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb66-5" title="5"><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="preliminary-analysis.html#cb55-1"></a>PM_MB_means <span class="op">%&gt;%</span></span>
+<span id="cb55-2"><a href="preliminary-analysis.html#cb55-2"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb55-3"><a href="preliminary-analysis.html#cb55-3"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> PM_final_severity, <span class="dt">y =</span> grain_yield.t.ha.)) <span class="op">+</span></span>
+<span id="cb55-4"><a href="preliminary-analysis.html#cb55-4"></a><span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb55-5"><a href="preliminary-analysis.html#cb55-5"></a><span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 3 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <p><img src="_main_files/figure-html/yield_x_PMseverity-1.png" width="672" /></p>
-<p>From the data we have it is difficult to determine if there is an association between powdery mildew severity and grain yield.</p>
+<p>From the data that we have, it is difficult to determine if there is an association between powdery mildew severity and grain yield.</p>
 
 </div>
 </div>
