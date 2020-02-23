@@ -100,7 +100,6 @@ kable(
 )  %>%
    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
    scroll_box(width = "900px", height = "500px")
-
 ```
 
 ## Powdery mildew ratings  
@@ -179,4 +178,3 @@ leaflet(experiment_sites) %>%
       popup = ~ htmlEscape(location)
    )
 ```
-
