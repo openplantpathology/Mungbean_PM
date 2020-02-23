@@ -28,6 +28,7 @@ increased yield?
 + Do infections that occur before flowering increase the probable yield loss?  
 
 + What is the length of a mungbean season and how has it varied in this trial?  
+
    - This data has not been collected or is not accurate enough to be useful to
    answer this question.  
 
@@ -38,9 +39,10 @@ increased yield?
    + The probable influence of season might be influenced by host genotype. This
    is because newer varieties were adopted into experimental trials as they were
    released.  
+   
    + Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken,
    Crystal to Jade. Jade was the only cultivar used between 2015 and 2019.  
    
-+ Estimations of plant maturity stages over each growing season. These
-estimations might able to be computed using APSIM.  
+   + Estimations of plant maturity stages over each growing season. These
+   estimations might able to be computed using APSIM.  
 
