@@ -11,7 +11,7 @@
 #'
 
 import_data <- function() {
-   if (getwd() == "C:/Users/U8011054/OneDrive - USQ/Cloudstor/R/Mungbean_projects/Mungbean_PM/DataWrangle") {
+   if (basename(getwd()) == "DataWrangle") {
       x <- read.csv(file = "../data/PM_MB_updated.csv")
    } else{
       x <- read.csv(file = "data/PM_MB_updated.csv")
