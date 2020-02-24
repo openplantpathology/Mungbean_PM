@@ -51,7 +51,7 @@ import_data <- function() {
    x$final_assessment <-
       as.Date(x$final_assessment, format = "%Y-%m-%d")
    x$Y_error_type <- as.character(x$Y_error_type)
-   
+
    if (!c("AUDPS_m") %in% colnames(x)) {
       x$AUDPS_m <- NA
    }
@@ -61,8 +61,8 @@ import_data <- function() {
    if (!c("Inc_Ms") %in% colnames(x)) {
       x$Inc_Ms <- NA
    }
-   
+
    x <- x[, !(colnames(x) == "X")]
-   
+
    return(x)
 }
