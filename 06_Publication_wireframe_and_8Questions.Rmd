@@ -23,7 +23,7 @@ Undertook a meta-analysis of twenty four field trials aimed at improving the eff
 ## Why did you do it? (limit - 50 words)  
 The unpublished field trial data singularly did not provide a clear indication for when to apply fungicide to best mitigate yield losses from powdery mildew. By analysing the collective data we aim to provide a better estimate for fungicide application timing to mitigate the yield loss from powdery mildew.  
 
-## what happened? (limit - 50 words)  
+## What happened? (limit - 50 words)  
 We found that fungicide sprays prior to when the powdery mildew was first spotted in the mungbean crop on average provided the no yield protection. A fungicide spray schedule of one or more fungicide applications commencing within three days of first sign of the disease significantly mitigated yield loss to the disease. However a fungicide spray schedule of 2 or more applications commencing four days or later than first sign of disease saved the most yield.  
 
 ## What do the results mean in theory? (limit - 50 words)  
