@@ -2939,7 +2939,7 @@ write.csv(
 
 ### Kingaroy 2016  
 Disease data for Kingaroy 2016 only exists as a mean of treatments within the `2016 Mungbean PM trials summary.xlsx` file.  
-```{r Herm16_dataimport}
+```{r Kroy16_dataimport}
 # Yield data from 2016 Hermitage trial with final disease severity
 King_16 <-
    read.xlsx(
@@ -3838,7 +3838,7 @@ PM_MB_19[is.na(PM_MB_19$`1-5-19.Incedence`),"AUDPS"] <-
 ```
 
 #### Define treatment data
-```{r Well_18_treatmentDefine}
+```{r Herm_19_treatement_data}
 Herm_19_dat <- PM_MB_19 %>%
    mutate(fungicide_application_1 = 
              case_when(`T/ment.NUM` == 1 ~ as.Date("2018-04-15", format = "%Y-%m-%d"),
@@ -4015,7 +4015,7 @@ write.csv(
 ```
 
 
-```{r Save_PM_MB_means}
+```{r Save_PM_MB_means, eval=FALSE}
 
 write.csv(PM_MB_means, file = "../data/PM_MB_updated.csv")
 
