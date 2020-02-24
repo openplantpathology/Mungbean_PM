@@ -1,17 +1,11 @@
 # Preliminary Analysis
 
 ```{r PA_Libraries, include=FALSE, message=FALSE}
-library(tidyverse)
-library(lubridate)
-library(bomrang)
-library(openxlsx)
-library(kableExtra)
-library(ggplot2)
-library(devtools)
-library(reshape2)
-library(lme4)
-library(theme.usq)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, lubridate, bomrang, openxlsx, devtools, reshape2, lme4)
 source("R/import_data.R")
+if (!require("theme.usq")) devtools::install_github("adamhsparks/theme.usq")
+library(theme.usq)
 #source("./getPPD2.R")
 theme_set(theme_usq())
 ```

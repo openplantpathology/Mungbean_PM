@@ -9,7 +9,7 @@ output: html_document
 # Manuscript wireframe  
 
 ## Who are the intended readers? - list 3 to 5 of them by name  
-   * Adam Sparks – disease modeller  
+   * Adam Sparks – Plant disease modeller  
    * Levente Kiss – Powdery mildew taxonomist  
    * Lisa Kelly – Plant pathologist  
    * Paul MacIntosh – Mungbean/ pulse agronomist  
@@ -32,7 +32,7 @@ Fungicide spray schedules for control of powdery mildew in mungbean should comme
 ## What do the results mean in practice? (limit - 50 words)  
 Primarily that fungicide spray schedules that commence prior to signs of the disease establishing in the mungbean canopy are likely to be ineffective at mitigating the diseases impact on yield. We also don't have data on at what point is starting a fungicide spray schedule is too late. Growers can't scout their crop three times a week in the fashion of researchers and are unlikely to identify the true date when signs of powdery mildew become apparent. Therefore these results reinforce the message to growers to spray for powdery mildew as soon as it is observed in the crop to protect yields.
 
-## what is the key benefit for your readers? (limit - 25 words).  
+## What is the key benefit for your readers? (limit - 25 words).  
 This study is the most robust analysis of management of powdery mildew in mungbean using fungicides. It provide a more certain time frame for growers to plan for when to commence a fungicide spray schedule.  
 Fewer fungicide applications will reduce costs for growers and prolong the efficacy of fungicides before the disease develops resistance.
 

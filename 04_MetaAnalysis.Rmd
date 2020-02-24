@@ -1,16 +1,10 @@
 
 ```{r MEsummary_Libraries2, message=FALSE}
-# install.packages("tidyverse")
-# install.packages("devtools")
-# devtools::install_github("https://github.com/adamhsparks/theme.usq", dependencies = TRUE)
-# install.packages("lme4")
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer)
 
-library(RColorBrewer)
-library(tidyverse)
+if (!require("theme.usq")) devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
-library(bomrang)
-library(lme4)
-library(kableExtra)
 
 # Data
 slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")

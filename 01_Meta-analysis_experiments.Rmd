@@ -7,11 +7,8 @@ effort in establishing and coordinating early field trials between 2010 and
 2016.
 
 ```{r MEsummary_Libraries, message=FALSE, echo=FALSE}
-library(dplyr)
-library(readr)
-library(kableExtra)
-library(leaflet)
-library(htmltools)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, kableExtra, leaflet, htmltools)
 source("R/import_data.R")
 ```
 
@@ -110,8 +107,7 @@ kable(
    4. Colonies in lower 2/3 of canopy, up to 75% of plants affected  
    5. Colonies in lower 2/3 of canopy, >75% of plants affected  
    6. Colonies in lower 2/3 of canopy, 100% of plants affected  
-   7. Colonies in lower 2/3 of canopy of 100% of plants, some plants with
-   colonies also in top 1/3 of canopy  
+   7. Colonies in lower 2/3 of canopy of 100% of plants, some plants with colonies also in top 1/3 of canopy  
    8. Colonies to top of plant with >75% of plants affected  
    9. Colonies to top of plant with 100% of plants affected and heavy leaf drop  
 
