@@ -1,5 +1,5 @@
 
-```{r MEsummary_Libraries2, message=FALSE}
+```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer)
@@ -192,7 +192,6 @@ slimmer_PM_dat %>%
    geom_boxplot() +
    #geom_point(position = "jitter", alpha = 1/5)+
    geom_jitter(width = 0.1, alpha = 1 / 5) +
-   theme_usq() +
    labs(x = "Spray management variable",
         y = "Grain yield (t/Ha)",
         title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
@@ -235,7 +234,6 @@ slimmer_PM_dat %>%
    geom_boxplot() +
    #geom_point(position = "jitter", alpha = 1/5)+
    geom_jitter(width = 0.1, alpha = 1 / 5) +
-   theme_usq() +
    labs(x = "Spray management variable",
         y = "Grain yield (t/Ha)",
         title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
@@ -373,8 +371,7 @@ efficacy %>%
    ) +
    geom_point(aes(size = 1 / SE), shape = 15) +
    geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper)) +
-   coord_flip() +
-   theme_usq()
+   coord_flip()
 ```
 
 What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented across all experiments. However it could also be because it also has a low number of pooled reps per trial. Let's look at how well each of the treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
