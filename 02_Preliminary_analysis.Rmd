@@ -16,8 +16,7 @@ if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
 #source("./getPPD2.R")
-theme_set(theme_usq()
-)
+theme_set(theme_usq())
 ```
 
 ## Explore and Visualise Data
