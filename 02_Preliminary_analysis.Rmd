@@ -1,13 +1,23 @@
 # Preliminary Analysis
 
 ```{r PA_Libraries, include=FALSE, message=FALSE}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, lubridate, bomrang, openxlsx, devtools, reshape2, lme4)
+if (!require("pacman"))
+   install.packages("pacman")
+pacman::p_load(tidyverse,
+               lubridate,
+               bomrang,
+               openxlsx,
+               devtools,
+               reshape2,
+               lme4,
+               kableExtra)
 source("R/import_data.R")
-if (!require("theme.usq")) devtools::install_github("adamhsparks/theme.usq")
+if (!require("theme.usq"))
+   devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
 #source("./getPPD2.R")
-theme_set(theme_usq())
+theme_set(theme_usq()
+)
 ```
 
 ## Explore and Visualise Data
@@ -250,6 +260,7 @@ PM_MB_means %>%
          "Fifth\nspray"
       )
    ) +
+   ylab("Days to First Sign of Disease") +
    theme_usq()
 ```
 
@@ -291,7 +302,7 @@ PM_MB_means %>%
 
 Does host cultivar significantly impact the yield? Let's look at the volatility in yields to see if any cultivar yields better or has greater tolerance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar.  
 
-First lets look at overall yields for each cultivar, where trial is not a factor, for all treatments (spray and no spray).  
+First let's look at overall yields for each cultivar, where trial is not a factor, for all treatments (spray and no spray).  
 ```{r yield_vol}
 # this could be converted into a shiny app as a chunk. Make each input for the function a shiny option
 # Outputs the table and graph
@@ -303,7 +314,7 @@ YV1 <-
 YV1[[2]]
 YV1[[3]]
 ```
-Now lets look at overall yields for each cultivar, where trial is not a factor, in only the no spray treatments.
+Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray treatments.
 ```{r yieldVol_control}
 
 YV2 <-
@@ -316,7 +327,7 @@ Volatility of the cultivars are fairly similar when trial is not considered as a
 
 *****
 
-Lets examine the same plots as above but only for the most commonly used trial site, Hermitage.  
+Let's examine the same plots as above but only for the most commonly used trial site, Hermitage.  
 ```{r yieldVol_Herm}
 YV1_herm <-
    yield_volatility(
@@ -329,7 +340,9 @@ YV1_herm[[2]]
 
 Jade shows a large amount of volatility, excluding Green Diamond, Crystal shows the next least volatility.  
 
-Lets take a closer look at Crystal with spray management treatments and without.  
+*****
+
+Let's take a closer look at Crystal with spray management treatments and without.  
 ```{r YieldVol_Crystal}
 YV1_crystal <-
    yield_volatility(genotype = "Crystal", control_only = FALSE)
@@ -341,13 +354,13 @@ YV1_crystal[[2]]
 
 There is a lot of variation between field trials for Crystal, but little variation within field trials.
 
-Lets look at Jade, to see if it differs.
+Let's look at Jade, to see if it differs.
 ```{r YieldVol_Jade}
 YV2_crystal <- yield_volatility("Jade",control_only = FALSE)
 YV2_crystal[[2]]
 ```
 
-For Jade there is high variation between trials and with in. Perhaps indicating lower tolerance. Lets look at the same plot with data only from no spray controls to see if the variation is the same.
+For Jade there is high variation between trials and with in. Perhaps indicating lower tolerance. Let's look at the same plot with data only from no spray controls to see if the variation is the same.
 
 ```{r YieldVol_JadeControl}
 YV3_crystal <- yield_volatility("Jade", control_only = TRUE)
@@ -389,9 +402,11 @@ PM_MB_means %>%
    glimpse()
 ```
 
-Lets plot the row spacing treatments for the response variables yield and disease severity. The main questions are:  
-   - Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?  
-   - Can we pool certain row spacing that have no significant difference?  
+Let's plot the row spacing treatments for the response variables yield and disease severity. The main questions are:  
+
+   * Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?  
+   
+   * Can we pool certain row spacing that have no significant difference?  
 
 ```{r RS_severity}
 # Which row spacing leads to the higher disease severity
@@ -473,7 +488,7 @@ lm_rain4 <-
 lm_rain <- rbind(lm_rain1, lm_rain2, lm_rain3, lm_rain4)
 ```
 
-Now we have read in the data from the previously computed models lets find the linear model which has:  
+Now we have read in the data from the previously computed models let's find the linear model which has:  
    - The lowest P value  
    - the highest adjusted r squared value  
    
@@ -608,7 +623,7 @@ In most years, regardless of the age of the crop, PM establishes in March.
 #### Effect of Fungicide 
 
 **Fungicide effect on proportional yield gain with respect to time of application**  
-First lets look at the quantiles for each fungicide irrespective of other factors.
+First let's look at the quantiles for each fungicide irrespective of other factors.
 We will focus on proportional yield gain, compared to no treatment control, as this should partially correct for some spatial and seasonal effects.  
 ```{r fungicide_proportion_yield}
 PM_MB_means %>%
