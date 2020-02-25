@@ -12,13 +12,13 @@
 
 # devtools::install_github("PaulMelloy/cloudy")
 
-
+library(here)
 
 import_data <- function() {
    # x <-
    #    cloudy::fetch_data(url = "https://usqprd-my.sharepoint.com/:x:/g/personal/u8011054_usq_edu_au/ER13jFzyQqNMq_SEZkNW9NoBiJI8R68dfkKfWXB9wJgETw?e=mylMrZ",
    #                       file_ext = ".csv")
-   x <- read.csv(file = "data/PM_MB_updated.csv")
+   x <- read.csv(file = here("cache/PM_MB_updated.csv"))
    x$trial_ref <- as.factor(x$trial_ref)
    x$location <- as.factor(x$location)
    x$host_genotype <- as.factor(x$host_genotype)

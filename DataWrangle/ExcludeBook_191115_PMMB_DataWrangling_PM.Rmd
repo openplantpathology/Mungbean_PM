@@ -21,8 +21,9 @@ library(tidyr)
 library(dplyr)
 library(data.table)
 library(agricolae)
+library(here)
 
-source("../R/import_data.R")
+source(here("R/import_data.R"))
 PM_MB_means <- import_data()
 ```
 
@@ -45,8 +46,8 @@ fold_data <- function(new_DataFrame, template_DataFrame){
       new_DataFrame[,c(cnames2, cnames1[is.na(x1)])]  # adding column names to new_DataFrame not in template_DataFrame
    return(new_DataFrame)
 }
-source("../copy_class.R")
-source("../R/data_mesh.R")
+source(here("copy_class.R"))
+source(here("R/data_mesh.R"))
 ```
 
 
@@ -56,8 +57,8 @@ source("../R/data_mesh.R")
 ```{r Hermitage_2010}
 
 Herm_10 <-
-   as.data.frame(read_xls(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2010/2010 PMmung Herm/2010 PMmung hermitage RAW field book.xls",
+   as.data.frame(read_xls(here(
+      "data/2010 PMmung hermitage RAW field book.xls"),
       sheet = "For analysis"
    ), stringsAsFactors == FALSE)
 
@@ -240,7 +241,7 @@ Herm_10_m[order(Herm_10_m$n_treatment),"yield_error"] <- Herm_tentmp[order(Herm_
 
 Herm_10_m <- fold_data(Herm_10_m, PM_MB_means)
 
-source("../R/data_mesh.R")
+
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = Herm_10_m, 
@@ -252,7 +253,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    as.data.frame(Herm_10_m),
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2010/2010 PMmung Herm/2010 PMmung Hermitage means.csv"
+   "cache/2010 PMmung Herm/2010 PMmung Hermitage means.csv", row.names = FALSE
 )
 
 ```
