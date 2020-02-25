@@ -253,7 +253,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    as.data.frame(Herm_10_m),
-   "cache/2010 PMmung Herm/2010 PMmung Hermitage means.csv", row.names = FALSE
+   here("cache/2010 PMmung Hermitage means.csv"), row.names = FALSE
 )
 
 ```
@@ -264,7 +264,7 @@ write.csv(
 
 Herm_11 <-
    as.data.frame(read_xls(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/pmhermratings2011.xls",
+      here("data/pmhermratings2011.xls"),
       sheet = "Analyses factor"
    ), stringsAsFactors = FALSE)
 
@@ -461,7 +461,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    as.data.frame(Herm_11_m),
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung Herm/2011 PMmung Herm means.csv"
+   here("cache/2011 PMmung Herm means.csv"), row.names = FALSE
 )
 
 ```
@@ -470,7 +470,7 @@ write.csv(
 ```{r King_11}
 King_11 <-
    as.data.frame(read_xls(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung King/pmKing ratings2011.xls",
+      here("data/pmKing ratings2011.xls"),
       sheet = "analyses"
    ), stringsAsFactors = FALSE)
 
@@ -664,7 +664,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    King_11_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2011/2011 PMmung King/2011 PMmung Kingaroy means.csv"
+   here("cache/2011 PMmung Kingaroy means.csv"),row.names = FALSE
 )
 
 
@@ -680,7 +680,7 @@ for(D_assessment in c("16 DAT1", "33DAT1")){
 Goolhi.13 <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx",
+         path = here("data/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx"),
          sheet = D_assessment,
          range = "A15:AG75",
          col_names = TRUE
@@ -866,24 +866,12 @@ Goolhi.13D$Inc_33D <-  incidence1
 }
 
 
-# head(Goolhi.13D)
-# Goolhi.13D <- Goolhi.13D %>%
-#    group_by(Treat) %>%
-#    summarise(M.inc = mean(Incidence, na.rm = TRUE),
-#              sd.inc = sd(Incidence, na.rm = TRUE))
-
-
-# write.csv(
-#    Goolhi.13D,
-#    "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/Mungbean/Past trials/2013/AM1305-Goolhi-Disease_means.csv"
-# )
-
 #_____________________
 # Read in Harvest data
 Goolhi.13Y <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx",
+         path = here("data/AM1305 Fungicides for powdery mildew in mungbean - Goolhi.xlsx"),
          sheet = "Yield",
          range = "A15:F75",
          col_names = TRUE
@@ -1100,7 +1088,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    Goolhi_13_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1305_Goolhi_means.csv"
+   here("cache/AM1305_Goolhi_means.csv"),row.names = FALSE
 )
 
 ```
@@ -1115,7 +1103,7 @@ for(D_assess in c("18 DAT1 18-3-2013","19 DAT1 19-3-2013")){
 MarysM.13D <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
+         path = here("data/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx"),
          sheet = D_assess,
          range = "A14:DC72",
          col_names = TRUE
@@ -1308,7 +1296,8 @@ if(D_assess == "19 DAT1 19-3-2013"){
 
 write.csv(
    MarysM.13D.1,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304-MaryMount-Disease_means.csv"
+   here("cache/AM1304-MaryMount-Disease_means.csv"),
+   row.names = FALSE
 )
 
 
@@ -1317,7 +1306,7 @@ write.csv(
 MarysM.13Y <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx",
+         path = here("data/AM1304 Fungicides for powdery mildew in mungbean - Marys Mount.xlsx"),
          sheet = "42 DAT1 Yield",
          range = "A14:F58",
          col_names = TRUE
@@ -1550,7 +1539,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    MarysM_13_m[order(as.numeric(MarysM_13_m$n_treatment)),],
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1304-MarysMount_means.csv",
+   here("cache/AM1304-MarysMount_means.csv"),
    row.names = FALSE
 )
 
@@ -1567,7 +1556,7 @@ for(D_assess in c("19 DAT1 19-3-2013","31 DAT1 31-3-2013")){
 Premer.13D <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1303 Fungicides for powdery mildew in mungbean - Premer.xlsx",
+         path = here("data/AM1303 Fungicides for powdery mildew in mungbean - Premer.xlsx"),
          sheet = D_assess,
          range = "A14:DC64",
          col_names = TRUE
@@ -1774,7 +1763,7 @@ Premer.13D <- Premer.13D.2
 Premer.13Y <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1303 Fungicides for powdery mildew in mungbean - Premer.xlsx",
+         path = here("data/AM1303 Fungicides for powdery mildew in mungbean - Premer.xlsx"),
          sheet = "Yield 18-4-2013",
          range = "A14:F58",
          col_names = TRUE
@@ -2023,7 +2012,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    Premer_13_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/AM1303-Premer-Disease_means.csv"
+   here("cache/AM1303-Premer-Disease_means.csv"),row.names = FALSE
 )
 
 
@@ -2040,7 +2029,7 @@ for(D_assess in c("Assessment Sheet 5.4.2013","Assessment Sheet 24.4.2013")){
 Millm_13D <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/BB1305 Fungicides for powdery mildew in mungbean - Millmerran.xlsx",
+         path = here("data/BB1305 Fungicides for powdery mildew in mungbean - Millmerran.xlsx"),
          sheet = D_assess,
          range = "A12:AH56",
          col_names = TRUE
@@ -2255,7 +2244,7 @@ Millm_13D <- left_join(Millm_13D.1, Millm_13D.2)
 Millm.13Y <-
    as.data.frame(
       read_xlsx(
-         path = "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/BB1305 Fungicides for powdery mildew in mungbean - Millmerran.xlsx",
+         path = here("data/BB1305 Fungicides for powdery mildew in mungbean - Millmerran.xlsx"),
          sheet = "Harvest Sheet 6.5.2013",
          range = "A11:F55",
          col_names = TRUE
@@ -2483,7 +2472,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    Millm_13_m[order(as.numeric(Millm_13_m$n_treatment)),],
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2013/BB1305_Millmerran_means.csv"
+   here("cache/BB1305_Millmerran_means.csv"), row.names = FALSE
 )
 
 ```
@@ -2496,7 +2485,7 @@ write.csv(
 
 Herm_15 <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2015 PMmung Herm/Mugbean powdery mildew 2014-15 inc results v2.xlsx",
+      here("data/Mugbean powdery mildew 2014-15 inc results v2.xlsx"),
       sheet = "HRS yield data",
       startRow = 4,
       colNames = TRUE,
@@ -2511,7 +2500,7 @@ Herm_15$location <- "Hermitage"
 # Disease incidence assessments through the 2016 season
 Herm_15.DR  <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2015 PMmung Herm/Mugbean powdery mildew 2014-15 inc results v2.xlsx",
+      here("data/Mugbean powdery mildew 2014-15 inc results v2.xlsx"),
       sheet = "HRS ratings & graphs",
       startRow = 5,
       colNames = TRUE
@@ -2714,7 +2703,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    Herm_15_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2015 PMmung Herm/Herm_15_means.csv"
+   here("cache/Herm_15_means.csv"),row.names = FALSE
 )
 
 
@@ -2727,7 +2716,7 @@ Disease data for Hermitage 2016 only exists as a mean of treatments within the `
 # Yield data from 2016 Hermitage trial with final disease severity
 Herm_16 <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Yeild Data 2016 Kingaroy Hermitage (PaulM adjusted).xlsx",
+      here("data/Yeild Data 2016 Kingaroy Hermitage (PaulM adjusted).xlsx"),
       sheet = "Hermitage",
       startRow = 1,
       colNames = TRUE
@@ -2878,7 +2867,7 @@ Herm_16_m[,"yield_error"] <-
 ```{r}
 Herm_16.DR  <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/2016 Mungbean PM trials summary.xlsx",
+      here("data/2016 Mungbean PM trials summary.xlsx"),
       sheet = "Hermitage_2016",
       startRow = 5,
       colNames = TRUE
@@ -2933,7 +2922,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    Herm_16_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Hermitage/Herm_16_means.csv"
+   here("cache/Herm_16_means.csv"),row.names = FALSE
 )
 
 ```
@@ -2944,7 +2933,7 @@ Disease data for Kingaroy 2016 only exists as a mean of treatments within the `2
 # Yield data from 2016 Hermitage trial with final disease severity
 King_16 <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past Trials/2016/Yeild Data 2016 Kingaroy Hermitage (PaulM adjusted).xlsx",
+      here("data/Yeild Data 2016 Kingaroy Hermitage (PaulM adjusted).xlsx"),
       sheet = "Kingaroy",
       startRow = 1,
       colNames = TRUE
@@ -3097,7 +3086,7 @@ King_16_m[,"yield_error"] <-
 ```{r King16_disease}
 King_16.DR  <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/2016 Mungbean PM trials summary.xlsx",
+      here("data/2016 Mungbean PM trials summary.xlsx"),
       sheet = "Kingaroy_2016",
       startRow = 5,
       colNames = TRUE
@@ -3145,7 +3134,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    King_16_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2016/Kingaroy/King_16_means.csv",
+   here("cache/King_16_means.csv"),
    row.names = FALSE
 )
 
@@ -3157,7 +3146,7 @@ write.csv(
 # _____________   Missen Flats (Fogarty's) 2017     ____________
 Fogerty_17 <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty Work File 2017 (Autosaved).xlsx",
+      here("data/Fogerty Work File 2017 (Autosaved).xlsx"),
       sheet = "Data",
       startRow = 3,
       colNames = TRUE,
@@ -3182,34 +3171,6 @@ Fogerty_17$Treatment.No <- as.numeric(unlist(strsplit(
       seq(from = 2, to = 324, by = 2)])
 
 
-
-
-# Fog_17_sum <- Fogerty_17 %>%
-#    group_by(Treatment, Chemical, `Row.Spacing.(m)`) %>%
-#    summarise(
-#       m_disease = mean(`2017-04-18`, na.rm = TRUE),
-#       sd_disease = sd(`2017-04-18`, na.rm = TRUE),
-#       m_Yield = mean(`Yield.t/ha`, na.rm = TRUE),
-#       sd_Yield = sd(`Yield.t/ha`, na.rm = TRUE)
-#    )
-# 
-# write.csv(
-#    Fog_17_sum,
-#    "C:/Users/U8011054/OneDrive - USQ/Cloudstor/Mungbean/Fogerty_17_mean.csv"
-# )
-# 
-# 
-# # gather the incidence assessment into long format
-# Fogerty_17.1 <-
-#    gather(Fogerty_17,
-#           key = Incidence_assessment_date,
-#           value = Incidence,
-#           colnames(Fogerty_17)[c(11:16)])
-# #Fogerty_17.1$Severity <- gather(Fogerty_17, key = assessment_date, value = Severity,
-# #                                colnames(Fogerty_17)[c(15,18)])
-# Fogerty_17.1$location <- "Fogerty"
-# 
-# 
 
 ```
 
@@ -3377,7 +3338,7 @@ PM_MB_means[PM_MB_means$trial_ref == "mung1617/02",] <-
 
 write.csv(
    Fogerty_17_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/MissenFlats/Fogerty_17_mean.csv",
+   here("cache/Fogerty_17_mean.csv"),
    row.names = FALSE
 )
 
@@ -3391,7 +3352,7 @@ write.csv(
 # _____________   Hermitage  2017     ____________
 Herm_17 <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past Trials/2017/Hermitage/Hermitage working file 2017 .xlsx",
+      here("data/Hermitage working file 2017 .xlsx"),
       sheet = "Hermitage Trial",
       rows = 3:165,
       cols = 1:38,
@@ -3590,7 +3551,7 @@ PM_MB_means[PM_MB_means$trial_ref == "mung1617/01",] <-
 
 write.csv(
    Herm_17_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2017/Hermitage/Hermitage_17_mean.csv",
+   here("cache/Hermitage_17_mean.csv"),
    row.names = FALSE
 )
 
@@ -3604,7 +3565,7 @@ write.csv(
 ```{r Wellcamp2018}
 Well_18 <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past Trials/2018/Wellcamp/Wellcamp Fungicide x Row Spacing x Plant Population - Experimental Design Fogarty 2018.xlsx",
+      here("data/Wellcamp Fungicide x Row Spacing x Plant Population - Experimental Design Fogarty 2018.xlsx"),
       sheet = "Data",
       startRow = 1,
       colNames = TRUE
@@ -3801,7 +3762,7 @@ dim(PM_MB_means[PM_MB_means$trial_ref == "mung1718/01",])
 
 write.csv(
    Well_18_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2018/Wellcamp/Wellcamp_18_mean.csv",
+   here("cache/Wellcamp_18_mean.csv"),
    row.names = FALSE
 )
 
@@ -3812,7 +3773,7 @@ write.csv(
 ```{r Herm19}
 PM_MB_19 <-
    read.xlsx(
-      "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/1901_Herm_PM/1901 Mungbean powdery mildew disease and yeild data.xlsx",
+      here("data/1901 Mungbean powdery mildew disease and yeild data.xlsx"),
       startRow = 2,
       cols = c(1:21)
    )
@@ -4009,7 +3970,7 @@ PM_MB_means <- replace_data(template_data = PM_MB_means,
 
 write.csv(
    Herm_19_m,
-   "C:/Users/U8011054/USQ/SCP - Documents/DAW1810/mungbean_powdery-mildew/Past trials/2019/Hermitage_19_mean.csv",
+   here("cache/Hermitage_19_mean.csv"),
    row.names = FALSE
 )
 
@@ -4018,6 +3979,6 @@ write.csv(
 
 ```{r Save_PM_MB_means}
 
-write.csv(PM_MB_means, file = "../data/PM_MB_updated.csv")
+write.csv(PM_MB_means, file = here("cache/PM_MB_updated.csv"), row.names = FALSE)
 
 ```
