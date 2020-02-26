@@ -7,7 +7,7 @@ output:
   html_document: default
 ---
 
-# Manuscript wireframe
+# Manuscript wire frame
 
 ## Who are the intended readers? - list 3 to 5 of them by name
    * Adam Sparks – Plant disease modeller
@@ -58,14 +58,14 @@ Only a few studies incorporated in the meta-analysis contained comparisons betwe
 
 
 ## Introduction
-Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown for human consumption in south-east asia where it is an affordable source of protein [@PulseAustralia]. 
+Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown for human consumption in south-east Asia where it is an affordable source of protein [@PulseAustralia]. 
 The bean pod or grain can be consumed raw or added to meals after sprouting. 
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].  
 
 Mungbean is grown as a short season summer legume crop which can provide a high returns for growers in eastern Australia. 
 A crop potentially yields up to 2.3 tonnes per hectare, with a value of up to \$ 1300 a tonne [@QueenslandGovernment2019]. 
-However these potenitial crop yields can be limited by diseases such as powdery mildew (*Podosphaera xanthii*) by up to 40% [@Kelly2017a; @Chankaew2013]. 
-Fortunatley a number of strategies are able to be employed to reduce the damage powdery mildew inflicts on yields.
+However these potential crop yields can be limited by diseases such as powdery mildew (*Podosphaera xanthii*) by up to 40% [@Kelly2017a; @Chankaew2013]. 
+Fortunately a number of strategies are able to be employed to reduce the damage powdery mildew inflicts on yields.
 
 
 
@@ -76,7 +76,7 @@ Powdery mildew infection requires cool temperatures (22$^\circ$ - 26$^\circ$C) a
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures which normally commence in March.  
 Therefore when sowing is delayed there is a greater chance powdery mildew will infect earlier in the crop development leading to greater yield losses.  
 
-Commercially available mungbean cultivars in Australia lack sufficient resistance to be used soley as a management strategy for mitigating yield losses.
+Commercially available mungbean cultivars in Australia lack sufficient resistance to be used solely as a management strategy for mitigating yield losses.
 Quantitative disease resistance has been observed in breeding lines [@Pandey2018; @Chankaew2013] and mungbean cultivars such as Jade-AU, however other management strategies, such as fungicides, are still required[@Kelly2017a].
 
 Treatment of powdery mildew in mungbean with fungicide is currently an effective method for reducing the impact of the disease.
@@ -88,7 +88,7 @@ Treatment of powdery mildew in mungbean with fungicide is currently an effective
 
 
 ### Fungicide resistance
-Lucritive returns of \$ 2260 over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than they are needed.
+Lucrative returns of \$ 2260 over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than they are needed.
 
 ### Previous studies
 
