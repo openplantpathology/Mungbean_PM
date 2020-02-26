@@ -58,10 +58,14 @@ Only a few studies incorporated in the meta-analysis contained comparisons betwe
 
 
 ## Introduction
-Mungbean is a short season summer pulse crop which can provide a high returns for growers in eastern Australia. 
-Mungbean can potentially yield up to 2.3 tonnes per hectare, with a value of up to \$ 1300 a tonne [@QueenslandGovernment2019]. 
-However these potenitial crop yields can be limited by powdery mildew (*Podosphaera xanthii*)by up to 40% [@Kelly2017a]. 
-Fortunatley a number of strategies are employed to reduce the damage powdery mildew inflicts on yields.
+Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown for human consumption in south-east asia where it is an affordable source of protein [@PulseAustralia]. 
+The bean pod or grain can be consumed raw or added to meals after sprouting. 
+The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].  
+
+Mungbean is grown as a short season summer legume crop which can provide a high returns for growers in eastern Australia. 
+A crop potentially yields up to 2.3 tonnes per hectare, with a value of up to \$ 1300 a tonne [@QueenslandGovernment2019]. 
+However these potenitial crop yields can be limited by diseases such as powdery mildew (*Podosphaera xanthii*) by up to 40% [@Kelly2017a; @Chankaew2013]. 
+Fortunatley a number of strategies are able to be employed to reduce the damage powdery mildew inflicts on yields.
 
 
 
