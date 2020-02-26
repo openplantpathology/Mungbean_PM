@@ -59,12 +59,14 @@ Only a few studies incorporated in the meta-analysis contained comparisons betwe
 
 ## Introduction
 Mungbean is a short season summer pulse crop which can provide a high returns for growers in eastern Australia. 
-Mungbean can potentially yield up to 2.3 tonnes per hectare, with a value of up to \$ 1300 a tonne [AgMargins; 2019](https://agmargins.net.au/Reports/Details/fced3a80-a762-481c-b812-9953e33410e6). 
-Powdery mildew _Podosphaera xanthii_ can potentially cause yield losses on mungbean of up to 43% [Kelly et. al 2017](https://grdc.com.au/resources-and-publications/grdc-update-papers/tab-content/grdc-update-papers/2017/07/mungbean-and-sorghum-disease-update). 
+Mungbean can potentially yield up to 2.3 tonnes per hectare, with a value of up to \$ 1300 a tonne [@QueenslandGovernment2019]. 
+Powdery mildew _Podosphaera xanthii_ can potentially cause yield losses on mungbean of up to 43% [@Kelly2017a]. 
 Fortunatley a number of strategies are employed to reduce the damage powdery mildew inflicts on yields.
 ### Managements strategies
 #### and conditions for infection
-Powdery mildew infection requires cool temperatures (22$^\circ$ - 26$^\circ$C) and a leaf surface that is not overly wet for infection [Kelly et. al 2017](https://grdc.com.au/resources-and-publications/grdc-update-papers/tab-content/grdc-update-papers/2017/07/mungbean-and-sorghum-disease-update). In southern Queensland and northern New South Wales, planting dates between late spring (November) and mid-summer (January) are advised to avoid the conducsive cooler autumn temperatures which normally commence in March in the southern hemisphere conducive for powdery mildew establishment.
+Powdery mildew infection requires cool temperatures (22$^\circ$ - 26$^\circ$C) and a leaf surface that is not overly wet for infection [@Kelly2017a]. 
+In southern Queensland and northern New South Wales, planting dates between late spring (November) and mid-summer (January) are advised to avoid the conducsive cooler autumn temperatures which normally commence in March in the southern hemisphere conducive for powdery mildew establishment.  
+
 Signs of powdery mildew are almost always first observed when temperatures start to cool.
 
 ### Fungicide resistance
@@ -77,3 +79,5 @@ Lucritive returns of \$ 2260 over a short three month season may tempt growers i
 ### Aims
 
 ## Materials and methods
+
+## References
