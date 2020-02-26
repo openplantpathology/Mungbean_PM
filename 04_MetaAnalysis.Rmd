@@ -1,0 +1,471 @@
+
+```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
+if (!require("pacman"))
+   install.packages("pacman")
+pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer)
+
+if (!require("theme.usq"))
+   devtools::install_github("adamhsparks/theme.usq")
+library(theme.usq)
+theme_set(theme_usq())
+
+# Data
+slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv"
+)
+```
+
+# Meta-analysis
+## Grain yield meta-analysis
+
+Let's get started with the analysis by first finding the best model fit that answers our research question.  
+
+> Which spray management scenario provides the greatest yield protection from powdery mildew.  
+
+   - Grain yield is our response variable.  
+   - Trial, which resolves combinations of categorical variables: year, location, row spacing and cultivar; is set as a random intercept.  
+   - We will test spray management (our treatment) as a fixed effect and random slope to trial.  
+   
+```{r LME_slimmer_cluster_disease_mod}
+m8 <- lmer(grain_yield.t.ha * 1000 ~ factor(spray_management) +
+              (factor(spray_management) | trial_ref),
+           data = slimmer_PM_dat)
+
+m9 <- lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
+              (factor(spray_management) | trial_ref),
+           data = slimmer_PM_dat)
+
+m10 <- lmer(log(grain_yield.t.ha * 1000) ~
+               (factor(spray_management) | trial_ref),
+            data = slimmer_PM_dat)
+
+m11 <- lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
+               (1 | trial_ref),
+            data = slimmer_PM_dat)
+
+anova(m8, m9) # m9 is significantly better model
+anova(m9, m10) # m9 is significantly better model
+anova(m9, m11) # m11 is a simpler model which is no different to m9
+```
+
+The best model from the four above is `m9` with the lower AIC of -29.357. 
+
+```{r}
+summary(m9)
+```
+
+This linear mixed effect model shows indicates:  
+
+   - A single early spray before first sign of powdery mildew is not likely to increase yields.  
+   
+   - A single or single spray with one or more follow sprays starting  at the `recommended` first spray , within 3 days of powdery mildew first sign are likely to produce significantly higher grain yields compared to the no spray control.  
+   
+   - The `recommended_plus` spray which has one or more follow-up sprays after first sign are likely to increase the mean grain yield.  
+   
+   - `Late_plus` spray treatments showed the highest mean grain yield, and was significantly higher than the no spray control. However showed no difference to either of the `recommended` treatments.  
+
+
+
+### Imputing sample variances  
+
+We need to impute the variances which are missing for a few of the trials. These trials `r unique(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),c("location","year", "trial_ref")])$trial_ref` were analysed and reported that there was no significant difference between the treatments in each trial. So therefore we need the imputed variances not to show a significant difference.  
+
+There are `r sum(is.na(slimmer_PM_dat$yield_error))` treatments without yield error in our data, and `r sum(!is.na(slimmer_PM_dat$yield_error))` where yield error was recorded.  
+
+Plotting a histogram of the variances show that the yield is not normally distributed. A log transformation, however, shows a normal distribution. We can use the mean and standard deviation of the log(V) to sample variances for the treatments where V is missing.  
+
+```{r variance_histograms}
+hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
+hist(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
+```
+
+We will evaluate whether the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, inferring significant difference, the imputed variances are discarded and re-sampled until all treatment variances show no significant differences.
+
+```{r imputing_variances}
+# generate yield error values
+for (i in 0:500) {
+   # Imputing missing log variances
+   log_Yerror <- rnorm(
+      n = sum(is.na(slimmer_PM_dat$yield_error)),
+      mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE),
+      sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)
+   )
+   
+   # First let's convert Variance to standard error for all the variables that have variance recorded
+   slimmer_PM_dat$yield_SE <-
+      sqrt(slimmer_PM_dat$yield_error) / sqrt(slimmer_PM_dat$n)
+   
+   
+   # Second; adding the imputed standard errors
+   slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"] <-
+      sqrt(exp(log_Yerror)) / sqrt(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "n"])
+   
+   # all errorbars should overlap so they are consistant with the meta-data describing no significant difference bettween treatments
+   # let's test to make sure
+   if (max(outer(
+      X = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] -
+      (2 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
+      Y = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] +
+      (2 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
+      FUN = "-"
+   )) > 0) {
+      message(
+         paste(
+            "\nWarning!!: Imputed yield errors show significant differences when they should not, imputation will automatically rerun - iteration",
+            "i =",
+            i
+         )
+      )
+      next()
+   } else{
+      message(
+         paste(
+            i,
+            "iterations: ",
+            "imputed variances now show no significant distances :)\n Now adding variances to data "
+         )
+      )
+      
+      # Plot the imputed errors for each trial
+      Vplot <-
+         slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),] %>%
+         ggplot(aes(y = grain_yield.t.ha, trial)) +
+         #geom_point()+
+         geom_pointrange(
+            ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] -
+               (1.95 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
+            ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] +
+               (1.95 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
+            position = "jitter"
+         ) +
+         ylim(0.2, 1.5)
+      
+      slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_error"] <-
+         exp(log_Yerror)
+      print(Vplot)
+      break()
+   }
+}
+```
+
+The imputed variances calculated above don't show the expected positive correlation between grain yield and variance. This is unexpected and reflects the inherent variability of the data. Therefore we will calculate the trial mean squares and use this to calculate the variance for each sample.  
+
+#### Imputing sample variances from Mean squares
+```{r imputing_MSE_dataSpread}
+slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
+hist(unique(slimmer_PM_dat$Y_Msquare))
+hist(log(unique(slimmer_PM_dat$Y_Msquare))) # log mean square has a more normal distribution
+
+```
+
+Imputing using a log transformation of the data is required. Which trials need variance imputation?  
+
+```{r imputing_MSE}
+TrialMSQ <- slimmer_PM_dat %>%
+   group_by(trial_ref)%>%
+   summarise(unique(Y_Msquare))
+
+TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), "trial_ref"]
+```
+
+
+
+```{r imputation_MSE}
+for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`),]$trial_ref) {
+   slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "Y_Msquare"] <-
+      exp(rnorm(
+         n = 1,
+         mean = mean(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE),
+         sd(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE)
+      ))
+}
+```
+
+Before analysis let's have a look at the trimmed down modified data.  
+
+```{r treatment_means_plot}
+slimmer_PM_dat$spray_management <-
+   factor(slimmer_PM_dat$spray_management,
+          levels(slimmer_PM_dat$spray_management)[rev(c(1, 2, 4, 5, 3))])
+
+slimmer_PM_dat %>%
+   ggplot(aes(y = grain_yield.t.ha, x = spray_management)) +
+   geom_boxplot() +
+   #geom_point(position = "jitter", alpha = 1/5)+
+   geom_jitter(width = 0.1, alpha = 1 / 5) +
+   labs(x = "Spray management variable",
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
+   theme(plot.title = element_text(hjust = 0.5)) +
+   geom_hline(yintercept = 0, linetype = 2) +
+   coord_flip()
+```
+
+There seems like no difference between the treatments, with exception to Late_plus. Let's do this plot again, but use the proportion of yield increase compared to the no spray control as the response variable.  
+
+It is also important to visualise how well the data is compared across the trial years and trials.  
+
+```{r table_of_nTreatments}
+kableExtra::kable(table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year),
+                  align = rep('c', 8)) %>%  #commented as was redering empty, needs a look in
+   kable_styling(
+      "striped",
+      fixed_thead = TRUE,
+      full_width = FALSE,
+      position = "center"
+   )
+```
+Treatments Late_plus and early don't have very good comparison to other treatments.  
+  
+
+```{r plot_yieldProportion}
+slimmer_PM_dat$spray_management <-
+   factor(slimmer_PM_dat$spray_management, rev(
+      c(
+         "control",
+         "Early",
+         "Recommended",
+         "Recommended_plus",
+         "Late_plus"
+      )
+   ))
+
+slimmer_PM_dat %>%
+   ggplot(aes(y = prop_yield_gain, x = spray_management)) +
+   geom_boxplot() +
+   #geom_point(position = "jitter", alpha = 1/5)+
+   geom_jitter(width = 0.1, alpha = 1 / 5) +
+   labs(x = "Spray management variable",
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
+   theme(plot.title = element_text(hjust = 0.5)) +
+   geom_hline(yintercept = 0, linetype = 2) +
+   coord_flip()
+```
+
+
+
+## Meta-analysis  
+### metafor package  
+Let's load the metafor package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
+Next we are log transforming the grain yield and calculating the variance from the trial mean squares.  
+Finally we will assign factor classes to the main variables in the meta-analysis. Note that variable trial is a combination of:  
+   - Trial identifier  
+   - Trial year  
+   - Trial location  
+   - Host genotype  
+   - Trial row spacing  
+
+```{r metafor_organisation}
+library(metafor)
+slimmer_PM_dat$spray_management <-
+   factor(
+      slimmer_PM_dat$spray_management,
+      c(
+         "control",
+         "Early",
+         "Recommended",
+         "Recommended_plus",
+         "Late_plus"
+      )
+   )
+
+slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
+slimmer_PM_dat$vi <-
+   slimmer_PM_dat$Y_Msquare / (slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha ^
+                                  2)
+
+slimmer_PM_dat$spray_management <-
+   factor(slimmer_PM_dat$spray_management)
+slimmer_PM_dat$trial_ref <- factor(slimmer_PM_dat$trial_ref)
+slimmer_PM_dat$trial <- factor(slimmer_PM_dat$trial)
+```
+
+```{r Metafor-analysis}
+PM_mv_AI <- rma.mv(
+   yi,
+   vi,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial),
+   struct = "UN",
+   data = slimmer_PM_dat
+)
+
+summary(PM_mv_AI)
+```
+
+Results show that yields in single early spray treatments are not significantly different to the no spray control. Commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. On average a spray schedule with two or more applications stating late (7-19 days after first sign of powdery mildew) produced the highest yields.
+
+
+When we compare these results to those of the linear mixed effect model there is little difference in the outcome. The most notable difference is the linear mixed-effect model is somewhat less certain about the `Late_plus` treatment, and the mean yield lower than the `recommended_plus` treatment.
+
+```{r compare_meta&lmer}
+lme_PM <-
+   lmer(yi ~ spray_management + (spray_management |
+                                    trial), data = slimmer_PM_dat)
+
+summary(lme_PM)
+```
+&spun;  
+&spun;  
+To make it easier to compare each of the treatments we can compute the meta-analysis contrasts.
+```{r metafor_contrasts}
+anova(PM_mv_AI, L = rbind(
+   c(0, 1, -1, 0, 0),
+   # early vs Recomended
+   c(0, 1, 0, -1, 0),
+   # early vs recommended plus
+   c(0, 1, 0, 0, -1),
+   # early vs Late plus
+   c(0, 0, -1, 1, 0),
+   # Recommended vs recommended_plus
+   c(0, 0, -1, 0, 1),
+   # Recommended vs Late_Plus
+   c(0, 0, 0, -1, 1)
+)) # recommended_plus vs Late_plus
+```
+Results show with the exclusion of the no spray control, none of the treatments are significantly different, however, early applications treatments on average produced lower yields. Let's view this on a plot.
+
+```{r metafor_results}
+results_AI <- data.frame(cbind(exp(PM_mv_AI$b),
+                               exp((PM_mv_AI$ci.lb)),
+                               exp(PM_mv_AI$ci.ub)))
+
+# results_AI <- data.frame(cbind(PM_mv_AI$b,
+#                               (PM_mv_AI$ci.lb),
+#                               PM_mv_AI$ci.ub))
+
+treat <-
+   c("control",
+     "Early",
+     "Recommended",
+     "Recommended_plus",
+     "Late_plus")
+efficacy <- tbl_df(results_AI)
+efficacy$treat <- treat
+efficacy$se <- PM_mv_AI$se
+colnames(efficacy) <-
+   c("Mean", "CIs_lower", "CI_upper", "Treatment", "SE")
+efficacy
+```
+
+```{r metafor_plot}
+efficacy$Treatment <-
+   factor(
+      efficacy$Treatment,
+      c(
+         "control",
+         "Early",
+         "Recommended",
+         "Recommended_plus",
+         "Late_plus"
+      )
+   )
+
+efficacy %>%
+   ggplot(aes(Treatment, Mean)) +
+   geom_hline(
+      yintercept = c(0.8, 1, 1.2, 1.4),
+      color = "grey80",
+      linetype = 3
+   ) +
+   geom_point(aes(size = 1 / SE), shape = 15) +
+   geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper)) +
+   coord_flip()
+```
+
+What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented across all experiments. However it could also be because it also has a low number of pooled reps per trial. Let's look at how well each of the treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
+
+
+### netmeta package  
+Let's analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust. The `netmeta` package uses a frequentness approach to the analysis, and focuses on the pairwise comparisons between treatments.  
+
+```{r netmeta-analysis}
+library(netmeta)
+
+datPM3 <- slimmer_PM_dat %>%
+   group_by(trial, spray_management, n) %>%
+   summarize(yi_mean = mean(yi),
+             vi_mean = mean(vi)) %>%
+   ungroup()
+
+PM_con <- pairwise(
+   treat = spray_management,
+   n = n,
+   mean = yi_mean,
+   sd = sqrt(vi_mean),
+   studlab = trial,
+   data = datPM3,
+   sm = "MD"
+)
+
+net_con <- netmeta(TE,
+                   seTE,
+                   treat1,
+                   treat2,
+                   studlab,
+                   data = PM_con,
+                   sm = "MD")
+
+summary(net_con)
+```
+Now let's visualise this as a forest plot
+
+```{r netmeta-forest}
+forest(
+   net_con,
+   reference.group = 4,
+   rightcols = c("effect", "ci", "Pscore"),
+   rightlabs = "P-Score",
+   small.values = "bad"
+)
+
+```
+
+The `netmeta` analysis suggests the spray schedule commencing early are no different to any other treatment including the no spray control. It estimates the mean is very similar to the recommended treatments. The recommended plus and late_plus treatments show higher mean estimates, however not significantly different from the early estimate.  
+
+```{r netgraphGW}
+netgraph(
+   net_con,
+   plastic = FALSE,
+   col = "orange",
+   thickness =  "number.of.studies",
+   points = FALSE,
+   col.points = "black",
+   cex.points = 1,
+   number.of.studies = TRUE,
+   cex.number.of.studies = 1,
+   col.number.of.studies = "black",
+   bg.number.of.studies = "orange",
+   multiarm = FALSE,
+   col.multiarm = "lightblue",
+   pos.number.of.studies = 0.5
+)
+```
+
+
+```{r}
+netleague(net_con)
+
+decomp.design(net_con)
+
+netsplit(net_con)
+
+nm1 <- netmeasures(net_con)
+
+plot(
+   nm1$meanpath,
+   nm1$minpar,
+   pch = "",
+   xlab = "Mean path length",
+   ylab = "Minimal parallelism"
+)
+text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
+```
+
+
+
+```{r Save_meta_data, eval=FALSE}
+write.csv(slimmer_PM_dat, file = "data/GYmeta_data.csv")
+
+```

@@ -1,13 +1,14 @@
-# Studies considered in meta-analysis  
+# Studies considered in meta-analysis
 
-This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland. It is worth noting Malcolm Riley and Dr Sue Thompsons effort in establishing and coordinating early field trials between 2010 and 2016.  
+This meta-analysis uses data collected by a number of researchers from the
+Department of Agriculture and Primary Industries and the University of Southern
+Queensland. It is worth noting Professor Malcolm Riley's and Dr Sue Thompson's
+effort in establishing and coordinating early field trials between 2010 and
+2016.
 
 ```{r MEsummary_Libraries, message=FALSE, echo=FALSE}
-library(dplyr)
-library(readr)
-library(kableExtra)
-library(leaflet)
-library(htmltools)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, kableExtra, leaflet, htmltools)
 source("R/import_data.R")
 ```
 
@@ -38,7 +39,7 @@ source("R/import_data.R")
 * 2013  
    + Premer  
    + Millmerran   
-   + Mt Mary   
+   + Marys Mount  
    + Goolhi  
 
 * 2015  
@@ -64,16 +65,19 @@ source("R/import_data.R")
 
 **2001 - 2004 trials**  
 Trial data were obtained from a non-published manuscript.  
-Ratings for powdery mildew were on a 1-5 rating scale and can be read in the file "Powdery mildew paper#1.doc".  
-Comparing trials which have not used the same rating scale will be done using a percentage change.  
+Ratings for powdery mildew were on a 1-5 rating scale and can be read in the
+file "Powdery mildew paper#1.doc".  
+Comparing trials which have not used the same rating scale will be done using a
+percentage change.  
 
 **2013 Field trials**  
-Trials were conducted by the National Growers Alliance (NGA). The raw data were obtained from Lawrie Price. NGA data were formatted to be compliant with existing data rating and scales in the R script `Cleaning historical data.R`.  
+Trials were conducted by the National Growers Alliance (NGA). The raw data were
+obtained from Lawrie Price. NGA data were formatted to be compliant with
+existing data rating and scales in the R script `Cleaning historical data.R`.  
 
 ## Summary of data  
 
 ```{r data_summary, echo=TRUE, message=FALSE, warning=FALSE}
-
 PM.dat <- import_data()
 
 kable(
@@ -90,10 +94,9 @@ kable(
       ) %>%
       summarise(treatments = length(n_treatment)),
    caption = "Description of Experiments"
- ) # %>%  #commented as was redering empty, needs a look in
-#    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
-#    scroll_box(width = "900px", height = "500px")
-
+)  %>%
+   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
+   scroll_box(width = "900px", height = "500px")
 ```
 
 ## Powdery mildew ratings  
@@ -127,18 +130,47 @@ experiment_sites <- data.frame(
       "NGA - Goolhi",
       "Missen Flats",
       "Wellcamp"
-      ),
-   lat = c(-28.215 , -26.58, -27.56, -23.54, -27.51666, -31.43449, -27.923674, -31.0142, -31.00246, -27.905313, -27.564277),
-   lon = c(152.1003, 151.83, 152.32, 148.19, 151.450,150.0052, 151.242706, 150.05018, 149.82507, 151.9772,151.867879)
+   ),
+   lat = c(
+      -28.215 ,
+      -26.58,
+      -27.56,
+      -23.54,
+      -27.51666,
+      -31.43449,
+      -27.923674,
+      -31.0142,
+      -31.00246,
+      -27.905313,
+      -27.564277
+   ),
+   lon = c(
+      152.1003,
+      151.83,
+      152.32,
+      148.19,
+      151.450,
+      150.0052,
+      151.242706,
+      150.05018,
+      149.82507,
+      151.9772,
+      151.867879
+   )
 )
 
-write.csv(experiment_sites,"data/Mungbean_experiment_sites.csv", row.names = FALSE)
+write.csv(experiment_sites,
+          "cache/Mungbean_experiment_sites.csv",
+          row.names = FALSE)
 
 leaflet(experiment_sites) %>%
    addProviderTiles("Esri.WorldTopoMap") %>%
-   setView(lat = -27.31, lng = 150.456,zoom = 5) %>%
-   addMarkers(lng = ~lon, lat = ~lat, popup = ~htmlEscape(location))
-
-
+   setView(lat = -27.31,
+           lng = 150.456,
+           zoom = 5) %>%
+   addMarkers(
+      lng = ~ lon,
+      lat = ~ lat,
+      popup = ~ htmlEscape(location)
+   )
 ```
-

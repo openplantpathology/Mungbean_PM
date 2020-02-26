@@ -31,7 +31,8 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="weather-data.html"/>
+<link rel="next" href="preliminary-analysis.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -49,6 +50,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -59,29 +61,29 @@
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
 <script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -90,9 +92,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -137,61 +139,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Research questions</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Research questions</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#parts-of-analysis-that-need-checking"><i class="fa fa-check"></i><b>1.1</b> Parts of analysis that need checking</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a><ul>
+<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#summary-of-data"><i class="fa fa-check"></i><b>2.1</b> Summary of data</a></li>
 <li class="chapter" data-level="2.2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#powdery-mildew-ratings"><i class="fa fa-check"></i><b>2.2</b> Powdery mildew ratings</a></li>
 <li class="chapter" data-level="2.3" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#experimental-locations"><i class="fa fa-check"></i><b>2.3</b> Experimental locations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="weather-data.html"><a href="weather-data.html"><i class="fa fa-check"></i><b>3</b> Weather data</a><ul>
-<li class="chapter" data-level="3.0.1" data-path="weather-data.html"><a href="weather-data.html#kingaroy-historical-weather"><i class="fa fa-check"></i><b>3.0.1</b> Kingaroy historical weather</a></li>
-<li class="chapter" data-level="3.0.2" data-path="weather-data.html"><a href="weather-data.html#hermitage-historical-weather"><i class="fa fa-check"></i><b>3.0.2</b> Hermitage historical weather</a></li>
-<li class="chapter" data-level="3.0.3" data-path="weather-data.html"><a href="weather-data.html#gatton-historical-weather"><i class="fa fa-check"></i><b>3.0.3</b> Gatton historical weather</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>4</b> Preliminary Analysis</a><ul>
-<li class="chapter" data-level="4.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>4.1</b> Explore and visualise Data</a><ul>
-<li class="chapter" data-level="4.1.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#fungicides"><i class="fa fa-check"></i><b>4.1.1</b> Fungicides</a></li>
-<li class="chapter" data-level="4.1.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#mungbean-cultivars"><i class="fa fa-check"></i><b>4.1.2</b> Mungbean cultivars</a></li>
-<li class="chapter" data-level="4.1.3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.1.3</b> Row spacing</a></li>
-<li class="chapter" data-level="4.1.4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#yield-vs-in-season-rain"><i class="fa fa-check"></i><b>4.1.4</b> Yield vs in-season rain</a></li>
-<li class="chapter" data-level="4.1.5" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#season-range-and-first-incidence"><i class="fa fa-check"></i><b>4.1.5</b> Season range and first incidence</a></li>
+<li class="chapter" data-level="3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>3</b> Preliminary Analysis</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>3.1</b> Explore and Visualise Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#fungicides"><i class="fa fa-check"></i><b>3.1.1</b> Fungicides</a></li>
+<li class="chapter" data-level="3.1.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#mungbean-cultivars"><i class="fa fa-check"></i><b>3.1.2</b> Mungbean cultivars</a></li>
+<li class="chapter" data-level="3.1.3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>3.1.3</b> Row spacing</a></li>
+<li class="chapter" data-level="3.1.4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#yield-vs-in-season-rain"><i class="fa fa-check"></i><b>3.1.4</b> Yield vs in-season rain</a></li>
+<li class="chapter" data-level="3.1.5" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#season-range-and-first-incidence"><i class="fa fa-check"></i><b>3.1.5</b> Season range and first incidence</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html"><i class="fa fa-check"></i><b>5</b> Prepare data for meta-anlysis</a><ul>
-<li class="chapter" data-level="5.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>5.1</b> Set environment and import data</a></li>
-<li class="chapter" data-level="5.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>5.2</b> Standardising sample variance</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>5.2.1</b> Converting least-squares to sample variance</a></li>
-<li class="chapter" data-level="5.2.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>5.2.2</b> Converting standard deviation to sample variance</a></li>
+<li class="chapter" data-level="4" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html"><i class="fa fa-check"></i><b>4</b> Prepare data for meta-anlysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>4.1</b> Set environment and import data</a></li>
+<li class="chapter" data-level="4.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>4.2</b> Standardising sample variance</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>4.2.1</b> Converting least-squares to sample variance</a></li>
+<li class="chapter" data-level="4.2.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>4.2.2</b> Converting standard deviation to sample variance</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#yield-saving"><i class="fa fa-check"></i><b>5.3</b> Yield saving</a></li>
-<li class="chapter" data-level="5.4" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>5.4</b> Reduce data set to required variables</a><ul>
-<li class="chapter" data-level="5.4.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>5.4.1</b> Cluster fungicide applications</a></li>
+<li class="chapter" data-level="4.3" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#yield-saving"><i class="fa fa-check"></i><b>4.3</b> Yield saving</a></li>
+<li class="chapter" data-level="4.4" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>4.4</b> Reduce data set to required variables</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>4.4.1</b> Cluster fungicide applications</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>5.5</b> AUDPC visualise raw data</a></li>
+<li class="chapter" data-level="4.5" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>4.5</b> AUDPC visualise raw data</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="meta-analysis.html"><a href="meta-analysis.html"><i class="fa fa-check"></i><b>6</b> Meta-analysis</a><ul>
-<li class="chapter" data-level="6.1" data-path="meta-analysis.html"><a href="meta-analysis.html#grain-yield-meta-analysis"><i class="fa fa-check"></i><b>6.1</b> Grain yield meta-analysis</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="meta-analysis.html"><a href="meta-analysis.html#imputing-sample-variances"><i class="fa fa-check"></i><b>6.1.1</b> Imputing sample variances</a></li>
+<li class="chapter" data-level="5" data-path="meta-analysis.html"><a href="meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Meta-analysis</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="meta-analysis.html"><a href="meta-analysis.html#grain-yield-meta-analysis"><i class="fa fa-check"></i><b>5.1</b> Grain yield meta-analysis</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="meta-analysis.html"><a href="meta-analysis.html#imputing-sample-variances"><i class="fa fa-check"></i><b>5.1.1</b> Imputing sample variances</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="meta-analysis.html"><a href="meta-analysis.html#meta-analysis-1"><i class="fa fa-check"></i><b>6.2</b> Meta-analysis</a><ul>
-<li class="chapter" data-level="6.2.1" data-path="meta-analysis.html"><a href="meta-analysis.html#metafor-package"><i class="fa fa-check"></i><b>6.2.1</b> metafor package</a></li>
-<li class="chapter" data-level="6.2.2" data-path="meta-analysis.html"><a href="meta-analysis.html#netmeta-package"><i class="fa fa-check"></i><b>6.2.2</b> netmeta package</a></li>
+<li class="chapter" data-level="5.2" data-path="meta-analysis.html"><a href="meta-analysis.html#meta-analysis-1"><i class="fa fa-check"></i><b>5.2</b> Meta-analysis</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="meta-analysis.html"><a href="meta-analysis.html#metafor-package"><i class="fa fa-check"></i><b>5.2.1</b> metafor package</a></li>
+<li class="chapter" data-level="5.2.2" data-path="meta-analysis.html"><a href="meta-analysis.html#netmeta-package"><i class="fa fa-check"></i><b>5.2.2</b> netmeta package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>7</b> AUPDC meta-analysis</a><ul>
-<li class="chapter" data-level="7.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#aupdc-impact-on-grain-yield-meta-analysis"><i class="fa fa-check"></i><b>7.1</b> AUPDC impact on grain yield meta-analysis</a></li>
+<li class="chapter" data-level="6" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>6</b> AUPDC meta-analysis</a>
+<ul>
+<li class="chapter" data-level="6.0.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#spray-management-and-audpc"><i class="fa fa-check"></i><b>6.0.1</b> Spray management and AUDPC</a></li>
+<li class="chapter" data-level="6.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#aupdc-impact-on-grain-yield-meta-analysis"><i class="fa fa-check"></i><b>6.1</b> AUPDC impact on grain yield meta-analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html"><i class="fa fa-check"></i><b>8</b> Manuscript wireframe</a><ul>
-<li class="chapter" data-level="8.1" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#who-are-the-intended-readers---list-3-to-5-of-them-by-name"><i class="fa fa-check"></i><b>8.1</b> Who are the intended readers? - list 3 to 5 of them by name</a></li>
-<li class="chapter" data-level="8.2" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-did-you-do-limit---50-words"><i class="fa fa-check"></i><b>8.2</b> what did you do? (limit - 50 words)</a></li>
-<li class="chapter" data-level="8.3" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#why-did-you-do-it-limit---50-words"><i class="fa fa-check"></i><b>8.3</b> Why did you do it? (limit - 50 words)</a></li>
-<li class="chapter" data-level="8.4" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-happened-limit---50-words"><i class="fa fa-check"></i><b>8.4</b> what happened? (limit - 50 words)</a></li>
-<li class="chapter" data-level="8.5" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-do-the-results-mean-in-theory-limit---50-words"><i class="fa fa-check"></i><b>8.5</b> What do the results mean in theory? (limit - 50 words)</a></li>
-<li class="chapter" data-level="8.6" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-do-the-results-mean-in-practice-limit---50-words"><i class="fa fa-check"></i><b>8.6</b> What do the results mean in practice? (limit - 50 words)</a></li>
-<li class="chapter" data-level="8.7" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-is-the-key-benefit-for-your-readers-limit---25-words."><i class="fa fa-check"></i><b>8.7</b> what is the key benefit for your readers? (limit - 25 words).</a></li>
-<li class="chapter" data-level="8.8" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-remains-unresolved-no-word-limit."><i class="fa fa-check"></i><b>8.8</b> What remains unresolved? (no word limit).</a></li>
+<li class="chapter" data-level="7" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html"><i class="fa fa-check"></i><b>7</b> Manuscript wireframe</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#who-are-the-intended-readers---list-3-to-5-of-them-by-name"><i class="fa fa-check"></i><b>7.1</b> Who are the intended readers? - list 3 to 5 of them by name</a></li>
+<li class="chapter" data-level="7.2" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-did-you-do-limit---50-words"><i class="fa fa-check"></i><b>7.2</b> what did you do? (limit - 50 words)</a></li>
+<li class="chapter" data-level="7.3" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#why-did-you-do-it-limit---50-words"><i class="fa fa-check"></i><b>7.3</b> Why did you do it? (limit - 50 words)</a></li>
+<li class="chapter" data-level="7.4" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-happened-limit---50-words"><i class="fa fa-check"></i><b>7.4</b> What happened? (limit - 50 words)</a></li>
+<li class="chapter" data-level="7.5" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-do-the-results-mean-in-theory-limit---50-words"><i class="fa fa-check"></i><b>7.5</b> What do the results mean in theory? (limit - 50 words)</a></li>
+<li class="chapter" data-level="7.6" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-do-the-results-mean-in-practice-limit---50-words"><i class="fa fa-check"></i><b>7.6</b> What do the results mean in practice? (limit - 50 words)</a></li>
+<li class="chapter" data-level="7.7" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-is-the-key-benefit-for-your-readers-limit---25-words."><i class="fa fa-check"></i><b>7.7</b> What is the key benefit for your readers? (limit - 25 words).</a></li>
+<li class="chapter" data-level="7.8" data-path="manuscript-wireframe.html"><a href="manuscript-wireframe.html#what-remains-unresolved-no-word-limit."><i class="fa fa-check"></i><b>7.8</b> What remains unresolved? (no word limit).</a></li>
 </ul></li>
 </ul>
 
@@ -210,9 +220,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="studies-considered-in-meta-analysis" class="section level1">
+<div id="studies-considered-in-meta-analysis" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Studies considered in meta-analysis</h1>
-<p>This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland. It is worth noting Malcolm Riley and Dr Sue Thompsons effort in establishing and coordinating early field trials between 2010 and 2016.</p>
+<p>This meta-analysis uses data collected by a number of researchers from the
+Department of Agriculture and Primary Industries and the University of Southern
+Queensland. It is worth noting Professor Malcolm Riley’s and Dr Sue Thompson’s
+effort in establishing and coordinating early field trials between 2010 and
+2016.</p>
 <ul>
 <li>2001
 <ul>
@@ -256,7 +270,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
 <li>Millmerran<br />
 </li>
-<li>Mt Mary<br />
+<li>Marys Mount<br />
 </li>
 <li>Goolhi</li>
 </ul></li>
@@ -293,60 +307,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p><strong>2001 - 2004 trials</strong><br />
 Trial data were obtained from a non-published manuscript.<br />
-Ratings for powdery mildew were on a 1-5 rating scale and can be read in the file “Powdery mildew paper#1.doc”.<br />
-Comparing trials which have not used the same rating scale will be done using a percentage change.</p>
+Ratings for powdery mildew were on a 1-5 rating scale and can be read in the
+file “Powdery mildew paper#1.doc”.<br />
+Comparing trials which have not used the same rating scale will be done using a
+percentage change.</p>
 <p><strong>2013 Field trials</strong><br />
-Trials were conducted by the National Growers Alliance (NGA). The raw data were obtained from Lawrie Price. NGA data were formatted to be compliant with existing data rating and scales in the R script <code>Cleaning historical data.R</code>.</p>
-<div id="summary-of-data" class="section level2">
+Trials were conducted by the National Growers Alliance (NGA). The raw data were
+obtained from Lawrie Price. NGA data were formatted to be compliant with
+existing data rating and scales in the R script <code>Cleaning historical data.R</code>.</p>
+<div id="summary-of-data" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Summary of data</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">PM.dat &lt;-<span class="st"> </span><span class="kw">import_data</span>()</a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">kable</span>(</a>
-<a class="sourceLine" id="cb1-4" title="4">   PM.dat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="st">      </span><span class="kw">group_by</span>(</a>
-<a class="sourceLine" id="cb1-6" title="6">         trial_ref,</a>
-<a class="sourceLine" id="cb1-7" title="7">         year,</a>
-<a class="sourceLine" id="cb1-8" title="8">         location,</a>
-<a class="sourceLine" id="cb1-9" title="9">         trial_design,</a>
-<a class="sourceLine" id="cb1-10" title="10">         replicates,</a>
-<a class="sourceLine" id="cb1-11" title="11">         planting_date,</a>
-<a class="sourceLine" id="cb1-12" title="12">         emergence_date,</a>
-<a class="sourceLine" id="cb1-13" title="13">         first_sign_disease</a>
-<a class="sourceLine" id="cb1-14" title="14">      ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="st">      </span><span class="kw">summarise</span>(<span class="dt">treatments =</span> <span class="kw">length</span>(n_treatment)),</a>
-<a class="sourceLine" id="cb1-16" title="16">   <span class="dt">caption =</span> <span class="st">&quot;Description of Experiments&quot;</span></a>
-<a class="sourceLine" id="cb1-17" title="17"> ) <span class="co"># %&gt;%  #commented as was redering empty, needs a look in</span></a></code></pre></div>
-<table>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="studies-considered-in-meta-analysis.html#cb1-1"></a>PM.dat &lt;-<span class="st"> </span><span class="kw">import_data</span>()</span>
+<span id="cb1-2"><a href="studies-considered-in-meta-analysis.html#cb1-2"></a></span>
+<span id="cb1-3"><a href="studies-considered-in-meta-analysis.html#cb1-3"></a><span class="kw">kable</span>(</span>
+<span id="cb1-4"><a href="studies-considered-in-meta-analysis.html#cb1-4"></a>   PM.dat <span class="op">%&gt;%</span></span>
+<span id="cb1-5"><a href="studies-considered-in-meta-analysis.html#cb1-5"></a><span class="st">      </span><span class="kw">group_by</span>(</span>
+<span id="cb1-6"><a href="studies-considered-in-meta-analysis.html#cb1-6"></a>         trial_ref,</span>
+<span id="cb1-7"><a href="studies-considered-in-meta-analysis.html#cb1-7"></a>         year,</span>
+<span id="cb1-8"><a href="studies-considered-in-meta-analysis.html#cb1-8"></a>         location,</span>
+<span id="cb1-9"><a href="studies-considered-in-meta-analysis.html#cb1-9"></a>         trial_design,</span>
+<span id="cb1-10"><a href="studies-considered-in-meta-analysis.html#cb1-10"></a>         replicates,</span>
+<span id="cb1-11"><a href="studies-considered-in-meta-analysis.html#cb1-11"></a>         planting_date,</span>
+<span id="cb1-12"><a href="studies-considered-in-meta-analysis.html#cb1-12"></a>         emergence_date,</span>
+<span id="cb1-13"><a href="studies-considered-in-meta-analysis.html#cb1-13"></a>         first_sign_disease</span>
+<span id="cb1-14"><a href="studies-considered-in-meta-analysis.html#cb1-14"></a>      ) <span class="op">%&gt;%</span></span>
+<span id="cb1-15"><a href="studies-considered-in-meta-analysis.html#cb1-15"></a><span class="st">      </span><span class="kw">summarise</span>(<span class="dt">treatments =</span> <span class="kw">length</span>(n_treatment)),</span>
+<span id="cb1-16"><a href="studies-considered-in-meta-analysis.html#cb1-16"></a>   <span class="dt">caption =</span> <span class="st">&quot;Description of Experiments&quot;</span></span>
+<span id="cb1-17"><a href="studies-considered-in-meta-analysis.html#cb1-17"></a>)  <span class="op">%&gt;%</span></span>
+<span id="cb1-18"><a href="studies-considered-in-meta-analysis.html#cb1-18"></a><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> <span class="ot">TRUE</span>, <span class="dt">full_width =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb1-19"><a href="studies-considered-in-meta-analysis.html#cb1-19"></a><span class="st">   </span><span class="kw">scroll_box</span>(<span class="dt">width =</span> <span class="st">&quot;900px&quot;</span>, <span class="dt">height =</span> <span class="st">&quot;500px&quot;</span>)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:900px; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 (#tab:data_summary)Description of Experiments
 </caption>
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 trial_ref
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 year
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 location
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 trial_design
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 replicates
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 planting_date
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 emergence_date
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 first_sign_disease
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 treatments
 </th>
 </tr>
@@ -389,7 +410,7 @@ AM1304
 2013
 </td>
 <td style="text-align:left;">
-Mary’s mount
+Marys Mount
 </td>
 <td style="text-align:left;">
 RCB
@@ -418,7 +439,7 @@ AM1304
 2013
 </td>
 <td style="text-align:left;">
-Mary’s mount
+Marys Mount
 </td>
 <td style="text-align:left;">
 RCB
@@ -1253,14 +1274,13 @@ RCB
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">#    kable_styling(fixed_thead = TRUE, full_width = TRUE) %&gt;%</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">#    scroll_box(width = &quot;900px&quot;, height = &quot;500px&quot;)</span></a></code></pre></div>
 </div>
-<div id="powdery-mildew-ratings" class="section level2">
+</div>
+<div id="powdery-mildew-ratings" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Powdery mildew ratings</h2>
 <ol style="list-style-type: decimal">
-<li>No powdery mildew colonies observed on any plant
-<ol start="2" style="list-style-type: decimal">
+<li>No powdery mildew colonies observed on any plant<br />
+</li>
 <li>Small colonies in lower 1/3 of canopy, up to 75% of plants affected<br />
 </li>
 <li>Colonies in lower 1/2 of canopy, &gt;75% of plants affected<br />
@@ -1276,38 +1296,69 @@ RCB
 <li>Colonies to top of plant with &gt;75% of plants affected<br />
 </li>
 <li>Colonies to top of plant with 100% of plants affected and heavy leaf drop</li>
-</ol></li>
 </ol>
 </div>
-<div id="experimental-locations" class="section level2">
+<div id="experimental-locations" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Experimental locations</h2>
 <p>Experimental locations where data was sufficient to include in meta-analysis.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">experiment_sites &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb3-2" title="2">   <span class="dt">location =</span> <span class="kw">c</span>(</a>
-<a class="sourceLine" id="cb3-3" title="3">      <span class="st">&quot;Hermitage Research Station&quot;</span>,</a>
-<a class="sourceLine" id="cb3-4" title="4">      <span class="st">&quot;Red Vale &amp; Kingaroy Research Station&quot;</span>,</a>
-<a class="sourceLine" id="cb3-5" title="5">      <span class="st">&quot;Gatton&quot;</span>,</a>
-<a class="sourceLine" id="cb3-6" title="6">      <span class="st">&quot;Emerald Agricultural College&quot;</span>,</a>
-<a class="sourceLine" id="cb3-7" title="7">      <span class="st">&quot;Bongeen 1 &amp; 2&quot;</span>,</a>
-<a class="sourceLine" id="cb3-8" title="8">      <span class="st">&quot;NGA - Premer&quot;</span>,</a>
-<a class="sourceLine" id="cb3-9" title="9">      <span class="st">&quot;NGA - Millmerran&quot;</span>,</a>
-<a class="sourceLine" id="cb3-10" title="10">      <span class="st">&quot;NGA - Marys Mount&quot;</span>,</a>
-<a class="sourceLine" id="cb3-11" title="11">      <span class="st">&quot;NGA - Goolhi&quot;</span>,</a>
-<a class="sourceLine" id="cb3-12" title="12">      <span class="st">&quot;Missen Flats&quot;</span>,</a>
-<a class="sourceLine" id="cb3-13" title="13">      <span class="st">&quot;Wellcamp&quot;</span></a>
-<a class="sourceLine" id="cb3-14" title="14">      ),</a>
-<a class="sourceLine" id="cb3-15" title="15">   <span class="dt">lat =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">28.215</span> , <span class="fl">-26.58</span>, <span class="fl">-27.56</span>, <span class="fl">-23.54</span>, <span class="fl">-27.51666</span>, <span class="fl">-31.43449</span>, <span class="fl">-27.923674</span>, <span class="fl">-31.0142</span>, <span class="fl">-31.00246</span>, <span class="fl">-27.905313</span>, <span class="fl">-27.564277</span>),</a>
-<a class="sourceLine" id="cb3-16" title="16">   <span class="dt">lon =</span> <span class="kw">c</span>(<span class="fl">152.1003</span>, <span class="fl">151.83</span>, <span class="fl">152.32</span>, <span class="fl">148.19</span>, <span class="fl">151.450</span>,<span class="fl">150.0052</span>, <span class="fl">151.242706</span>, <span class="fl">150.05018</span>, <span class="fl">149.82507</span>, <span class="fl">151.9772</span>,<span class="fl">151.867879</span>)</a>
-<a class="sourceLine" id="cb3-17" title="17">)</a>
-<a class="sourceLine" id="cb3-18" title="18"></a>
-<a class="sourceLine" id="cb3-19" title="19"><span class="kw">write.csv</span>(experiment_sites,<span class="st">&quot;data/Mungbean_experiment_sites.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb3-20" title="20"></a>
-<a class="sourceLine" id="cb3-21" title="21"><span class="kw">leaflet</span>(experiment_sites) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-22" title="22"><span class="st">   </span><span class="kw">addProviderTiles</span>(<span class="st">&quot;Esri.WorldTopoMap&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-23" title="23"><span class="st">   </span><span class="kw">setView</span>(<span class="dt">lat =</span> <span class="fl">-27.31</span>, <span class="dt">lng =</span> <span class="fl">150.456</span>,<span class="dt">zoom =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-24" title="24"><span class="st">   </span><span class="kw">addMarkers</span>(<span class="dt">lng =</span> <span class="op">~</span>lon, <span class="dt">lat =</span> <span class="op">~</span>lat, <span class="dt">popup =</span> <span class="op">~</span><span class="kw">htmlEscape</span>(location))</a></code></pre></div>
-<div id="htmlwidget-d76021da5a6a2980ea8e" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d76021da5a6a2980ea8e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[-28.215,-26.58,-27.56,-23.54,-27.51666,-31.43449,-27.923674,-31.0142,-31.00246,-27.905313,-27.564277],[152.1003,151.83,152.32,148.19,151.45,150.0052,151.242706,150.05018,149.82507,151.9772,151.867879],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Hermitage Research Station","Red Vale &amp; Kingaroy Research Station","Gatton","Emerald Agricultural College","Bongeen 1 &amp; 2","NGA - Premer","NGA - Millmerran","NGA - Marys Mount","NGA - Goolhi","Missen Flats","Wellcamp"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[-27.31,150.456],5,[]],"limits":{"lat":[-31.43449,-23.54],"lng":[148.19,152.32]}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="studies-considered-in-meta-analysis.html#cb2-1"></a>experiment_sites &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb2-2"><a href="studies-considered-in-meta-analysis.html#cb2-2"></a>   <span class="dt">location =</span> <span class="kw">c</span>(</span>
+<span id="cb2-3"><a href="studies-considered-in-meta-analysis.html#cb2-3"></a>      <span class="st">&quot;Hermitage Research Station&quot;</span>,</span>
+<span id="cb2-4"><a href="studies-considered-in-meta-analysis.html#cb2-4"></a>      <span class="st">&quot;Red Vale &amp; Kingaroy Research Station&quot;</span>,</span>
+<span id="cb2-5"><a href="studies-considered-in-meta-analysis.html#cb2-5"></a>      <span class="st">&quot;Gatton&quot;</span>,</span>
+<span id="cb2-6"><a href="studies-considered-in-meta-analysis.html#cb2-6"></a>      <span class="st">&quot;Emerald Agricultural College&quot;</span>,</span>
+<span id="cb2-7"><a href="studies-considered-in-meta-analysis.html#cb2-7"></a>      <span class="st">&quot;Bongeen 1 &amp; 2&quot;</span>,</span>
+<span id="cb2-8"><a href="studies-considered-in-meta-analysis.html#cb2-8"></a>      <span class="st">&quot;NGA - Premer&quot;</span>,</span>
+<span id="cb2-9"><a href="studies-considered-in-meta-analysis.html#cb2-9"></a>      <span class="st">&quot;NGA - Millmerran&quot;</span>,</span>
+<span id="cb2-10"><a href="studies-considered-in-meta-analysis.html#cb2-10"></a>      <span class="st">&quot;NGA - Marys Mount&quot;</span>,</span>
+<span id="cb2-11"><a href="studies-considered-in-meta-analysis.html#cb2-11"></a>      <span class="st">&quot;NGA - Goolhi&quot;</span>,</span>
+<span id="cb2-12"><a href="studies-considered-in-meta-analysis.html#cb2-12"></a>      <span class="st">&quot;Missen Flats&quot;</span>,</span>
+<span id="cb2-13"><a href="studies-considered-in-meta-analysis.html#cb2-13"></a>      <span class="st">&quot;Wellcamp&quot;</span></span>
+<span id="cb2-14"><a href="studies-considered-in-meta-analysis.html#cb2-14"></a>   ),</span>
+<span id="cb2-15"><a href="studies-considered-in-meta-analysis.html#cb2-15"></a>   <span class="dt">lat =</span> <span class="kw">c</span>(</span>
+<span id="cb2-16"><a href="studies-considered-in-meta-analysis.html#cb2-16"></a>      <span class="fl">-28.215</span> ,</span>
+<span id="cb2-17"><a href="studies-considered-in-meta-analysis.html#cb2-17"></a>      <span class="fl">-26.58</span>,</span>
+<span id="cb2-18"><a href="studies-considered-in-meta-analysis.html#cb2-18"></a>      <span class="fl">-27.56</span>,</span>
+<span id="cb2-19"><a href="studies-considered-in-meta-analysis.html#cb2-19"></a>      <span class="fl">-23.54</span>,</span>
+<span id="cb2-20"><a href="studies-considered-in-meta-analysis.html#cb2-20"></a>      <span class="fl">-27.51666</span>,</span>
+<span id="cb2-21"><a href="studies-considered-in-meta-analysis.html#cb2-21"></a>      <span class="fl">-31.43449</span>,</span>
+<span id="cb2-22"><a href="studies-considered-in-meta-analysis.html#cb2-22"></a>      <span class="fl">-27.923674</span>,</span>
+<span id="cb2-23"><a href="studies-considered-in-meta-analysis.html#cb2-23"></a>      <span class="fl">-31.0142</span>,</span>
+<span id="cb2-24"><a href="studies-considered-in-meta-analysis.html#cb2-24"></a>      <span class="fl">-31.00246</span>,</span>
+<span id="cb2-25"><a href="studies-considered-in-meta-analysis.html#cb2-25"></a>      <span class="fl">-27.905313</span>,</span>
+<span id="cb2-26"><a href="studies-considered-in-meta-analysis.html#cb2-26"></a>      <span class="fl">-27.564277</span></span>
+<span id="cb2-27"><a href="studies-considered-in-meta-analysis.html#cb2-27"></a>   ),</span>
+<span id="cb2-28"><a href="studies-considered-in-meta-analysis.html#cb2-28"></a>   <span class="dt">lon =</span> <span class="kw">c</span>(</span>
+<span id="cb2-29"><a href="studies-considered-in-meta-analysis.html#cb2-29"></a>      <span class="fl">152.1003</span>,</span>
+<span id="cb2-30"><a href="studies-considered-in-meta-analysis.html#cb2-30"></a>      <span class="fl">151.83</span>,</span>
+<span id="cb2-31"><a href="studies-considered-in-meta-analysis.html#cb2-31"></a>      <span class="fl">152.32</span>,</span>
+<span id="cb2-32"><a href="studies-considered-in-meta-analysis.html#cb2-32"></a>      <span class="fl">148.19</span>,</span>
+<span id="cb2-33"><a href="studies-considered-in-meta-analysis.html#cb2-33"></a>      <span class="fl">151.450</span>,</span>
+<span id="cb2-34"><a href="studies-considered-in-meta-analysis.html#cb2-34"></a>      <span class="fl">150.0052</span>,</span>
+<span id="cb2-35"><a href="studies-considered-in-meta-analysis.html#cb2-35"></a>      <span class="fl">151.242706</span>,</span>
+<span id="cb2-36"><a href="studies-considered-in-meta-analysis.html#cb2-36"></a>      <span class="fl">150.05018</span>,</span>
+<span id="cb2-37"><a href="studies-considered-in-meta-analysis.html#cb2-37"></a>      <span class="fl">149.82507</span>,</span>
+<span id="cb2-38"><a href="studies-considered-in-meta-analysis.html#cb2-38"></a>      <span class="fl">151.9772</span>,</span>
+<span id="cb2-39"><a href="studies-considered-in-meta-analysis.html#cb2-39"></a>      <span class="fl">151.867879</span></span>
+<span id="cb2-40"><a href="studies-considered-in-meta-analysis.html#cb2-40"></a>   )</span>
+<span id="cb2-41"><a href="studies-considered-in-meta-analysis.html#cb2-41"></a>)</span>
+<span id="cb2-42"><a href="studies-considered-in-meta-analysis.html#cb2-42"></a></span>
+<span id="cb2-43"><a href="studies-considered-in-meta-analysis.html#cb2-43"></a><span class="kw">write.csv</span>(experiment_sites,</span>
+<span id="cb2-44"><a href="studies-considered-in-meta-analysis.html#cb2-44"></a>          <span class="st">&quot;cache/Mungbean_experiment_sites.csv&quot;</span>,</span>
+<span id="cb2-45"><a href="studies-considered-in-meta-analysis.html#cb2-45"></a>          <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb2-46"><a href="studies-considered-in-meta-analysis.html#cb2-46"></a></span>
+<span id="cb2-47"><a href="studies-considered-in-meta-analysis.html#cb2-47"></a><span class="kw">leaflet</span>(experiment_sites) <span class="op">%&gt;%</span></span>
+<span id="cb2-48"><a href="studies-considered-in-meta-analysis.html#cb2-48"></a><span class="st">   </span><span class="kw">addProviderTiles</span>(<span class="st">&quot;Esri.WorldTopoMap&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb2-49"><a href="studies-considered-in-meta-analysis.html#cb2-49"></a><span class="st">   </span><span class="kw">setView</span>(<span class="dt">lat =</span> <span class="fl">-27.31</span>,</span>
+<span id="cb2-50"><a href="studies-considered-in-meta-analysis.html#cb2-50"></a>           <span class="dt">lng =</span> <span class="fl">150.456</span>,</span>
+<span id="cb2-51"><a href="studies-considered-in-meta-analysis.html#cb2-51"></a>           <span class="dt">zoom =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb2-52"><a href="studies-considered-in-meta-analysis.html#cb2-52"></a><span class="st">   </span><span class="kw">addMarkers</span>(</span>
+<span id="cb2-53"><a href="studies-considered-in-meta-analysis.html#cb2-53"></a>      <span class="dt">lng =</span> <span class="op">~</span><span class="st"> </span>lon,</span>
+<span id="cb2-54"><a href="studies-considered-in-meta-analysis.html#cb2-54"></a>      <span class="dt">lat =</span> <span class="op">~</span><span class="st"> </span>lat,</span>
+<span id="cb2-55"><a href="studies-considered-in-meta-analysis.html#cb2-55"></a>      <span class="dt">popup =</span> <span class="op">~</span><span class="st"> </span><span class="kw">htmlEscape</span>(location)</span>
+<span id="cb2-56"><a href="studies-considered-in-meta-analysis.html#cb2-56"></a>   )</span></code></pre></div>
+<div id="htmlwidget-f0cfa62e3555d1d06ddd" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f0cfa62e3555d1d06ddd">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[-28.215,-26.58,-27.56,-23.54,-27.51666,-31.43449,-27.923674,-31.0142,-31.00246,-27.905313,-27.564277],[152.1003,151.83,152.32,148.19,151.45,150.0052,151.242706,150.05018,149.82507,151.9772,151.867879],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Hermitage Research Station","Red Vale &amp; Kingaroy Research Station","Gatton","Emerald Agricultural College","Bongeen 1 &amp; 2","NGA - Premer","NGA - Millmerran","NGA - Marys Mount","NGA - Goolhi","Missen Flats","Wellcamp"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[-27.31,150.456],5,[]],"limits":{"lat":[-31.43449,-23.54],"lng":[148.19,152.32]}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>
@@ -1317,7 +1368,7 @@ RCB
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="weather-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="preliminary-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
