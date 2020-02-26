@@ -60,17 +60,23 @@ Only a few studies incorporated in the meta-analysis contained comparisons betwe
 ## Introduction
 Mungbean is a short season summer pulse crop which can provide a high returns for growers in eastern Australia. 
 Mungbean can potentially yield up to 2.3 tonnes per hectare, with a value of up to \$ 1300 a tonne [@QueenslandGovernment2019]. 
-Powdery mildew _Podosphaera xanthii_ can potentially cause yield losses on mungbean of up to 43% [@Kelly2017a]. 
+However these potenitial crop yields can be limited by powdery mildew (*Podosphaera xanthii*)by up to 40% [@Kelly2017a]. 
 Fortunatley a number of strategies are employed to reduce the damage powdery mildew inflicts on yields.
 
 
 
 ### Managements strategies
 #### and conditions for infection
+Planting date is an effective way of preventing the development of powdery mildew in mungbean. 
 Powdery mildew infection requires cool temperatures (22$^\circ$ - 26$^\circ$C) and a leaf surface that is not overly wet for infection [@Kelly2017a]. 
-In southern Queensland and northern New South Wales, planting dates between late spring (November) and mid-summer (January) are advised to avoid the conducsive cooler autumn temperatures which normally commence in March in the southern hemisphere conducive for powdery mildew establishment.  
+In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures which normally commence in March.  
+Therefore when sowing is delayed there is a greater chance powdery mildew will infect earlier in the crop development leading to greater yield losses.  
 
-Signs of powdery mildew are almost always first observed when temperatures start to cool.
+Commercially available mungbean cultivars in Australia lack suficient resistance to be used soley as a management strategy to avoid yield losses.
+Quantitative disease resistance has been shown in a few cultivars such as Jade-AU, however other management strategies, such as fungicides, are still required.
+
+Treatment of powdery mildew in mungbean with fungicide is currently an effective method for reducing the impact of the disease.
+
 
 
 
