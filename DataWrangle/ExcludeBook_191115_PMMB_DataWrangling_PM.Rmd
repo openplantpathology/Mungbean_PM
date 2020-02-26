@@ -29,21 +29,23 @@ PM_MB_means <- import_data()
 
 ## Functions
 ```{r functions}
-
-fold_data <- function(new_DataFrame, template_DataFrame){
-   for(i in colnames(new_DataFrame)){
-      if(i == colnames(new_DataFrame)[1]){
-         x1 <- vector()}
+fold_data <- function(new_DataFrame, template_DataFrame) {
+   for (i in colnames(new_DataFrame)) {
+      if (i == colnames(new_DataFrame)[1]) {
+         x1 <- vector()
+      }
       
       cnames1 <- as.character(colnames(new_DataFrame))
       cnames2 <- as.character(colnames(template_DataFrame))
       
-      x1 <- c(x1,match(i, cnames2, nomatch = NA)) # MAke a index vector for the location of new_DataFrame col names in template_DataFrame
+      x1 <-
+         c(x1, match(i, cnames2, nomatch = NA)) # MAke a index vector for the location of new_DataFrame col names in template_DataFrame
    }
    
-   new_DataFrame[cnames2[!(cnames2 %in% cnames1)]] <- NA # adding column names to new_DataFrame not in template_DataFrame
-   new_DataFrame <- 
-      new_DataFrame[,c(cnames2, cnames1[is.na(x1)])]  # adding column names to new_DataFrame not in template_DataFrame
+   new_DataFrame[cnames2[!(cnames2 %in% cnames1)]] <-
+      NA # adding column names to new_DataFrame not in template_DataFrame
+   new_DataFrame <-
+      new_DataFrame[, c(cnames2, cnames1[is.na(x1)])]  # adding column names to new_DataFrame not in template_DataFrame
    return(new_DataFrame)
 }
 source(here("copy_class.R"))
@@ -55,90 +57,123 @@ source(here("R/data_mesh.R"))
 ### Hermitage 2010
 
 ```{r Hermitage_2010}
-
 Herm_10 <-
    as.data.frame(read_xls(here(
-      "data/2010 PMmung hermitage RAW field book.xls"),
-      sheet = "For analysis"
-   ), stringsAsFactors == FALSE)
+      "data/2010 PMmung hermitage RAW field book.xls"
+   ),
+   sheet = "For analysis"),
+   stringsAsFactors == FALSE)
 
 
 Herm_10 <- Herm_10 %>%
-   mutate(trade_name = case_when(`Schedule!` == "U/S" ~ NA_character_,
-                                 `Schedule!` == "FirstsignC" ~ " ",
-                                 TRUE ~ "Kendon"))%>%
-   mutate(fungicide = case_when(`Schedule!` == "U/S" ~ "control",
-                                 `Schedule!` == "FirstsignC" ~ "carbendazim",
-                                 TRUE ~ "sulphur"))%>%
-   mutate(dose_ai.ha = case_when(`Schedule!` == "U/S" ~ 0,
-                                 `Schedule!` == "FirstsignC" ~ 250,
-                                 TRUE ~ 2400))%>%
-   mutate(fungicide_application_1 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-02-19", format = "%Y-%m-%d"),
-                                              `Schedule!` == "Early Sp" ~ as.Date("2010-02-19", format = "%Y-%m-%d"),
-                                              `Schedule!` == "FirstsignC" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
-                                              `Schedule!` == "FirstsignS" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
-                                              `Schedule!` == "U/S" ~ as.Date(NA),
-                                              TRUE ~ as.Date(NA)))%>%
-   mutate(fungicide_application_2 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-02-26", format = "%Y-%m-%d"),
-                                              `Schedule!` == "Early Sp" ~ as.Date("2010-02-26", format = "%Y-%m-%d"),
-                                              TRUE ~ as.Date(NA)))%>%
-   mutate(fungicide_application_3 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-05", format = "%Y-%m-%d"),
-                                              TRUE ~ as.Date(NA)))%>%
-   mutate(fungicide_application_4 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-11", format = "%Y-%m-%d"),
-                                              TRUE ~ as.Date(NA)))%>%
-   mutate(fungicide_application_5 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
-                                              TRUE ~ as.Date(NA)))%>%
-   mutate(fungicide_application_6 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-25", format = "%Y-%m-%d"),
-                                              TRUE ~ as.Date(NA)))%>%
-   mutate(fungicide_application_7 = case_when(`Schedule!` == "Full Sp" ~ as.Date("2010-03-07", format = "%Y-%m-%d"),
-                                              TRUE ~ as.Date(NA)))%>%
-   mutate(total_fungicide = case_when(`Schedule!` == "Full Sp" ~ 7,
-                                      `Schedule!` == "Early Sp" ~ 2,
-                                      `Schedule!` == "FirstsignC" ~ 1,
-                                      `Schedule!` == "FirstsignS" ~ 1,
-                                      `Schedule!` == "U/S" ~ 0,
-                                      TRUE ~ 9999))
-   
+   mutate(
+      trade_name = case_when(
+         `Schedule!` == "U/S" ~ NA_character_,
+         `Schedule!` == "FirstsignC" ~ " ",
+         TRUE ~ "Kendon"
+      )
+   ) %>%
+   mutate(
+      fungicide = case_when(
+         `Schedule!` == "U/S" ~ "control",
+         `Schedule!` == "FirstsignC" ~ "carbendazim",
+         TRUE ~ "sulphur"
+      )
+   ) %>%
+   mutate(dose_ai.ha = case_when(
+      `Schedule!` == "U/S" ~ 0,
+      `Schedule!` == "FirstsignC" ~ 250,
+      TRUE ~ 2400
+   )) %>%
+   mutate(
+      fungicide_application_1 = case_when(
+         `Schedule!` == "Full Sp" ~ as.Date("2010-02-19", format = "%Y-%m-%d"),
+         `Schedule!` == "Early Sp" ~ as.Date("2010-02-19", format = "%Y-%m-%d"),
+         `Schedule!` == "FirstsignC" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
+         `Schedule!` == "FirstsignS" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
+         `Schedule!` == "U/S" ~ as.Date(NA),
+         TRUE ~ as.Date(NA)
+      )
+   ) %>%
+   mutate(
+      fungicide_application_2 = case_when(
+         `Schedule!` == "Full Sp" ~ as.Date("2010-02-26", format = "%Y-%m-%d"),
+         `Schedule!` == "Early Sp" ~ as.Date("2010-02-26", format = "%Y-%m-%d"),
+         TRUE ~ as.Date(NA)
+      )
+   ) %>%
+   mutate(fungicide_application_3 = case_when(
+      `Schedule!` == "Full Sp" ~ as.Date("2010-03-05", format = "%Y-%m-%d"),
+      TRUE ~ as.Date(NA)
+   )) %>%
+   mutate(fungicide_application_4 = case_when(
+      `Schedule!` == "Full Sp" ~ as.Date("2010-03-11", format = "%Y-%m-%d"),
+      TRUE ~ as.Date(NA)
+   )) %>%
+   mutate(fungicide_application_5 = case_when(
+      `Schedule!` == "Full Sp" ~ as.Date("2010-03-18", format = "%Y-%m-%d"),
+      TRUE ~ as.Date(NA)
+   )) %>%
+   mutate(fungicide_application_6 = case_when(
+      `Schedule!` == "Full Sp" ~ as.Date("2010-03-25", format = "%Y-%m-%d"),
+      TRUE ~ as.Date(NA)
+   )) %>%
+   mutate(fungicide_application_7 = case_when(
+      `Schedule!` == "Full Sp" ~ as.Date("2010-03-07", format = "%Y-%m-%d"),
+      TRUE ~ as.Date(NA)
+   )) %>%
+   mutate(
+      total_fungicide = case_when(
+         `Schedule!` == "Full Sp" ~ 7,
+         `Schedule!` == "Early Sp" ~ 2,
+         `Schedule!` == "FirstsignC" ~ 1,
+         `Schedule!` == "FirstsignS" ~ 1,
+         `Schedule!` == "U/S" ~ 0,
+         TRUE ~ 9999
+      )
+   )
+
 ```
 
 
 ```{r Herm10_dataInput}
-Herm_10_dat <- 
-   data.frame(trial_ref = "mung0910/01",
-              year = "2010",
-              location = "Hermitage",
-              host_genotype = Herm_10$`Cultivar!`,
-              trial_design = "RB",
-              plot_length = Herm_10$`Length (m)`,
-              plot_width = 4,
-              plant_density = NA,
-              row_spacing = 0.25,
-              replicate = Herm_10$`Rep!`,
-              planting_date = as.Date("2010-01-22"),
-              emergence_date = NA,
-              flowering_date = NA,
-              pod_fill_date = NA,
-              mid_late_pod_fill = NA,
-              first_sign_disease = as.Date("2010-03-18"),
-              trade_name = Herm_10$trade_name,
-              fungicide_ai = Herm_10$fungicide,
-              dose_ai.ha = Herm_10$dose_ai.ha,
-              n_treatment = Herm_10$`Treat!`,
-              fungicide_application_1 = Herm_10$fungicide_application_1,
-              fungicide_application_2 = Herm_10$fungicide_application_2,
-              fungicide_application_3 = Herm_10$fungicide_application_3,
-              fungicide_application_4 = Herm_10$fungicide_application_4,
-              fungicide_application_5 = Herm_10$fungicide_application_5,
-              fungicide_application_6 = Herm_10$fungicide_application_6,
-              fungicide_application_7 = Herm_10$fungicide_application_7,
-              total_fungicide = Herm_10$total_fungicide,
-              harvest_date = as.Date("2010-05-14"),
-              final_assessment = as.Date("2010-04-20"),
-              PM_final_severity = Herm_10$P.M.13wap,
-              rating_scale = "1-9",
-              grain_yield.t.ha. = Herm_10$`Kg/ha`/1000,
-              stringsAsFactors = FALSE
-              )
+Herm_10_dat <-
+   data.frame(
+      trial_ref = "mung0910/01",
+      year = "2010",
+      location = "Hermitage",
+      host_genotype = Herm_10$`Cultivar!`,
+      trial_design = "RB",
+      plot_length = Herm_10$`Length (m)`,
+      plot_width = 4,
+      plant_density = NA,
+      row_spacing = 0.25,
+      replicate = Herm_10$`Rep!`,
+      planting_date = as.Date("2010-01-22"),
+      emergence_date = NA,
+      flowering_date = NA,
+      pod_fill_date = NA,
+      mid_late_pod_fill = NA,
+      first_sign_disease = as.Date("2010-03-18"),
+      trade_name = Herm_10$trade_name,
+      fungicide_ai = Herm_10$fungicide,
+      dose_ai.ha = Herm_10$dose_ai.ha,
+      n_treatment = Herm_10$`Treat!`,
+      fungicide_application_1 = Herm_10$fungicide_application_1,
+      fungicide_application_2 = Herm_10$fungicide_application_2,
+      fungicide_application_3 = Herm_10$fungicide_application_3,
+      fungicide_application_4 = Herm_10$fungicide_application_4,
+      fungicide_application_5 = Herm_10$fungicide_application_5,
+      fungicide_application_6 = Herm_10$fungicide_application_6,
+      fungicide_application_7 = Herm_10$fungicide_application_7,
+      total_fungicide = Herm_10$total_fungicide,
+      harvest_date = as.Date("2010-05-14"),
+      final_assessment = as.Date("2010-04-20"),
+      PM_final_severity = Herm_10$P.M.13wap,
+      rating_scale = "1-9",
+      grain_yield.t.ha. = Herm_10$`Kg/ha` / 1000,
+      stringsAsFactors = FALSE
+   )
 
 ```
 
@@ -146,40 +181,74 @@ Herm_10_dat <-
 ```{r}
 library(ggplot2)
 
-Herm_10_dat <- cbind(Herm_10_dat,
-                     AUDPC = apply(data.frame(zero = 0,
-                                              Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1),
-                                   1, 
-                                   FUN = audpc,
-                                   dates = c((Herm_10_dat$first_sign_disease[1]-7)-
-                                                Herm_10_dat$planting_date[1],
-                                             9*7,11*7,13*7)
-                                   ),
-                     AUDPS = apply(data.frame(zero = 0,
-                                                   Herm_10[,c("P.M.9wap","P.M.11wap","P.M.13wap")]-1),
-                                        1, 
-                                        FUN = audps, 
-                                        dates = c((Herm_10_dat$first_sign_disease[1]-7)-
-                                                     Herm_10_dat$planting_date[1],
-                                                  9*7,11*7,13*7)
-                                        )
-                          )
+Herm_10_dat <- cbind(
+   Herm_10_dat,
+   AUDPC = apply(
+      data.frame(zero = 0,
+                 Herm_10[, c("P.M.9wap", "P.M.11wap", "P.M.13wap")] -
+                    1),
+      1,
+      FUN = audpc,
+      dates = c((Herm_10_dat$first_sign_disease[1] -
+                    7) -
+                   Herm_10_dat$planting_date[1],
+                9 * 7,
+                11 * 7,
+                13 * 7
+      )
+   ),
+   AUDPS = apply(
+      data.frame(zero = 0,
+                 Herm_10[, c("P.M.9wap", "P.M.11wap", "P.M.13wap")] -
+                    1),
+      1,
+      FUN = audps,
+      dates = c((Herm_10_dat$first_sign_disease[1] -
+                    7) -
+                   Herm_10_dat$planting_date[1],
+                9 * 7,
+                11 * 7,
+                13 * 7
+      )
+   )
+)
 
 Herm_10$PM_zero <- 1
-Herm_plot <- melt(Herm_10, id.vars = c("Description!","Treat!", "Rep!","Cultivar!","fungicide","total_fungicide"),
-                  measure.vars = c("PM_zero","P.M.9wap","P.M.11wap","P.M.13wap"))
+Herm_plot <-
+   melt(
+      Herm_10,
+      id.vars = c(
+         "Description!",
+         "Treat!",
+         "Rep!",
+         "Cultivar!",
+         "fungicide",
+         "total_fungicide"
+      ),
+      measure.vars = c("PM_zero", "P.M.9wap", "P.M.11wap", "P.M.13wap")
+   )
 
 Herm_plot <- Herm_plot %>%
-   mutate(T_var = case_when(variable == "PM_zero" ~ 
-                               as.numeric((Herm_10_dat$first_sign_disease[1]-7) - Herm_10_dat$planting_date[1]),
-                            variable == "P.M.9wap" ~ 9*7,
-                            variable == "P.M.11wap" ~ 11*7,
-                            variable == "P.M.13wap" ~ 13 * 7)
+   mutate(
+      T_var = case_when(
+         variable == "PM_zero" ~
+            as.numeric((Herm_10_dat$first_sign_disease[1] -
+                           7) - Herm_10_dat$planting_date[1]
+            ),
+         variable == "P.M.9wap" ~ 9 * 7,
+         variable == "P.M.11wap" ~ 11 * 7,
+         variable == "P.M.13wap" ~ 13 * 7
+      )
    )
 Herm_plot$`Treat!` <- as.factor(Herm_plot$`Treat!`)
 Herm_plot %>%
-   ggplot(aes(x = T_var, y = value, color = `Treat!`, shape = `Treat!`))+
-   geom_jitter(width = 1)+
+   ggplot(aes(
+      x = T_var,
+      y = value,
+      color = `Treat!`,
+      shape = `Treat!`
+   )) +
+   geom_jitter(width = 1) +
    geom_smooth()
 
 ```
@@ -3977,7 +4046,7 @@ write.csv(
 ```
 
 
-```{r Save_PM_MB_means}
+```{r Save_PM_MB_means, eval=FALSE, include=FALSE}
 
 write.csv(PM_MB_means, file = here("cache/PM_MB_updated.csv"), row.names = FALSE)
 
