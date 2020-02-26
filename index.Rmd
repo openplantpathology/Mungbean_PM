@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
-bibliography: 
+bibliography: "Mungbean.bib"
 biblio-style: apalike
 link-citations: yes
 github-repo: OpenPlantPathology/Mungbean_PM
