@@ -72,8 +72,8 @@ Powdery mildew infection requires cool temperatures (22$^\circ$ - 26$^\circ$C) a
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures which normally commence in March.  
 Therefore when sowing is delayed there is a greater chance powdery mildew will infect earlier in the crop development leading to greater yield losses.  
 
-Commercially available mungbean cultivars in Australia lack suficient resistance to be used soley as a management strategy to avoid yield losses.
-Quantitative disease resistance has been shown in a few cultivars such as Jade-AU, however other management strategies, such as fungicides, are still required.
+Commercially available mungbean cultivars in Australia lack sufficient resistance to be used soley as a management strategy for mitigating yield losses.
+Quantitative disease resistance has been observed in breeding lines [@Pandey2018; @Chankaew2013] and mungbean cultivars such as Jade-AU, however other management strategies, such as fungicides, are still required[@Kelly2017a].
 
 Treatment of powdery mildew in mungbean with fungicide is currently an effective method for reducing the impact of the disease.
 
