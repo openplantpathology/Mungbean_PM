@@ -2,7 +2,7 @@
 ```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer)
+pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer, netmeta)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -10,7 +10,7 @@ library(theme.usq)
 theme_set(theme_usq())
 
 # Data
-slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv"
+slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv"
 )
 ```
 
@@ -74,8 +74,8 @@ There are `r sum(is.na(slimmer_PM_dat$yield_error))` treatments without yield er
 Plotting a histogram of the variances show that the yield is not normally distributed. A log transformation, however, shows a normal distribution. We can use the mean and standard deviation of the log(V) to sample variances for the treatments where V is missing.  
 
 ```{r variance_histograms}
-hist(slimmer_PM_dat$yield_error) # yield error is not normally distributed
-hist(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
+hist_usq(slimmer_PM_dat$yield_error) # yield error is not normally distributed
+hist_usq(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
 ```
 
 We will evaluate whether the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, inferring significant difference, the imputed variances are discarded and re-sampled until all treatment variances show no significant differences.
@@ -151,9 +151,9 @@ The imputed variances calculated above don't show the expected positive correlat
 
 #### Imputing sample variances from Mean squares
 ```{r imputing_MSE_dataSpread}
-slimmer_PM_dat <- read.csv("data/slimmer_PM_clusterdat.csv")
-hist(unique(slimmer_PM_dat$Y_Msquare))
-hist(log(unique(slimmer_PM_dat$Y_Msquare))) # log mean square has a more normal distribution
+slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv")
+hist_usq(unique(slimmer_PM_dat$Y_Msquare))
+hist_usq(log(unique(slimmer_PM_dat$Y_Msquare))) # log mean square has a more normal distribution
 
 ```
 
@@ -248,12 +248,17 @@ slimmer_PM_dat %>%
 ### metafor package  
 Let's load the metafor package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
 Next we are log transforming the grain yield and calculating the variance from the trial mean squares.  
-Finally we will assign factor classes to the main variables in the meta-analysis. Note that variable trial is a combination of:  
-   - Trial identifier  
-   - Trial year  
-   - Trial location  
-   - Host genotype  
-   - Trial row spacing  
+Finally we will assign factor classes to the main variables in the meta-analysis. Note that variable trial is a combination of:
+
+   * Trial identifier  
+
+   * Trial year  
+
+   * Trial location  
+
+   * Host genotype  
+
+   * Trial row spacing  
 
 ```{r metafor_organisation}
 library(metafor)
@@ -296,7 +301,6 @@ summary(PM_mv_AI)
 
 Results show that yields in single early spray treatments are not significantly different to the no spray control. Commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. On average a spray schedule with two or more applications stating late (7-19 days after first sign of powdery mildew) produced the highest yields.
 
-
 When we compare these results to those of the linear mixed effect model there is little difference in the outcome. The most notable difference is the linear mixed-effect model is somewhat less certain about the `Late_plus` treatment, and the mean yield lower than the `recommended_plus` treatment.
 
 ```{r compare_meta&lmer}
@@ -306,8 +310,9 @@ lme_PM <-
 
 summary(lme_PM)
 ```
-&spun;  
-&spun;  
+
+*****s
+
 To make it easier to compare each of the treatments we can compute the meta-analysis contrasts.
 ```{r metafor_contrasts}
 anova(PM_mv_AI, L = rbind(
@@ -378,11 +383,9 @@ What is interesting here is that the variance in the control has increased while
 
 
 ### netmeta package  
-Let's analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust. The `netmeta` package uses a frequentness approach to the analysis, and focuses on the pairwise comparisons between treatments.  
+Let's analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust. The `netmeta` package uses a frequentist approach to the analysis and focuses on the pairwise comparisons between treatments.  
 
 ```{r netmeta-analysis}
-library(netmeta)
-
 datPM3 <- slimmer_PM_dat %>%
    group_by(trial, spray_management, n) %>%
    summarize(yi_mean = mean(yi),
