@@ -79,10 +79,12 @@ Therefore a delayed sowing date increases the possibility powdery mildew will in
 Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy.
 Quantitative disease resistance has been observed in some breeding lines [@Pandey2018; @Chankaew2013]. 
 In Australia there are very few availble powdery mildew resistant cultivars. 
-Jade-AU is recommended as containing the best disease resistance to powdery mildew and other foliar diseases, such as tan spot and halo blight.
+Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), and other foliar diseases, such as tan spot and halo blight [@AustralianMungbeanAssociation].
 However other disease management strategies, such as fungicides, are still required [@Kelly2017a].
 
-Treatment of powdery mildew in mungbean with fungicide is currently an effective method for reducing the impact of the disease.
+Treatment of powdery mildew in mungbean with fungicide is currently an effective method for reducing the impact of the disease. 
+Past field trials in eastern Australia have trialed a range of fungicides, some of which have been registered with the APVMA (Australian Pes.....) for treating powdery mildew in mungbean [@Kelly2017a; insert all published trials here]. 
+
 
 
 
