@@ -1,10 +1,10 @@
 
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer, metafor)
+pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer, metafor, here)
 
 # Data
-PM_Mdat <- read.csv("data/GYmeta_data.csv")
+PM_Mdat <- read.csv(here("cache/GYmeta_data.csv"))
 ```
 
 
