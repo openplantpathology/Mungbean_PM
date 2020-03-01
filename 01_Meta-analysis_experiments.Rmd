@@ -84,15 +84,13 @@ kable(
    PM.dat %>%
       group_by(
          trial_ref,
-         year,
-         location,
-         trial_design,
-         replicates,
-         planting_date,
-         emergence_date,
-         first_sign_disease
       ) %>%
-      summarise(treatments = length(n_treatment)),
+      summarise(year = unique(year),
+                location = unique(location),
+                mean_treat_replicates = mean(replicates),
+                planting_date = unique(planting_date),
+                first_sign_disease = unique(first_sign_disease),
+                treatments = length(n_treatment)),
    caption = "Description of Experiments"
 )  %>%
    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
