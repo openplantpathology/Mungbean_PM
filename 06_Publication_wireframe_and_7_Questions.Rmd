@@ -104,8 +104,34 @@ Lucrative returns of \$ 2260 over a short three month season may tempt growers i
 ### Aims
 
 *****
+
+
 ## Materials and methods
 
 The data for this study was obtained from through personal correspondance with collegues and collaborating institutions.
-Prior to 2012 experimental trials were undertaken by Malcolmn Riley and Dr Sue Thompson with The Department of Agriculture and Primary industres. 
+The majority of the trials were undertaken by Malcolmn Riley and Dr Sue Thompson with The Department of Agriculture and Primary industres (DAF). 
 Trials undertaken in 2013 were conducted by the Northern growers alliance [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
+The most recent trials from 2017 were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019 (Table 1). 
+
+
+```{r Table1_, echo=TRUE, message=FALSE, warning=FALSE}
+PM.dat <- import_data()
+
+PM.dat %>%
+      group_by(trial_ref,) %>%
+      summarise(year = unique(year),
+                location = unique(location),
+                planting_date = unique(planting_date),
+                first_sign_disease = unique(first_sign_disease))%>%
+      arrange(year)%>%
+   left_join(data.frame(trial_ref = unique(PM.dat$trial_ref),
+                        Research_org =
+                           c(rep("Queensland DAF",times =12),
+                             rep("Northern Growers Alliance", times = 4),
+               rep("Queensland DAF",times =5),
+               rep("USQ", times = 5))))%>%
+kable(caption = "Table 1: Description of Experiments")%>%
+   kable_styling(fixed_thead = TRUE,
+                 full_width = TRUE) %>%
+   scroll_box(width = "900px", height = "500px")
+```
