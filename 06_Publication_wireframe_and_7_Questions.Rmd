@@ -79,10 +79,12 @@ Therefore a delayed sowing date increases the possibility powdery mildew will in
 Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy.
 Quantitative disease resistance has been observed in some breeding lines [@Pandey2018; @Chankaew2013]. 
 In Australia there are very few availble powdery mildew resistant cultivars. 
-Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), and other foliar diseases, such as tan spot and halo blight [@AustralianMungbeanAssociation].
-However other disease management strategies, such as fungicides, are still required [@Kelly2017a].
+Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), and other foliar diseases, such as tan spot and halo blight [@AustralianMungbeanAssociation]. 
+Because cultivar choice does not confer complete resistance to powdery mildew treating mungbean with fungicide is still required to limit yield damage when conditions for the disease are suitable.  
 
-If the planting date is not suficiently early to avoid conducive conditions for powdery mildew, treating mungbean with fungicide is currently the next best method for reducing mungbean yield damage caused by the disease. 
+
+### Previous studies - fungicide work
+There is almost a complete lack of peer-reviewed experiments testing fungicide efficacy on powdery mildew in Mungbean. What information is available
 Past field trials in eastern Australia have trialed a range of fungicide active ingredients (table), while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
 Early trials indicated to obtain maximum efficacy a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary []. 
 Some of the trialed fungicides have been registered with the APVMA [@APVMA] for treating powdery mildew in mungbean [@Kelly2017a; insert all published trials here]. 
@@ -97,7 +99,8 @@ Some of the trialed fungicides have been registered with the APVMA [@APVMA] for 
 ### Fungicide resistance
 Lucrative returns of \$ 2260 over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than they are needed.
 
-### Previous studies
+
+
 
 ### Meta-analyes
 
@@ -112,9 +115,20 @@ The data for this study was obtained from through personal correspondance with c
 The majority of the trials were undertaken by Malcolmn Riley and Dr Sue Thompson with The Department of Agriculture and Primary industres (DAF). 
 Trials undertaken in 2013 were conducted by the Northern growers alliance [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
 The most recent trials from 2017 were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019 (Table 1). 
+The data from the collection of trials were in different formats with varying levels of information.
+Some trial data reporting means of each treatment, others we were able to obtain the complete raw data.  
+
+Details of trial data is presented within a research compendium which was prepared to suppliment this publication [insert referance to compendium].
+
+The inclusion of trial data was set to the following criteria; an field trial testing the efficacy of Dimethylase inhibitor (DMI) for control of powdery mildew in the northern grains regions, in eastern Australia.
+All the trials included in this analysis were trial have not previously been published in peer-reviewed literature.
 
 
-```{r Table1_, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+
+
+```{r Table1_ExperimentalDetail, echo=TRUE, message=FALSE, warning=FALSE}
 PM.dat <- import_data()
 
 PM.dat %>%
