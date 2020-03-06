@@ -62,7 +62,7 @@ Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown for huma
 The bean pod or grain can be consumed raw or added to meals after sprouting. 
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].  
 
-In Australia Mungbean is grown in southern Queensland and northern New South Wales as a short season summer legume crop, with approimatley 90% of yields exported. 
+In Australia Mungbean is grown in southern Queensland and northern New South Wales as a short season summer legume crop, with approximately 90% of yields exported. 
 Mungbean can provide a good return for growers with a potential yield of up to 2.3 tonnes per hectare, with a value of up to \$ 1300 a tonne [@QueenslandGovernment2019]. 
 However these potential crop yields can be limited by diseases such as powdery mildew (*Podosphaera xanthii*) by up to 40% [@Kelly2017a; @Chankaew2013]. 
 Fortunately a number of strategies are available to be employed to reduce the damage powdery mildew inflicts on yields.
@@ -78,16 +78,16 @@ Therefore a delayed sowing date increases the possibility powdery mildew will in
 
 Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy.
 Quantitative disease resistance has been observed in some breeding lines [@Pandey2018; @Chankaew2013]. 
-In Australia there are very few availble powdery mildew resistant cultivars. 
+In Australia there are very few available powdery mildew resistant cultivars. 
 Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), and other foliar diseases, such as tan spot and halo blight [@AustralianMungbeanAssociation]. 
 Because cultivar choice does not confer complete resistance to powdery mildew treating mungbean with fungicide is still required to limit yield damage when conditions for the disease are suitable.  
 
 
 ### Previous studies - fungicide work
 There is almost a complete lack of peer-reviewed experiments testing fungicide efficacy on powdery mildew in Mungbean. What information is available
-Past field trials in eastern Australia have trialed a range of fungicide active ingredients (table), while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
+Past field trials in eastern Australia have trialled a range of fungicide active ingredients (table), while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
 Early trials indicated to obtain maximum efficacy a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary []. 
-Some of the trialed fungicides have been registered with the APVMA [@APVMA] for treating powdery mildew in mungbean [@Kelly2017a; insert all published trials here]. 
+Some of the trialled fungicides have been registered with the APVMA [@APVMA] for treating powdery mildew in mungbean [@Kelly2017a; insert all published trials here]. 
 
 
 
@@ -102,7 +102,7 @@ Lucrative returns of \$ 2260 over a short three month season may tempt growers i
 
 
 
-### Meta-analyes
+### Meta-analysis
 
 ### Aims
 
@@ -111,18 +111,28 @@ Lucrative returns of \$ 2260 over a short three month season may tempt growers i
 
 ## Materials and methods
 
-The data for this study was obtained from through personal correspondance with collegues and collaborating institutions.
-The majority of the trials were undertaken by Malcolmn Riley and Dr Sue Thompson with The Department of Agriculture and Primary industres (DAF). 
+The data for this study was obtained from through personal correspondence with colleagues and collaborating institutions.
+The majority of the trials were undertaken by Malcolm Riley and Dr Sue Thompson with The Department of Agriculture and Primary industries (DAF). 
 Trials undertaken in 2013 were conducted by the Northern growers alliance [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
 The most recent trials from 2017 were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019 (Table 1). 
 The data from the collection of trials were in different formats with varying levels of information.
 Some trial data reporting means of each treatment, others we were able to obtain the complete raw data.  
 
-Details of trial data is presented within a research compendium which was prepared to suppliment this publication [insert referance to compendium].
+Details of trial data is presented within a research compendium which was prepared to supplement this publication [insert reference to compendium].
 
-The inclusion of trial data was set to the following criteria; an field trial testing the efficacy of Dimethylase inhibitor (DMI) for control of powdery mildew in the northern grains regions, in eastern Australia.
-All the trials included in this analysis were trial have not previously been published in peer-reviewed literature.
+The inclusion of trial data was set to the following criteria; an field trial testing the efficacy of demethylase inhibitors (DMI), tebuconazole or propiconazole, for powdery mildew control on mungbean in the northern grains regions of eastern Australia. 
+All the trials included in this analysis were  not previously been published in peer-reviewed literature.
+Some trials and results were reported online via the Grains Research and Development Corporation. 
 
+Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale [ref].
+The NGA 2013 trials reported incidence as a percentage of leaves covered by the disease. 
+Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, it was easy to calculate the equivalent incidence on the ordinal 1 - 9 scale.
+
+Fungicide application timing, with reference to when the disease first occurred in the trial, and number of applications were used to define a treatment variable.
+'Early' fungicide applications, referred to when a fungicide spray schedule commenced with it's first spray prior to the disease being observed in the trial. 
+'Recommended' refereed to fungicide spray schedules which commenced within three days of the first sign of disease, and 'late' treatments which commenced four days or later than first sign. 
+The number of fungicide applications were binned in to two categories.
+A spray schedule with a single spray, and a spray schedule with one or more sprays, where there was a maximum of three applications.  
 
 
 
