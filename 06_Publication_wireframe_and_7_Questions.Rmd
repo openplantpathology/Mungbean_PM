@@ -123,30 +123,33 @@ The majority of the trials were undertaken by Malcolm Riley and Dr Sue Thompson 
 Trials undertaken in 2013 season were conducted by the Northern growers alliance [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
 The most recent trials from 2017 were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019 (Table 1). 
 The data from trials were in different formats with varying levels of information.
-Some trial data reporting means of each treatment, others contained the complete raw data.  
+Some trial data reporting means of each treatment, with all but one study reporting variance along with the mean. 
+While other trials the raw data were available.  
 
-Details of trial data is presented within a research compendium which was prepared to supplement this publication [insert reference to compendium].
+Details of trial data is presented within a research compendium which was prepared to supplement this publication [insert reference to compendium].  
 
 
-The inclusion of trial data required a field trial testing the efficacy of  for powdery mildew control on mungbean in the northern grains regions of eastern Australia. 
+The criteria for inclusion of trial data in the meta-analysis, required a field trial testing fungicide efficacy for powdery mildew control on mungbean in the northern grains regions of eastern Australia. 
 All the trials included in this analysis were not previously been published in peer-reviewed literature.
 Some trials and results were reported online via the Grains Research and Development Corporation. 
 
-Differences between each trial were likely to influence the analysis and in an effort to reduce confounding effects we only included treatments within trials which had been sprayed with one of fungcides from demethylase inhibitors (DMI) group. 
-Fungicide actives from the DMI group was the main inclusion factor for the analysis which reduced the number of studies from 24 to 17 experiments. DMI fungicides which were used for experimentation for powdery mildew control on mungbean were tebuconazole and propiconazole,
+Differences between each trial were likely to influence the analysis therefore in an effort to reduce confounding effects we only included treatments within trials which had been sprayed with a fungicide which has a mode of action which categoraises it as a demethylase inhibitor (DMI). 
+Fungicide active from the DMI group was the main inclusion factor for the analysis which reduced the number of trials from 24 to 17 experiments. 
+DMI fungicides which were used for experimentation for powdery mildew control on mungbean were tebuconazole and propiconazole.
 
-Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale [ref].
-The NGA 2013 trials reported incidence as a percentage of leaves covered by the disease at different plant heights. 
-Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, it was easy to calculate the equivalent incidence on the ordinal 1 - 9 scale.
+Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale [ref]. 
+The 2013 NGA trials reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy. 
+Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, it was easy to calculate the equivalent incidence on the ordinal 1 - 9 scale.  
 
-Fungicide application timing, with reference to when the disease first occurred in the trial, and number of applications were used to define a treatment variable.
-'Early' fungicide applications, referred to when a fungicide spray schedule commenced with it's first spray prior to the disease being observed in the trial. 
-'Recommended' refereed to fungicide spray schedules which commenced within three days of the first sign of disease, and 'late' treatments which commenced four days or later than first sign. 
+The timing of fungicide applications, with reference to when the disease first occurred in the trial, and number of applications were used to define a treatment variable.
+An 'Early' fungicide application, refers to a fungicide spray schedule that commences with it's first spray prior to the disease being observed in the trial.  
+'Recommended' refers to a fungicide spray schedule which commences within three days following the first sign of disease, and 'late' treatments which commence four days or later than first sign. 
 The number of fungicide applications were binned in to two categories.
-A spray schedule with a single spray, and a spray schedule with one or more sprays, where there was a maximum of three applications.  
+A spray schedule with a single spray, and a spray schedule with one or more sprays where there was a maximum of three applications.  
+The division of the treatments into these six categories created two categories with insuffient numbers of treatments to provide a reliable sample. 
+Single late sprays contained two treatments and Mulitple early sprays contained five treatments therefore they were removed from the subsequent meta-analysis.  
 
-
-
+What remained was the mean yield for total of 173 treatments, forty of which were left unsprayed, in the following four spray schedule categories: single early spray, single recommended spray, recommended with multiple sprays, late with multiple sprays.
 
 
 ```{r Table1_ExperimentalDetail, echo=TRUE, message=FALSE, warning=FALSE}
