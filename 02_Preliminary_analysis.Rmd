@@ -472,16 +472,16 @@ The multiple time frames were tested by a loop over the dates at the start of th
 # source(Rainfall_x_cropYield_s10.30_e65.10.R)
 
 lm_rain1 <-
-   read.csv("data/lmInSeasonRainfall_-10.09_30.64.csv",
+   read.csv("cache/lmInSeasonRainfall_-10.09_30.64.csv",
             stringsAsFactors = FALSE)
 lm_rain2 <-
-   read.csv("data/lmInSeasonRainfall_-10.09_65.100.csv",
+   read.csv("cache/lmInSeasonRainfall_-10.09_65.100.csv",
             stringsAsFactors = FALSE)
 lm_rain3 <-
-   read.csv("data/lmInSeasonRainfall_10.30_30.64.csv",
+   read.csv("cache/lmInSeasonRainfall_10.30_30.64.csv",
             stringsAsFactors = FALSE)
 lm_rain4 <-
-   read.csv("data/lmInSeasonRainfall_10.30_65.100.csv",
+   read.csv("cache/lmInSeasonRainfall_10.30_65.100.csv",
             stringsAsFactors = FALSE)
 
 lm_rain <- rbind(lm_rain1, lm_rain2, lm_rain3, lm_rain4)
