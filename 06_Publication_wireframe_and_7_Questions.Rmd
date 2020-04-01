@@ -149,7 +149,9 @@ A spray schedule with a single spray, and a spray schedule with one or more spra
 The division of the treatments into these six categories created two categories with insuffient numbers of treatments to provide a reliable sample. 
 Single late sprays contained two treatments and Mulitple early sprays contained five treatments therefore they were removed from the subsequent meta-analysis.  
 
-What remained was the mean yield for total of 173 treatments, forty of which were left unsprayed, in the following four spray schedule categories: single early spray, single recommended spray, recommended with multiple sprays, late with multiple sprays.
+What remained was the mean yield for total of 173 treatments, forty of which were left unsprayed, in the following four spray schedule categories: single early spray, single recommended spray, recommended with multiple sprays, late with multiple sprays.  
+
+The data were analysed in the R environment witht the
 
 
 ```{r Table1_ExperimentalDetail, echo=TRUE, message=FALSE, warning=FALSE}
