@@ -73,7 +73,7 @@ r.squaredGLMM(Me_mod2.s) # Rsquared for AUDPStairs
 r.squaredGLMM(Me_mod2)# Rsquared for AUDPCurve
 ```
 
-The R-squared of the AUDPC model is a better fit compared to the AUDPS model.
+The R-squared of the AUDPC model is a better fit compared to the AUDPS model, and has a conditional $R^2$ value of `r round(r.squaredGLMM(Me_mod2)[2],4)`. 
 > From here on we will use AUDPC.
 
 Let's compare the area under the disease progress curve (AUDPC) to final severity.
@@ -92,7 +92,8 @@ r.squaredGLMM(Me_mod4)
 anova(Me_mod4,Me_mod2)
 ```
 
-Powdery mildew incidence at the end of the season was a significant covariate for grain yield, however was a weaker predictor compared to AUDPC. In addition model comparison shows AUDPC is significantly better at predicting grain yield.
+Powdery mildew incidence at the end of the season was a significant covariate for grain yield, however was a weaker predictor compared to AUDPC. In addition model comparison shows AUDPC is significantly better at predicting grain yield.  
+
 ### Spray management and AUDPC
 We shall proceed by including the spray management predictor into the analysis.
 First let's assess the `spray_management` variable as an additive fixed effect.
