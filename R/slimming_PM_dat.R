@@ -58,4 +58,4 @@ slim_PM_dat <- slim_PM_dat[slim_PM_dat$fungicide_ai == "control" |
 
 
 
-write.csv(slim_PM_dat, file = "data/slim_PM_dat.csv", row.names = FALSE)
+write.csv(slim_PM_dat, file = "cache/slim_PM_dat.csv", row.names = FALSE)
