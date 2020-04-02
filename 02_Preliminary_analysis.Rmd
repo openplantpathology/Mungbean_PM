@@ -542,26 +542,30 @@ Can we visualise when PM is most likely to establish over the calender year?
 I'll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.  
 ```{r first_incidence}
 # Create the data frame for the plot
+source("R/import_data.R")
+PM_MB_means <- import_data()
 season_dates <- PM_MB_means %>%
    group_by(trial_ref) %>%
    summarise(
       Planting_date = unique(planting_date),
       Harvest_date = unique(harvest_date),
       First_sign_PM = unique(first_sign_disease),
-      season_length = as.integer(as.Date(unique(harvest_date)) - as.Date(unique(planting_date)))
+      season_length = as.Date(unique(harvest_date)) - as.Date(unique(planting_date))
    )
 
 season_dates$Planting_day <- yday(season_dates$Planting_date)
 season_dates$Disease_day <- yday(season_dates$First_sign_PM)
+
+season_dates[1:2, "Planting_day"] <- 1
+ #  yday(as.Date("2012-02-28") - 7) # Correct dplanted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
+
 season_dates$Harvest_day <-
    season_dates$Planting_day + season_dates$season_length
 
 
-season_dates[1, "Planting_day"] <-
-   yday(as.Date("2012-02-28") - 7) # planted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
 
 
-first_day_month <- c(0, 31, 59, 90, 120, 151, 181, 211, 243, 273)
+first_day_month <- c(0, 31, 59, 90, 120, 151, 181, 211, 243, 273)+1
 axis_labels_date <-
    c(
       format(Sys.Date() - yday(Sys.Date()) + first_day_month[1], "%b-%d"),
@@ -613,6 +617,7 @@ season_dates %>%
    geom_point(aes(x = trial_ref, y = Disease_day)) +
    coord_flip() +
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
+warnings()
 ```
 
 In most years, regardless of the age of the crop, PM establishes in March.
