@@ -15,7 +15,7 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(here)
 
 import_data <- function() {
-   x <- read.csv(file = here("cache/PM_MB_updated.csv"))
+   x <- read.csv(file = here::here("cache/PM_MB_updated.csv"))
    x$trial_ref <- as.factor(x$trial_ref)
    x$location <- as.factor(x$location)
    x$host_genotype <- as.factor(x$host_genotype)
