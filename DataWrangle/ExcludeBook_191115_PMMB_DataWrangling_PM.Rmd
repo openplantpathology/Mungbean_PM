@@ -1150,7 +1150,7 @@ Goolhi_13_m <- Goolhi_13_m[Goolhi_13_m$trade_name != "other",]
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = Goolhi_13_m, 
-                            new_data_column = c("AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
+                            new_data_column = c("planting_date","AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
                             filter_cols = c("trial_ref", "year", "location", "host_genotype", 
                                            "fungicide_ai", "dose_ai.ha","n_treatment"))
 
@@ -1602,7 +1602,7 @@ MarysM_13_m <- fold_data(MarysM_13_m, PM_MB_means)
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = MarysM_13_m, 
-                            new_data_column = c("AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
+                            new_data_column = c("planting_date","AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
                             filter_cols = c("trial_ref", "year", "location", "host_genotype", 
                                            "fungicide_ai", "dose_ai.ha","n_treatment"))
 
@@ -2074,7 +2074,7 @@ Premer_13_m <- fold_data(Premer_13_m, PM_MB_means)
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = Premer_13_m, 
-                            new_data_column = c("AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
+                            new_data_column = c("planting_date","AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
                             filter_cols = c("trial_ref", "year", "location", "host_genotype", 
                                            "fungicide_ai", "dose_ai.ha","n_treatment"))
 
@@ -2533,7 +2533,7 @@ Millm_13_m <- fold_data(Millm_13_m, PM_MB_means)
 # insert new calculations into data
 PM_MB_means <- replace_data(template_data = PM_MB_means, 
                             new_data = Millm_13_m, 
-                            new_data_column = c("AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
+                            new_data_column = c("planting_date","AUDPC_m", "AUDPC_sd", "AUDPS_m","AUDPS_sd","Y_Msquare", "Inc_Ms"),
                             filter_cols = c("trial_ref", "year", "location", "host_genotype", 
                                            "fungicide_ai", "dose_ai.ha","n_treatment"))
 
