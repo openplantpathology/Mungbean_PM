@@ -11,6 +11,7 @@ slim_PM_dat <- data.frame(
                  PM_MB_Mtemp$row_spacing, sep = "_"),
    trial_ref = as.character(PM_MB_Mtemp$trial_ref),
    year = as.integer(PM_MB_Mtemp$year),
+   host_genotype = PM_MB_Mtemp$host_genotype,
    location = as.character(PM_MB_Mtemp$location),
    row_spacing = as.double(PM_MB_Mtemp$row_spacing),
    n = as.integer(PM_MB_Mtemp$replicates),
