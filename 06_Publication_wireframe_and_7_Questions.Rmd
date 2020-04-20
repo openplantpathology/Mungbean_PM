@@ -1,11 +1,22 @@
 ---
-title: Meta-analysis of fungicide application timing experiments for powdery mildew management
-  in mungbean.
+title: Meta-analysis of fungicide application timing experiments for powdery mildew
+  management in mungbean.
 author: "P. Melloy"
 date: "31/01/2020"
 output:
+  word_document: default
   html_document: default
 ---
+
+```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, kableExtra, here)
+
+# Data
+PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
+
+```
+
 
 # Manuscript wire frame
 
@@ -176,16 +187,15 @@ The data were analysed in the R statistical software environment using two meta-
 
 
 ```{r Table1_ExperimentalDetail, echo=TRUE, message=FALSE, warning=FALSE}
-PM.dat <- import_data()
 
-PM.dat %>%
+PM_Mdat %>%
       group_by(trial_ref,) %>%
       summarise(year = unique(year),
                 location = unique(location),
                 planting_date = unique(planting_date),
                 first_sign_disease = unique(first_sign_disease))%>%
       arrange(year)%>%
-   left_join(data.frame(trial_ref = unique(PM.dat$trial_ref),
+   left_join(data.frame(trial_ref = unique(PM_Mdat$trial_ref),
                         Research_org =
                            c(rep("Queensland DAF",times =12),
                              rep("Northern Growers Alliance", times = 4),
