@@ -47,7 +47,7 @@ Fungicide spray schedules for control of powdery mildew in mungbean should comme
 
 
 ## What do the results mean in practice? (limit - 50 words)  
-Primarily that fungicide spray schedules that commence prior to signs of the disease establishing in the mungbean canopy are likely to be ineffective at mitigating the diseases impact on yield. 
+Fungicide spray schedules that commence prior to signs of the disease establishing in the mungbean canopy are likely to be ineffective at mitigating the diseases impact on yield. 
 We also don’t have data on at what point starting a fungicide spray schedule is too late. 
 Growers can’t scout their crop three times a week in the fashion of researchers and are unlikely to identify the true date when signs of powdery mildew become apparent. 
 Therefore these results reinforce the message to growers to spray for powdery mildew as soon as it is observed in their crop to protect yields.
@@ -74,10 +74,10 @@ The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].  
 
 In Australia mungbean is grown in southern Queensland and northern New South Wales as a short season summer legume crop. 
-Approximately 90% of mungbean yields are exported providing good returns for growers. 
+Approximately 90% of mungbean yields are exported and economic returns can be lucritive for growers. 
 Mungbean potentially yields up to 2.3 tonnes per hectare, with a value of up to \$ 1300 AUD a tonne [@QueenslandGovernment2019]. 
 However these potential crop yields can be limited by a range of diseases[@Kelly2017a].
-Powdery mildew (*Podosphaera xanthii*), for instance limits yields by up to 40% [@Chankaew2013]. 
+Powdery mildew (*Podosphaera xanthii*), for instance, can reduce yields by up to 40% [@Chankaew2013]. 
 Fortunately a number of strategies are available to be employed to reduce the damage powdery mildew inflicts on yields.
 
 
@@ -92,17 +92,17 @@ Commercially available mungbean cultivars in Australia lack sufficient resistanc
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013]. 
 In Australia, quantitive resistance has also been incorporated a couple of varieties which have been made commercially available. 
 Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), while also confering quantifiable resistance to other foliar diseases such as tan spot and halo blight [@AustralianMungbeanAssociation]. 
-Because cultivar choice does not confer complete resistance to powdery mildew additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are suitable.  
+Because cultivar choice does not confer complete resistance to powdery mildew, additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are suitable.  
 
-The recent release of 'PowderyMildewMDM' a desicion support system (DSS) increases the ease for preparing a fungicide spray scheduale to manage powdery mildew. 
+The recent release of 'PowderyMildewMDM', a desicion support system (DSS), increases the ease for preparing a fungicide spray scheduale to manage powdery mildew [@misc]. 
 PowderyMildewMDM provides a cost benefit analysis to growers for fungcide spray scheduale scenarios.
-The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability one or two fungicide sprays would protect yields suffiently to increase the net profit.
+The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields suffiently to increase the net profit.
 
 ### Fungicide resistance
-Fungicide application costs in Australia are relativly cheap, and we estimate these to be approximatley \$ 20 AUD per hectare. 
-Lucrative returns of up to \$ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than neccercary. 
-This poses a problem for diseases such as powdery mildew which is well known for evolving fungicide resistance if spray schedules are not applied with reducing fungicide resistance risk in mind. 
-Fungicide resistant strains of powdery mildew have been known to establish rapidly. 
+Fungicide application costs in Australia are relativly cheap, and we estimate these costs to be approximatley \$ 20 AUD per hectare. 
+Lucrative returns of up to \$ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than neccersary. 
+The evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with fungicide resistance potential in mind. 
+Powdery mildew is one such disease with an extensive track record of rapidly developing fungicide resistance. 
 In cucurbits, powdery mildew has evolved resistance to numerous fungicide classes, such as benzimidazoles, DMIs, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines [@techreport].
 
 
