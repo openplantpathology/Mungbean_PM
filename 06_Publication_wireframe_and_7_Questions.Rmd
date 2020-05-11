@@ -105,6 +105,18 @@ The evolution of fungicide resistance can occur quickly, especially when spray s
 Powdery mildew is one such disease with an extensive track record of rapidly developing fungicide resistance. 
 In cucurbits, powdery mildew has evolved resistance to numerous fungicide classes, such as benzimidazoles, DMIs, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines [@techreport].
 
+To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered. Excessive fungicide sprays increase the selection preassure on the pathogen to evolve resistance. 
+If any strains of the pathogen with resistance to the fungicide are present in a population regular use of the fungicide will increase it's proportion in the population. 
+Managing the disease with fungicides for the highest economic return is likely not to require eradication of the causal pathogen. 
+Integrated pest management practices focus on using only the required number of chemical control to protect the economic return. 
+These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection. 
+
+The timing of funcide sprays are critical for thier efficacy and for limiting fungicide resistant strains from emerging. 
+Fungicide applications made too early would increase costs without providing any benefit to yields. 
+Applications which are made too late allow the disease to establish and damage the crop productivity, while making subsequent sprays difficult to reduce the disease incidence.
+
+
+
 
 ### Previous studies - fungicide work
 There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in Mungbean. 
@@ -128,6 +140,8 @@ Some of the trialled fungicides for treating powdery mildew in mungbean have bee
 ### Meta-analysis
 
 ### Aims
+
+The aim of this meta-analysis was to determine, from a colection of unpublished studies, when is the ideal time to apply fungicide with respect to the first sign of disease, and does multiple fungicide applications provide better protection for mungbean yields.
 
 *****
 
