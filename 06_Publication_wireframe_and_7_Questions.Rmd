@@ -6,6 +6,7 @@ date: "31/01/2020"
 output:
   word_document: default
   html_document: default
+bibliography: MyCollection.bib
 ---
 
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
@@ -94,7 +95,7 @@ In Australia, quantitive resistance has also been incorporated a couple of varie
 Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), while also confering quantifiable resistance to other foliar diseases such as tan spot and halo blight [@AustralianMungbeanAssociation]. 
 Because cultivar choice does not confer complete resistance to powdery mildew, additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are suitable.  
 
-The recent release of 'PowderyMildewMDM', a desicion support system (DSS), increases the ease for preparing a fungicide spray scheduale to manage powdery mildew [@misc]. 
+The recent release of 'PowderyMildewMDM', a desicion support system (DSS), increases the ease for preparing a fungicide spray scheduale to manage powdery mildew [@Diggle]. 
 PowderyMildewMDM provides a cost benefit analysis to growers for fungcide spray scheduale scenarios.
 The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields suffiently to increase the net profit.
 
@@ -102,11 +103,12 @@ The user inputs weather, crop, and economic inputs into the DSS and the applicat
 Fungicide application costs in Australia are relativly cheap, and we estimate these costs to be approximatley \$ 20 AUD per hectare. 
 Lucrative returns of up to \$ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than neccersary. 
 The evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with fungicide resistance potential in mind.
-Powdery mildew in cucurbits evolved resistance to benzimidazole within three years of it's registration [@peterson]1973. In cereal crops _Erysphe graminis_ showed lower sensitivity to strobilurins in 1998, two years after the fungicide began being used in Europe [@chin2001].
+Powdery mildew in cucurbits evolved resistance to benzimidazole within three years of it's registration [@Peterson1973]. In cereal crops _Erysphe graminis_ showed lower sensitivity to strobilurins in 1998, two years after the fungicide began being used in Europe [@Chin2001].
 Powdery mildew is one such disease with an extensive track record of rapidly developing fungicide resistance. 
-In cucurbits, powdery mildew has evolved resistance to numerous fungicide classes, such as benzimidazoles, DMIs, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines [@techreport].
+In cucurbits, powdery mildew has evolved resistance to numerous fungicide classes, such as benzimidazoles, DMIs, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines [@Mcgrath2001].
 
-To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered. Excessive fungicide sprays increase the selection preassure on the pathogen to evolve resistance. 
+To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered. 
+Excessive fungicide sprays by a single active increase the selection preassure on the pathogen to evolve resistance [@Brent2007]. 
 If any strains of the pathogen with resistance to the fungicide are present in a population regular use of the fungicide will increase it's proportion in the population. 
 Managing the disease with fungicides for the highest economic return is likely not to require eradication of the causal pathogen. 
 Integrated pest management practices focus on using only the required number of chemical control to protect the economic return. 
@@ -229,6 +231,6 @@ According to the Fungicide resistance Action Commitee (FRAC) it is important to 
 At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin). 
 This funigicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor. 
 Quinone is required in cell metabolism and active in the mitochondial complex III. 
-However FRAC recommends that applications of QoIs or strombilarins, singularly or as a mixture, should not be applied consecutivley and alternated with a fungicide from a different group [@Brent&Holman]. 
+However FRAC recommends that applications of QoIs or strombilarins, singularly or as a mixture, should not be applied consecutivley and alternated with a fungicide from a different group [@Brent2007]. 
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
 Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.
