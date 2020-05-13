@@ -101,7 +101,8 @@ The user inputs weather, crop, and economic inputs into the DSS and the applicat
 ### Fungicide resistance
 Fungicide application costs in Australia are relativly cheap, and we estimate these costs to be approximatley \$ 20 AUD per hectare. 
 Lucrative returns of up to \$ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than neccersary. 
-The evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with fungicide resistance potential in mind. 
+The evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with fungicide resistance potential in mind.
+Powdery mildew in cucurbits evolved resistance to benzimidazole within three years of it's registration [@peterson]1973. In cereal crops _Erysphe graminis_ showed lower sensitivity to strobilurins in 1998, two years after the fungicide began being used in Europe [@chin2001].
 Powdery mildew is one such disease with an extensive track record of rapidly developing fungicide resistance. 
 In cucurbits, powdery mildew has evolved resistance to numerous fungicide classes, such as benzimidazoles, DMIs, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines [@techreport].
 
@@ -224,5 +225,10 @@ kable(caption = "Table 1: Description of Experiments")%>%
 
 ## Discussion
 
-At the time of writing, in Australia two fungicides are registered to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin) and tebuconazole. Having only a two fungicides registered with similar modes of action may also be contributing to decreased sensitivity of the pathogen. Alternating fungicide applications with
-Registation of a fungicide with a different mode of action should be available for growers to alternate fungicides and reduce the speed at which fungicide resistance can develop.
+According to the Fungicide resistance Action Commitee (FRAC) it is important to alternate or mix Fungicides with different modes of action to avoid fungicide resistance. 
+At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin). 
+This funigicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor. 
+Quinone is required in cell metabolism and active in the mitochondial complex III. 
+However FRAC recommends that applications of QoIs or strombilarins, singularly or as a mixture, should not be applied consecutivley and alternated with a fungicide from a different group [@Brent&Holman]. 
+For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
+Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.
