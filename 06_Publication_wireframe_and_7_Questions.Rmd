@@ -4,9 +4,8 @@ title: Meta-analysis of fungicide application timing experiments for powdery mil
 author: "P. Melloy"
 date: "31/01/2020"
 output:
-  word_document: default
   html_document: default
-bibliography: MyCollection.bib
+  word_document: default
 ---
 
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
