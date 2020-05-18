@@ -78,7 +78,7 @@ Approximately 90% of mungbean yields are exported and economic returns can be lu
 Mungbean potentially yields up to 2.3 tonnes per hectare, with a value of up to \$ 1300 AUD a tonne [@QueenslandGovernment2019]. 
 However these potential crop yields can be limited by a range of diseases[@Kelly2017a].
 Powdery mildew (*Podosphaera xanthii*), for instance, can reduce yields by up to 40% [@Chankaew2013]. 
-Fortunately a number of strategies are available to be employed to reduce the damage powdery mildew inflicts on yields.
+Fortunately a number of strategies are available to be employed to reduce the damage powdery mildew inflicts on mungbean yields.
 
 
 ### Managements strategies
@@ -90,17 +90,19 @@ Therefore a delayed sowing date increases the possibility powdery mildew will in
 
 Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy.
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013]. 
-In Australia, quantitive resistance has also been incorporated a couple of varieties which have been made commercially available. 
+In Australia, quantitive resistance has also been incorporated a couple of varieties which are commercially available. 
 Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), while also confering quantifiable resistance to other foliar diseases such as tan spot and halo blight [@AustralianMungbeanAssociation]. 
 Because cultivar choice does not confer complete resistance to powdery mildew, additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are suitable.  
 
 The recent release of 'PowderyMildewMDM', a desicion support system (DSS), increases the ease for preparing a fungicide spray scheduale to manage powdery mildew [@Diggle]. 
 PowderyMildewMDM provides a cost benefit analysis to growers for fungcide spray scheduale scenarios.
-The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields suffiently to increase the net profit.
+The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit.
 
 ### Fungicide resistance
-Fungicide application costs in Australia are relativly cheap, and we estimate these costs to be approximatley \$ 20 AUD per hectare. 
+Fungicide application costs in Australia are relatively cheap, and we estimate these costs to be approximatley \$ 20 AUD per hectare. 
 Lucrative returns of up to \$ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than neccersary. 
+Excessive use of fungicides are not only costly, but lead to problems such as fungicide resistance. 
+*Podosphaera xanthii* is categorised by FRAC as a 'High risk' candidate to evolve fungicide resistance. 
 The evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with fungicide resistance potential in mind.
 Powdery mildew in cucurbits evolved resistance to benzimidazole within three years of it's registration [@Peterson1973]. In cereal crops _Erysphe graminis_ showed lower sensitivity to strobilurins in 1998, two years after the fungicide began being used in Europe [@Chin2001].
 Powdery mildew is one such disease with an extensive track record of rapidly developing fungicide resistance. 
@@ -226,6 +228,7 @@ kable(caption = "Table 1: Description of Experiments")%>%
 
 ## Discussion
 
+### Fungicide resistance
 According to the Fungicide resistance Action Commitee (FRAC) it is important to alternate or mix Fungicides with different modes of action to avoid fungicide resistance. 
 At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin). 
 This funigicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor. 
