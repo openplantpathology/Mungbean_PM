@@ -152,37 +152,36 @@ The aim of this meta-analysis was to determine, from a colection of unpublished 
 
 ## Materials and methods
 
-The data for this study was obtained from through personal correspondence with colleagues and collaborating institutions.
+The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
 The majority of the trials were undertaken by Malcolm Riley and Dr Sue Thompson with The Department of Agriculture and Primary industries (DAF). 
 Trials undertaken in 2013 season were conducted by the Northern growers alliance [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
 The most recent trials from 2017 were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019 (Table 1). 
 Trial data were in different formats with varying levels of information.
-Some trial data reporting means of each treatment, with all but one study reporting variance along with the mean. 
-For XX trials the raw data were obtained.  
+Some trial data reported means of each treatment, with all but one study reporting variance along with the mean. 
+For 17 trials the raw data were obtained (Table 1).  
 
 Details of trial data is presented within a research compendium which was prepared to supplement this publication [insert reference to compendium].  
 
-
-The criteria for inclusion of trial data in the meta-analysis, required a field trial testing fungicide efficacy for powdery mildew control on mungbean in the northern grains regions of eastern Australia.  
+The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the northern grains regions of eastern Australia.  
 Trial data had to include the date when powdery mildew was first observed. 
-Trials needed to have tested a demethylase inhibitor (DMI) fungicide.
+Trials needed to include either demethylase inhibitor (DMI), tebuconazole or propiconazole.
 
 All trials included in this analysis were not previously published in peer-reviewed literature.
 Some trials and results were reported online via the Grains Research and Development Corporation. 
 
-While the main aim of all the trials collected for this study were the same, assess the efficacy of fungicides for control of powdery mildew, most also aimed to test the effect of different variables on fungicide efficacy. 
-Some of the variable which were suspected to influence powdery mildew incidence and the effect on yield were: trial location, trial season, row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar, irrigation and rainfall.
-To account for this variation between trials and thr treatments within the trial a single 'trial' factor was created to describe the main variables; Trial location, trial season, host genotype and row spacing.
+While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials  included additional variables in the experimental design. 
+Some variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar and  supplimentary irrigation, in addition to trial location and season.
+To account for this variation between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; trial location, trial season, host genotype and row spacing.
 
-To reduce confounding effects of various fungicides we only included treatments within trials which had been sprayed with a fungicide which has a DMI mode of action, such as tebeconazole and propiconazole. 
-Fungicide active from the DMI group was the main inclusion factor for the analysis which reduced the number of trials from 24 to 17 experiments.  
+To reduce confounding effects of various fungicides we only included treatments within trials which used a DMI as a fungicide active, such as tebeconazole and propiconazole. 
+Fungicide active from the DMI group was the main inclusion factor for the analysis which reduced the number of trials from 26 to 17 experiments.  
 
 Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale [ref]. 
-The 2013 NGA trials reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy. 
-Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, it was easy to calculate the equivalent incidence on the ordinal 1 - 9 scale.  
+The 2013 NGA trials however, reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy. 
+Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, it was strait-forward to calculate the equivalent incidence on the ordinal 1 - 9 scale.  
 
 The timing of fungicide applications, with reference to when the disease first occurred in the trial, and number of applications were used to define a treatment variable.
-An 'Early' fungicide application, refers to a fungicide spray schedule that commences with it's first spray prior to the disease being observed in the trial.  
+An 'Early' fungicide application, refers to a fungicide spray schedule that commences with the first spray prior to the disease being observed in the trial.  
 'Recommended' refers to a fungicide spray schedule which commences within three days following the first sign of disease, and 'late' treatments which commence four days or later than first sign. 
 The number of fungicide applications were binned in to two categories.
 A spray schedule with a single spray, and a spray schedule with one or more sprays where there was a maximum of three applications. 
@@ -191,9 +190,9 @@ Single late sprays contained two replicates and mulitple early sprays contained 
 
 What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays and late with multiple sprays.  
 
-Trials where we obtained the raw data the response variables were summarised into the treatment means and variance. 
-The remainder of the trial data reported treatment means and variance. 
-Two of the trials, Gatton 2012 and Emerald 2015, reported treatment means without accompaning variance. 
+Response variables were averaged in trials which we had access to the raw data. 
+For the remainder of the trial data except two trials, Gatton 2012 and Emerald 2015, only the treatment means and variance were reported. 
+Gatton and Emerald trials were were only able to obtain treatment means without accompaning variance. 
 For these trials the trial variance was imputed by randomly sampling the trial mean squared error from a distribution of log trial MSE.  
 $rnorm(\overline{x}_{log(MSE_{1}) \dots, log(MSE_{n})}, \sigma_{log(MSE_{1}) \dots, log(MSE_{n})}) $  
 Where MSE is the mean squared error of each trial. 
@@ -207,23 +206,25 @@ The data were analysed in the R statistical software environment using two meta-
 ```{r Table1_ExperimentalDetail, echo=TRUE, message=FALSE, warning=FALSE}
 
 PM_Mdat %>%
-      group_by(trial_ref,) %>%
-      summarise(year = unique(year),
-                location = unique(location),
-                planting_date = unique(planting_date),
-                first_sign_disease = unique(first_sign_disease))%>%
-      arrange(year)%>%
-   left_join(data.frame(trial_ref = unique(PM_Mdat$trial_ref),
-                        Research_org =
-                           c(rep("Queensland DAF",times =12),
-                             rep("Northern Growers Alliance", times = 4),
-               rep("Queensland DAF",times =5),
-               rep("USQ", times = 5))))%>%
-kable(caption = "Table 1: Description of Experiments")%>%
+   filter(fungicide_ai == "tebuconazole" | fungicide_ai == "propiconazole") %>%
+   group_by(trial_ref) %>%
+   summarise(year = unique(year),
+             location = unique(location),
+             planting_date = unique(planting_date),
+             first_sign_disease = unique(first_sign_disease))%>%
+   arrange(year)%>%
+   mutate(Research_org = c(rep("Queensland DAF",times =4),
+                           rep("Northern Growers Alliance", times = 4),
+                           rep("Queensland DAF",times =4),
+                           rep("USQ", times = 5))) %>%
+   kable(caption = "Table 1: Description of Experiments")%>%
    kable_styling(fixed_thead = TRUE,
                  full_width = TRUE) %>%
    scroll_box(width = "900px", height = "500px")
 ```
+## Results
+
+
 
 
 ## Discussion
