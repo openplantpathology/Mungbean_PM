@@ -125,23 +125,22 @@ Applications which are made too late allow the disease to establish and damage t
 ### Previous studies - fungicide work
 There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in Mungbean. 
 Many of the experimental work has been published by funding agencies and state government extension departments. 
-Past field trials in eastern Australia have trialed a range of fungicide active ingredients (table), while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
+Past field trials in eastern Australia have trialed a range of fungicide active ingredients, while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
 Early trials showed for a fungicide application to provide maximum efficacy a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary [@Sparks2017]. 
 Some of the trialled fungicides for treating powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a; insert all published trials here]. 
 
 
 
 
-
-
-
-
-
-
-
-
-
 ### Meta-analysis
+Meta-analyses are statistical tools which can analyse a collection of experiments which have a similar aim and estimates the difference between the control and treatment means. 
+The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect, because it considers the amount of variance in each study, and weights the influence of each study on the treatment effects according to the study statistical accuracy.
+Using a meta-analysis on the 
+
+
+
+
+
 
 ### Aims
 
@@ -155,43 +154,44 @@ The aim of this meta-analysis was to determine, from a colection of unpublished 
 The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
 The majority of the trials were undertaken by Malcolm Riley and Dr Sue Thompson with The Department of Agriculture and Primary industries (DAF). 
 Trials undertaken in 2013 season were conducted by the Northern growers alliance [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
-The most recent trials from 2017 were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019 (Table 1). 
+The most recent trials from 2017 were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019. 
 Trial data were in different formats with varying levels of information.
 Some trial data reported means of each treatment, with all but one study reporting variance along with the mean. 
-For 17 trials the raw data were obtained (Table 1).  
+For 17 trials the raw data were obtained.  
 
 Details of trial data is presented within a research compendium which was prepared to supplement this publication [insert reference to compendium].  
 
 The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the northern grains regions of eastern Australia.  
 Trial data had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; and crop yield. 
 A total of 26 trials were collated and from these trials we selected the most frequently tested fungicides that had the same mode of action. 
-The data were subset to only include treatments using demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole to reduce confounding effects of fungicides with varying modes of action. Subsequently the 26 trials were reduced to 17 using the same fungicide doses.
+The data were subset to only include treatments using demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole to reduce confounding effects of fungicides with varying modes of action. 
+Subsequently the 26 trials were reduced to 17 using the same fungicide doses (Table 1). 
+With only a small number of trials to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis.
 
 All trials included in this analysis were a randomised complete block design and not previously published in peer-reviewed literature.
 Some trials and results were reported online via the Grains Research and Development Corporation. 
-
 While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials  included additional variables in the experimental design. 
 These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar and  supplimentary irrigation, in addition to trial location and season.
-To account for this variation between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; trial location, trial season, host genotype and row spacing.
-
-Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale [Table_PMScale]. 
-The 2013 NGA trials however, reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy. 
+To account for this variation between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; trial location, trial season, host genotype and row spacing. 
+Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale (Table 2). 
+The 2013 NGA trials however (table 1), reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy. 
 Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, it was strait-forward to calculate the equivalent incidence on the ordinal 1 - 9 scale.  
 
-The timing of fungicide applications, with reference to when the disease first occurred in the trial, and number of applications were used to define a treatment variable.
-An 'Early' fungicide application, refers to a fungicide spray schedule that commences with the first spray prior to the disease being observed in the trial.  
+The timing of fungicide applications, with reference to when the disease first occurred in the trial, and number of applications were used to define a treatment variable. 
+An 'Early' fungicide application, refers to a fungicide spray schedule that commences with the first spray prior to the disease being observed in the trial. 
 'Recommended' refers to a fungicide spray schedule which commences within three days following the first sign of disease, and 'late' treatments which commence four days or later than first sign. 
-The number of fungicide applications were binned in to two categories.
-A spray schedule with a single spray, and a spray schedule with one or more sprays where there was a maximum of three applications. 
+The number of fungicide applications were binned in to two categories. 
+A spray schedule with a single spray, and a spray schedule with one or more sprays to a maximum of three applications. 
 The division of the treatments into these six categories created two categories with insuffient numbers of treatments to provide a reliable sample. 
 Single late sprays contained two replicates and mulitple early sprays contained five replicates and were therefore removed from the subsequent meta-analysis.  
 
 What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays and late with multiple sprays.  
 
-For the trials which we had raw data, mean grain yields for each were calculated and the mean squared error within trial obtained from an anova of each study.
+For the trials which we had raw data, mean grain yields for each were calculated and the mean squared error within trial obtained from an anova of each study. 
+Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. [@Ngugi2011]. The T-critical value was determined from the 30 degrees of freedom using a t-distribution table. 
 For the remainder of the trial data only the treatment means and variance were reported, except for Gatton in 2012 and Emerald in 2015. 
-The Gatton and Emerald trials only reported treatment means without accompaning variance. 
-For these trials the trial variance was imputed by randomly sampling the trial mean squared error from a distribution of log trial MSE.  
+The Gatton and Emerald trials reported treatment means without accompaning variance. 
+Trial variance was imputed by sampling from a normal distribution where the mean and standard deviation were calculated from the log of all the trials mean square errors.  
 $rnorm(\overline{x}_{log(MSE_{1}) \dots, log(MSE_{n})}, \sigma_{log(MSE_{1}) \dots, log(MSE_{n})})$  
 Where $MSE$ is the mean squared error of each trial and $n$ is the total number of trials. 
 
