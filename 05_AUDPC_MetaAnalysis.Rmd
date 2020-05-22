@@ -25,7 +25,7 @@ plot(1/SE ~ slope, data = PM_Mdat, ylim = c(-3000,6000))
 ```
 
 
-Now it's time to look at how the spray managment scenarios might impact disease pressure on the mungbean yields. First lets evaulate which measure of disease is the most robust predictor for yield loss, AUDPC, AUDPS or disease incidence at the end of the season.
+Now it's time to look at how the spray management scenarios might impact disease pressure on the mungbean yields. First lets evaluate which measure of disease is the most robust predictor for yield loss, AUDPC, AUDPS or disease incidence at the end of the season.
 
 ```{r LM_AUDPC}
 library(MuMIn)

@@ -1,4 +1,4 @@
-# Prepare data for meta-anlysis
+# Prepare data for meta-analysis
 ## Set environment and import data  
 
 ```{r load_libraries, include=FALSE}
@@ -443,7 +443,7 @@ points(grain_yield.t.ha. ~ AUDPC_m, data = dat1[dat1$fungicide_ai == "control",]
 This sequence of graphs show that AUDPC and disease incidence does not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
 The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.  
 
-Let's have a look again at the same sequance of graphs and analyses for area under the disease progress _stairs_.  
+Let's have a look again at the same sequence of graphs and analyses for area under the disease progress _stairs_.  
 
 ```{r Yield_vs_AUDPS}
 plot(grain_yield.t.ha. ~ AUDPS_m,data = PM_MB_means)

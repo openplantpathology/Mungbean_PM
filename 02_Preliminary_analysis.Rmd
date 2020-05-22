@@ -537,7 +537,7 @@ The approximate period when in-crop rainfall impacts the most on the mean harves
 ### Season range and first incidence
 Mungbean is a summer crop and powdery mildew requires cool conditions to establish.
 Therefore the disease can be avoided by planting early in summer or spring, avoiding cooler temperatures at the end of some seasons.
-Can we visualise when PM is most likely to establish over the calender year?
+Can we visualise when PM is most likely to establish over the calendar year?
 
 I'll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.  
 ```{r first_incidence}
