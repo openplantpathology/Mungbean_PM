@@ -22,6 +22,7 @@ import_data <- function() {
    x$fungicide_ai <- as.factor(x$fungicide_ai)
    x$trade_name <- as.factor(x$trade_name)
    x$year <- as.factor(x$year)
+   x$row_spacing <- round(x$row_spacing, 2) # deals with 0.33 vs 0.3333333 values
    x$replicates <- as.numeric(x$replicates)
    x$planting_date <- as.Date(x$planting_date, format = "%Y-%m-%d")
    x$emergence_date <-

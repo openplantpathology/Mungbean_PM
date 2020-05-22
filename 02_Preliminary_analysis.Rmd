@@ -112,7 +112,6 @@ PM_MB_means %>%
    kable(caption = "Fungicide effect on proportion of yield gain.") %>%
    kable_styling(fixed_thead = T, full_width = T) %>%
    footnote(general = "Fungicides with less than five observations were omitted from this table")
-
 ```
 
 *****  
@@ -149,6 +148,7 @@ PM_MB_means %>%
    labs(y = "Proportion of grain yield saved",
         title = "Grain yield proportion saved\ngrouped by fungicide type") +
    theme(legend.position = "none") +
+   scale_fill_usq() +
    coord_flip()
 ```
 
@@ -157,7 +157,7 @@ There is a small yield effect when applying fungicide and it is unclear how much
 *****
 
 #### Fungicide Doses  
-We should check that all fungicide doses that were used were roughly the same if we are to compare between trials were dose might be different.  
+We should check that all fungicide doses that were used were roughly the same if we are to compare between trials where dose might be different.  
 
 ```{r tebuAndPropi_dose}
 PM_MB_means %>%
@@ -177,8 +177,7 @@ PM_MB_means %>%
    ggtitle(label = "Total number of treatments for each respective tebuconazole dose") +
    geom_bar() +
    scale_fill_usq() +
-   scale_colour_usq() +
-   theme_usq()
+   scale_colour_usq()
 ```
 
 All trials that used tebuconazole used approximately the same dose. Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare.  
@@ -193,8 +192,7 @@ PM_MB_means %>%
    ggtitle(label = "Yield for each respective propiconazole dose") +
    geom_boxplot() +
    scale_fill_usq() +
-   scale_colour_usq() +
-   theme_usq()
+   scale_colour_usq()
 ```
 
 This dose effect should be acknowledged in the meta-analysis. How many treatments of each dose have been investigated per trial?
@@ -259,8 +257,7 @@ PM_MB_means %>%
          "Fifth\nspray"
       )
    ) +
-   ylab("Days to First Sign of Disease") +
-   theme_usq()
+   ylab("Days to First Sign of Disease")
 ```
 
 
@@ -290,12 +287,8 @@ PM_MB_means %>%
    ylab("N Trials") +
    ggtitle(label = "Cultivars used in either tebuconazole or propiconazole trials") +
    geom_col() +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   theme_usq()
+   scale_fill_usq()
 ```
-
-&nbsp;  
 
 #### Genotype yield variability
 
@@ -310,7 +303,9 @@ source("R/yield_volatility.r") #function to investigate the volatility in yields
 
 YV1 <-
    yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
-YV1[[2]]
+YV1[[2]] + 
+   scale_fill_usq()
+
 YV1[[3]]
 ```
 Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray treatments.
@@ -318,11 +313,12 @@ Now let's look at overall yields for each cultivar, where trial is not a factor,
 
 YV2 <-
    yield_volatility(genotype_by_trial = FALSE, control_only = TRUE)
-YV2[[2]]
+YV2[[2]] +
+   scale_fill_usq()
 YV2[[3]]
 ```
 
-Volatility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments). Green Diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials.  
+Volatility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments). Green Diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials
 
 *****
 
@@ -334,7 +330,8 @@ YV1_herm <-
       control_only = FALSE,
       location = "Hermitage"
    )
-YV1_herm[[2]]
+YV1_herm[[2]] +
+   scale_fill_usq()
 ```  
 
 Jade shows a large amount of volatility, excluding Green Diamond, Crystal shows the next least volatility.  
@@ -345,10 +342,13 @@ Let's take a closer look at Crystal with spray management treatments and without
 ```{r YieldVol_Crystal}
 YV1_crystal <-
    yield_volatility(genotype = "Crystal", control_only = FALSE)
-YV1_crystal[[2]]
+YV1_crystal[[2]] +
+   scale_fill_usq()
+
 YV1_crystal <-
    yield_volatility(genotype = "Crystal", control_only = TRUE)
-YV1_crystal[[2]]
+YV1_crystal[[2]] +
+   scale_fill_usq()
 ```
 
 There is a lot of variation between field trials for Crystal, but little variation within field trials.
@@ -356,14 +356,16 @@ There is a lot of variation between field trials for Crystal, but little variati
 Let's look at Jade, to see if it differs.
 ```{r YieldVol_Jade}
 YV2_crystal <- yield_volatility("Jade",control_only = FALSE)
-YV2_crystal[[2]]
+YV2_crystal[[2]] +
+   scale_fill_usq()
 ```
 
 For Jade there is high variation between trials and with in. Perhaps indicating lower tolerance. Let's look at the same plot with data only from no spray controls to see if the variation is the same.
 
 ```{r YieldVol_JadeControl}
 YV3_crystal <- yield_volatility("Jade", control_only = TRUE)
-YV3_crystal[[2]]
+YV3_crystal[[2]] +
+   scale_fill_usq()
 ```
 
 There seems to be a noticeable shift in the probability curves between the two plots. Indicating that the tolerance in Jade may not as good as Crystal. A comparison between the fungicide efficacy for reducing powdery mildew severity and fungicide efficacy at mitigating yield loss.  
@@ -392,8 +394,7 @@ PM_MB_means %>%
    ggtitle(label = "Trial row spacing using tebuconazole") +
    geom_col(aes(fill = fungicide_ai),
             position = "dodge") +
-   scale_fill_usq(name = "Fungicide AI") +
-   theme_usq()
+   scale_fill_usq(name = "Fungicide AI")
 
 PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole",
@@ -434,21 +435,20 @@ In the Wellcamp site, wider row spacing reduces PM severity, the other sites it 
 
 
 ```{r RS_yield}
-# Which row spacing leads to the higher yeild potential
+# Which row spacing leads to the higher yield potential
 PM_MB_means %>%
    filter(year == 2017 |
              year == 2018) %>%
-   #   filter(Fungicide == "control") %>%
    ggplot(aes(
       y = as.numeric(grain_yield.t.ha.),
       x = row_spacing,
       colour = location
    )) +
-   geom_smooth(method = "gam") +
    geom_jitter(width = 0.01) +
    ggtitle("Grain yield results for different row spacing at three locations") +
    xlab("Row spacing (m)") +
-   ylab("Grain yield - tonnes per hectare")
+   ylab("Grain yield - tonnes per hectare") +
+   scale_colour_usq()
 ```
 
 The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial. However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.  
@@ -540,6 +540,7 @@ Therefore the disease can be avoided by planting early in summer or spring, avoi
 Can we visualise when PM is most likely to establish over the calendar year?
 
 I'll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.  
+
 ```{r first_incidence}
 # Create the data frame for the plot
 source("R/import_data.R")
@@ -557,15 +558,12 @@ season_dates$Planting_day <- yday(season_dates$Planting_date)
 season_dates$Disease_day <- yday(season_dates$First_sign_PM)
 
 season_dates[1:2, "Planting_day"] <- 1
- #  yday(as.Date("2012-02-28") - 7) # Correct dplanted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
+#  yday(as.Date("2012-02-28") - 7) # Correct dplanted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
 
 season_dates$Harvest_day <-
    season_dates$Planting_day + season_dates$season_length
 
-
-
-
-first_day_month <- c(0, 31, 59, 90, 120, 151, 181, 211, 243, 273)+1
+first_day_month <- c(0, 31, 59, 90, 120, 151, 181, 211, 243, 273) + 1
 axis_labels_date <-
    c(
       format(Sys.Date() - yday(Sys.Date()) + first_day_month[1], "%b-%d"),
@@ -657,8 +655,7 @@ PM_MB_means %>%
    ) %>%
    ggplot(aes(y = prop_YG, x = fungicide_ai)) +
    geom_boxplot() +
-   geom_hline(aes(yintercept = 0), size = 0.5) +
-   #scale_fill_discrete(labels = c("15-7 days before","same day","one day after","8-9 days after","13-19 days after"))+
+   geom_hline(aes(yintercept = 0), size = 0.5, colour = "red") +
    labs(x = "Proportion of grain yield saved",
         title = "Grain yield proportion saved grouped by\nfungicide type") +
    theme(

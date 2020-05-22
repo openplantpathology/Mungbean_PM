@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>8 Manuscript | Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis.</title>
+  <title>8 Manuscript | Meta-analysis of fungicide application timing experiments for powdery mildew management in mungbean.</title>
   <meta name="description" content="A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew." />
-  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="8 Manuscript | Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis." />
+  <meta property="og:title" content="8 Manuscript | Meta-analysis of fungicide application timing experiments for powdery mildew management in mungbean." />
   <meta property="og:type" content="book" />
   
   
@@ -16,12 +16,12 @@
   <meta name="github-repo" content="OpenPlantPathology/Mungbean_PM" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="8 Manuscript | Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis." />
+  <meta name="twitter:title" content="8 Manuscript | Meta-analysis of fungicide application timing experiments for powdery mildew management in mungbean." />
   
   <meta name="twitter:description" content="A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew." />
   
 
-<meta name="author" content="Paul Melloy, Emerson Del Ponte and Adam H. Sparks" />
+<meta name="author" content="P. Melloy" />
 
 
 
@@ -32,6 +32,7 @@
   
 <link rel="prev" href="manuscript-wire-frame.html"/>
 
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,25 +54,26 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -127,16 +129,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Research questions</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Research questions</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#parts-of-analysis-that-need-checking"><i class="fa fa-check"></i><b>1.1</b> Parts of analysis that need checking</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a><ul>
+<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#summary-of-data"><i class="fa fa-check"></i><b>2.1</b> Summary of data</a></li>
 <li class="chapter" data-level="2.2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#powdery-mildew-ratings"><i class="fa fa-check"></i><b>2.2</b> Powdery mildew ratings</a></li>
 <li class="chapter" data-level="2.3" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#experimental-locations"><i class="fa fa-check"></i><b>2.3</b> Experimental locations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>3</b> Preliminary Analysis</a><ul>
-<li class="chapter" data-level="3.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>3.1</b> Explore and Visualise Data</a><ul>
+<li class="chapter" data-level="3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>3</b> Preliminary Analysis</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>3.1</b> Explore and Visualise Data</a>
+<ul>
 <li class="chapter" data-level="3.1.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#fungicides"><i class="fa fa-check"></i><b>3.1.1</b> Fungicides</a></li>
 <li class="chapter" data-level="3.1.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#mungbean-cultivars"><i class="fa fa-check"></i><b>3.1.2</b> Mungbean cultivars</a></li>
 <li class="chapter" data-level="3.1.3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>3.1.3</b> Row spacing</a></li>
@@ -144,32 +150,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.5" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#season-range-and-first-incidence"><i class="fa fa-check"></i><b>3.1.5</b> Season range and first incidence</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html"><i class="fa fa-check"></i><b>4</b> Prepare data for meta-anlysis</a><ul>
-<li class="chapter" data-level="4.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>4.1</b> Set environment and import data</a></li>
-<li class="chapter" data-level="4.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>4.2</b> Standardising sample variance</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>4.2.1</b> Converting least-squares to sample variance</a></li>
-<li class="chapter" data-level="4.2.2" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>4.2.2</b> Converting standard deviation to sample variance</a></li>
+<li class="chapter" data-level="4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html"><i class="fa fa-check"></i><b>4</b> Prepare data for meta-analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>4.1</b> Set environment and import data</a></li>
+<li class="chapter" data-level="4.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>4.2</b> Standardising sample variance</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>4.2.1</b> Converting least-squares to sample variance</a></li>
+<li class="chapter" data-level="4.2.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>4.2.2</b> Converting standard deviation to sample variance</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#yield-saving"><i class="fa fa-check"></i><b>4.3</b> Yield saving</a></li>
-<li class="chapter" data-level="4.4" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>4.4</b> Reduce data set to required variables</a><ul>
-<li class="chapter" data-level="4.4.1" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>4.4.1</b> Cluster fungicide applications</a></li>
+<li class="chapter" data-level="4.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#yield-saving"><i class="fa fa-check"></i><b>4.3</b> Yield saving</a></li>
+<li class="chapter" data-level="4.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>4.4</b> Reduce data set to required variables</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>4.4.1</b> Cluster fungicide applications</a></li>
 </ul></li>
-<li class="chapter" data-level="4.5" data-path="prepare-data-for-meta-anlysis.html"><a href="prepare-data-for-meta-anlysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>4.5</b> AUDPC visualise raw data</a></li>
+<li class="chapter" data-level="4.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>4.5</b> AUDPC visualise raw data</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="meta-analysis.html"><a href="meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Meta-analysis</a><ul>
-<li class="chapter" data-level="5.1" data-path="meta-analysis.html"><a href="meta-analysis.html#grain-yield-meta-analysis"><i class="fa fa-check"></i><b>5.1</b> Grain yield meta-analysis</a><ul>
+<li class="chapter" data-level="5" data-path="meta-analysis.html"><a href="meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Meta-analysis</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="meta-analysis.html"><a href="meta-analysis.html#grain-yield-meta-analysis"><i class="fa fa-check"></i><b>5.1</b> Grain yield meta-analysis</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="meta-analysis.html"><a href="meta-analysis.html#imputing-sample-variances"><i class="fa fa-check"></i><b>5.1.1</b> Imputing sample variances</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="meta-analysis.html"><a href="meta-analysis.html#meta-analysis-1"><i class="fa fa-check"></i><b>5.2</b> Meta-analysis</a><ul>
+<li class="chapter" data-level="5.2" data-path="meta-analysis.html"><a href="meta-analysis.html#meta-analysis-1"><i class="fa fa-check"></i><b>5.2</b> Meta-analysis</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="meta-analysis.html"><a href="meta-analysis.html#metafor-package"><i class="fa fa-check"></i><b>5.2.1</b> metafor package</a></li>
 <li class="chapter" data-level="5.2.2" data-path="meta-analysis.html"><a href="meta-analysis.html#netmeta-package"><i class="fa fa-check"></i><b>5.2.2</b> netmeta package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>6</b> AUPDC meta-analysis</a><ul>
+<li class="chapter" data-level="6" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>6</b> AUPDC meta-analysis</a>
+<ul>
 <li class="chapter" data-level="6.0.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#spray-management-and-audpc"><i class="fa fa-check"></i><b>6.0.1</b> Spray management and AUDPC</a></li>
 <li class="chapter" data-level="6.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#aupdc-impact-on-grain-yield-meta-analysis"><i class="fa fa-check"></i><b>6.1</b> AUPDC impact on grain yield meta-analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html"><i class="fa fa-check"></i><b>7</b> Manuscript wire frame</a><ul>
+<li class="chapter" data-level="7" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html"><i class="fa fa-check"></i><b>7</b> Manuscript wire frame</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#who-are-the-intended-readers---list-3-to-5-of-them-by-name"><i class="fa fa-check"></i><b>7.1</b> Who are the intended readers? - list 3 to 5 of them by name</a></li>
 <li class="chapter" data-level="7.2" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-did-you-do-limit---50-words"><i class="fa fa-check"></i><b>7.2</b> what did you do? (limit - 50 words)</a></li>
 <li class="chapter" data-level="7.3" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#why-did-you-do-it-limit---50-words"><i class="fa fa-check"></i><b>7.3</b> Why did you do it? (limit - 50 words)</a></li>
@@ -179,8 +193,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.7" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-is-the-key-benefit-for-your-readers-limit---25-words."><i class="fa fa-check"></i><b>7.7</b> what is the key benefit for your readers? (limit - 25 words).</a></li>
 <li class="chapter" data-level="7.8" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-remains-unresolved-no-word-limit."><i class="fa fa-check"></i><b>7.8</b> What remains unresolved? (no word limit).</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="manuscript.html"><a href="manuscript.html"><i class="fa fa-check"></i><b>8</b> Manuscript</a><ul>
-<li class="chapter" data-level="8.1" data-path="manuscript.html"><a href="manuscript.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a><ul>
+<li class="chapter" data-level="8" data-path="manuscript.html"><a href="manuscript.html"><i class="fa fa-check"></i><b>8</b> Manuscript</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="manuscript.html"><a href="manuscript.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="8.1.1" data-path="manuscript.html"><a href="manuscript.html#managements-strategies"><i class="fa fa-check"></i><b>8.1.1</b> Managements strategies</a></li>
 <li class="chapter" data-level="8.1.2" data-path="manuscript.html"><a href="manuscript.html#fungicide-resistance"><i class="fa fa-check"></i><b>8.1.2</b> Fungicide resistance</a></li>
 <li class="chapter" data-level="8.1.3" data-path="manuscript.html"><a href="manuscript.html#previous-studies---fungicide-work"><i class="fa fa-check"></i><b>8.1.3</b> Previous studies - fungicide work</a></li>
@@ -188,7 +204,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1.5" data-path="manuscript.html"><a href="manuscript.html#aims"><i class="fa fa-check"></i><b>8.1.5</b> Aims</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="manuscript.html"><a href="manuscript.html#materials-and-methods"><i class="fa fa-check"></i><b>8.2</b> Materials and methods</a></li>
-<li class="chapter" data-level="8.3" data-path="manuscript.html"><a href="manuscript.html#discussion"><i class="fa fa-check"></i><b>8.3</b> Discussion</a><ul>
+<li class="chapter" data-level="8.3" data-path="manuscript.html"><a href="manuscript.html#discussion"><i class="fa fa-check"></i><b>8.3</b> Discussion</a>
+<ul>
 <li class="chapter" data-level="8.3.1" data-path="manuscript.html"><a href="manuscript.html#fungicide-resistance-1"><i class="fa fa-check"></i><b>8.3.1</b> Fungicide resistance</a></li>
 </ul></li>
 </ul></li>
@@ -201,7 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis.</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Meta-analysis of fungicide application timing experiments for powdery mildew management in mungbean.</a>
           </h1>
         </div>
 
@@ -209,22 +226,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="manuscript" class="section level1">
+<div id="manuscript" class="section level1" number="8">
 <h1><span class="header-section-number">8</span> Manuscript</h1>
-<div id="introduction" class="section level2">
+<div id="introduction" class="section level2" number="8.1">
 <h2><span class="header-section-number">8.1</span> Introduction</h2>
 <p>Mungbean [<em>Vigna radiata</em> (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption, and constitutes an affordable source of protein <span class="citation">(Pulse Australia <a href="#ref-PulseAustralia" role="doc-biblioref">n.d.</a>)</span>.
 The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes <span class="citation">(Chankaew et al. <a href="#ref-Chankaew2013" role="doc-biblioref">2013</a>)</span>.</p>
 <p>In Australia mungbean is grown in southern Queensland and northern New South Wales as a short season summer legume crop.
-Approximately 90% of mungbean yields are exported and economic returns can be lucritive for growers.
+Approximately 90% of mungbean yields are exported and economic returns can be lucrative for growers.
 Mungbean potentially yields up to 2.3 tonnes per hectare, with a value of up to $ 1300 AUD a tonne <span class="citation">(Queensland Government <a href="#ref-QueenslandGovernment2019" role="doc-biblioref">2019</a>)</span>.
 However these potential crop yields can be limited by a range of diseases<span class="citation">(Kelly et al. <a href="#ref-Kelly2017a" role="doc-biblioref">2017</a>)</span>.
 Powdery mildew (<em>Podosphaera xanthii</em>), for instance, can reduce yields by up to 40% <span class="citation">(Chankaew et al. <a href="#ref-Chankaew2013" role="doc-biblioref">2013</a>)</span>.
 Fortunately a number of strategies are available to be employed to reduce the damage powdery mildew inflicts on mungbean yields.</p>
-<div id="managements-strategies" class="section level3">
+<div id="managements-strategies" class="section level3" number="8.1.1">
 <h3><span class="header-section-number">8.1.1</span> Managements strategies</h3>
-<div id="and-conditions-for-infection" class="section level4">
+<div id="and-conditions-for-infection" class="section level4" number="8.1.1.1">
 <h4><span class="header-section-number">8.1.1.1</span> and conditions for infection</h4>
 <p>Planting date is an effective strategy for preventing the development of powdery mildew in mungbean.
 Powdery mildew infection requires cool temperatures, between 22<span class="math inline">\(^\circ\)</span> and 26<span class="math inline">\(^\circ\)</span>C, and a leaf surface that is not overly wet for infection <span class="citation">(Kelly et al. <a href="#ref-Kelly2017a" role="doc-biblioref">2017</a>)</span>.
@@ -232,35 +249,35 @@ In southern Queensland and northern New South Wales, sowing dates between late s
 Therefore a delayed sowing date increases the possibility powdery mildew will infect earlier in the crop development leading to greater yield losses.</p>
 <p>Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy.
 Quantitative disease resistance has been observed in some breeding lines overseas <span class="citation">(Pandey et al. <a href="#ref-Pandey2018" role="doc-biblioref">2018</a>; Chankaew et al. <a href="#ref-Chankaew2013" role="doc-biblioref">2013</a>)</span>.
-In Australia, quantitive resistance has also been incorporated a couple of varieties which are commercially available.
-Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), while also confering quantifiable resistance to other foliar diseases such as tan spot and halo blight <span class="citation">(Australian Mungbean Association <a href="#ref-AustralianMungbeanAssociation" role="doc-biblioref">n.d.</a>)</span>.
+In Australia, quantitative resistance has also been incorporated a couple of varieties which are commercially available.
+Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), while also conferring quantifiable resistance to other foliar diseases such as tan spot and halo blight <span class="citation">(Australian Mungbean Association <a href="#ref-AustralianMungbeanAssociation" role="doc-biblioref">n.d.</a>)</span>.
 Because cultivar choice does not confer complete resistance to powdery mildew, additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are suitable.</p>
-<p>The recent release of ‘PowderyMildewMDM’, a desicion support system (DSS), increases the ease for preparing a fungicide spray scheduale to manage powdery mildew <span class="citation">(Diggle <a href="#ref-Diggle" role="doc-biblioref">n.d.</a>)</span>.
-PowderyMildewMDM provides a cost benefit analysis to growers for fungcide spray scheduale scenarios.
+<p>The recent release of ‘PowderyMildewMBM’, a decision support system (DSS), increases the ease for preparing a fungicide spray schedule to manage powdery mildew <span class="citation">(Diggle <a href="#ref-Diggle" role="doc-biblioref">n.d.</a>)</span>.
+PowderyMildewMBM provides a cost benefit analysis to growers for fungicide spray schedule scenarios.
 The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit.</p>
 </div>
 </div>
-<div id="fungicide-resistance" class="section level3">
+<div id="fungicide-resistance" class="section level3" number="8.1.2">
 <h3><span class="header-section-number">8.1.2</span> Fungicide resistance</h3>
-<p>Fungicide application costs in Australia are relatively cheap, and we estimate these costs to be approximatley $ 20 AUD per hectare.
-Lucrative returns of up to $ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than neccersary.
+<p>Fungicide application costs in Australia are relatively cheap, and we estimate these costs to be approximately $ 20 AUD per hectare.
+Lucrative returns of up to $ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than necessary.
 Excessive use of fungicides are not only costly, but lead to problems such as fungicide resistance.
 <em>Podosphaera xanthii</em> is categorised by FRAC as a ‘High risk’ candidate to evolve fungicide resistance.
 The evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with fungicide resistance potential in mind.
-Powdery mildew in cucurbits evolved resistance to benzimidazole within three years of it’s registration <span class="citation">(Peterson <a href="#ref-Peterson1973" role="doc-biblioref">1973</a>)</span>. In cereal crops <em>Erysphe graminis</em> showed lower sensitivity to strobilurins in 1998, two years after the fungicide began being used in Europe <span class="citation">(Chin et al. <a href="#ref-Chin2001" role="doc-biblioref">2001</a>)</span>.
+Powdery mildew in cucurbits evolved resistance to benzimidazole within three years of it’s registration <span class="citation">(Peterson <a href="#ref-Peterson1973" role="doc-biblioref">1973</a>)</span>. In cereal crops <em>Blumeria graminis</em> showed lower sensitivity to strobilurins in 1998, two years after the fungicide began being used in Europe <span class="citation">(Chin et al. <a href="#ref-Chin2001" role="doc-biblioref">2001</a>)</span>.
 Powdery mildew is one such disease with an extensive track record of rapidly developing fungicide resistance.
 In cucurbits, powdery mildew has evolved resistance to numerous fungicide classes, such as benzimidazoles, DMIs, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines <span class="citation">(Mcgrath <a href="#ref-Mcgrath2001" role="doc-biblioref">2001</a>)</span>.</p>
 <p>To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered.
-Excessive fungicide sprays by a single active increase the selection preassure on the pathogen to evolve resistance <span class="citation">(Brent and Hollomon <a href="#ref-Brent2007" role="doc-biblioref">2007</a>)</span>.
+Excessive fungicide sprays by a single active increase the selection pressure on the pathogen to evolve resistance <span class="citation">(Brent and Hollomon <a href="#ref-Brent2007" role="doc-biblioref">2007</a>)</span>.
 If any strains of the pathogen with resistance to the fungicide are present in a population regular use of the fungicide will increase it’s proportion in the population.
 Managing the disease with fungicides for the highest economic return is likely not to require eradication of the causal pathogen.
 Integrated pest management practices focus on using only the required number of chemical control to protect the economic return.
 These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection.</p>
-<p>The timing of funcide sprays are critical for thier efficacy and for limiting fungicide resistant strains from emerging.
+<p>The timing of fungicide sprays are critical for their efficacy and for limiting fungicide resistant strains from emerging.
 Fungicide applications made too early would increase costs without providing any benefit to yields.
 Applications which are made too late allow the disease to establish and damage the crop productivity, while making subsequent sprays difficult to reduce the disease incidence.</p>
 </div>
-<div id="previous-studies---fungicide-work" class="section level3">
+<div id="previous-studies---fungicide-work" class="section level3" number="8.1.3">
 <h3><span class="header-section-number">8.1.3</span> Previous studies - fungicide work</h3>
 <p>There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in Mungbean.
 Many of the experimental work has been published by funding agencies and state government extension departments.
@@ -268,16 +285,16 @@ Past field trials in eastern Australia have trialed a range of fungicide active 
 Early trials showed for a fungicide application to provide maximum efficacy a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary <span class="citation">(Sparks and Kelly <a href="#ref-Sparks2017" role="doc-biblioref">2017</a>)</span>.
 Some of the trialled fungicides for treating powdery mildew in mungbean have been registered with the APVMA [<span class="citation">(“Australian Pesticides and Veterinary Medicines Authority” <a href="#ref-APVMA" role="doc-biblioref">n.d.</a>)</span>; <span class="citation">Kelly et al. (<a href="#ref-Kelly2017a" role="doc-biblioref">2017</a>)</span>; insert all published trials here].</p>
 </div>
-<div id="meta-analysis-2" class="section level3">
+<div id="meta-analysis-2" class="section level3" number="8.1.4">
 <h3><span class="header-section-number">8.1.4</span> Meta-analysis</h3>
 </div>
-<div id="aims" class="section level3">
+<div id="aims" class="section level3" number="8.1.5">
 <h3><span class="header-section-number">8.1.5</span> Aims</h3>
-<p>The aim of this meta-analysis was to determine, from a colection of unpublished studies, when is the ideal time to apply fungicide with respect to the first sign of disease, and does multiple fungicide applications provide better protection for mungbean yields.</p>
+<p>The aim of this meta-analysis was to determine, from a collection of unpublished studies, when is the ideal time to apply fungicide with respect to the first sign of disease, and does multiple fungicide applications provide better protection for mungbean yields.</p>
 <hr />
 </div>
 </div>
-<div id="materials-and-methods" class="section level2">
+<div id="materials-and-methods" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> Materials and methods</h2>
 <p>The data for this study was obtained from through personal correspondence with colleagues and collaborating institutions.
 The majority of the trials were undertaken by Malcolm Riley and Dr Sue Thompson with The Department of Agriculture and Primary industries (DAF).
@@ -294,7 +311,7 @@ Trials needed to have tested a demethylase inhibitor (DMI) fungicide.</p>
 Some trials and results were reported online via the Grains Research and Development Corporation.</p>
 <p>While the main aim of all the trials collected for this study were the same, assess the efficacy of fungicides for control of powdery mildew, most also aimed to test the effect of different variables on fungicide efficacy.
 Some of the variable which were suspected to influence powdery mildew incidence and the effect on yield were: trial location, trial season, row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar, irrigation and rainfall.
-To account for this variation between trials and thr treatments within the trial a single ‘trial’ factor was created to describe the main variables; Trial location, trial season, host genotype and row spacing.</p>
+To account for this variation between trials and their treatments within the trial a single ‘trial’ factor was created to describe the main variables; Trial location, trial season, host genotype and row spacing.</p>
 <p>To reduce confounding effects of various fungicides we only included treatments within trials which had been sprayed with a fungicide which has a DMI mode of action, such as tebeconazole and propiconazole.
 Fungicide active from the DMI group was the main inclusion factor for the analysis which reduced the number of trials from 24 to 17 experiments.</p>
 <p>Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale [ref].
@@ -305,34 +322,34 @@ An ‘Early’ fungicide application, refers to a fungicide spray schedule that 
 ‘Recommended’ refers to a fungicide spray schedule which commences within three days following the first sign of disease, and ‘late’ treatments which commence four days or later than first sign.
 The number of fungicide applications were binned in to two categories.
 A spray schedule with a single spray, and a spray schedule with one or more sprays where there was a maximum of three applications.
-The division of the treatments into these six categories created two categories with insuffient numbers of treatments to provide a reliable sample.
-Single late sprays contained two replicates and mulitple early sprays contained five replicates and were therefore removed from the subsequent meta-analysis.</p>
+The division of the treatments into these six categories created two categories with insufficient numbers of treatments to provide a reliable sample.
+Single late sprays contained two replicates and multiple early sprays contained five replicates and were therefore removed from the subsequent meta-analysis.</p>
 <p>What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays and late with multiple sprays.</p>
 <p>Trials where we obtained the raw data the response variables were summarised into the treatment means and variance.
 The remainder of the trial data reported treatment means and variance.
-Two of the trials, Gatton 2012 and Emerald 2015, reported treatment means without accompaning variance.
+Two of the trials, Gatton 2012 and Emerald 2015, reported treatment means without accompanying variance.
 For these trials the trial variance was imputed by randomly sampling the trial mean squared error from a distribution of log trial MSE.<br />
 $rnorm(<em>{log(MSE</em>{1}) , log(MSE_{n})}, <em>{log(MSE</em>{1}) , log(MSE_{n})}) $<br />
 Where MSE is the mean squared error of each trial.</p>
 <p>$v_i = MSE_{y}/(n * Y_{i}^2) $</p>
 <p>The data were analysed in the R statistical software environment using two meta-analysis packages, <code>metafor</code> and <code>netmeta</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">PM_Mdat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="st">      </span><span class="kw">group_by</span>(trial_ref,) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="st">      </span><span class="kw">summarise</span>(<span class="dt">year =</span> <span class="kw">unique</span>(year),</a>
-<a class="sourceLine" id="cb1-4" title="4">                <span class="dt">location =</span> <span class="kw">unique</span>(location),</a>
-<a class="sourceLine" id="cb1-5" title="5">                <span class="dt">planting_date =</span> <span class="kw">unique</span>(planting_date),</a>
-<a class="sourceLine" id="cb1-6" title="6">                <span class="dt">first_sign_disease =</span> <span class="kw">unique</span>(first_sign_disease))<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="st">      </span><span class="kw">arrange</span>(year)<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="st">   </span><span class="kw">left_join</span>(<span class="kw">data.frame</span>(<span class="dt">trial_ref =</span> <span class="kw">unique</span>(PM_Mdat<span class="op">$</span>trial_ref),</a>
-<a class="sourceLine" id="cb1-9" title="9">                        <span class="dt">Research_org =</span></a>
-<a class="sourceLine" id="cb1-10" title="10">                           <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;Queensland DAF&quot;</span>,<span class="dt">times =</span><span class="dv">12</span>),</a>
-<a class="sourceLine" id="cb1-11" title="11">                             <span class="kw">rep</span>(<span class="st">&quot;Northern Growers Alliance&quot;</span>, <span class="dt">times =</span> <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb1-12" title="12">               <span class="kw">rep</span>(<span class="st">&quot;Queensland DAF&quot;</span>,<span class="dt">times =</span><span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb1-13" title="13">               <span class="kw">rep</span>(<span class="st">&quot;USQ&quot;</span>, <span class="dt">times =</span> <span class="dv">5</span>))))<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Table 1: Description of Experiments&quot;</span>)<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb1-16" title="16">                 <span class="dt">full_width =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-17" title="17"><span class="st">   </span><span class="kw">scroll_box</span>(<span class="dt">width =</span> <span class="st">&quot;900px&quot;</span>, <span class="dt">height =</span> <span class="st">&quot;500px&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="manuscript.html#cb1-1"></a>PM_Mdat <span class="op">%&gt;%</span></span>
+<span id="cb1-2"><a href="manuscript.html#cb1-2"></a><span class="st">      </span><span class="kw">group_by</span>(trial_ref,) <span class="op">%&gt;%</span></span>
+<span id="cb1-3"><a href="manuscript.html#cb1-3"></a><span class="st">      </span><span class="kw">summarise</span>(<span class="dt">year =</span> <span class="kw">unique</span>(year),</span>
+<span id="cb1-4"><a href="manuscript.html#cb1-4"></a>                <span class="dt">location =</span> <span class="kw">unique</span>(location),</span>
+<span id="cb1-5"><a href="manuscript.html#cb1-5"></a>                <span class="dt">planting_date =</span> <span class="kw">unique</span>(planting_date),</span>
+<span id="cb1-6"><a href="manuscript.html#cb1-6"></a>                <span class="dt">first_sign_disease =</span> <span class="kw">unique</span>(first_sign_disease))<span class="op">%&gt;%</span></span>
+<span id="cb1-7"><a href="manuscript.html#cb1-7"></a><span class="st">      </span><span class="kw">arrange</span>(year)<span class="op">%&gt;%</span></span>
+<span id="cb1-8"><a href="manuscript.html#cb1-8"></a><span class="st">   </span><span class="kw">left_join</span>(<span class="kw">data.frame</span>(<span class="dt">trial_ref =</span> <span class="kw">unique</span>(PM_Mdat<span class="op">$</span>trial_ref),</span>
+<span id="cb1-9"><a href="manuscript.html#cb1-9"></a>                        <span class="dt">Research_org =</span></span>
+<span id="cb1-10"><a href="manuscript.html#cb1-10"></a>                           <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;Queensland DAF&quot;</span>,<span class="dt">times =</span><span class="dv">12</span>),</span>
+<span id="cb1-11"><a href="manuscript.html#cb1-11"></a>                             <span class="kw">rep</span>(<span class="st">&quot;Northern Growers Alliance&quot;</span>, <span class="dt">times =</span> <span class="dv">4</span>),</span>
+<span id="cb1-12"><a href="manuscript.html#cb1-12"></a>               <span class="kw">rep</span>(<span class="st">&quot;Queensland DAF&quot;</span>,<span class="dt">times =</span><span class="dv">5</span>),</span>
+<span id="cb1-13"><a href="manuscript.html#cb1-13"></a>               <span class="kw">rep</span>(<span class="st">&quot;USQ&quot;</span>, <span class="dt">times =</span> <span class="dv">5</span>))))<span class="op">%&gt;%</span></span>
+<span id="cb1-14"><a href="manuscript.html#cb1-14"></a><span class="kw">kable</span>(<span class="dt">caption =</span> <span class="st">&quot;Table 1: Description of Experiments&quot;</span>)<span class="op">%&gt;%</span></span>
+<span id="cb1-15"><a href="manuscript.html#cb1-15"></a><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb1-16"><a href="manuscript.html#cb1-16"></a>                 <span class="dt">full_width =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb1-17"><a href="manuscript.html#cb1-17"></a><span class="st">   </span><span class="kw">scroll_box</span>(<span class="dt">width =</span> <span class="st">&quot;900px&quot;</span>, <span class="dt">height =</span> <span class="st">&quot;500px&quot;</span>)</span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:900px; ">
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -885,19 +902,19 @@ USQ
 </table>
 </div>
 </div>
-<div id="discussion" class="section level2">
+<div id="discussion" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> Discussion</h2>
-<div id="fungicide-resistance-1" class="section level3">
+<div id="fungicide-resistance-1" class="section level3" number="8.3.1">
 <h3><span class="header-section-number">8.3.1</span> Fungicide resistance</h3>
-<p>According to the Fungicide resistance Action Commitee (FRAC) it is important to alternate or mix Fungicides with different modes of action to avoid fungicide resistance.
+<p>According to the Fungicide resistance Action Committee (FRAC) it is important to alternate or mix Fungicides with different modes of action to avoid fungicide resistance.
 At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin).
-This funigicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor.
-Quinone is required in cell metabolism and active in the mitochondial complex III.
-However FRAC recommends that applications of QoIs or strombilarins, singularly or as a mixture, should not be applied consecutivley and alternated with a fungicide from a different group <span class="citation">(Brent and Hollomon <a href="#ref-Brent2007" role="doc-biblioref">2007</a>)</span>.
+This fungicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor.
+Quinone is required in cell metabolism and active in the mitochondrial complex III.
+However FRAC recommends that applications of QoIs or strobilurins, singularly or as a mixture, should not be applied consecutively and alternated with a fungicide from a different group <span class="citation">(Brent and Hollomon <a href="#ref-Brent2007" role="doc-biblioref">2007</a>)</span>.
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew.
 Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.</p>
 
-<div id="refs" class="references">
+<div id="refs" class="references hanging-indent">
 <div>
 <p>alliance, Northern growers. 2013a. “Powdery Mildew Mungbeans - 2013 Goolhi NSW.” <a href="https://www.farmtrials.com.au/trial/20927">https://www.farmtrials.com.au/trial/20927</a>.</p>
 </div>
