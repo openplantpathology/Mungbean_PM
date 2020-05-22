@@ -59,9 +59,9 @@ This linear mixed effect model shows indicates:
    
    - A single or single spray with one or more follow sprays starting  at the `recommended` first spray , within 3 days of powdery mildew first sign are likely to produce significantly higher grain yields compared to the no spray control.  
    
-   - The `recommended_plus` spray which has one or more follow-up sprays after first sign are likely to increase the mean grain yield.  
+   - The `Late_plus` spray which has one or more follow-up sprays after first sign are likely to increase the mean grain yield.  
    
-   - `Late_plus` spray treatments showed the highest mean grain yield, and was significantly higher than the no spray control. However showed no difference to either of the `recommended` treatments.  
+   - `Recommended_plus` spray treatments showed the highest mean grain yield, and was significantly higher than the no spray control. However showed no difference to either the `recommended` or `Late_plus` treatments.  
 
 
 
@@ -75,7 +75,7 @@ Plotting a histogram of the variances show that the yield is not normally distri
 
 ```{r variance_histograms}
 hist_usq(slimmer_PM_dat$yield_error) # yield error is not normally distributed
-hist_usq(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is normally distributed 
+hist_usq(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is close to normally distributed 
 ```
 
 We will evaluate whether the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, inferring significant difference, the imputed variances are discarded and re-sampled until all treatment variances show no significant differences.
