@@ -2,7 +2,7 @@
 
 ```{r MEsummary_Libraries, message=FALSE, echo=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, leaflet, htmltools)
+pacman::p_load(tidyverse, kableExtra, leaflet, htmltools,schoolmath)
 source("R/import_data.R")
 ```
 
@@ -85,16 +85,21 @@ kable(
       summarise(
          year = unique(year),
          location = unique(location),
-         mean_treat_replicates = mean(replicates),
+         replicates_per_treatment = if(is.whole(mean(replicates))){
+            as.character(mean(replicates))}else{
+               as.character(paste(min(replicates),"-",max(replicates)))},
          planting_date = unique(planting_date),
          first_sign_disease = unique(first_sign_disease),
          treatments = length(n_treatment)
       ) %>%
-      arrange(year),
+      arrange(year)%>%
+      select(-trial_ref),
    caption = "Description of Experiments"
 )  %>%
    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
    scroll_box(width = "900px", height = "500px")
+
+
 ```
 
 ## Powdery mildew ratings  
