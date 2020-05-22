@@ -65,8 +65,7 @@ source("R/import_data.R")
 
 **2001 - 2004 trials**  
 Trial data were obtained from a non-published manuscript.  
-Ratings for powdery mildew were on a 1-5 rating scale and can be read in the
-file "Powdery mildew paper#1.doc".  
+Ratings for powdery mildew were on a 1-5 rating scale where 1 = no sign of disease, 2 = 1-30% diseased leaf area, 3 = 31-65% diseased leaf area, 4 = 66-99% diseased leaf area and 5 = complete defoliation.  
 Comparing trials which have not used the same rating scale will be done using a
 percentage change.  
 
