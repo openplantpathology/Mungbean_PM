@@ -38,9 +38,10 @@ m10 <- lmer(log(grain_yield.t.ha * 1000) ~
                (factor(spray_management) | trial_ref),
             data = slimmer_PM_dat)
 
-m11 <- lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
-               (1 | trial_ref),
-            data = slimmer_PM_dat)
+m11 <-
+   lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
+           (1 | trial_ref),
+        data = slimmer_PM_dat)
 
 anova(m8, m9) # m9 is significantly better model
 anova(m9, m10) # m9 is significantly better model
@@ -62,8 +63,6 @@ This linear mixed effect model shows indicates:
    - The `Late_plus` spray which has one or more follow-up sprays after first sign are likely to increase the mean grain yield.  
    
    - `Recommended_plus` spray treatments showed the highest mean grain yield, and was significantly higher than the no spray control. However showed no difference to either the `recommended` or `Late_plus` treatments.  
-
-
 
 ### Imputing sample variances  
 
@@ -127,7 +126,7 @@ for (i in 0:500) {
       
       # Plot the imputed errors for each trial
       Vplot <-
-         slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),] %>%
+         slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), ] %>%
          ggplot(aes(y = grain_yield.t.ha, trial)) +
          #geom_point()+
          geom_pointrange(
@@ -170,7 +169,7 @@ TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), "trial_ref"]
 
 
 ```{r imputation_MSE}
-for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`),]$trial_ref) {
+for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
    slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "Y_Msquare"] <-
       exp(rnorm(
          n = 1,
@@ -291,7 +290,7 @@ PM_mv_AI <- rma.mv(
    vi,
    mods = ~ spray_management,
    method = "ML",
-   random = list( ~ spray_management | trial),
+   random = list(~ spray_management | trial),
    struct = "UN",
    data = slimmer_PM_dat
 )
@@ -305,7 +304,7 @@ PM_mv_AI <- rma.mv(
    vi,
    mods = ~ slimmer_PM_dat$spray_management + slimmer_PM_dat$row_spacing + slimmer_PM_dat$host_genotype,
    method = "ML",
-   random = list( ~ spray_management | trial_ref),
+   random = list(~ spray_management | trial_ref),
    struct = "UN",
    data = slimmer_PM_dat
 )
@@ -350,10 +349,6 @@ Results show with the exclusion of the no spray control, none of the treatments 
 results_AI <- data.frame(cbind(exp(PM_mv_AI$b),
                                exp((PM_mv_AI$ci.lb)),
                                exp(PM_mv_AI$ci.ub)))
-
-# results_AI <- data.frame(cbind(PM_mv_AI$b,
-#                               (PM_mv_AI$ci.lb),
-#                               PM_mv_AI$ci.ub))
 
 treat <-
    c("control",
@@ -485,5 +480,4 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 
 ```{r Save_meta_data, eval=FALSE}
 write.csv(slimmer_PM_dat, file = "data/GYmeta_data.csv")
-
 ```
