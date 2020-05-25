@@ -10,11 +10,6 @@ This file is not complete and there are a number of things that need checking
 
 ## Import Libraries
 ```{r message=FALSE, warning=FALSE}
-# install.packages("openxlsx")
-# install.packages("readxl")
-# install.packages("tidyr")
-# install.packages("agricolae")
-
 library(openxlsx)
 library(readxl)
 library(tidyr)
@@ -30,6 +25,13 @@ PM_MB_means <- import_data()
 ## Functions
 ```{r functions}
 fold_data <- function(new_DataFrame, template_DataFrame) {
+   # This function formats a dataframe to have the same column order as a template data.frame
+   # If colums are missing from the new_DataFrame that are in the template_DataFrame, it creates them 
+   # with NA values. 
+   # Columns in the new_DataFrame, which are not in the template_DataFrame are appended to the right-hand-side
+   # of the new_DataFrame
+   # Using this function assists in joining the two data.frames together so colums are in the same order
+   
    for (i in colnames(new_DataFrame)) {
       if (i == colnames(new_DataFrame)[1]) {
          x1 <- vector()
@@ -42,13 +44,16 @@ fold_data <- function(new_DataFrame, template_DataFrame) {
          c(x1, match(i, cnames2, nomatch = NA)) # MAke a index vector for the location of new_DataFrame col names in template_DataFrame
    }
    
-   new_DataFrame[cnames2[!(cnames2 %in% cnames1)]] <-
-      NA # adding column names to new_DataFrame not in template_DataFrame
+   new_DataFrame <- as.data.frame(new_DataFrame)
+
+   new_DataFrame[,cnames2[!(cnames2 %in% cnames1)]] <-
+      NA # adding column names to new_DataFrame which are in the template_DataFrame
    new_DataFrame <-
-      new_DataFrame[, c(cnames2, cnames1[is.na(x1)])]  # adding column names to new_DataFrame not in template_DataFrame
+      new_DataFrame[, c(cnames2, cnames1[is.na(x1)])]  # adding columns to new_DataFrame not in template_DataFrame  # aranges column names to new_DataFrame not in template_DataFrame
+   
    return(new_DataFrame)
 }
-source(here("copy_class.R"))
+source(here("R/copy_class.R"))
 source(here("R/data_mesh.R"))
 ```
 
