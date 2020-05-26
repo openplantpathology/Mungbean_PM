@@ -615,7 +615,6 @@ King_11_dat <-
               PM_final_severity = King_11$`14 w.a.p.`,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(King_11$`Yld kg ha`),
-              #AUDPC = apply(King_11[,c("9 w.a.p.", "11 w.a.p.", "12 w.a.p.", "14 w.a.p.")]-1,1, FUN = audpc, dates = c(9*7,11*7,12*7, 14*7))# -1 to the data because zero disease = 1 on rating scale
               stringsAsFactors = FALSE)
 ```
 
@@ -693,11 +692,11 @@ King_11_m <- King_11_dat %>%
               final_assessment = unique(final_assessment),
               PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
               rating_scale = unique(rating_scale),
-              #disease_error = sd(PM_final_severity, na.rm = TRUE),
+              #disease_error = sd(PM_final_severity, na.rm = TRUE),  # this is commented because it never worked for some reason. 
               D_error_type = "stdev",
               grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE)/1000,
               raw_graded = NA,
-              #yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE),
+              #yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE),  # this is commented because it never worked for some reason. 
               Y_error_type = "stdev",
              AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
@@ -714,8 +713,7 @@ King_11_m <- King_11_dat %>%
 # Because of n_treatment being converted to a factor I need to wrangle carefully here
 King_tmp <- King_11_dat %>%
    group_by(host_genotype, fungicide_ai,n_treatment) %>%
-   summarise(#PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
-             disease_error = sd(PM_final_severity, na.rm = TRUE),
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
              yield_error = sd(grain_yield.t.ha./1000, na.rm = TRUE))
 
 
@@ -765,7 +763,8 @@ for (i in 7:33) {
    Goolhi.13[is.na(Goolhi.13[, i]), i] <- 0
 }
 
-
+# This table gives the column references for each respective 
+# location in the canopy
 # Calculate incidence
 #     Sites      1     2     3
 # low canopy  c(7:9, 16:18, 25:27)
@@ -777,13 +776,13 @@ incidence1 <-
 
 # Convert disease survey data to 1-9 Incidence rating scale
 for (i in seq_along(incidence1)) {
-   # incidence = 1
+   # when incidence = 1
    if (all(Goolhi.13[i, 7:33] == 0)) {
       incidence1[i] <- 1
       next()
    }
    
-   # incidence = 2
+   # when incidence = 2
    if (all(Goolhi.13[i, c(10:15, 19:24, 28, 33)] == 0) &&
        (sum(Goolhi.13[i, c(7:9, 16:18, 25:27)] > 0) /
         length(Goolhi.13[i, c(7:9, 16:18, 25:27)])) <= 0.75) {
@@ -792,7 +791,7 @@ for (i in seq_along(incidence1)) {
    }
    
    
-   # incidence = 3
+   # when incidence = 3
    if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
        sum(Goolhi.13[i, c(10:12, 19:21, 28:30)] != 0) <= 3 &&
        (sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] > 0) /
@@ -810,7 +809,7 @@ for (i in seq_along(incidence1)) {
    }
    
    
-   # incidence = 4
+   # when incidence = 4
    if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
        sum(Goolhi.13[i, c(10:12, 19:21, 28:30)] != 0) > 3 &&
        (sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] > 0) /
@@ -820,7 +819,7 @@ for (i in seq_along(incidence1)) {
    }
    
    
-   # incidence = 5
+   # when incidence = 5
    if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
        sum(Goolhi.13[i, c(10:12, 19:21, 28:30)] != 0) > 3 &&
        (sum(Goolhi.13[i, c(7:12, 16:21, 25:30)] > 0) /
@@ -831,7 +830,7 @@ for (i in seq_along(incidence1)) {
    }
    
    
-   # incidence = 6
+   # when incidence = 6
    if (all(Goolhi.13[i, c(13:15, 22:24, 31:33)] == 0) &&
        all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0)) {
       incidence1[i] <- 6
@@ -839,7 +838,7 @@ for (i in seq_along(incidence1)) {
    }
    
    
-   # incidence = 7
+   # when incidence = 7
    if (sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) <= 3 &&
        all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0)) {
       incidence1[i] <- 7
@@ -847,7 +846,7 @@ for (i in seq_along(incidence1)) {
    }
    
    
-   # incidence = 8
+   # when incidence = 8
    if ((sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) > 3 |
         sum(Goolhi.13[i, c(13:15, 22:24, 31:33)]) <= 200) &&
        all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) &&
@@ -859,7 +858,7 @@ for (i in seq_along(incidence1)) {
    }
    
    
-   # incidence = 9
+   # when incidence = 9
    if (sum(Goolhi.13[i, c(13:15, 22:24, 31:33)] != 0) > 3 &&
        all(Goolhi.13[i, c(7:12, 16:21, 25:30)] != 0) &&
        (sum(Goolhi.13[i, 7:33] > 0) /
@@ -1066,7 +1065,6 @@ Goolhi_13_dat <-
               PM_final_severity = Goolhi_13$Inc_33D,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(Goolhi_13$`Yield Kg/ha`)/1000
-              #AUDPC = apply(Goolhi_13[,c("Inc_16D","Inc_33D")]-1,1, FUN = audpc, dates = c(16,33))# -1 to the data because zero disease = 1 on rating scale
               )
 
 ```   
@@ -1117,11 +1115,11 @@ Goolhi_13_m <- Goolhi_13_dat %>%
               final_assessment = unique(final_assessment),
               PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
               rating_scale = unique(rating_scale),
-              #disease_error = sd(PM_final_severity, na.rm = TRUE),
+              #disease_error = sd(PM_final_severity, na.rm = TRUE), # Commented because were not being calculated and included in the summary function
               D_error_type = "stdev",
               grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
               raw_graded = NA,
-              #yield_error = sd(grain_yield.t.ha., na.rm = TRUE),
+              #yield_error = sd(grain_yield.t.ha., na.rm = TRUE), # Commented because were not being calculated and included in the summary function
               Y_error_type = "stdev",
              AUDPC_m = mean(AUDPC),
              AUDPC_sd = sd(AUDPC),
@@ -1139,8 +1137,7 @@ Goolhi_13_m <- Goolhi_13_dat %>%
 # Because of n_treatment being converted to a factor I need to wrangle carefully here
 Goolhi_tmp <- Goolhi_13_dat %>%
    group_by(n_treatment) %>%
-   summarise(#PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
-             disease_error = sd(PM_final_severity, na.rm = TRUE),
+   summarise(disease_error = sd(PM_final_severity, na.rm = TRUE),
              yield_error = sd(grain_yield.t.ha., na.rm = TRUE))
 
 Goolhi_13_m <- left_join(Goolhi_13_m, Goolhi_tmp)
@@ -1352,12 +1349,10 @@ if(any(incidence2 == 0)){
 if(D_assess == "18 DAT1 18-3-2013"){
 MarysM.13D.1 <- MarysM.13D[,c("Treat", "Rep", "Run", "Plot")]
 MarysM.13D.1$Inc_18D <-  incidence2
-#cat(incidence2,"\n",length(incidence2), sep = ", ")
 }
    
 if(D_assess == "19 DAT1 19-3-2013"){
    MarysM.13D.1$Inc_19D <-  incidence2
-   #cat(incidence2,"\n",length(incidence2), sep = ", ")
 }
    
 } #end of loop on disease observations
@@ -1382,8 +1377,6 @@ MarysM.13Y <-
          col_names = TRUE
       )
    )
-dim(MarysM.13Y)
-dim(MarysM.13D.1)
 
 MarysM.13Y$Treat <- as.character(MarysM.13Y$Treat)
 MarysM.13Y$Rep <- as.character(MarysM.13Y$Rep)
@@ -1507,7 +1500,6 @@ MarysM_13_dat <-
               PM_final_severity = MarysM_13$Inc_19D,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(MarysM_13$`Yield Kg/ha`)/1000
-              #AUDPC = apply(MarysM_13[,c("Inc_18D","Inc_19D")]-1,1, FUN = audpc, dates = c(12,12+19)) # -1 to the data because zero disease = 1 on rating scale
               )
 
 ```   
@@ -1563,7 +1555,7 @@ MarysM_13_m <- MarysM_13_dat %>%
               final_assessment = unique(final_assessment),
               PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
               rating_scale = unique(rating_scale),
-              disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+              disease_error = sd(PM_final_severity, na.rm = TRUE), # this not calculating sd and returning NAs?
               D_error_type = "stdev",
               grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
               raw_graded = NA,
@@ -1647,9 +1639,6 @@ for (i in seq_along(Premer.13D[, 1])) {
    
    plotsRecorded[i] <- all(is.na(Premer.13D[i, 7:56]))
    
-   if (i == length(Premer.13D[, 1])) {
-      #print(!plotsRecorded)
-   }
 }
 # remove Plots not surveyed
 Premer.13D <- Premer.13D[!plotsRecorded, ]
@@ -1660,11 +1649,6 @@ incidence3 <-
 
 # Convert disease survey data to 1-9 Incidence rating scale
 for (i in seq_along(incidence3)) {
-   # # NAs
-   # if (all(is.na(Premer.13D[i, 58:107]))) {
-   #    incidence3[i] <- NA
-   #    next()
-   # }
    
    # incidence = 1
    if (all(Premer.13D[i, 58:107] == 0)) {
@@ -1825,7 +1809,6 @@ if(D_assess == "31 DAT1 31-3-2013"){
 
 # The 19 Days after T1 only assessed the first 6 treatments
 # Therefore it will be dropped
-#Premer.13D <- left_join(Premer.13D.1,Premer.13D.2)
 Premer.13D <- Premer.13D.2
 
 
@@ -1960,7 +1943,6 @@ Premer_13_dat <-
               PM_final_severity = Premer_13$Inc_31D,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(Premer_13$`Yield kg/ha`)/1000
-             # AUDPC = apply(Premer_13[,c("Inc_19D","Inc_31D")]-1,1, FUN = audpc, dates = c(19,12+19)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
               )
 
 
@@ -1970,7 +1952,7 @@ Premer_13_dat <-
 ```{r Prem13_AUDPC}
 Premer_13_dat <- cbind(Premer_13_dat,
                           AUDPC = apply(data.frame(zero = 0,
-                                                           Premer_13[,c("Inc_31D")]-1),
+                                                           Premer_13[,c("Inc_31D")]-1),# -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
                                         1, 
                                         FUN = audpc, 
                                         dates = c((Premer_13_dat$first_sign_disease[1]-7)-
@@ -2021,7 +2003,7 @@ Premer_13_m <- Premer_13_dat %>%
               final_assessment = unique(final_assessment),
               PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
               rating_scale = unique(rating_scale),
-              disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+              disease_error = sd(PM_final_severity, na.rm = TRUE), # Produces NAs and needs to be reproduced again below
               D_error_type = "stdev",
               grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
               raw_graded = NA,
@@ -2127,6 +2109,7 @@ for (i in 5:34) {
 incidence4 <-
    vector(mode = "numeric", length = length(Millm_13D[, 1]))
 
+# column index table for incidence ratings
 # Calculate incidence
 #     Sites
 # low canopy  c(5:13)
@@ -2136,6 +2119,7 @@ incidence4 <-
 
 # Convert disease survey data to 1-9 Incidence rating scale
 for (i in seq_along(incidence4)) {
+   
    # incidence = 1
    if (all(Millm_13D[i, c(5:13, 15:23, 25:33)] == 0)) {
       incidence4[i] <- 1
@@ -2444,7 +2428,6 @@ Millm_13_dat <-
               PM_final_severity = Millm_13$Inc_42D,
               rating_scale = "1-9",
               grain_yield.t.ha. = as.numeric(Millm_13$`kg/Ha`)/1000,
-              #AUDPC = apply(Millm_13[,c("Inc_23D","Inc_42D")]-1,1, FUN = audpc, dates = c(23,42)) # -1 to the data because zero disease = 1 on rating scale// Dates are based off days from first sign
               stringsAsFactors = FALSE)
 
 ```
@@ -2494,7 +2477,7 @@ Millm_13_m <- Millm_13_dat %>%
              final_assessment = unique(final_assessment),
              PM_final_severity = mean(PM_final_severity, na.rm = TRUE),
              rating_scale = unique(rating_scale),
-             disease_error = sd(PM_final_severity, na.rm = TRUE), # why is this not working
+             disease_error = sd(PM_final_severity, na.rm = TRUE), # Createds NAs and need repeating below
              D_error_type = "stdev",
              grain_yield.t.ha. = mean(grain_yield.t.ha., na.rm = TRUE),
              raw_graded = NA,
@@ -2560,7 +2543,7 @@ Herm_15 <-
       startRow = 4,
       colNames = TRUE,
       detectDates = TRUE
-   )[1:31, 1:9]
+   )[1:30, 1:9]
 
 
 
@@ -2574,7 +2557,7 @@ Herm_15.DR  <-
       sheet = "HRS ratings & graphs",
       startRow = 5,
       colNames = TRUE
-   )[1:31, 1:8]
+   )[1:30, 1:8]
 
 Herm_15$Plot.Length <- as.numeric(Herm_15$Plot.Length)
 Herm_15$Plot.Weight <- as.numeric(Herm_15$Plot.Weight)
@@ -2585,7 +2568,7 @@ Herm_15$`Plot.Yield.(t/ha)` <-
    as.numeric(Herm_15$`Plot.Yield.(t/ha)`)
 
 # Rename the plot column and remove lines without data
-colnames(Herm_15)[3] <- "Plot"
+colnames(Herm_15[,"Plot.#"]) <- "Plot"
 Herm_15.DR <- Herm_15.DR[!is.na(Herm_15.DR$Treatment),]
 
 
