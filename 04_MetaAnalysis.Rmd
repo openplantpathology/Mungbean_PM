@@ -80,71 +80,12 @@ hist_usq(log(slimmer_PM_dat$yield_error)) # a log transformation shows it is clo
 We will evaluate whether the imputed variances confer a significant difference to the recorded means. I created a distance matrix of two standard errors above the mean against two standard errors below the mean. If any errors don't overlap, inferring significant difference, the imputed variances are discarded and re-sampled until all treatment variances show no significant differences.
 
 ```{r imputing_variances}
-# generate yield error values
-for (i in 0:500) {
-   # Imputing missing log variances
-   log_Yerror <- rnorm(
-      n = sum(is.na(slimmer_PM_dat$yield_error)),
-      mean = mean(log(slimmer_PM_dat$yield_error), na.rm = TRUE),
-      sd = sd(log(slimmer_PM_dat$yield_error), na.rm = TRUE)
-   )
-   
-   # First let's convert Variance to standard error for all the variables that have variance recorded
-   slimmer_PM_dat$yield_SE <-
-      sqrt(slimmer_PM_dat$yield_error) / sqrt(slimmer_PM_dat$n)
-   
-   
-   # Second; adding the imputed standard errors
-   slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"] <-
-      sqrt(exp(log_Yerror)) / sqrt(slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "n"])
-   
-   # all errorbars should overlap so they are consistant with the meta-data describing no significant difference bettween treatments
-   # let's test to make sure
-   if (max(outer(
-      X = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] -
-      (2 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
-      Y = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] +
-      (2 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
-      FUN = "-"
-   )) > 0) {
-      message(
-         paste(
-            "\nWarning!!: Imputed yield errors bestow significant differences on the means.\n",
-            "The original experiment reported no significant differences in the yields, therefore values will be discarded and the imputation function run again - iteration number:",
-            "i =",
-            i
-         )
-      )
-      next()
-   } else{
-      message(
-         paste(
-            i,
-            "iterations: ",
-            "imputed variances now show no significant distances :)\n Now adding variances to data "
-         )
-      )
-      
-      # Plot the imputed errors for each trial
-      Vplot <-
-         slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), ] %>%
-         ggplot(aes(y = grain_yield.t.ha, trial)) +
-         #geom_point()+
-         geom_pointrange(
-            ymin = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] -
-               (1.95 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
-            ymax = slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "grain_yield.t.ha"] +
-               (1.95 * slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_SE"]),
-            position = "jitter"
-         ) +
-         ylim(0.2, 1.5)
-      
-      slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error), "yield_error"] <-
-         exp(log_Yerror)
-      print(Vplot)
-      break()
-   }
-}
+source("./R/impute_yield_err.R")
+
+imputed_error_list <- impute_yield_err(slimmer_PM_dat, "grain_yield.t.ha", "yield_error","n")
+
+slimmer_PM_dat <- imputed_error_list[["new_dataFrame"]]
+
 ```
 
 The imputed variances calculated above don't show the expected positive correlation between grain yield and variance. This is unexpected and reflects the inherent variability of the data. Therefore we will calculate the trial mean squares and use this to calculate the variance for each sample.  
