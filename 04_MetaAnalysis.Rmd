@@ -109,7 +109,8 @@ for (i in 0:500) {
    )) > 0) {
       message(
          paste(
-            "\nWarning!!: Imputed yield errors show significant differences when they should not, imputation will automatically rerun - iteration",
+            "\nWarning!!: Imputed yield errors bestow significant differences on the means.\n",
+            "The orignal experiment reported no significant differances in the yields, therefore values will be discarded and the imputation function run again - iteration number:",
             "i =",
             i
          )
