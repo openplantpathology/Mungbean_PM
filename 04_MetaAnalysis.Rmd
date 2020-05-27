@@ -2,7 +2,7 @@
 ```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer, netmeta)
+pacman::p_load(tidyverse, kableExtra, bomrang, lme4, RColorBrewer,metafor, netmeta)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -127,9 +127,10 @@ for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
 Before analysis let's have a look at the trimmed down modified data.  
 
 ```{r treatment_means_plot}
+# class spray_managment as a factor and reorder them for the plot
 slimmer_PM_dat$spray_management <-
    factor(slimmer_PM_dat$spray_management,
-          levels(slimmer_PM_dat$spray_management)[rev(c(1, 2, 4, 5, 3))])
+          levels(factor(slimmer_PM_dat$spray_management))[rev(c(1, 2, 4, 5, 3))])
 
 slimmer_PM_dat %>%
    ggplot(aes(y = grain_yield.t.ha, x = spray_management)) +
@@ -149,8 +150,9 @@ There seems like no difference between the treatments, with exception to Late_pl
 It is also important to visualise how well the data is compared across the trial years and trials.  
 
 ```{r table_of_nTreatments}
-kableExtra::kable(table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year),
-                  align = rep('c', 8)) %>%  #commented as was redering empty, needs a look in
+kable(table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year),
+                  align = rep('c', 8),
+      caption = "Which treatments and how many treatments are represented in each year") %>%  
    kable_styling(
       "striped",
       fixed_thead = TRUE,
@@ -180,7 +182,7 @@ slimmer_PM_dat %>%
    geom_jitter(width = 0.1, alpha = 1 / 5) +
    labs(x = "Spray management variable",
         y = "Grain yield (t/Ha)",
-        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
+        title = "Mean grain yield difference to the control for each treatment \n categorised by spray management scenario") +
    theme(plot.title = element_text(hjust = 0.5)) +
    geom_hline(yintercept = 0, linetype = 2) +
    coord_flip()
@@ -205,7 +207,6 @@ Finally we will assign factor classes to the main variables in the meta-analysis
    * Trial row spacing  
 
 ```{r metafor_organisation}
-library(metafor)
 slimmer_PM_dat$spray_management <-
    factor(
       slimmer_PM_dat$spray_management,
