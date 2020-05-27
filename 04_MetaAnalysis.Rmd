@@ -244,21 +244,6 @@ PM_mv_AI <- rma.mv(
 summary(PM_mv_AI)
 ```
 
-```{r Metafor-analysis}
-PM_mv_AI <- rma.mv(
-   yi,
-   vi,
-   mods = ~ slimmer_PM_dat$spray_management + slimmer_PM_dat$row_spacing + slimmer_PM_dat$host_genotype,
-   method = "ML",
-   random = list(~ spray_management | trial_ref),
-   struct = "UN",
-   data = slimmer_PM_dat
-)
-
-summary(PM_mv_AI)
-
-```
-
 Results show that yields in single early spray treatments are not significantly different to the no spray control. Commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. On average a spray schedule with two or more applications stating late (7-19 days after first sign of powdery mildew) produced the highest yields.
 
 When we compare these results to those of the linear mixed effect model there is little difference in the outcome. The most notable difference is the linear mixed-effect model is somewhat less certain about the `Late_plus` treatment, and the mean yield lower than the `recommended_plus` treatment.
