@@ -82,13 +82,16 @@ We will evaluate whether the imputed variances confer a significant difference t
 ```{r imputing_variances}
 source("./R/impute_yield_err.R")
 
-imputed_error_list <- impute_yield_err(slimmer_PM_dat, "grain_yield.t.ha", "yield_error","n")
+imputed_error_list <- impute_yield_err(dat = slimmer_PM_dat, 
+                                       xbar = "grain_yield.t.ha", 
+                                       Var = "yield_error",
+                                       reps = "n")
 
 slimmer_PM_dat <- imputed_error_list[["new_dataFrame"]]
 
 ```
 
-The imputed variances calculated above don't show the expected positive correlation between grain yield and variance. This is unexpected and reflects the inherent variability of the data. Therefore we will calculate the trial mean squares and use this to calculate the variance for each sample.  
+The imputed variances calculated above don't show the expected positive correlation between grain yield and variance. This is unexpected and reflects the inherent variability of the data. Therefore we will equalise the variance by using the trial mean squares and use this to calculate the variance for each sample.  
 
 #### Imputing sample variances from Mean squares
 ```{r imputing_MSE_dataSpread}
@@ -102,10 +105,10 @@ Imputing using a log transformation of the data is required. Which trials need v
 
 ```{r imputing_MSE}
 TrialMSQ <- slimmer_PM_dat %>%
-   group_by(trial_ref)%>%
+   group_by(trial_ref,location,year)%>%
    summarise(unique(Y_Msquare))
 
-TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), "trial_ref"]
+TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), c("trial_ref", "location","year")]
 ```
 
 
