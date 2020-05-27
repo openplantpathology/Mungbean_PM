@@ -244,9 +244,13 @@ PM_mv_AI <- rma.mv(
 summary(PM_mv_AI)
 ```
 
-Results show that yields in single early spray treatments are not significantly different to the no spray control. Commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. On average a spray schedule with two or more applications stating late (7-19 days after first sign of powdery mildew) produced the highest yields.
+The first table in this output shows the tau^2 (variance) of each random effects and the number of occurances for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occured within the same trial which is indicated by the right side of the table.  
 
-When we compare these results to those of the linear mixed effect model there is little difference in the outcome. The most notable difference is the linear mixed-effect model is somewhat less certain about the `Late_plus` treatment, and the mean yield lower than the `recommended_plus` treatment.
+The fixed effects, in the last table, showed that yields in single early spray treatments are not significantly different to the no spray control. 
+Also commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. 
+On average a spray schedule with two or more applications stating late (7 - 19 days after first sign of powdery mildew) produced the highest yields.
+
+When we compare these results to those of the linear mixed effect model there is little difference in the outcome. 
 
 ```{r compare_meta&lmer}
 lme_PM <-
@@ -256,7 +260,7 @@ lme_PM <-
 summary(lme_PM)
 ```
 
-*****s
+*****
 
 To make it easier to compare each of the treatments we can compute the meta-analysis contrasts.
 ```{r metafor_contrasts}
@@ -268,37 +272,24 @@ anova(PM_mv_AI, L = rbind(
    c(0, 1, 0, 0, -1),
    # early vs Late plus
    c(0, 0, -1, 1, 0),
-   # Recommended vs recommended_plus
+   # Recommended plus vs recommended
    c(0, 0, -1, 0, 1),
-   # Recommended vs Late_Plus
+   # Late_Plus vs Recommended
    c(0, 0, 0, -1, 1)
-)) # recommended_plus vs Late_plus
+)) # Late_plus vs Recommended plus
 ```
-Results show with the exclusion of the no spray control, none of the treatments are significantly different, however, early applications treatments on average produced lower yields. Let's view this on a plot.
+Results show with the exclusion of the no spray control, none of the treatments are significantly different, however, early applications treatments on average produced lower yields. Also the model was almost significant when assessing recommended_plus as saving more yield than recommended. This is probably due to the fact there were more comparisons between these two treatments which allowed a more certain outcome.
+Let's view these comparisons in a plot.
 
+First we will format the results into a dataframe and back-transform the log values by using the exponent function
 ```{r metafor_results}
 results_AI <- data.frame(cbind(exp(PM_mv_AI$b),
                                exp((PM_mv_AI$ci.lb)),
                                exp(PM_mv_AI$ci.ub)))
 
-treat <-
-   c("control",
-     "Early",
-     "Recommended",
-     "Recommended_plus",
-     "Late_plus")
 efficacy <- tbl_df(results_AI)
-efficacy$treat <- treat
-efficacy$se <- PM_mv_AI$se
-colnames(efficacy) <-
-   c("Mean", "CIs_lower", "CI_upper", "Treatment", "SE")
-efficacy
-```
-
-```{r metafor_plot}
 efficacy$Treatment <-
    factor(
-      efficacy$Treatment,
       c(
          "control",
          "Early",
@@ -308,6 +299,13 @@ efficacy$Treatment <-
       )
    )
 
+efficacy$se <- PM_mv_AI$se
+colnames(efficacy) <-
+   c("Mean", "CIs_lower", "CI_upper", "Treatment", "SE")
+efficacy
+```
+
+```{r metafor_plot}
 efficacy %>%
    ggplot(aes(Treatment, Mean)) +
    geom_hline(
@@ -320,7 +318,7 @@ efficacy %>%
    coord_flip()
 ```
 
-What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented across all experiments. However it could also be because it also has a low number of pooled reps per trial. Let's look at how well each of the treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
+What is interesting here is that the variance in the control has increased while the treatments have decreased. This is despite the control being the best represented across all experiments. However it could also be because it also has a low number of pooled reps per trial. Let's look at how well each of the number treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
 
 
 ### netmeta package  
@@ -355,7 +353,9 @@ summary(net_con)
 ```
 Now let's visualise this as a forest plot
 
+
 ```{r netmeta-forest}
+# I don't know why this is not working I will need to follow up on this
 forest(
    net_con,
    reference.group = 4,
