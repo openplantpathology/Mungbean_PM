@@ -243,7 +243,7 @@ PM_mv_AI <- rma.mv(
 summary(PM_mv_AI)
 ```
 
-```{r ReRunMetafor}
+```{r Initiak_ReRunMetafor}
 dat1 <- data.frame(
    iteration = 0,
    mods = names(coef(PM_mv_AI)),
@@ -256,72 +256,28 @@ dat1 <- data.frame(
    row.names = NULL
    )
 
-# Each time below is run dat1 will add the extra iterations to the bottom of dat1
-
-for(i2 in (max(dat1$iteration) +1):(max(dat1$iteration) +3)){
-   # Read in data again
-slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv")
-
-# Identify trials without variance
-TrialMSQ <- slimmer_PM_dat %>%
-   group_by(trial_ref,location,year)%>%
-   summarise(unique(Y_Msquare))
-
-# impute variance
-for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
-   slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "Y_Msquare"] <-
-      exp(rnorm(
-         n = 1,
-         mean = mean(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE),
-         sd(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE)
-      ))
-}
-
-#######
-
-#reformat data
-slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
-slimmer_PM_dat$vi <-
-   slimmer_PM_dat$Y_Msquare / (slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha ^
-                                  2)
-
-slimmer_PM_dat$spray_management <-
-   factor(slimmer_PM_dat$spray_management)
-slimmer_PM_dat$trial_ref <- factor(slimmer_PM_dat$trial_ref)
-slimmer_PM_dat$trial <- factor(slimmer_PM_dat$trial)
-
-
-# Run meta-analysis
-PM_mv_AI <- rma.mv(
-   yi,
-   vi,
-   mods = ~ spray_management,
-   method = "ML",
-   random = list(~ spray_management | trial),
-   struct = "UN",
-   data = slimmer_PM_dat
-)
-
-dat2 <- data.frame(
-   iteration = i2,
-   mods = names(coef(PM_mv_AI)),
-   coefs = coef(PM_mv_AI),
-   se = PM_mv_AI$se,
-   zval = PM_mv_AI$zval,
-   pval = PM_mv_AI$pval,
-   ci.lb = PM_mv_AI$ci.lb,
-   ci.ub = PM_mv_AI$ci.ub,
-   row.names = NULL
-   )
-
-
-
-dat1 <- rbind(dat1,dat2)
-}
-dat1
-
+write.csv(dat1, "./cache/metaIteration.csv", row.names = FALSE)
 ```
+
+```{r run_iterations_asJobscript}
+# WARNING don't run a high number of iterations without increasing sys.sleep
+# sys.sleep should not be reduced below 4 for 50 iterations and
+# below 0.5 for 10 iterations
+for(ITERATE in 1:10){
+rstudioapi::jobRunScript(
+  "./R/ReRun_metafor-grainyield.R",
+  workingDir = here::here(),
+  name = "metafor_iteration",
+)
+   Sys.sleep(1)
+}
+```
+
+
+
 ```{r coef_iteration}
+dat1 <- read.csv("./cache/metaIteration.csv")
+table(dat1$iteration)
 dat1 %>%
    ggplot(aes(x = iteration ,y = coefs,))+
    geom_ribbon(aes(ymax = ci.ub, ymin = ci.lb, x = iteration), fill = "grey70")+
@@ -330,7 +286,7 @@ dat1 %>%
    
 ```
 
-```{r pval_iteration}
+```{r pval_iteration_plot}
 dat1 %>%
    ggplot(aes(x = iteration ,y = pval,))+
    geom_line()+
