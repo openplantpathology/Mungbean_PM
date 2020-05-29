@@ -321,7 +321,7 @@ dat1 <- rbind(dat1,dat2)
 dat1
 
 ```
-```{r}
+```{r coef_iteration}
 dat1 %>%
    ggplot(aes(x = iteration ,y = coefs,))+
    geom_ribbon(aes(ymax = ci.ub, ymin = ci.lb, x = iteration), fill = "grey70")+
@@ -330,6 +330,14 @@ dat1 %>%
    
 ```
 
+```{r pval_iteration}
+dat1 %>%
+   ggplot(aes(x = iteration ,y = pval,))+
+   geom_line()+
+   geom_hline(yintercept = 0.05, colour = "grey50", linetype = 2)+
+   facet_grid(cols = vars(mods))
+   
+```
 
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occured within the same trial which is indicated by the right side of the table.  
