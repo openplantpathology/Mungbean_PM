@@ -10,8 +10,7 @@ library(theme.usq)
 theme_set(theme_usq())
 
 # Data
-slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv"
-)
+slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv")
 ```
 
 # Meta-analysis
@@ -244,7 +243,96 @@ PM_mv_AI <- rma.mv(
 summary(PM_mv_AI)
 ```
 
-The first table in this output shows the tau^2 (variance) of each random effects and the number of occurances for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occured within the same trial which is indicated by the right side of the table.  
+```{r ReRunMetafor}
+dat1 <- data.frame(
+   iteration = 0,
+   mods = names(coef(PM_mv_AI)),
+   coefs = coef(PM_mv_AI),
+   se = PM_mv_AI$se,
+   zval = PM_mv_AI$zval,
+   pval = PM_mv_AI$pval,
+   ci.lb = PM_mv_AI$ci.lb,
+   ci.ub = PM_mv_AI$ci.ub,
+   row.names = NULL
+   )
+
+# Each time below is run dat1 will add the extra iterations to the bottom of dat1
+
+for(i2 in (max(dat1$iteration) +1):(max(dat1$iteration) +3)){
+   # Read in data again
+slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv")
+
+# Identify trials without variance
+TrialMSQ <- slimmer_PM_dat %>%
+   group_by(trial_ref,location,year)%>%
+   summarise(unique(Y_Msquare))
+
+# impute variance
+for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
+   slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "Y_Msquare"] <-
+      exp(rnorm(
+         n = 1,
+         mean = mean(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE),
+         sd(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE)
+      ))
+}
+
+#######
+
+#reformat data
+slimmer_PM_dat$yi <- log(slimmer_PM_dat$grain_yield.t.ha)
+slimmer_PM_dat$vi <-
+   slimmer_PM_dat$Y_Msquare / (slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha ^
+                                  2)
+
+slimmer_PM_dat$spray_management <-
+   factor(slimmer_PM_dat$spray_management)
+slimmer_PM_dat$trial_ref <- factor(slimmer_PM_dat$trial_ref)
+slimmer_PM_dat$trial <- factor(slimmer_PM_dat$trial)
+
+
+# Run meta-analysis
+PM_mv_AI <- rma.mv(
+   yi,
+   vi,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list(~ spray_management | trial),
+   struct = "UN",
+   data = slimmer_PM_dat
+)
+
+dat2 <- data.frame(
+   iteration = i2,
+   mods = names(coef(PM_mv_AI)),
+   coefs = coef(PM_mv_AI),
+   se = PM_mv_AI$se,
+   zval = PM_mv_AI$zval,
+   pval = PM_mv_AI$pval,
+   ci.lb = PM_mv_AI$ci.lb,
+   ci.ub = PM_mv_AI$ci.ub,
+   row.names = NULL
+   )
+
+
+
+dat1 <- rbind(dat1,dat2)
+}
+dat1
+
+```
+```{r}
+dat1 %>%
+   ggplot(aes(x = iteration ,y = coefs,))+
+   geom_ribbon(aes(ymax = ci.ub, ymin = ci.lb, x = iteration), fill = "grey70")+
+   geom_line()+
+   facet_grid(cols = vars(mods))
+   
+```
+
+
+
+The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occured within the same trial which is indicated by the right side of the table.  
 
 The fixed effects, in the last table, showed that yields in single early spray treatments are not significantly different to the no spray control. 
 Also commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. 
@@ -281,7 +369,7 @@ anova(PM_mv_AI, L = rbind(
 Results show with the exclusion of the no spray control, none of the treatments are significantly different, however, early applications treatments on average produced lower yields. Also the model was almost significant when assessing recommended_plus as saving more yield than recommended. This is probably due to the fact there were more comparisons between these two treatments which allowed a more certain outcome.
 Let's view these comparisons in a plot.
 
-First we will format the results into a dataframe and back-transform the log values by using the exponent function
+First we will format the results into a data frame and back-transform the log values by using the exponent function
 ```{r metafor_results}
 results_AI <- data.frame(cbind(exp(PM_mv_AI$b),
                                exp((PM_mv_AI$ci.lb)),
