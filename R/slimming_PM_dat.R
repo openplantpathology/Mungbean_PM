@@ -9,7 +9,7 @@ slim_PM_dat <- data.frame(
    trial = paste(PM_MB_Mtemp$trial_ref, PM_MB_Mtemp$year,
                  PM_MB_Mtemp$location,PM_MB_Mtemp$host_genotype,
                  PM_MB_Mtemp$row_spacing, sep = "_"),
-   trial_ref = as.character(PM_MB_Mtemp$trial_ref),
+   trial_ref = as.factor(PM_MB_Mtemp$trial_ref),
    year = as.integer(PM_MB_Mtemp$year),
    host_genotype = PM_MB_Mtemp$host_genotype,
    location = as.character(PM_MB_Mtemp$location),
