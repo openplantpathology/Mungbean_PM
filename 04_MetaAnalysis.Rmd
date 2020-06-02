@@ -112,7 +112,7 @@ TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), c("trial_ref", "location","year")]
 
 
 
-```{r imputation_MSE}
+```{r imputation_MSE, eval=FALSE, include=FALSE}
 for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
    slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "Y_Msquare"] <-
       exp(rnorm(
@@ -123,10 +123,19 @@ for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
 }
 ```
 
+The use of these imputed MSE was giving a varied outcome each time it was run. We the next code chunk removes the studies without variation to observe what the meta-analysis outcome would be.
+
+```{r remove_NA_MSE}
+slimmer_PM_dat <- 
+   slimmer_PM_dat[!is.na(slimmer_PM_dat$Y_Msquare),]
+
+```
+
+
 Before analysis let's have a look at the trimmed down modified data.  
 
 ```{r treatment_means_plot}
-# class spray_managment as a factor and reorder them for the plot
+# class spray_management as a factor and reorder them for the plot
 slimmer_PM_dat$spray_management <-
    factor(slimmer_PM_dat$spray_management,
           levels(factor(slimmer_PM_dat$spray_management))[rev(c(1, 2, 4, 5, 3))])
@@ -191,7 +200,7 @@ slimmer_PM_dat %>%
 
 ## Meta-analysis  
 ### metafor package  
-Let's load the metafor package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
+Let's load the `metafor` package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
 Next we are log transforming the grain yield and calculating the variance from the trial mean squares.  
 Finally we will assign factor classes to the main variables in the meta-analysis. Note that variable trial is a combination of:
 
@@ -243,7 +252,9 @@ PM_mv_AI <- rma.mv(
 summary(PM_mv_AI)
 ```
 
-```{r Initiak_ReRunMetafor}
+
+
+```{r Initiak_ReRunMetafor, eval=FALSE, include=FALSE}
 dat1 <- data.frame(
    iteration = 0,
    mods = names(coef(PM_mv_AI)),
@@ -256,10 +267,11 @@ dat1 <- data.frame(
    row.names = NULL
    )
 
-write.csv(dat1, "./cache/metaIteration.csv", row.names = FALSE)
+# commented the code below so the file does not get overwritten
+#write.csv(dat1, "./cache/metaIteration.csv", row.names = FALSE)
 ```
 
-```{r run_iterations_asJobscript}
+```{r run_iterations_asJobscript, eval=FALSE, include=FALSE}
 # WARNING don't run a high number of iterations without increasing sys.sleep
 # sys.sleep should not be reduced below 4 for 50 iterations and
 # below 0.5 for 10 iterations
@@ -276,13 +288,19 @@ rstudioapi::jobRunScript(
 
 
 ```{r coef_iteration}
+change_labels <- function(x1){
+   x1 <- gsub(pattern = "spray_management",replacement = "",x = x1)
+   x1 <- gsub(pattern = "_",replacement = "\n",x = x1)
+   x1
+}
+
 dat1 <- read.csv("./cache/metaIteration.csv")
-table(dat1$iteration)
 dat1 %>%
    ggplot(aes(x = iteration ,y = coefs,))+
    geom_ribbon(aes(ymax = ci.ub, ymin = ci.lb, x = iteration), fill = "grey70")+
    geom_line()+
-   facet_grid(cols = vars(mods))
+   facet_grid(cols = vars(mods), labeller = labeller(mods = change_labels))+
+   theme(strip.text.x = element_text(size = 9))
    
 ```
 
@@ -290,13 +308,18 @@ dat1 %>%
 dat1 %>%
    ggplot(aes(x = iteration ,y = pval,))+
    geom_line()+
+   scale_y_log10()+
    geom_hline(yintercept = 0.05, colour = "grey50", linetype = 2)+
-   facet_grid(cols = vars(mods))
-   
+   facet_grid(cols = vars(mods), labeller = labeller(mods = change_labels))+
+   theme(strip.text.x = element_text(size = 9))
+
+
+temp_labels(dat1)
+labeller()
 ```
 
 
-The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occured within the same trial which is indicated by the right side of the table.  
+The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occurred within the same trial which is indicated by the right side of the table.  
 
 The fixed effects, in the last table, showed that yields in single early spray treatments are not significantly different to the no spray control. 
 Also commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. 
@@ -318,7 +341,7 @@ To make it easier to compare each of the treatments we can compute the meta-anal
 ```{r metafor_contrasts}
 anova(PM_mv_AI, L = rbind(
    c(0, 1, -1, 0, 0),
-   # early vs Recomended
+   # early vs Recommended
    c(0, 1, 0, -1, 0),
    # early vs recommended plus
    c(0, 1, 0, 0, -1),
