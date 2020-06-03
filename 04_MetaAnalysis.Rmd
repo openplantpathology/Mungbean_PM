@@ -248,13 +248,21 @@ PM_mv_AI <- rma.mv(
    struct = "UN",
    data = slimmer_PM_dat
 )
-
-summary(PM_mv_AI)
 ```
 
-
+#### Investigate impact of imputing Mean square errors on the meta-analysis outcomes
 
 ```{r Initiak_ReRunMetafor, eval=FALSE, include=FALSE}
+# It was noticed that the meta analysis was giving different outcomes.
+#     (not just small variations in estimates and p-values, but large variations)
+# The following chunks investigate how much these values vary and change the outcomes
+#
+# This chunk creates a data.frame from the meta-analysis which was run in the previous chunk `Metafor-analysis`
+# and sets the iteration number as 0
+# this data.frame is appended with additional iterations to in the following chunk
+
+summary(PM_mv_AI)
+
 dat1 <- data.frame(
    iteration = 0,
    mods = names(coef(PM_mv_AI)),
@@ -265,58 +273,103 @@ dat1 <- data.frame(
    ci.lb = PM_mv_AI$ci.lb,
    ci.ub = PM_mv_AI$ci.ub,
    row.names = NULL
-   )
+)
 
 # commented the code below so the file does not get overwritten
 #write.csv(dat1, "./cache/metaIteration.csv", row.names = FALSE)
 ```
 
 ```{r run_iterations_asJobscript, eval=FALSE, include=FALSE}
+# This chunk iterates the imputation of MSEs and reruns the metafor analysis
+# each time it iterates it appends some of the output information into the "metaIteration.csv" file
+# To increase the speed the calculations/iterations it is send to multiple jobs in the background.
+#
 # WARNING don't run a high number of iterations without increasing sys.sleep
 # sys.sleep should not be reduced below 4 for 50 iterations and
 # below 0.5 for 10 iterations
-for(ITERATE in 1:10){
-rstudioapi::jobRunScript(
-  "./R/ReRun_metafor-grainyield.R",
-  workingDir = here::here(),
-  name = "metafor_iteration",
-)
+for (ITERATE in 1:10) {
+   rstudioapi::jobRunScript(
+      "./R/ReRun_metafor-grainyield.R",
+      workingDir = here::here(),
+      name = "metafor_iteration",
+   )
    Sys.sleep(1)
 }
 ```
 
 
+```{r coef_iteration, eval=FALSE, include=FALSE}
+# This chunk plots the coefficients and corresponding confidence intervals 
+#     for each iteration of the metafor calculation to visualise how much variation 
+#     the imputed MSE imbue on the moderator coefs
 
-```{r coef_iteration}
+# This function alters the moderator names so they are plotted legibly in the facet strips
 change_labels <- function(x1){
    x1 <- gsub(pattern = "spray_management",replacement = "",x = x1)
    x1 <- gsub(pattern = "_",replacement = "\n",x = x1)
    x1
 }
 
-dat1 <- read.csv("./cache/metaIteration.csv")
-dat1 %>%
+metaI <- read.csv("./cache/metaIteration.csv")
+metaI %>%
    ggplot(aes(x = iteration ,y = coefs,))+
    geom_ribbon(aes(ymax = ci.ub, ymin = ci.lb, x = iteration), fill = "grey70")+
    geom_line()+
    facet_grid(cols = vars(mods), labeller = labeller(mods = change_labels))+
-   theme(strip.text.x = element_text(size = 9))
+   theme(strip.text.x = element_text(size = 9)) # change facet strip label font size
    
 ```
 
 ```{r pval_iteration_plot}
-dat1 %>%
-   ggplot(aes(x = iteration ,y = pval,))+
-   geom_line()+
-   scale_y_log10()+
-   geom_hline(yintercept = 0.05, colour = "grey50", linetype = 2)+
-   facet_grid(cols = vars(mods), labeller = labeller(mods = change_labels))+
-   theme(strip.text.x = element_text(size = 9))
+# Plot the p - values of the spray_management moderators
+# transform y axis on log scale
+metaI %>%
+   ggplot(aes(x = iteration , y = pval, )) +
+   geom_line() +
+   scale_y_log10() +
+   geom_hline(
+      yintercept = c(0.05, 0.001),
+      colour = "grey50",
+      linetype = 2
+   ) +
+   facet_grid(cols = vars(mods),
+              labeller = labeller(mods = change_labels)) +
+   theme(strip.text.x = element_text(size = 9)) +
+   geom_text(
+      aes(
+         y = 0.05,
+         x = 1,
+         label = c("P = 0.05")
+      ),
+      size = 3,
+      colour = "grey50",
+      hjust = 0,
+      vjust = -0.5
+   )+
+      geom_text(
+      aes(
+         y = 0.001,
+         x = 1,
+         label = c("P = 0.001")
+      ),
+      size = 3,
+      colour = "grey50",
+      hjust = 0,
+      vjust = -0.5
+   )
 
 
-temp_labels(dat1)
-labeller()
 ```
+
+```{r metafor_summary}
+summary(PM_mv_AI)
+rstudent.rma.mv(PM_mv_AI)
+# confint(PM_mv_AI) Can't finish running
+```
+
+According to the results of the omnibus test ($Q_M = 10.65, df = 4, p = 0.0308$) we can reject the null hypothesis $H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$ that the tested spray management schedules have no benefit to protecting mungbean yields[@Viechtbauer2010]. 
+However Late plus ($\beta_4$) was the only moderator showing a significant effect on yields ($z = 3.2276; p = 0.0012$). 
+The analysis shows there is still a considerable amount of residual heterogeneity ($Q_E = 5096.04, df = 125, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.  
 
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occurred within the same trial which is indicated by the right side of the table.  
