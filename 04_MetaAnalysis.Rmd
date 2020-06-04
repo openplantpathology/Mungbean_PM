@@ -320,7 +320,7 @@ metaI %>%
    
 ```
 
-```{r pval_iteration_plot}
+```{r pval_iteration_plot, eval=FALSE, include=FALSE}
 # Plot the p - values of the spray_management moderators
 # transform y axis on log scale
 metaI %>%
@@ -363,8 +363,6 @@ metaI %>%
 
 ```{r metafor_summary}
 summary(PM_mv_AI)
-rstudent.rma.mv(PM_mv_AI)
-# confint(PM_mv_AI) Can't finish running
 ```
 
 According to the results of the omnibus test ($Q_M = 10.65, df = 4, p = 0.0308$) we can reject the null hypothesis $H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$ that the tested spray management schedules have no benefit to protecting mungbean yields[@Viechtbauer2010]. 
