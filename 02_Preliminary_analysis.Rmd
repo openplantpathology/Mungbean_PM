@@ -15,26 +15,26 @@ source("R/import_data.R")
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
-#source("./getPPD2.R")
 theme_set(theme_usq())
 ```
 
 ## Explore and Visualise Data
-
+First lets import the data. Each row provides the mean yield for each experimental treatment.
 ```{r echo=FALSE, message=FALSE, warning=FALSE, include= FALSE}
 # Import data
-PM_MB_means <- import_data() # link expires 2021-12-01
-
-#remove the variation in different sulphur formulations
-unique(PM_MB_means[
-   grep("sulphur",PM_MB_means$fungicide_ai),
-   "fungicide_ai"])
-PM_MB_means[grep("sulphur",PM_MB_means$fungicide_ai),"fungicide_ai"] <- "sulphur"
-
+PM_MB_means <- import_data() 
 ```
 
-Various factors have been studied in the previous experiments which may influence the following results.
-However, unless stated, the following plots and analyses were made disregarding effects from other factors not mentioned.
+The data explored in the `PM_MB_means` data frame is a list of mean values from each treatment in each respective experiment.
+These preliminary analyses will focus on the change in mungbean yields which is attributable to the fungicide treatment. 
+Later in this document we will also consider the impact of fungicide treatments on disease incidence/severity. 
+Mean powdery mildew incidence was recorded at the end of each growing season. 
+Some experiments recorded disease incidence throughout the season and these were summarised with AUDPC. 
+AUDPC for trials which only provided final powdery mildew incidence was calculated using the record of 'first sign of disease' and final assessment. 
+More details on how the `PM_MB_means` data was compiled can be found in the ['Data wrangle vingette'][./vignette/191115_PMMB_DataWrangling_PM.Rmd]
+
+Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
+On this page, unless stated, the following plots and analyses were made disregarding effects the following factors which have the potential to influence mungbean grain yield and/or powdery mildew mean plot severity.
 
    1 Fungicide type  
    
@@ -62,13 +62,22 @@ However, unless stated, the following plots and analyses were made disregarding 
 
 The data plotted below are from `r length(unique(PM_MB_means$trial_ref))` field trials between (`r first(levels(PM_MB_means$year))` - `r last(levels(PM_MB_means$year))`) of which the details are described in [Studies considered in meta-analysis section](#studies-considered-in-meta-analysis).
 
-All data explored below are a list of mean values from each treatment applied in each experiment.
-Some experiments have in-season observations of disease incidence and severity.
-However, here we have summarised the data to show only the end of season observations.
 
 ### Fungicides
 
 #### Fungicide type
+
+First lets standardise the sulphur treatments. Some early experiments tested different formulations. There was no difference in the sulphur formulations so we will refer to all of them as "sulphur".
+
+```{r sulphur_simplify}
+# Remove the variation in different sulphur formulations
+unique(PM_MB_means[grep("sulphur", PM_MB_means$fungicide_ai),
+                   "fungicide_ai"])
+PM_MB_means[grep("sulphur", PM_MB_means$fungicide_ai), "fungicide_ai"] <-
+   "sulphur"
+
+```
+
 
 Let's explore how many different types of fungicide were used and at what frequency.
 
@@ -88,18 +97,17 @@ PM_MB_means %>%
    coord_flip()
 ```
 
+The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in included in the highest frequencies, along with sulphur. The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.  
 
-   - Tebuconazole and propiconazole could be pooled as a triazole or demethylation inhibitors (DMI) fungicide treatment.  
+Amistar Xtra and Custodia are both contain strobilurin and triazole mixes, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.  
 
-   - Amistar Xtra and Custodia are both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.  
-
-   - Perhaps best way forward is to do an analysis of only the triazoles/DMIs.
-   Then do another including azoxystrobin as a comparison.
+Perhaps best way forward is to focus the meta-analysis on only the triazoles/DMIs. This can then be compared to an additional meta-analysis including azoxystrobin as a comparison.
    
 *****
 
-The primary focus of this research is the effect of fungicide on mitigating yield loss to disease.
-To reduce the effect of location and seasonal influences we will investigate the proportion of grain yield saved relative to the no spray control.  
+Before we exclude non-DMI fungicides lets have a look at the efficacy of the other fungicides in comparison to the DMIs.
+For this comparison we will focus on the proportional yield saved, relative to the no spray control. The primary focus of this research is the effect of fungicide on mitigating yield loss due to disease.
+We are using proportional yield, realative to the no spray control, to reduce the effect of location and seasonal influences.  
 
 First, let's investigate the difference in the effect of the type of fungicide on proportion of yield saved.
 Proportion of yield saved is used in attempt to reduce variation between trials.
