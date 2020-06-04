@@ -10,7 +10,6 @@
 #' PM_MB_means <- import_data()
 #'
 
-# devtools::install_github("PaulMelloy/cloudy")
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(here)
 
@@ -53,9 +52,6 @@ import_data <- function() {
       as.Date(x$final_assessment, format = "%Y-%m-%d")
    x$Y_error_type <- as.character(x$Y_error_type)
    
-   #delete when base data is corrected
-   # x[x$trial_ref == "mung1516/01", "harvest_date"] <- as.Date("2016-05-06", format = "%Y-%m-%d")
-   # x[x$trial_ref == "mung1516/01", "final_assessment"] <- as.Date("2016-04-15", format = "%Y-%m-%d")
    
    if (!c("AUDPS_m") %in% colnames(x)) {
       x$AUDPS_m <- NA
