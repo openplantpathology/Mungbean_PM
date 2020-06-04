@@ -11,13 +11,30 @@ link-citations: yes
 github-repo: OpenPlantPathology/Mungbean_PM
 description: "A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew."
 ---
+# Home
 
+This compendium details the statistical analysis and methods while undertaking a meta-analysis of fungicide efficacy trials for control of powdery mildew in mungbean. 
+This meta-analysis will focus on the main aim of:
 
-# Research questions
+> When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yields?  
 
-+ When is the optimum time to spray fungicide to limit the impact of powdery
-mildew on mungbean yields?  
+## Contents
+This compendia is broken down into seven sections:  
 
+   1. [Details of the experiments which were included in the analysis][Studies considered in meta-analysis].  
+   2. [Preliminary data exploration which investigates possible variables that could influence the meta-analysis.][Preliminary Analysis]  
+      a. [Fungicides][Fungicides]  
+      b. [Mungbean cultivar][Mungbean cultivars]  
+      c. [Row spacing][Row spacing]  
+      d. [Rainfall][Yield vs in-season rain]  
+      e. [When conditions become suitable for powdery mildew infection][Season range and first incidence]  
+   3. [Preparation of data for the meta-analysis][Prepare data for meta-analysis]  
+   4. [Meta-analysis of the effect of fungicide spray scheduale on yield loss][Meta-analysis]  
+   5. [Meta-analysis of the effect of fungicide spray scheduale on disease severity and yield loss][AUPDC meta-analysis]
+   6. [Manuscript Wireframe][Manuscript wire frame]
+   7. [Manuscript: A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew.][Manuscript]
+
+## Other research questions which are not the focus of this study
 + How has the first sign of powdery mildew changed over the seasons and between
 experimental sites?  
 
@@ -33,7 +50,7 @@ increased yield?
    answer this question.  
 
 
-## Parts of analysis that need checking
+## Possible sources of variation in this analysis.
 
 + Variability among host genotypes.  
    + The probable influence of season might be influenced by host genotype. This
