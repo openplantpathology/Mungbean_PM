@@ -8,7 +8,7 @@ source("R/import_data.R")
 
 This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern
 Queensland.
-It is worth noting Professor Malcolm Riley's and Dr Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2016.
+It is worth noting in particular Professor Malcolm Riley's and Dr Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2016.
 
 Studies were conducted in the following locations and years and were considered for inclusion in this analysis.
 
@@ -62,19 +62,7 @@ Studies were conducted in the following locations and years and were considered 
 * 2019  
    + Hermitage  
 
-
-**2001 - 2004 trials**  
-Trial data were obtained from a non-published manuscript.  
-Ratings for powdery mildew were on a 1-5 rating scale where 1 = no sign of disease, 2 = 1-30% diseased leaf area, 3 = 31-65% diseased leaf area, 4 = 66-99% diseased leaf area and 5 = complete defoliation.  
-Comparing trials which have not used the same rating scale will be done using a
-percentage change.  
-
-**2013 Field trials**  
-Trials were conducted by the [Northern Growers Alliance (NGA)](https://www.nga.org.au/).
-The raw data were obtained from Lawrie Price.
-NGA data were formatted to be compliant with existing data rating and scales using the R script [`R/Cleaning historical data.R`](https://github.com/openplantpathology/Mungbean_PM/blob/master/R/Cleaning%20historical%20data.R).  
-
-## Summary of data  
+## Summary of trials  
 
 ```{r data_summary, echo=FALSE, message=FALSE, warning=FALSE}
 PM.dat <- import_data()
@@ -83,26 +71,44 @@ kable(
    PM.dat %>%
       group_by(trial_ref, ) %>%
       summarise(
-         year = unique(year),
-         location = unique(location),
-         replicates_per_treatment = if(is.whole(mean(replicates))){
+         Year = unique(year),
+         Location = unique(location),
+         `Replicates per treatment` = if(is.whole(mean(replicates))){
             as.character(mean(replicates))}else{
                as.character(paste(min(replicates),"-",max(replicates)))},
-         planting_date = unique(planting_date),
-         first_sign_disease = unique(first_sign_disease),
-         treatments = length(n_treatment)
+         `Planting date` = unique(planting_date),
+         `First sign of disease` = unique(first_sign_disease),
+         `Fungicide treatments` = length(n_treatment),
       ) %>%
-      arrange(year)%>%
+      arrange(Year)%>%
       select(-trial_ref),
-   caption = "Description of Experiments"
+   caption = "Description of Experiments",
+   align = "c",
+   col.names = c("Year", "Location", "Replicates\nper treatments",
+                 "Planting date", "First sign\nof disease", "Fungicide\n treatments")
 )  %>%
    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
-   scroll_box(width = "900px", height = "500px")
+   column_spec(c(3,5:6), width = "3cm") %>% 
+   scroll_box(width = "900px", height = "500px") 
 
-
+kable()
 ```
 
-## Powdery mildew ratings  
+## Powdery mildew rating scales
+
+**2001 - 2004 trials**  
+Trial data were obtained from a non-published manuscript.  
+Ratings for powdery mildew were on a 1-5 rating scale where 1 = no sign of disease, 2 = 1-30% diseased leaf area, 3 = 31-65% diseased leaf area, 4 = 66-99% diseased leaf area and 5 = complete defoliation.  
+Comparing these trials which have not used the 1-9 rating scale will be converted using a
+percentage change.  
+
+**2013 Field trials**  
+Trials from 2013 were all conducted by the [Northern Growers Alliance (NGA)](https://www.nga.org.au/).
+The raw data were obtained from Lawrie Price.
+NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments. Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.Rmd).  
+
+
+### 1 - 9 Powdery mildew rating scale  
 
    1. No powdery mildew colonies observed on any plant
    
@@ -124,7 +130,7 @@ kable(
 
 ## Experiment locations  
 
-The following map displays experiment locations where data was sufficient to include in this meta-analysis.  
+The following map displays experiment locations which were considered for inclusion in this meta-analysis.  
 
 ```{r Experiment_locations, echo=FALSE}
 experiment_sites <- data.frame(
