@@ -107,10 +107,9 @@ Perhaps best way forward is to focus the meta-analysis on only the triazoles/DMI
 
 Before we exclude non-DMI fungicides lets have a look at the efficacy of the other fungicides in comparison to the DMIs.
 For this comparison we will focus on the proportional yield saved, relative to the no spray control. The primary focus of this research is the effect of fungicide on mitigating yield loss due to disease.
-We are using proportional yield, realative to the no spray control, to reduce the effect of location and seasonal influences.  
+We are using proportional yield, relative to the no spray control, to reduce the effect of location and seasonal influences.  
 
 First, let's investigate the difference in the effect of the type of fungicide on proportion of yield saved.
-Proportion of yield saved is used in attempt to reduce variation between trials.
 
 ```{r Fungicide_x_nSprays_tble2, message=FALSE}
 PM_MB_means %>%
@@ -124,7 +123,8 @@ PM_MB_means %>%
    ) %>%
    filter(n >= 5) %>% # remove any fungicide groups with less than 5 observations
    arrange(desc(median)) %>%
-   kable(caption = "Fungicide effect on proportion of yield gain.") %>%
+   kable(caption = "Fungicide effect on proportion of yield gain.",
+         col.names = c("Fungicide active ingredient", "Total fungicide applications","*n* Treatments","Lower 2.5% quartile","Median proportional grain yield", "Mean proportional grain yield","97.5 % quartile")) %>%
    kable_styling(fixed_thead = T, full_width = T) %>%
    footnote(general = "Fungicides with less than five observations were omitted from this table")
 ```
