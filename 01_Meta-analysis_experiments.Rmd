@@ -104,7 +104,7 @@ percentage change.
 **2013 Field trials**  
 Trials from 2013 were all conducted by the [Northern Growers Alliance (NGA)](https://www.nga.org.au/).
 The raw data were obtained from Lawrie Price.
-NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments. Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.Rmd).  
+NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments. Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.html).  
 
 
 ### 1 - 9 Powdery mildew rating scale  
