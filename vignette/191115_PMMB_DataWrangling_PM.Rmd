@@ -2977,7 +2977,7 @@ write.csv(
 
 ### Kingaroy 2016  
 Disease data for Kingaroy 2016 only exists as a mean of treatments within the `2016 Mungbean PM trials summary.xlsx` file.  
-```{r Herm16_dataimport}
+```{r King16_dataimport}
 # Yield data from 2016 Hermitage trial with final disease severity
 King_16 <-
    read.xlsx(
