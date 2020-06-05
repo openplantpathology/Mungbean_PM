@@ -26,11 +26,11 @@ PM_MB_means <- import_data()
 ```{r functions}
 fold_data <- function(new_DataFrame, template_DataFrame) {
    # This function formats a dataframe to have the same column order as a template data.frame
-   # If colums are missing from the new_DataFrame that are in the template_DataFrame, it creates them 
+   # If columns are missing from the new_DataFrame that are in the template_DataFrame, it creates them 
    # with NA values. 
    # Columns in the new_DataFrame, which are not in the template_DataFrame are appended to the right-hand-side
    # of the new_DataFrame
-   # Using this function assists in joining the two data.frames together so colums are in the same order
+   # Using this function assists in joining the two data.frames together so columns are in the same order
    
    for (i in colnames(new_DataFrame)) {
       if (i == colnames(new_DataFrame)[1]) {
@@ -49,12 +49,12 @@ fold_data <- function(new_DataFrame, template_DataFrame) {
    new_DataFrame[,cnames2[!(cnames2 %in% cnames1)]] <-
       NA # adding column names to new_DataFrame which are in the template_DataFrame
    new_DataFrame <-
-      new_DataFrame[, c(cnames2, cnames1[is.na(x1)])]  # adding columns to new_DataFrame not in template_DataFrame  # aranges column names to new_DataFrame not in template_DataFrame
+      new_DataFrame[, c(cnames2, cnames1[is.na(x1)])]  # adding columns to new_DataFrame not in template_DataFrame  # arranges column names to new_DataFrame not in template_DataFrame
    
    return(new_DataFrame)
 }
 source(here("R/copy_class.R"))
-source(here("R/data_mesh.R"))
+source(here("R/replace_data.R"))
 ```
 
 
@@ -427,7 +427,7 @@ Herm_11_dat <-
 ```
 
 #### AUDPC curve
-```{r Herm_audpc}
+```{r Herm_audpc, warning=FALSE}
 
 Herm_11_dat <- cbind(Herm_11_dat,
                      AUDPC = apply(data.frame(zero = rep(0,42),
@@ -619,7 +619,7 @@ King_11_dat <-
 ```
 
 #### AUDPC curve
-```{r King11_AUDPC}
+```{r King11_AUDPC, warning=FALSE}
 library(ggplot2)
 
 King_11_dat <- cbind(King_11_dat,
@@ -3654,6 +3654,7 @@ Well_18_dat <- Well_18 %>%
                        TRUE ~ as.Date(NA)))%>%
    mutate(spray_n = 
              case_when(Fung.Trt <= 3 ~ 2,
+                       Fung.Trt == 4 ~ 0,
                        TRUE ~ NA_real_))
 
 ```
@@ -3711,7 +3712,7 @@ Well_18_dat <- cbind(Well_18_dat,
                                                   38,51 ,57,64,72,78)
                                         )
                           )
-
+Well_18_dat$total_fungicide
 ```
 
 
@@ -3763,7 +3764,7 @@ Well_18_m <- Well_18_dat %>%
    )
 
 
-# For some weird reason standard deviations are comming back NA in the code above
+# For some weird reason standard deviations are coming back NA in the code above
 Well_18_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <- 
    Well_18_dat %>%
    group_by(n_treatment, row_spacing, fungicide_ai) %>%
@@ -3775,23 +3776,14 @@ Well_18_m[,c("n_treatment","row_spacing", "disease_error","yield_error")] <-
 Well_18_m <- fold_data(Well_18_m, PM_MB_means)
 Well_18_m <- copy_class(PM_MB_means,Well_18_m)
 
+source(here("R/replace_data.R"))
+
 # insert new calculations into data
 PM_MB_means <- 
    replace_data(template_data = PM_MB_means, 
                             new_data = Well_18_m, 
-                            new_data_column = c("AUDPC_m", "AUDPC_sd"),
+                            new_data_column = c("total_fungicide","AUDPC_m", "AUDPC_sd"),
                             filter_cols = c("trial_ref","year","location","n_treatment"))
-
-# check the same dimensions
-dim(Well_18_m) ==
-dim(PM_MB_means[PM_MB_means$trial_ref == "mung1718/01",])   
-
-   # Not sure why replace_data will not replcae the following columns
-   PM_MB_means[c(324: 347),
-               c("AUDPS_m", "AUDPS_sd","Inc_Ms")] #<-
-      Well_18_m[,c("AUDPS_m", "AUDPS_sd","Inc_Ms")]
-   
-
 
    
 
@@ -4012,8 +4004,8 @@ write.csv(
 ```
 
 
-```{r Save_PM_MB_means, eval=FALSE, include=FALSE}
+```{r Save_PM_MB_means, echo=TRUE}
 
 write.csv(PM_MB_means, file = here("cache/PM_MB_updated.csv"), row.names = FALSE)
-
+getwd()
 ```
