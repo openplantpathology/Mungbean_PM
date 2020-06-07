@@ -63,6 +63,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    report_rows <- vector(mode = "numeric")
    matched_rows <- vector(mode = "numeric")
    index_row <- 0 
+   message1 <- 0
    
 
    
@@ -119,6 +120,17 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
                           "\n previous matched rows:", matched_rows)
                   }
                   
+                  if(anyNA(template_data[i, new_data_column]) & 
+                     anyNA(new_data[j, new_data_column])== FALSE){
+                     
+                     template_data[i,new_data_column] <- new_data[j,new_data_column]
+                     
+                     report_rows <- c(report_rows,i)   
+                     message("Template_data NA values were replaced by non-NA values from new_data")
+                     # if the template replacement rows contain NAs when the new_data does not. Replace the template rows with new data.
+                  next()
+                     }
+                  
                   if(all(template_data[i, new_data_column] != new_data[j, new_data_column]) |
                      is.na(all(template_data[i, new_data_column] == new_data[j, new_data_column])) &
                      anyNA(template_data[i, new_data_column]) &
@@ -128,7 +140,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
                   
                   report_rows <- c(report_rows,i)
                   # message("working")
-                  
+               
                }else{
                   next()}
             }else{
@@ -158,15 +170,26 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
                        "\n previous matched rows:", matched_rows)
                }
                
-               if(all(template_data[i, new_data_column] != new_data[j, new_data_column]) |
-                  is.na(all(template_data[i, new_data_column] == new_data[j, new_data_column])) &
+               if(anyNA(template_data[i, new_data_column]) & 
+                  anyNA(new_data[j, new_data_column])== FALSE){
+                  
+                  template_data[i,new_data_column] <- new_data[j,new_data_column]
+                  
+                  report_rows <- c(report_rows,i)   
+                  message1 <- c(message1,1)
+                  # if the template replacement rows contain NAs when the new_data does not. Replace the template rows with new data.
+                  next()
+               }
+               
+               if(is.na(all(template_data[i, new_data_column] == new_data[j, new_data_column])) &
                   anyNA(template_data[i, new_data_column]) &
-                  anyNA(new_data[j, new_data_column]) == FALSE){
+                  anyNA(new_data[j, new_data_column]) == FALSE |
+                  all(template_data[i, new_data_column] != new_data[j, new_data_column])){
                template_data[i,new_data_column] <- new_data[j,new_data_column]
                
                report_rows <- c(report_rows,i)
                #message("working")
-         
+      
                }else{
                   next()}
             }else{
@@ -185,6 +208,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
                                                 "Matched rows =",length(matched_rows),
                                                 "\nnew_data rows =",dim(new_data)[1],
                                                 "\nCHECK IGNORED COLUMNS TO ENSURE MATCHES ARE CORRECT!!!!\n")}
+   if(sum(message1) >= 1){message(paste(sum(message1)," NA values in template_data were replaced by non-NA values from new_data"))}
 return(template_data)
    }
 
