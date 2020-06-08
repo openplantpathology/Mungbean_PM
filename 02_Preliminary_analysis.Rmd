@@ -31,10 +31,11 @@ Later in this document we will also consider the impact of fungicide treatments 
 Mean powdery mildew incidence was recorded at the end of each growing season. 
 Some experiments recorded disease incidence throughout the season and these were summarised with AUDPC. 
 AUDPC for trials which only provided final powdery mildew incidence was calculated using the record of 'first sign of disease' and final assessment. 
-More details on how the `PM_MB_means` data was compiled can be found in the ['Data wrangle vingette'][./vignette/191115_PMMB_DataWrangling_PM.Rmd]
+More details on how the `PM_MB_means` data was compiled can be found in the ['Data wrangle vingette'](./vignette/191115_PMMB_DataWrangling_PM.html)
 
 Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
-On this page, unless stated, the following plots and analyses were made disregarding effects the following factors which have the potential to influence mungbean grain yield and/or powdery mildew mean plot severity.
+On this page, unless stated, the following plots and analyses were made disregarding other effects.
+The following factors are propostulated to potentially influence mungbean grain yield and/or powdery mildew mean plot severity.
 
    1 Fungicide type  
    
@@ -60,7 +61,7 @@ On this page, unless stated, the following plots and analyses were made disregar
    
    12 Two pathogen species cause PM (new discovery in 2018)  
 
-The data plotted below are from `r length(unique(PM_MB_means$trial_ref))` field trials between (`r first(levels(PM_MB_means$year))` - `r last(levels(PM_MB_means$year))`) of which the details are described in [Studies considered in meta-analysis section](#studies-considered-in-meta-analysis).
+The data plotted below are from `r length(unique(PM_MB_means$trial_ref))` field trials between (`r first(levels(PM_MB_means$year))` - `r last(levels(PM_MB_means$year))`) of which the details are described in the [studies considered in meta-analysis section](#studies-considered-in-meta-analysis).
 
 
 ### Fungicides
@@ -97,16 +98,18 @@ PM_MB_means %>%
    coord_flip()
 ```
 
-The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in included in the highest frequencies, along with sulphur. The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.  
+The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in the highest frequencies, along with sulphur. The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.  
 
 Amistar Xtra and Custodia are both contain strobilurin and triazole mixes, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.  
 
-Perhaps best way forward is to focus the meta-analysis on only the triazoles/DMIs. This can then be compared to an additional meta-analysis including azoxystrobin as a comparison.
+Perhaps best way forward is to focus the meta-analysis on only the triazoles/DMIs. 
+This can then be compared to an additional meta-analysis including azoxystrobin as a comparison.  
    
 *****
 
 Before we exclude non-DMI fungicides lets have a look at the efficacy of the other fungicides in comparison to the DMIs.
-For this comparison we will focus on the proportional yield saved, relative to the no spray control. The primary focus of this research is the effect of fungicide on mitigating yield loss due to disease.
+For this comparison we will focus on the proportional yield saved, relative to the no spray control. 
+The primary focus of this research is the effect of fungicide on mitigating yield loss due to disease.
 We are using proportional yield, relative to the no spray control, to reduce the effect of location and seasonal influences.  
 
 First, let's investigate the difference in the effect of the type of fungicide on proportion of yield saved.
@@ -124,16 +127,18 @@ PM_MB_means %>%
    filter(n >= 5) %>% # remove any fungicide groups with less than 5 observations
    arrange(desc(median)) %>%
    kable(caption = "Fungicide effect on proportion of yield gain.",
-         col.names = c("Fungicide active ingredient", "Total fungicide applications","*n* Treatments","Lower 2.5% quartile","Median proportional grain yield", "Mean proportional grain yield","97.5 % quartile")) %>%
+         col.names = c("Fungicide active ingredient", "Total fungicide applications","n Treatments"," 2.5% quartile","Median proportional grain yield", "Mean proportional grain yield","97.5 % quartile")) %>%
    kable_styling(fixed_thead = T, full_width = T) %>%
    footnote(general = "Fungicides with less than five observations were omitted from this table")
+
+PM_MB_means[PM_MB_means$location == "Wellcamp",]
 ```
 
 *****  
 
 Let's visualise this in a plot for one and two sprays only.  
 
-```{r Fungicide_x_nSprays_tble1, message=FALSE}
+```{r Fungicide_x_nSprays_tble1, message=FALSE, warning=FALSE}
 
 PM_MB_means %>%
    mutate(fungicide_ai = as.factor(PM_MB_means$fungicide_ai)) %>%
