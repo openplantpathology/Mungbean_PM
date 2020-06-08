@@ -73,21 +73,29 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
    if(is.null(subset_factor) == FALSE){ # this functionality has not been complete, it seems it is an attempt to speed up the function by using the subset_factor to filter the match
       # To fix this it will need two arguments 1 to specify the column, 2 to specify the factor
       
+      
+      
       for(oo in colnames(template_data)){
          if(oo == colnames(template_data)[1]){
             factor_column <- vector()
          } # Reset to empty vector on the first loop
-         factor_column <- c(factor_column,any(template_data[,oo] == subset_factor))
+         
+         if(class(template_data[,oo]) == "character" |
+            class(template_data[,oo]) == "factor"){
+            if(any(template_data[,oo] == subset_factor, na.rm = TRUE)){
+            factor_column <- c(factor_column,oo)}
+            
+         }else{
+            next()
+            }
+         
       } # find column subset_factor matches to
       
-      if(sum(factor_column) >= 2){
+      if(length(factor_column) >= 2){
          stop("subset_factor is present in multiple columns, functionality does not support subsetting by more than one factor")
       }
-      if(sum(factor_column) == 0){
-         stop("subset_factor could not be matched in template data")
-      }
-      if(sum(factor_column) == 0){
-         stop("subset_factor could not be matched in template data")
+      if(length(factor_column) == 0){
+         stop("subset_factor could not be matched in template data, check the subset_factor and relevant column is a `character` or `factor` ")
       }
       if(!factor_column %in% colnames(new_data)){
          stop("subset_factor is in template_data column which is not in new_data")
@@ -96,7 +104,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
          stop(paste("subset_factor is can't be found in new_data column", factor_column))
       }
       
-      subset_col <- colnames(template_data)[factor_column]
+      subset_col <- factor_column
       subset_rows <- template_data[,factor_column] == subset_factor
       
       if(nrow(template_data[subset_rows,]) != nrow(new_data)){
@@ -152,7 +160,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
       
       
        
-   } 
+   }else{ 
    
    
    
@@ -198,7 +206,7 @@ replace_data <- function(template_data, new_data, new_data_column, ignore_column
             next()}
       }
    }
-
+}
    
    if(length(report_rows)==0){message("No data changed ", 
                                       length(report_rows),"/",length(matched_rows))}else{
