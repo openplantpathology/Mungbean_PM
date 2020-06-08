@@ -112,7 +112,68 @@ For this comparison we will focus on the proportional yield saved, relative to t
 The primary focus of this research is the effect of fungicide on mitigating yield loss due to disease.
 We are using proportional yield, relative to the no spray control, to reduce the effect of location and seasonal influences.  
 
-First, let's investigate the difference in the effect of the type of fungicide on proportion of yield saved.
+Let's investigate the difference in the effect of the type of fungicide on proportion of yield saved, but first we need to calculate yield saved relative to the no spray control.
+
+## Yield saving  
+Yield saving and Yield saving proportional to the control.  
+
+Data from `r length(unique(PM_MB_means$trial_ref))` trials were collected and the means of each treatment calculated in the [Data wrangling vignette](`here("vignette/191115_PMMB_DataWrangling_PM.Rmd")`). These data were combined into one file `1902 powdery mildew-Mungbean - Collated means.csv`.
+
+```{r Calculate_yield-gains}
+PM_MB_means$grain_yield.t.ha. <-
+   as.numeric(PM_MB_means$grain_yield.t.ha.) # NAs produced due to some cells having text description to why there is no specific data
+
+for (i in unique(PM_MB_means$trial_ref)) {
+   dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
+   
+   if (any(is.na(unique(dat1$row_spacing)))) {
+      warning(
+         paste(
+            unique(dat1$trial_ref),
+            "at",
+            unique(dat1$location),
+            "in year",
+            unique(dat1$year),
+            "has unknown row.spacing (NA)\n 'yield_gain' and 'proportional yield gain' not calculated\n"
+         )
+      )
+      next()
+   }
+   
+   for (j in unique(dat1$row_spacing)) {
+      dat2 <- dat1[dat1$row_spacing == j, ]
+      controlY <-
+         mean(dat2[dat2$fungicide_ai == "control", "grain_yield.t.ha."])
+      
+      dat2$yield_gain <- dat2$grain_yield.t.ha. - controlY
+      dat2$prop_YG <- dat2$yield_gain  /  controlY
+      
+      dat2[dat2$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
+         NA
+      
+      dat1[dat1$row_spacing == j, ] <- dat2
+   }
+   PM_MB_means[PM_MB_means$trial_ref == i, ] <- dat1
+}
+
+# ____________________________________________
+# calculate yield gain and prop_yield gain for experiments with no row spacing data
+
+dat1 <- PM_MB_means[PM_MB_means$trial_ref == "AM1303", ]
+
+controlY <-
+   mean(dat1[dat1$fungicide_ai == "control", "grain_yield.t.ha."])
+
+dat1$yield_gain <- dat1$grain_yield.t.ha. - controlY
+dat1$prop_YG <- dat1$yield_gain / controlY
+dat1[dat1$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
+   c(NA, NA)
+PM_MB_means[PM_MB_means$trial_ref == "AM1303", ] <- dat1
+
+write.csv(PM_MB_means,
+          "cache/1911_PM_MB_means&Ygains.csv")
+```
+
 
 ```{r Fungicide_x_nSprays_tble2, message=FALSE}
 PM_MB_means %>%
@@ -131,7 +192,6 @@ PM_MB_means %>%
    kable_styling(fixed_thead = T, full_width = T) %>%
    footnote(general = "Fungicides with less than five observations were omitted from this table")
 
-PM_MB_means[PM_MB_means$location == "Wellcamp",]
 ```
 
 *****  
