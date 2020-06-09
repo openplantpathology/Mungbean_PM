@@ -1,7 +1,7 @@
 # In crop rainfall lm loop to predict grainyield
-# See 05_MetaAnalysis.Rmd
+# See 02_preliminary_analysis.Rmd
 #  Code chunk rainfall_sum_Sstart
-# This file runs a linear model on grain yield and inseason rainfall
+# This file runs a linear model on grain yield and in-season rainfall
 # this is to find the best timeframe that contributes to grain yeild
 #
 # This file contains a start date of:
@@ -100,7 +100,7 @@ rain_dat_sum[rain_dat_sum$location == "Dalby", c("lat","lon")] <- c(-27.168426, 
 # add column for sum in-crop rainfall
 rain_dat_sum$rainfall_sum <- NA
 
-# source funtion that uses bomrang get_historical to return the sum rainfall between two dates
+# source function that uses bomrang get_historical to return the sum rainfall between two dates
 source("R/AUS_rainfall_function.r")
 
 # loop to download and save all the rainfall sum data
