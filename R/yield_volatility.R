@@ -43,7 +43,6 @@ yield_volatility <- function(genotype,
          }
       }
       
-      seq_along(10)
       
       Plot1 <- dat3 %>%
          ggplot(aes(x = values)) +
