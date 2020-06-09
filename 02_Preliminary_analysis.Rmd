@@ -114,10 +114,6 @@ We are using proportional yield, relative to the no spray control, to reduce the
 
 Let's investigate the difference in the effect of the type of fungicide on proportion of yield saved, but first we need to calculate yield saved relative to the no spray control.
 
-## Yield saving  
-Yield saving and Yield saving proportional to the control.  
-
-Data from `r length(unique(PM_MB_means$trial_ref))` trials were collected and the means of each treatment calculated in the [Data wrangling vignette](`here("vignette/191115_PMMB_DataWrangling_PM.Rmd")`). These data were combined into one file `1902 powdery mildew-Mungbean - Collated means.csv`.
 
 ```{r Calculate_yield-gains}
 PM_MB_means$grain_yield.t.ha. <-
@@ -175,6 +171,8 @@ write.csv(PM_MB_means,
 ```
 
 
+Now we have calculated proportional yield gains we can inpect the difference between the fungicide active ingredients
+
 ```{r Fungicide_x_nSprays_tble2, message=FALSE}
 PM_MB_means %>%
    group_by(fungicide_ai, total_fungicide) %>%
@@ -215,10 +213,10 @@ PM_MB_means %>%
          "carbendazim",
          "pyraclostrobin",
          "sulphur",
-         "200 g/L azoxystrobin +\n80 g/L cyproconazole",
+         "200 g/L azoxystrobin + 80 g/L cyproconazole",
          "tebuconazole",
          "propiconazole",
-         "200 g/L tebuconazole +\n120 g/L azoxystrobin"
+         "200 g/L tebuconazole + 120 g/L azoxystrobin"
       )
    )) %>%
    ggplot(aes(y = prop_YG, x = fungicide_ai)) +
@@ -232,13 +230,16 @@ PM_MB_means %>%
    coord_flip()
 ```
 
-There is a small yield effect when applying fungicide and it is unclear how much a second spray improves yield saved.
-Interestingly sulphur sprays might be worth investigating when sprayed twice.  
+There is a small yield effect among the strobilurin fungicide mixes and the DMI fungicides. 
+The follow up spray seems to show an increase in yield protection.
+Interestingly sulphur sprays show good protection when sprayed twice.  
 
 *****
 
 #### Fungicide Doses  
-We should check that all fungicide doses that were used were roughly the same if we are to compare between trials where dose might be different.  
+Hear after we will investigate only the DMI fungicides, tebuconazole and propiconazole and disregard the action of other fungicides.
+
+We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.  
 
 ```{r tebuAndPropi_dose}
 PM_MB_means %>%
@@ -271,8 +272,11 @@ PM_MB_means %>%
    filter(fungicide_ai == "propiconazole") %>%
    ggplot(aes(x = relevel(as.factor(dose_ai.ha), "62.5"), y = prop_YG)) +
    xlab("Dose (g ai/ha)") +
-   ggtitle(label = "Yield for each respective propiconazole dose") +
-   geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5)
+   ggtitle(label = "Yield for each respective propiconazole dose, faceted by number of applications") +
+   geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
+   facet_grid(cols = vars(total_fungicide))
+   
+   
 ```
 
 This dose effect should be acknowledged in the meta-analysis.
@@ -286,13 +290,20 @@ table(as.character(PM_MB_means[PM_MB_means$fungicide_ai == "propiconazole", ]$tr
 Two trials show both doses were applied in the same trial, mung1112/01 and mung1112/02. Let look at the difference in proportion of yield saved in these trials.  
 
 ```{r PropiDoses_TrialCompar}
-boxplot_usq(prop_YG ~ dose_ai.ha,
-            data = PM_MB_means[(PM_MB_means$trial_ref == "mung1112/01" |
-                                   PM_MB_means$trial_ref == "mung1112/02") &
-                                  PM_MB_means$fungicide_ai == "propiconazole",])
+
+PM_MB_means[(PM_MB_means$trial_ref == "mung1112/01" |
+                PM_MB_means$trial_ref == "mung1112/02") &
+                PM_MB_means$fungicide_ai == "propiconazole",] %>%
+   mutate(dose_ai.ha = as.factor(dose_ai.ha)) %>%
+               ggplot(aes(y = prop_YG, x = dose_ai.ha))+
+   geom_boxplot()+
+   facet_grid(cols = vars(total_fungicide)) +
+   xlab("Dose (g ai/ha)") +
+   ggtitle(label = "Yield for each respective propiconazole dose, faceted by number of applications") +
+   geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5)
 ```
 
-This plot, however, indicates that the previous plot might be skewed by high yielding trials.  
+This plot is similar to the previous plot, indicating dose needs to be considered in the analysis. Especially as there is a interaction between dose and number of sprays.
 
 *****
 
@@ -303,10 +314,18 @@ Let's look at the frequency of sprays per fungicide.
 table(PM_MB_means$fungicide_ai, PM_MB_means$total_fungicide)
 ```
 
+This table shows that the majority of treatments inspected one and two spray manangement practices.  
+
 *****
 
 #### Timing of fungicide sprays  
-When are fungicides sprayed in relation to first sign.  
+The timing of fungicide application can be crucial for maximum disease control and yield mitigation. 
+The experiments all relied on natural infection and thus infection at a standardised crop maturity stage was not possible. 
+To best estimate the effect of fungicide application timing we will use the day when the disease was first scouted in the field as a reference.
+The first sign of disease is a useful reference as it can be assessed with little to no cost or training for growers and farm staff.  
+
+First lets make a plot to visualise when one or more spray management regimes were made in relation to the first sign of disease regardless of fungicide active. 
+The plot is faceted by number of spray applications.
 
 ```{r spray_relative2FS}
 PM_MB_means %>%
@@ -331,21 +350,26 @@ PM_MB_means %>%
    geom_violin() +
    scale_x_discrete(
       labels = c(
-         "First\nspray",
-         "Second\nspray",
-         "Third\nspray",
-         "Fourth\nspray",
-         "Fifth\nspray"
+         "First spray",
+         "Second spray",
+         "Third spray",
+         "Fourth spray",
+         "Fifth spray"
       )
    ) +
-   ylab("Days to First Sign of Disease")
+   ylab("Days to First Sign of Disease")+
+   facet_grid(cols = vars(total_fungicide))+
+   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+The plot shows single fungicide applications are mostly made at zero, first sign of disease in the crop. 
+Experiments that tested two spray treatments also tend to make the first application at first sign of disease, and the second spray between 10 and 25 days later.
+Three spray treatments seemed to be mostly used in experiments where they were testing preventative sprays as the first fungicide application.  
 
 *****
 
 ### Mungbean cultivars  
-In general, the mungbean varieties have the following resistance to powdery mildew.  
+In general, mungbean varieties have the following resistance to powdery mildew.  
 
    - Berken: Highly susceptible
    
@@ -374,15 +398,14 @@ PM_MB_means %>%
 #### Genotype yield variability
 
 Does host cultivar significantly impact the yield?
-Let's look at the volatility in yields to see if any cultivar yields better or has greater tolerance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar.  
+Let's look at the volatility in yields to see if any cultivar yields better or has greater tolerance to powdery mildew. Below we plot distributions of mean trial yields for each cultivar. The following plots use data that includes all fungicide types.  
 
 First let's look at overall yields for each cultivar, where trial is not a factor, for all treatments (spray and no spray).
 
 ```{r yield_vol}
-# this could be converted into a shiny app as a chunk. Make each input for the function a shiny option
 # Outputs the table and graph
 source("R/yield_volatility.r") #function to investigate the volatility in yields
-# Volitility is the range between the upper and lower 97.5 and 2.5 % quartiles
+# Volatility is the range between the upper and lower 97.5 and 2.5 % quartiles
 
 YV1 <-
    yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
@@ -391,6 +414,7 @@ YV1[[2]] +
 
 YV1[[3]]
 ```
+This plot shows a large amount of yield volatility in all cultivars except green diamond. Green Diamond shows little volatility probably because this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials. 
 
 Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray treatments.
 
@@ -403,8 +427,8 @@ YV2[[2]] +
 YV2[[3]]
 ```
 
-Volatility of the cultivars are fairly similar when trial is not considered as a factor (when we inspect plots of all treatments and only spray treatments).
-Green Diamond shows little volatility however this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials
+Volatility of the cultivars are less, albeit fairly similar, when trial is not considered as a factor (when we inspect plots of all treatments).
+
 
 *****
 
@@ -419,6 +443,8 @@ YV1_herm <-
    )
 YV1_herm[[2]] +
    scale_fill_usq()
+
+YV1_herm[[3]]
 ```  
 
 Jade shows a large amount of volatility, excluding Green Diamond, Crystal shows the next least volatility.  
@@ -432,34 +458,44 @@ YV1_crystal <-
 YV1_crystal[[2]] +
    scale_fill_usq()
 
-YV1_crystal <-
+YV1_crystal[[3]]
+
+
+YV2_crystal <-
    yield_volatility(genotype = "Crystal", control_only = TRUE)
-YV1_crystal[[2]] +
+YV2_crystal[[2]] +
    scale_fill_usq()
+
+YV2_crystal[[3]]
 ```
 
-There is a lot of variation between field trials for Crystal, but little variation within field trials.
+There is a lot of variation between field trials for Crystal, but little variation within field trials. This indicates that trial should be fit as a random effect when we fit a model to this data.
 
 Let's look at Jade, to see if it differs.
 
 ```{r YieldVol_Jade}
-YV2_crystal <- yield_volatility("Jade",control_only = FALSE)
-YV2_crystal[[2]] +
+YV1_jade <- yield_volatility("Jade",control_only = FALSE)
+YV1_jade[[2]] +
    scale_fill_usq()
+
+YV1_jade[[3]]
 ```
 
 For Jade there is high variation between trials and with-in.
-Perhaps indicating lower tolerance. Let's look at the same plot with data only from no spray controls to see if the variation is the same.
+Perhaps indicating lower tolerance. 
+Let's look at the same plot with data only from no spray controls to see if the variation is the same.
 
 ```{r YieldVol_JadeControl}
-YV3_crystal <- yield_volatility("Jade", control_only = TRUE)
-YV3_crystal[[2]] +
+YV2_jade <- yield_volatility("Jade", control_only = TRUE)
+YV2_jade[[2]] +
    scale_fill_usq()
+
+YV2_jade[[3]]
 ```
 
-There seems to be a noticeable shift in the probability curves between the two plots.
-Indicating that the tolerance in Jade may not as good as Crystal.
-A comparison between the fungicide efficacy for reducing powdery mildew severity and fungicide efficacy at mitigating yield loss.  
+There still remains a higher volatility in Jade and perhaps a greater shift in the probability curve including fungicide treatments vs probability curves including only no spray controls.
+Indicating that there might be a difference in powdery mildew tolerance between Jade and Crystal.  
+
 
 Overall there seems to be an influence of cultivar however this variation is not as distinct as the variation between trials.  
 
@@ -498,7 +534,7 @@ Let's plot the row spacing treatments for the response variables yield and disea
 
    * Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?  
    
-   * Can we pool certain row spacing that have no significant difference?  
+   * If not, can we pool certain row spacing that have no significant difference?  
 
 ```{r RS_severity}
 # Which row spacing leads to the higher disease severity
