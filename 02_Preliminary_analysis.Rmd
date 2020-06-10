@@ -721,7 +721,7 @@ season_dates[c(1:2,6), "Planting_day"] <- 1
 season_dates$Harvest_day <-
    season_dates$Planting_day + season_dates$season_length
 
-first_day_month <- c(0, 31, 59, 90, 120, 151, 181, 211, 243, 273) + 1
+first_day_month <- c(0, 31, 60, 91, 121, 152, 182, 212, 244, 274) + 1
 axis_labels_date <-
    c(
       format(Sys.Date() - yday(Sys.Date()) + first_day_month[1], "%b-%d"),
@@ -778,7 +778,7 @@ season_dates %>%
 
 ```
 
-In most years, regardless of the age of the crop, PM establishes in March.
+In most years, regardless of the age of the crop, powdery mildew establishes in March.
 
 *****
 
@@ -793,12 +793,13 @@ We will focus on proportional yield gain, compared to no treatment control, as t
 PM_MB_means %>%
    filter(
       fungicide_ai == c(
-         "200 g/L tebuconazole +\n120 g/L azoxystrobin" ,
-         "200 g/L azoxystrobin +\n80 g/L cyproconazole",
+         "200 g/L tebuconazole + 120 g/L azoxystrobin" ,
+         "200 g/L azoxystrobin + 80 g/L cyproconazole",
          "tebuconazole",
          "propiconazole",
          "sulphur"
-      )
+      ),
+      total_fungicide != 3
    ) %>%
    ggplot(aes(y = prop_YG, x = fungicide_ai)) +
    geom_boxplot(aes(fill = fungicide_ai)) +
@@ -812,11 +813,15 @@ PM_MB_means %>%
    ) +
    guides(fill = guide_legend(title = "Fungicide")) +
    scale_fill_usq() +
+   facet_grid(rows = vars(total_fungicide))+
    coord_flip()
+
+
 ```
 
-There was some hope groups of fungicide could be combined, _i.e._ propiconazole and tebuconazole, however it seems that they have different efficacies.
-Let us look to see if there is anything skewing the above.
+While there is some differences in the variation between tebuconazole and propiconazole, the medians are very similar. 
+I think it is safe to combine these fungicides, with the same mode of action in the meta-analysis.
+
 
 We need to also define the relationship between yield loss and disease severity.
 When exploring this data we should look primarily at the no spray control plots
@@ -829,4 +834,4 @@ PM_MB_means %>%
    geom_smooth(method = "lm")
 ```
 
-From the data that we have, it is difficult to determine if there is an association between powdery mildew severity and grain yield.
+From the data that we have, it is difficult to determine if there is an association between powdery mildew severity and grain yield in no spray control plots.
