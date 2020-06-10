@@ -600,6 +600,8 @@ To speed up the computation I split the script into four, ran the jobs and bound
 The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run.
 For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
 
+This tests when rainfall during the cropping season could be best associated with yield
+
 ```{r rainfall_sum_Sstart}
 # The four data files were created from four scripts run as four jobs in Rstudio
 # when the four jobs are finished they can be imported and combined into one data.frame
@@ -682,21 +684,38 @@ I'll build a plot of horizontal lines indicating the season length and use a dot
 
 ```{r first_incidence}
 # Create the data frame for the plot
-source("R/import_data.R")
-PM_MB_means <- import_data()
 season_dates <- PM_MB_means %>%
    group_by(trial_ref) %>%
    summarise(
       Planting_date = unique(planting_date),
       Harvest_date = unique(harvest_date),
       First_sign_PM = unique(first_sign_disease),
-      season_length = as.Date(unique(harvest_date)) - as.Date(unique(planting_date))
+      season_length = as.Date(unique(harvest_date)) - as.Date(unique(planting_date)),
+      cropping_season = "Actual"
    )
+
+
+# For some trials where planting date and Harvest date is missing lets estimate 
+#     the season length by using the mean of all season lengths
+season_dates[is.na(season_dates$season_length),"cropping_season"] <- "Estimated"
+
+season_dates[is.na(season_dates$Planting_date),"Planting_date"] <- 
+   season_dates[is.na(season_dates$Planting_date),"Harvest_date"] - 
+   as.numeric(mean(season_dates$season_length, na.rm = TRUE))
+
+season_dates[is.na(season_dates$Harvest_date),"Harvest_date"] <- 
+   season_dates[is.na(season_dates$Harvest_date),"Planting_date"] + 
+   as.numeric(mean(season_dates$season_length, na.rm = TRUE))
+
+season_dates[is.na(season_dates$season_length),"season_length"] <- 
+   mean(season_dates$season_length, na.rm = TRUE)
+
+
 
 season_dates$Planting_day <- yday(season_dates$Planting_date)
 season_dates$Disease_day <- yday(season_dates$First_sign_PM)
 
-season_dates[1:2, "Planting_day"] <- 1
+season_dates[c(1:2,6), "Planting_day"] <- 1
 #  yday(as.Date("2012-02-28") - 7) # Correct dplanted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
 
 season_dates$Harvest_day <-
@@ -726,7 +745,7 @@ axis_labels_date <-
       format(Sys.Date() - yday(Sys.Date()) + first_day_month[10], "%b-%d") # October
    )
 
-# reorder the factors so they will appear in chronilogical order
+# reorder the factors so they will appear in chronological order
 # I used First sign because all trials have recorded this
 season_dates$trial_ref <-
    factor(season_dates$trial_ref,
@@ -739,7 +758,8 @@ season_dates %>%
       x = trial_ref,
       y = Disease_day,
       ymin = Planting_day,
-      ymax = Harvest_day
+      ymax = Harvest_day,
+      colour = cropping_season
    )) +
    scale_y_continuous(limits = c(
       0,
@@ -753,8 +773,9 @@ season_dates %>%
    breaks = first_day_month) +
    geom_point(aes(x = trial_ref, y = Disease_day)) +
    coord_flip() +
+   scale_color_manual(values=c("black","grey70"))+
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
-warnings()
+
 ```
 
 In most years, regardless of the age of the crop, PM establishes in March.
