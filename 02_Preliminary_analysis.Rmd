@@ -20,14 +20,14 @@ theme_set(theme_usq())
 
 ## Explore and Visualise Data
 First lets import the data. Each row provides the mean yield for each experimental treatment.
-```{r echo=FALSE, message=FALSE, warning=FALSE, include= FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Import data
 PM_MB_means <- import_data() 
 ```
 
 The data explored in the `PM_MB_means` data frame is a list of mean values from each treatment in each respective experiment.
 These preliminary analyses will focus on the change in mungbean yields which is attributable to the fungicide treatment. 
-Later in this document we will also consider the impact of fungicide treatments on disease incidence/severity. 
+Later in this document we will also consider the impact of fungicide treatments on disease incidence/severity.  
 Mean powdery mildew incidence was recorded at the end of each growing season. 
 Some experiments recorded disease incidence throughout the season and these were summarised with AUDPC. 
 AUDPC for trials which only provided final powdery mildew incidence was calculated using the record of 'first sign of disease' and final assessment. 
@@ -171,7 +171,7 @@ write.csv(PM_MB_means,
 ```
 
 
-Now we have calculated proportional yield gains we can inpect the difference between the fungicide active ingredients
+Now we have calculated proportional yield gains we can inspect the difference between the fungicide active ingredients
 
 ```{r Fungicide_x_nSprays_tble2, message=FALSE}
 PM_MB_means %>%
@@ -186,8 +186,10 @@ PM_MB_means %>%
    filter(n >= 5) %>% # remove any fungicide groups with less than 5 observations
    arrange(desc(median)) %>%
    kable(caption = "Fungicide effect on proportion of yield gain.",
-         col.names = c("Fungicide active ingredient", "Total fungicide applications","n Treatments"," 2.5% quartile","Median proportional grain yield", "Mean proportional grain yield","97.5 % quartile")) %>%
+         col.names = c("Fungicide active ingredient", "Total fungicide applications","n Treatments"," 2.5% quartile","Median proportional grain yield", "Mean proportional grain yield","97.5 % quartile"),
+         align = "c") %>%
    kable_styling(fixed_thead = T, full_width = T) %>%
+   column_spec(c(2,3), width = "1cm") %>% 
    footnote(general = "Fungicides with less than five observations were omitted from this table")
 
 ```
@@ -231,8 +233,11 @@ PM_MB_means %>%
 ```
 
 There is a small yield effect among the strobilurin fungicide mixes and the DMI fungicides. 
+While there is some differences in the variation between tebuconazole and propiconazole, the medians are very similar. 
+I think it is safe to combine these fungicides, with the same mode of action in the meta-analysis.
 The follow up spray seems to show an increase in yield protection.
 Interestingly sulphur sprays show good protection when sprayed twice.  
+
 
 *****
 
@@ -265,14 +270,15 @@ PM_MB_means %>%
 All trials that used tebuconazole used approximately the same dose.
 Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare.
 
-There is a large amount of variation in the propiconazole dose, let's inspect the difference in yields for each dose.
+Doses for propiconazole range from 62.5 to 125, a large variation.
+Let's inspect the difference in yields for each dose.
 
 ```{r PropiDoseEffect}
 PM_MB_means %>%
    filter(fungicide_ai == "propiconazole") %>%
    ggplot(aes(x = relevel(as.factor(dose_ai.ha), "62.5"), y = prop_YG)) +
    xlab("Dose (g ai/ha)") +
-   ggtitle(label = "Yield for each respective propiconazole dose, faceted by number of applications") +
+   ggtitle(label = "Yield for each respective propiconazole dose,\nfaceted by number of applications") +
    geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
    facet_grid(cols = vars(total_fungicide))
    
@@ -314,7 +320,7 @@ Let's look at the frequency of sprays per fungicide.
 table(PM_MB_means$fungicide_ai, PM_MB_means$total_fungicide)
 ```
 
-This table shows that the majority of treatments inspected one and two spray manangement practices.  
+This table shows that the majority of treatments inspected one and two spray management practices.  
 
 *****
 
@@ -371,11 +377,11 @@ Three spray treatments seemed to be mostly used in experiments where they were t
 ### Mungbean cultivars  
 In general, mungbean varieties have the following resistance to powdery mildew.  
 
-   - Berken: Highly susceptible
+   - Berken: Highly susceptible  
    
-   - Crystal: Susceptible
+   - Crystal: Susceptible  
    
-   - Jade: Moderately susceptible
+   - Jade: Moderately susceptible  
 
 Let's view a stacked bar plot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.
 
@@ -414,9 +420,9 @@ YV1[[2]] +
 
 YV1[[3]]
 ```
-This plot shows a large amount of yield volatility in all cultivars except green diamond. Green Diamond shows little volatility probably because this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trials. 
+This plot shows a large amount of yield volatility in all cultivars except green diamond. Green Diamond shows little volatility probably because this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trial. 
 
-Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray treatments.
+Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray control treatments.
 
 ```{r yieldVol_control}
 
@@ -427,7 +433,7 @@ YV2[[2]] +
 YV2[[3]]
 ```
 
-Volatility of the cultivars are less, albeit fairly similar, when trial is not considered as a factor (when we inspect plots of all treatments).
+Volatility of the cultivars are less, albeit fairly similar, in control plots when trial is not considered as a factor.
 
 
 *****
@@ -524,10 +530,6 @@ PM_MB_means %>%
             position = "dodge") +
    scale_fill_usq(name = "Fungicide AI")
 
-PM_MB_means %>%
-   filter(fungicide_ai == "tebuconazole",
-          row_spacing == 0.75) %>%
-   glimpse()
 ```
 
 Let's plot the row spacing treatments for the response variables yield and disease severity. The main questions are:  
@@ -650,16 +652,6 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = log(lm_pval))) +
    scale_fill_distiller(palette = "RdBu", direction = -1) 
 ```
 
-```{r rainLMrsquared}
-ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_rsquared)) +
-   geom_raster(aes(fill = lm_rsquared), interpolate = TRUE) +
-   geom_contour(bins = 15, colour = "white") +
-   geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)), ],
-              aes(x = start_day, y = end_day),
-              colour = " red") +
-   scale_fill_distiller(palette = "RdBu") 
-```
-
 ```{r rainLMadjrsquared}
 ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared)) +
    geom_raster(aes(fill = lm_adj_rsquared), interpolate = TRUE) +
@@ -710,13 +702,10 @@ season_dates[is.na(season_dates$Harvest_date),"Harvest_date"] <-
 season_dates[is.na(season_dates$season_length),"season_length"] <- 
    mean(season_dates$season_length, na.rm = TRUE)
 
-
-
 season_dates$Planting_day <- yday(season_dates$Planting_date)
 season_dates$Disease_day <- yday(season_dates$First_sign_PM)
 
 season_dates[c(1:2,6), "Planting_day"] <- 1
-#  yday(as.Date("2012-02-28") - 7) # Correct dplanted in december and emerged in February, Assuming due to lack of rain or recording error. Using 7 days prior to emergence day as planting day
 
 season_dates$Harvest_day <-
    season_dates$Planting_day + season_dates$season_length
@@ -779,59 +768,3 @@ season_dates %>%
 ```
 
 In most years, regardless of the age of the crop, powdery mildew establishes in March.
-
-*****
-
-#### Effect of Fungicide 
-
-**Fungicide effect on proportional yield gain with respect to time of application**  
-First let's look at the quantiles for each fungicide irrespective of other factors.
-We will focus on proportional yield gain, compared to no treatment control, as this should partially correct for some spatial and seasonal effects.
-
-```{r fungicide_proportion_yield}
-# plot table as a box plot
-PM_MB_means %>%
-   filter(
-      fungicide_ai == c(
-         "200 g/L tebuconazole + 120 g/L azoxystrobin" ,
-         "200 g/L azoxystrobin + 80 g/L cyproconazole",
-         "tebuconazole",
-         "propiconazole",
-         "sulphur"
-      ),
-      total_fungicide != 3
-   ) %>%
-   ggplot(aes(y = prop_YG, x = fungicide_ai)) +
-   geom_boxplot(aes(fill = fungicide_ai)) +
-   geom_hline(aes(yintercept = 0), size = 0.5, colour = "red") +
-   labs(x = "Proportion of grain yield saved",
-        title = "Grain yield proportion saved,\ngrouped by fungicide type") +
-   theme(
-      panel.grid.major = element_line(colour = "grey80"),
-      panel.grid.minor = element_line(colour = "grey50"),
-      panel.background = element_rect(fill = NA)
-   ) +
-   guides(fill = guide_legend(title = "Fungicide")) +
-   scale_fill_usq() +
-   facet_grid(rows = vars(total_fungicide))+
-   coord_flip()
-
-
-```
-
-While there is some differences in the variation between tebuconazole and propiconazole, the medians are very similar. 
-I think it is safe to combine these fungicides, with the same mode of action in the meta-analysis.
-
-
-We need to also define the relationship between yield loss and disease severity.
-When exploring this data we should look primarily at the no spray control plots
-
-```{r yield_x_PMseverity}
-PM_MB_means %>%
-   filter(fungicide_ai == "control") %>%
-   ggplot(aes(x = PM_final_severity, y = grain_yield.t.ha.)) +
-   geom_point() +
-   geom_smooth(method = "lm")
-```
-
-From the data that we have, it is difficult to determine if there is an association between powdery mildew severity and grain yield in no spray control plots.
