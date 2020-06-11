@@ -12,8 +12,6 @@ pacman::p_load(tidyverse, kableExtra, agricolae
 source("R/import_data.R")
 PM_MB_means <- import_data()
 
-
-source("R/AUDPC_for_single_obs.R") # Calculate AUDPC using final severity and first sign of disease - 7 days
 source("R/same.R") # matches each element of a vector and does not return NAs
 ```
 
@@ -22,7 +20,7 @@ source("R/same.R") # matches each element of a vector and does not return NAs
 Meta-analyses use variance from the data to calculate the effect sizes. 
 The type of variance needs to be the same across all the data incorporated in the meta-analysis.  
 
-We are narrowing the meta-analysis to only include treatments that used demethylation inhibitors, tebuconazole and propiconazole. 
+We are narrowing the meta-analysis to only include treatments using demethylation inhibitors, tebuconazole and propiconazole. 
 Lets look at what type of statistical error was reported for the trials that used these fungicides.    
 
 ```{r variance_types}
@@ -33,7 +31,7 @@ PM_MB_means %>%
    summarise(DMI_trts = length(Y_error_type)) %>%
    arrange(Y_error_type) %>%
    kable(caption = "Number of treatments for each trial and the error type reported") %>%
-   #kable_styling(fixed_thead = T) %>% 
+   #kable_styling(fixed_thread = T) %>% 
    footnote(general = "DMI - demethylation inhibitors (tebuconazole and propiconazole).")
 ```
 
