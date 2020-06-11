@@ -223,11 +223,11 @@ for (i in 1:nrow(clusters)) {
 knitr::kable(clusters)
 ```
 
-From this we can see that there are 16 different cluster combinations, which would make the analysis too difficult. I will reduce this to 6 levels within one variable.  
+From this we can see that there are 16 different cluster combinations, which would make the analysis too difficult. We will reduce this to 6 levels within one variable.  
 
 Single sprays either early, recommended timing or late.
 
-Two sprays or more where the first spray was either early, recommended timing, or late.
+Two or more sprays where the first spray was either early, recommended timing, or late.
 
 ```{r simple_clusters}
 slim_PM_dat <- slim_PM_dat %>%
@@ -267,9 +267,6 @@ Now to view the number break-down of the `spray_management` treatments
 ```{r tableSprayManagement}
 table(slim_PM_dat$spray_management)
 
-# For each treatment, when were the first fungicide applications made 
-# relative to the first sign of disease
-table(slim_PM_dat$spray_management,slim_PM_dat$fungicide_timing_1)
 ```
 
 There are few 'Early_plus' and 'late' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to be provide accurate results. Therefore we will remove 'Early_plus' and 'Late' from the analysis.  
@@ -323,16 +320,18 @@ abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
 
 ```
 
-There appears to be no relationship between the two continuous variables.  
+There appears to be a weak positive relationship between the two continuous variables.  
 Does a linear model confirm this?  
 
 ```{r AUDPClm}
 summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
 ```
 
-There is no relationship as per the linear model.  
+The linear model confirms a significant positive relationship between grain yield and AUDPC. 
+This is not what we would expect and the low R squared value of `r round(summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))$adj.r.squared,3)` perhaps there are additional factors influencing this relationship.
 
-Perhaps the variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing a relationship. Let's do the plot again for each trial where there are no missing values.  
+Lets tease out variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing the expected relationship. 
+Let's do the plot again for each trial where there are no missing values.  
 Note: The plots are ordered by mean yield of the trial.
 
 ```{r AUDPCxTrial}
@@ -365,7 +364,7 @@ for (i in sm2lg$trial_ref) {
 }
 ```
 
-This sequence of graphs show that AUDPC and disease incidence does not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
+This sequence of graphs show that AUDPC and disease incidence tends not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
 The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.  
 
 Let's have a look again at the same sequence of graphs and analyses for area under the disease progress _stairs_.  
@@ -410,6 +409,11 @@ for (i in sm2lg$trial_ref) {
 }
 
 ```
+The plots from the AUPDS is similar to the AUDPC, however according to the linear model the AUDPC is a better, significant fit.  
+
+A mixed effect model would be more suitable to investigate the interactive effects of location, season, and trial. 
+The mixed effect model will help us decide on the best approach and structure for our meta-analysis model.
+
 
 
 ```{r delete_this_chunk, eval=FALSE, include=FALSE}
@@ -419,7 +423,5 @@ plot(AUDPC_m ~ infected_days, data = PM_MB_means)
 plot(grain_yield.t.ha. ~ infected_days, data = PM_MB_means)
 
 PM_MB_means$harvest_date - PM_MB_means$first_sign_disease
-PM_MB_means[0 > as.Date(PM_MB_means$harvest_date, format = "%Y-%m-%d")-
-as.Date(PM_MB_means$first_sign_disease, format = "%Y-%m-%d"),]
 ```
 
