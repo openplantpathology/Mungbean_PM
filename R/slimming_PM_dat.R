@@ -5,10 +5,14 @@
 # PM_MB_Mtemp <- import_data()
 PM_MB_Mtemp <- read.csv("cache/1911_PM_MB_means&Ygains.csv")
 
+PM_MB_Mtemp$dose <- NA
+PM_MB_Mtemp[PM_MB_Mtemp$dose_ai.ha <= 70, "dose"] <- "lowDose"
+PM_MB_Mtemp[PM_MB_Mtemp$dose_ai.ha > 70, "dose"] <- "highDose"
+
 slim_PM_dat <- data.frame(
    trial = paste(PM_MB_Mtemp$trial_ref, PM_MB_Mtemp$year,
                  PM_MB_Mtemp$location,PM_MB_Mtemp$host_genotype,
-                 PM_MB_Mtemp$row_spacing, sep = "_"),
+                 PM_MB_Mtemp$row_spacing, PM_MB_Mtemp$dose,sep = "_"),
    trial_ref = as.factor(PM_MB_Mtemp$trial_ref),
    year = as.integer(PM_MB_Mtemp$year),
    host_genotype = PM_MB_Mtemp$host_genotype,
@@ -21,6 +25,7 @@ slim_PM_dat <- data.frame(
    fungicide_application_2 = as.Date(PM_MB_Mtemp$fungicide_application_2, format = "%Y-%m-%d"),
    fungicide_application_3 = as.Date(PM_MB_Mtemp$fungicide_application_3, format = "%Y-%m-%d"),
    total_fungicide = as.integer(PM_MB_Mtemp$total_fungicide),
+   dose_ai.ha = as.double(PM_MB_Mtemp$dose_ai.ha),
    grain_yield.t.ha = as.double(PM_MB_Mtemp$grain_yield.t.ha.),
    yield_error = as.double(PM_MB_Mtemp$yield_error),
    yield_gain = as.double(PM_MB_Mtemp$yield_gain),
