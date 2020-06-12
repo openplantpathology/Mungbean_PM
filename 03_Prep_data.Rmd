@@ -246,7 +246,8 @@ slim_PM_dat <- slim_PM_dat %>%
          fungicide_timing_1 >= 0 &
             fungicide_timing_1 < 4 &
             !is.na(fungicide_application_2) ~ "Recommended_plus",
-         fungicide_timing_1 >= 4 ~ "Late_plus",
+         fungicide_timing_1 >= 4 &
+            !is.na(fungicide_application_2) ~ "Late_plus",
          TRUE ~ "Other"
       )
    )
@@ -272,7 +273,7 @@ There are few 'Early_plus' and 'late' treatments, these treatments therefore wil
 
 ```{r simpler_clusters_REMOVE}
 slimmer_PM_dat <-
-   slim_PM_dat[slim_PM_dat$spray_management != "Late" &
+   slim_PM_dat[#slim_PM_dat$spray_management != "Late" &
                   slim_PM_dat$spray_management != "Early_plus", ]
 
 write.csv(slimmer_PM_dat, file = "cache/slimmer_PM_clusterdat.csv", row.names = FALSE)
