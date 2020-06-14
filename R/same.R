@@ -3,61 +3,14 @@
 # The function treats NAs a meaningful test and returns if it is the same.
 # ie. same(NA,NA) returns TRUE; where NA == NA return NA
 #     same(1, NA) returns FALSE; where 1 == NA returns NA 
+# Reference: http://www.cookbook-r.com/Manipulating_data/Comparing_vectors_or_factors_with_NA/
 
-same <- function(x1, x2) {
-   if (length(x1) == length(x2)) {
-      return(apply(cbind(x1, x2), 1, function(xx) {
-         if (is.na(xx[1]) &
-             is.na(xx[2])) {
-            return(TRUE)
-         } else{
-            if (is.na(xx[1]) |
-                is.na(xx[2])) {
-               return(FALSE)
-            } else{
-               return(xx[1] == xx[2])
-            }
-         }
-         
-      }))
+same <- function(v1,v2) {
+   if((v1 >=2 | v1 >=2) &
+      (length(v1) != length(v1))){
+      stop("can't compare vectors with different lengths")
    }
-   
-   if (length(x1) == 1 &
-       length(x2) > 1) {
-      return(sapply(x2, function(xx = x2) {
-         if (is.na(xx) &
-             is.na(x1)) {
-            return(TRUE)
-         } else{
-            if (is.na(xx) |
-                is.na(x1)) {
-               return(FALSE)
-            } else{
-               return(x1 == xx)
-            }
-            
-         }
-      }))
-      
-   }
-   
-   if (length(x1) > 1 &
-       length(x2) == 1) {
-      return(sapply(x1, function(xx = x1) {
-         if (is.na(xx) &
-             is.na(x2)) {
-            return(TRUE)
-         } else{
-            if (is.na(xx) |
-                is.na(x2)) {
-               return(FALSE)
-            } else{
-               return(x2 == xx)
-            }
-            
-         }
-      }))
-   }else{stop("length of vectors must be the same length")}
-   
-   
+   compareNAs <- (v1 == v2) | (is.na(v1) & is.na(v2))
+   compareNAs[is.na(compareNAs)] <- FALSE
+   return(compareNAs)
 }
