@@ -413,7 +413,59 @@ The plots from the AUPDS is similar to the AUDPC, however according to the linea
 A mixed effect model would be more suitable to investigate the interactive effects of location, season, and trial. 
 The mixed effect model will help us decide on the best approach and structure for our meta-analysis model.
 
+****
 
+### Disease presure factor
+We may wish to investigate the impact of spray management in mitigating the yield loss through the effect on the disease pressure. We will set a categorical variable to indicate the amount of disease pressure in the trial, which will be evaluated on the control plot. 
+We will create two categories, `lowD` and `highD`. 
+We will use the median `AUDPC` to separate the trials into these two groups.
+
+```{r}
+
+
+slimmer_PM_dat$D_pres <- NA_character_
+
+Trial_Dpress <- slimmer_PM_dat %>%
+   group_by(trial_ref) %>%
+   filter(fungicide_ai == "control") %>%
+   summarise(AUDPC_C = mean(AUDPC_m, na.rm = TRUE))
+
+median_AUDPC <- median(as.vector(Trial_Dpress$AUDPC_C), na.rm = TRUE)   
+
+sort(Trial_Dpress$AUDPC_C)
+
+for(i in unique(slimmer_PM_dat$trial_ref)) {
+   if (is.na(Trial_Dpress[Trial_Dpress$trial_ref == i, "AUDPC_C"])) {
+      next()
+   }
+   
+   if (Trial_Dpress[Trial_Dpress$trial_ref == i, "AUDPC_C"] < median_AUDPC)
+   {
+      slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "D_pres"] <- "lowD"
+   } else{
+      if (Trial_Dpress[Trial_Dpress$trial_ref == i, "AUDPC_C"] >= median_AUDPC) {
+         slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "D_pres"] <- "highD"
+      } else{
+         slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "D_pres"] <-
+            NA_character_
+      }
+      
+   }
+}
+
+```
+
+
+Lets have a quick look to examine weather trials with high disease pressure sustain a greater yield loss.  
+
+```{r}
+slimmer_PM_dat %>%
+   ggplot(aes(x = D_pres, y = grain_yield.t.ha))+
+   geom_boxplot()
+```
+
+From this plot we see that in the trials with high disease pressure treatments on tended to produce lower yields. 
+There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_ref"]))` trials that contained no data for AUDPC and thus produced `NA` values.  
 
 ```{r delete_this_chunk, eval=FALSE, include=FALSE}
 PM_MB_means$infected_days <- as.numeric(PM_MB_means$harvest_date - PM_MB_means$first_sign_disease)
