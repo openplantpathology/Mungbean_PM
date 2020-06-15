@@ -4,7 +4,7 @@
 ```{r load_libraries, include=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, agricolae
+pacman::p_load(tidyverse, kableExtra, agricolae, lme4
 )
 ```
 
@@ -28,10 +28,10 @@ PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole") %>%
    group_by(trial_ref, location, Y_error_type, fungicide_ai) %>%
-   summarise(DMI_trts = length(Y_error_type)) %>%
+   summarise(DMI_treatments = length(Y_error_type)) %>%
    arrange(Y_error_type) %>%
-   kable(caption = "Number of treatments for each trial and the error type reported") %>%
-   #kable_styling(fixed_thread = T) %>% 
+   select(!fungicide_ai)%>%
+   kable(caption = "Number of treatments for each trial and the error type reported", align = "c") %>%
    footnote(general = "DMI - demethylation inhibitors (tebuconazole and propiconazole).")
 ```
 
@@ -43,7 +43,7 @@ Then we will impute variances for the trials which did not report any form of va
 
 ### Converting least-squares to sample variance  
 
-First lets get a list of trials that reported LSD.  
+First lets get a list the of trials that reported LSD.  
 ```{r all_LSD_trials}
 Trials <- PM_MB_means %>%
    filter(Y_error_type == "lsd (P=0.05)") %>%
@@ -195,7 +195,7 @@ slim_PM_dat %<>%
 
 Let's look at these clusters to see where we have the most degrees of freedom.
 
-```{r cluster_clusters}
+```{r cluster_clusters, warning=FALSE}
 clusters <-
    unique(slim_PM_dat[c("cluster_1", "cluster_2", "cluster_3")])
 
@@ -223,9 +223,15 @@ knitr::kable(clusters)
 
 From this we can see that there are 16 different cluster combinations, which would make the analysis too difficult. We will reduce this to 6 levels within one variable.  
 
-Single sprays either early, recommended timing or late.
+Single sprays of either:  
+   a) early,  
+   b) recommended timing,  
+   c) late.  
 
-Two or more sprays where the first spray was either early, recommended timing, or late.
+Two or more sprays where the first spray was either:  
+   d) early,  
+   e) recommended timing,  
+   f) late.
 
 ```{r simple_clusters}
 slim_PM_dat <- slim_PM_dat %>%
@@ -265,19 +271,62 @@ Now to view the number break-down of the `spray_management` treatments
 
 ```{r tableSprayManagement}
 table(slim_PM_dat$spray_management)
-
 ```
 
-There are few 'Early_plus' and 'late' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to be provide accurate results. Therefore we will remove 'Early_plus' and 'Late' from the analysis.  
+There are few 'Early_plus' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.  
 
 
 ```{r simpler_clusters_REMOVE}
 slimmer_PM_dat <-
-   slim_PM_dat[#slim_PM_dat$spray_management != "Late" &
-                  slim_PM_dat$spray_management != "Early_plus", ]
+   slim_PM_dat[slim_PM_dat$spray_management != "Early_plus", ]
 
+```
+
+## Test dose effect
+
+Earlier we noted there were different doses of propiconazole which might influence our analysis. 
+Lets check this by comparing a linear mixed effect model including and excluding dose. 
+We already have a factor breaking down the dose in the `trial` variable, lets make a new one without dose.
+
+```{r dose_test}
+slimmer_PM_dat$trial_noDose <- paste(slimmer_PM_dat$trial_ref, slimmer_PM_dat$year,
+                 slimmer_PM_dat$location,slimmer_PM_dat$host_genotype,
+                 slimmer_PM_dat$row_spacing,sep = "_")
+
+cbind(Dose = head(slimmer_PM_dat$trial),
+      NoDose = head(slimmer_PM_dat$trial_noDose)) %>%
+   kable()
+```
+
+Lets test the dose effect in a basic linear mixed effect model
+
+```{r dose_lmer}
+
+m1 <-
+   lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
+           (1 | trial),
+        data = slimmer_PM_dat)
+
+m2 <-
+   lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
+           (1 | trial_noDose),
+        data = slimmer_PM_dat)
+
+anova(m1,m2)
+
+
+```
+
+Using the model without dose produces a better fit, as shown by the lower AIC and is significantly different from the model `m1`. 
+We will remove the dose term from the trial grouping.
+
+```{r}
+slimmer_PM_dat$trial <- slimmer_PM_dat$trial_noDose
+slimmer_PM_dat <- slimmer_PM_dat[,colnames(slimmer_PM_dat) != "trial_noDose"] #remove second trial column
 write.csv(slimmer_PM_dat, file = "cache/slimmer_PM_clusterdat.csv", row.names = FALSE)
 ```
+
+
 
 Our data currently uses sample variance to define the yield error. We should expect that when yield increases so does the variance. Let's quickly plot this to check.
 
@@ -326,7 +375,6 @@ Does a linear model confirm this?
 summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
 ```
 
-The linear model confirms a significant positive relationship between grain yield and AUDPC. 
 This is not what we would expect and the low R squared value of `r round(summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))$adj.r.squared,3)` perhaps there are additional factors influencing this relationship.
 
 Lets tease out variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing the expected relationship. 
@@ -421,7 +469,7 @@ We will create two categories, `lowD` and `highD`.
 We will use the median `AUDPC` to separate the trials into these two groups.
 
 ```{r}
-
+slimmer_PM_dat <- read.csv(here("cache/slimmer_PM_clusterdat.csv"))
 
 slimmer_PM_dat$D_pres <- NA_character_
 
@@ -453,6 +501,7 @@ for(i in unique(slimmer_PM_dat$trial_ref)) {
    }
 }
 
+write.csv(slimmer_PM_dat, file = here("cache/slimmer_PM_clusterdat.csv"), row.names = FALSE)
 ```
 
 
