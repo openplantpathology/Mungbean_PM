@@ -21,12 +21,13 @@ Let's get started with the analysis by first finding the best model fit that ans
 > Which spray management scenario provides the greatest yield protection from powdery mildew.  
 
    - Grain yield is our response variable and will be converted to Kg / Ha.  
-   - Trial, which resolves combinations of categorical variables: year, location, row spacing and cultivar; is set as a random intercept.  
+   - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept.  
    - We will test spray management (our treatment) as a fixed effect and random slope to trial.  
 
 First lets compare models with and without a log transformed response variable to evaluate if the log transformed model better fits our assumptions of normality.  
-Next we will test whether including `spray_management` as a significantly accounts for enough variation as a fixed effect variable to be included in the model.  
-Finally we will test whether including `spray_management` as a significantly accounts for enough variation as a random slope to the trial variable.  
+Next we will test whether including `spray_management` as a fixed effect variable significantly accounts for enough variation to be included in the model.  
+Finally we will test whether including `spray_management`  as a random slope significantly accounts for enough variation to be used in the model.  
+
 
 ```{r LME_slimmer_cluster_disease_mod}
 m8 <- lmer(grain_yield.t.ha * 1000 ~ factor(spray_management) +
@@ -45,6 +46,7 @@ m11 <-
    lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
            (1 | trial),
         data = slimmer_PM_dat)
+
 ```
 
 ```{r m8_vs_m9}
@@ -259,8 +261,8 @@ PM_mv_AI <- rma.mv(
    yield_error,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial),
-   struct = "UN",
+   random = ~ 1|trial,
+#   struct = "UN",
    data = slimmer_PM_dat
 )
 
