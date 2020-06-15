@@ -14,9 +14,9 @@ description: "A meta-analysis of fungicide use in mungbean to control for yield 
 # Home
 
 This compendium details the statistical analysis and methods while undertaking a meta-analysis of fungicide efficacy trials for control of powdery mildew in mungbean. 
-This meta-analysis will focus on the main aim of:
+This meta-analysis will focus on the main aim of determining:
 
-> When is the optimum time to spray fungicide to limit the impact of powdery mildew on mungbean yields?  
+> When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields?  
 
 ## Contents
 This compendia is broken down into seven sections:  
