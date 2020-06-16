@@ -1,9 +1,9 @@
 # This script takes the large dataset and slims it down
-# The slimed down dataset will be used for the Meta-analysis
+# The slimmed down dataset will be used for the Meta-analysis
 
 #source("R/import_data.R")
 # PM_MB_Mtemp <- import_data()
-PM_MB_Mtemp <- read.csv("cache/1911_PM_MB_means&Ygains.csv")
+PM_MB_Mtemp <- PM_MB_means
 
 PM_MB_Mtemp$dose <- NA
 PM_MB_Mtemp[PM_MB_Mtemp$dose_ai.ha <= 70, "dose"] <- "lowDose"

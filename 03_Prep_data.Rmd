@@ -4,16 +4,24 @@
 ```{r load_libraries, include=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, agricolae, lme4
+pacman::p_load(tidyverse, kableExtra, agricolae, lme4, here
 )
 ```
 
 ```{r import_data}
-source("R/import_data.R")
-PM_MB_means <- import_data()
+PM_MB_means <- read.csv("cache/1911_PM_MB_means&Ygains.csv")
 
 source("R/same.R") # matches each element of a vector and does not return NAs
 ```
+
+The trials `r unique(PM_MB_means[is.na(PM_MB_means$AUDPC_m),"trial_ref"]) `Some trials don't have an estimate of AUDPC and need to be filled in. 
+The following script estimates AUDPC from the final disease severity rating and the first sign of disease information.
+
+```{r}
+source(here("R/AUDPC_for_single_obs.R"))
+
+```
+
 
 
 ## Standardising sample variance  
@@ -276,7 +284,7 @@ table(slim_PM_dat$spray_management)
 There are few 'Early_plus' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.  
 
 
-```{r simpler_clusters_REMOVE}
+```{r simpler_clusters_remove}
 slimmer_PM_dat <-
    slim_PM_dat[slim_PM_dat$spray_management != "Early_plus", ]
 
@@ -357,7 +365,7 @@ slimmer_PM_dat %>%
 
 >How well does 'area under the disease progress curve' (AUDPC) predict grain yield?  
 
-and _Does spray_management scenario mitigate yield loss through reducing AUDPC?_  
+and _Does spray_management scenario mitigate yield loss through reducing AUDPC?_   
 
 We would expect to see grain yield decline with increasing AUDPC. Let's just plot yield vs AUDPC.  
 
@@ -511,6 +519,8 @@ Lets have a quick look to examine weather trials with high disease pressure sust
 slimmer_PM_dat %>%
    ggplot(aes(x = D_pres, y = grain_yield.t.ha))+
    geom_boxplot()
+
+slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),]
 ```
 
 From this plot we see that in the trials with high disease pressure treatments on tended to produce lower yields. 
