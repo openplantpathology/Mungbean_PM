@@ -7,6 +7,13 @@ This file is not complete and there are a number of things that need checking
    - Check that what is generated from this file matches the main file and update
    - write.csv should have row.names = FALSE
 
+## Non-wrangled trials
+
+Data from the three follow trials were input manually from either PDF or word files.  
+   - Gatton 2012  
+   - Kingaroy 2012  
+   - Emerald 2016  
+   
 
 ## Import Libraries
 ```{r message=FALSE, warning=FALSE}
@@ -737,6 +744,7 @@ write.csv(
 
 
 ```
+
 
 ### Goolhi 2013
 #### Convert disease scores
