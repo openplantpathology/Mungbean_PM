@@ -509,13 +509,12 @@ for(i in unique(slimmer_PM_dat$trial_ref)) {
    }
 }
 
-write.csv(slimmer_PM_dat, file = here("cache/slimmer_PM_clusterdat.csv"), row.names = FALSE)
 ```
 
 
 Lets have a quick look to examine weather trials with high disease pressure sustain a greater yield loss.  
 
-```{r}
+```{r plot_disease_pressure}
 slimmer_PM_dat %>%
    ggplot(aes(x = D_pres, y = grain_yield.t.ha))+
    geom_boxplot()
@@ -525,6 +524,22 @@ slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),]
 
 From this plot we see that in the trials with high disease pressure treatments on tended to produce lower yields. 
 There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_ref"]))` trials that contained no data for AUDPC and thus produced `NA` values.  
+
+
+### Row spacing
+
+We may want to consider rowspacing in the trials, However one of the locations has NA as the row spacing. 
+Fow now lets assign the most used row spacing of 0.33
+```{r}
+slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),]
+slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),"row_spacing"] <- 0.33
+
+
+write.csv(slimmer_PM_dat, file = here("cache/slimmer_PM_clusterdat.csv"), row.names = FALSE)
+```
+
+
+
 
 ```{r delete_this_chunk, eval=FALSE, include=FALSE}
 PM_MB_means$infected_days <- as.numeric(PM_MB_means$harvest_date - PM_MB_means$first_sign_disease)
