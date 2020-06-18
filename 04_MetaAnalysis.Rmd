@@ -197,12 +197,20 @@ Lets calculate the standardised mean difference for each treatment to reduce the
 We may wish to undertake the meta-analysis using standardised mean differences. 
 Lets calculate them and add them to the dataframe.
 
+```{r remove_studies}
+#slimmer_PM_dat <-
+  # slimmer_PM_dat[is.na(slimmer_PM_dat$yield_error),]
+```
+
+
 #### Calculate sample variance from mean square errors
 
-```{r MSE_2_SVar}
+```{r MSE_2_SVar, eval=FALSE, include=FALSE}
+#calculation when using log of response
 slimmer_PM_dat$vi <-
    slimmer_PM_dat$Y_Msquare / (slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha ^
                                   2)
+
 ```
 
 
@@ -211,9 +219,9 @@ slimmer_PM_dat$pooledSD <- NA
 slimmer_PM_dat$vi_C <- NA
 for(T_ref in slimmer_PM_dat$trial_ref){
    
-   # First we neee to Calculate the pooled standard deviation
+   # First we need to Calculate the pooled standard deviation
    slimmer_PM_dat[slimmer_PM_dat$trial_ref == T_ref, "pooledSD"] <- 
-   sqrt(sum((slimmer_PM_dat[slimmer_PM_dat$trial_ref == T_ref,"n" ]-1) * slimmer_PM_dat[slimmer_PM_dat$trial_ref == T_ref,"vi"])/
+   sqrt(sum((slimmer_PM_dat[slimmer_PM_dat$trial_ref == T_ref,"n" ]-1) * slimmer_PM_dat[slimmer_PM_dat$trial_ref == T_ref,"yield_error"])/
            (sum( slimmer_PM_dat[slimmer_PM_dat$trial_ref == T_ref,"n"]) - nrow( slimmer_PM_dat[slimmer_PM_dat$trial_ref == T_ref, ])))
  
    # Then Create a column with the value of the mean grain yield of the no spray control for comparisons to the treatments means
@@ -276,6 +284,9 @@ Standardised mean differences have a bit of a long tail however this is not bad 
 Lets undertake the meta-analysis, we are using the `spray_management` variable as a moderator and a interactive term to the `trial` variable.
 Because we want to know the difference between all treatments and we have no reference treatment, we will remove the intercept.
 ```{r Metafor-analysis}
+dat1$vi <- dat1$yield_error
+
+
 PM_mv <- rma.mv(
    yi = grain_SMD,
    vi, 
@@ -287,127 +298,29 @@ PM_mv <- rma.mv(
 )
 summary(PM_mv)
 ```
-In this result we can see that the `Early` treatment is not significantly different to zero. 
+In this result we can see that the `Early` treatment is not significantly different to zero, which in this case is the mean of the no spray control. 
 However the other treatments are significantly different to zero.
-the Qm omnibus test of moderators show the moderators significantly influence the model and we can reject the null hypothesis that there is no difference between the moderators. 
-The Qe test shoes there is a large significant amount of residual Heterogeneity.  
+The Qm [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, show the moderators significantly influence the model ($Q_M = 7.32, df = 5, p < 0.0001$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010]. 
+The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 40994.51, df = 105, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.    
 
 Lets see if we can improve this model by including some other random effects and improving the random effect structure in the model.  
 
 
-#### CONTINUE FROM HERE!!!!!!!!!!
-
-
 ```{r}
 
-PM_mv_AI2 <- rma.mv(
-   yi,
-   vi, # vi or yield error
+PM_mv_St <- rma.mv(
+   yi = grain_SMD,
+   vi, 
    mods = ~ spray_management,
    method = "ML",
-   random = ~ 1|trial,
-   data = slimmer_PM_dat
-)
-
-anova(PM_mv_AI,PM_mv_AI2) # There is no significant difference between these models, Therefore use the simpler model with the lower AIC (PM_mv_AI2)
-
-
-
-
-
-PM_mv_AI3 <- rma.mv(
-   yi,
-   vi, # vi or yield error
-   mods = ~ spray_management,
-   method = "ML",
-   random = list(~ 1 | location/year/trial_ref, ~ 1 | host_genotype, ~ 1 | row_spacing),
-   data = slimmer_PM_dat
-)
-
-anova(PM_mv_AI2,PM_mv_AI3) # There IS a significant difference between these models, Therefore use the more complicated model with the lower AIC (PM_mv_AI3)
-
-
-
-PM_mv_AI4 <- rma.mv(
-   yi,
-   vi, # vi or yield error
-   mods = ~ spray_management,
-   method = "ML",
-   random = list(~ 1 | location/year/trial_ref, ~ 1 | host_genotype),
-   data = slimmer_PM_dat
-)
-
-anova(PM_mv_AI3,PM_mv_AI4) # There is no significant difference between these models, Therefore use the simpler model with the lower AIC (PM_mv_AI4)
-
-profile(PM_mv_AI4, sigma2 = 1)
-
-PM_mv_AI5 <- rma.mv(
-   yi,
-   vi, # vi or yield error
-   mods = ~ spray_management,
-   method = "ML",
-   random = list(~ 1 | location/year/trial_ref),
-   data = slimmer_PM_dat
-)
-
-anova(PM_mv_AI4,PM_mv_AI5) # There is no significant difference between these models, Therefore use the simpler model with the lower AIC (PM_mv_AI4)
-
-summary(PM_mv_AI4)
-
-
-
-
-PM_mv_AI6 <- rma.mv(
-   yi,
-   vi, # vi or yield error
-   mods = ~ spray_management,
-   method = "ML",
-   random = list(~ 1 | location/year/trial_ref, ~ 1 | host_genotype, ~ spray_management | D_pres),
-   data = slimmer_PM_dat
-)
-
-anova(PM_mv_AI6,PM_mv_AI4) # There is no significant difference between these models, Therefore use the simpler model with the lower AIC (PM_mv_AI4)
-
-
-
-
-
-
-
-anova(PM_mv_AI2, PM_mv_AI3)
-
-summary(PM_mv_AI2)
-
-slimmer_PM_dat[is.na(slimmer_PM_dat$AUDPC_m),]
-slimmer_PM_dat[slimmer_PM_dat$location == "Emerald", ]
-table(slimmer_PM_dat$spray_management)
-```
-Lets try analysing the data as a risk reduction. 
-For this we will use the proportion of yield reductions
-```{r}
-dat1 <- slimmer_PM_dat[!slimmer_PM_dat$fungicide_ai == "control",]
-
-dat1$yi <- dat1$grain_SMD
-
-PM_mv_MD <- rma.mv(
-   yi = yi,
-   vi, # vi or yield error
-   mods = ~ spray_management - 1,
-   method = "ML",
-   random = list(~ 1 | location/year , ~1|host_genotype ,~ spray_management|D_pres),
+   random = list(~ 1|trial),
    data = dat1
 )
 
-summary(PM_mv_MD)
-
-dat1$D_pres
-
-hist(dat1$grain_SMD)
-
+AIC(PM_mv_St)
+anova(PM_mv, PM_mv_St)
 ```
-
-
-
+The simpler `PM_mv_St` model explains significantly less variation as the more complicated model `PM_mv`. So we will keep the original model.
 
 #### Investigate impact of imputing Mean square errors on the meta-analysis outcomes
 
@@ -524,72 +437,73 @@ metaI %>%
 summary(PM_mv_AI)
 ```
 
-According to the results of the [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) ($Q_M = 7.32, df = 5, p = 0.1979$) we can't reject the null hypothesis $H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$ that the tested spray management schedules have no benefit to protecting mungbean yields [@Viechtbauer2010]. 
-However Late plus ($\beta_4$) was the only moderator showing a significant effect on yields ($z = 2.598; p = 0.0094$). 
-The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 538.26, df = 141, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.  
-
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis. The second table is in two parts(left and right). The left part indicates the level of acceptable rho (variation) when comparing treatments. All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho. `Early` and `Late_plus` treatments never occurred within the same trial which is indicated by the right side of the table.  
 
 The fixed effects, in the last table, showed that yields in single early spray treatments are not significantly different to the no spray control. 
 Also commencing spray management schedules at first sign of disease (Recommended), or between 7 - 19 days after first sign (late) produced significantly higher yields compared to the no spray control. 
-On average a spray schedule with two or more applications stating late (7 - 19 days after first sign of powdery mildew) produced the highest yields.
+On average a spray schedule with two or more applications stating late (7 - 19 days after first sign of powdery mildew) produced the highest yields.  
+
+### Profile plots  
+Lets inspect the profile plots to ensure the model is not over-fitted. 
+We expect to see the estimate align with the peak of the curve. 
+Also that the shape of the line is a curve.
+
+```{r}
+profile(PM_mv , tau2 = 1)
+profile(PM_mv , tau2 = 2)
+profile(PM_mv , tau2 = 3)
+profile(PM_mv , tau2 = 4)
+profile(PM_mv , tau2 = 5)
+```
 
 
 *****
 
 To make it easier to compare each of the treatments we can compute the meta-analysis contrasts.
 ```{r metafor_contrasts}
-meta_cont <- anova(PM_mv_MD, L = rbind(
-   c(0, 1, -1, 0, 0,0),
-   # early vs Recommended
-   c(0, 1, 0, -1, 0,0),
-   # early vs recommended plus
-   c(0, 1, 0, 0, -1,0),
-   # early vs Late 
-   c(0, 1, 0, 0, 0,-1),
-   # early vs Late plus
-   c(0, 0, -1, 1, 0,0),
-   # Recommended plus vs recommended
-   c(0, 0, -1, 0, 1,0),
-   # Late  vs Recommended
-   c(0, 0, -1, 0, 0,1),
-   # Late_plus  vs Recommended
-   c(0, 0, 0, -1, 1,0),
-   # Late vs Recommended plus
-   c(0, 0, 0, -1, 0,1),
-   # Late_plus  vs Recommended plus
-   c(0, 0, 0, 0, -1,1)
-)) # Late vs Late_plus
-
-
-
+meta_cont <- anova(PM_mv, L = rbind(
+   c(-1, 1, 0, 0,0),
+   c(-1, 0, 1, 0,0),
+   c(-1, 0, 0, 1,0),
+   c(-1, 0, 0, 0,1),
+   c(0, -1, 1, 0,0),
+   c(0, -1, 0, 1,0),
+   c(0, -1, 0, 0,1),
+   c(0, 0, -1, 1,0),
+   c(0, 0, -1, 0,1),
+   c(0, 0, 0, -1,1)
+   ))
+   
+   
 change_labels <- function(x1){
    x1 <- gsub(pattern = "spray_management",replacement = "",x = x1)
    x1
 }
 
+source("R/p_star.R")
+
 data.frame(contrasts = change_labels(meta_cont$hyp[,1]),
       estimates = meta_cont$Lb,
       se = meta_cont$se,
       z_val = meta_cont$zval,
-      pval = meta_cont$pval)
+      pval = meta_cont$pval,
+      VisP = p_star(meta_cont$pval))
 ```
-Results show with the exclusion of the no spray control, none of the treatments are significantly different, however, early applications treatments on average produced lower yields. Also the model was almost significant when assessing `Late_plus` as saving more yield than `Recommended`. This is probably due to the fact there were more comparisons between these two treatments which allowed a more certain outcome.
-Let's view these comparisons in a plot.
+Results show with the exclusion of the no spray control, `Early` applications are significantly worse than all other treatments leading to lower yield estimates. 
+`Late_plus` is estimated as saving the most yield compared and is significantly higher than all other treatments except `recommended_plus`.  
+Let's view these comparisons in a plot.  
 
-First we will format the results into a data frame and back-transform the log values by using the exponent function
+First we will format the results into a data frame.
 ```{r metafor_results}
-results_AI <- data.frame(cbind(exp(PM_mv_AI$b),
-                               exp((PM_mv_AI$ci.lb)),
-                               exp(PM_mv_AI$ci.ub)))
+results_AI <- data.frame(cbind(PM_mv$b,
+                               PM_mv$ci.lb,
+                               PM_mv$ci.ub))
 
 efficacy <- tbl_df(results_AI)
 efficacy$Treatment <-
    factor(
-      c(
-         "control",
-         "Early",
+      c( "Early",
          "Recommended",
          "Recommended_plus",
          "Late",
@@ -597,7 +511,7 @@ efficacy$Treatment <-
       )
    )
 
-efficacy$se <- PM_mv_AI$se
+efficacy$se <- PM_mv$se
 colnames(efficacy) <-
    c("Mean", "CIs_lower", "CI_upper", "Treatment", "SE")
 efficacy
@@ -607,7 +521,7 @@ efficacy
 efficacy %>%
    ggplot(aes(Treatment, Mean)) +
    geom_hline(
-      yintercept = c(0.8, 1, 1.2, 1.4),
+      yintercept = seq(-0.5,1.5, by = 0.2),
       color = "grey80",
       linetype = 3
    ) +
@@ -616,7 +530,10 @@ efficacy %>%
    coord_flip()
 ```
 
-Let's look at how well each of the number treatments compare to each other. We can use the netmeta package to give a graphical representation of this.  
+Let's look at how well each of the number treatments compare to each other.
+
+
+We can use the netmeta package to give a graphical representation of the pairwise comparisons.  
 
 
 ### netmeta package  
@@ -625,8 +542,8 @@ Let's analyse the data again using a different statistical approach to see if ou
 ```{r netmeta-analysis}
 datPM3 <- slimmer_PM_dat %>%
    group_by(trial, spray_management, n) %>%
-   summarize(yi_mean = mean(yi),
-             vi_mean = mean(vi)) %>%
+   summarize(yi_mean = mean(grain_SMD),
+             vi_mean = mean(yield_error)) %>%
    ungroup()
 
 PM_con <- pairwise(
