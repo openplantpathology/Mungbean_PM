@@ -1,5 +1,5 @@
 ---
-title: "Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis."
+title: "A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean"
 author: "Paul Melloy, Emerson Del Ponte and Adam H. Sparks"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 site: bookdown::bookdown_site
