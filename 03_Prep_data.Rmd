@@ -192,12 +192,16 @@ slim_PM_dat %<>%
 
 ```
 
-### Cluster fungicide applications  
-We are going to define 'fungicide application timing' as a categorical variable, relative to the first sign of powdery mildew.  
+### Cluster fungicide applications
 
-These categorical variables are named:  
+We are going to define 'fungicide application timing' as a categorical variable, relative to the first sign of powdery mildew.
+
+These categorical variables are named:
+
    - **Early**: First fungicide application was prior to first sign of disease.  
+
    - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.  
+
    - **Late**: First fungicide application was four or more days after first sign of disease being observed.  
 
 Follow up fungicide applications (cluster_2 and cluster_3) were also categorised as either, early, recommended or late.  
@@ -260,14 +264,20 @@ knitr::kable(clusters)
 
 From this we can see that there are 16 different cluster combinations, which would make the analysis too difficult. We will reduce this to 6 levels within one variable.  
 
-Single sprays of either:  
-   a) early,  
-   b) recommended timing,  
-   c) late.  
+Single sprays of either:
 
-Two or more sprays where the first spray was either:  
-   d) early,  
-   e) recommended timing,  
+   a) early,
+
+   b) recommended timing,
+
+   c) late.
+
+Two or more sprays where the first spray was either:
+
+   d) early,
+
+   e) recommended timing,
+   
    f) late.
 
 ```{r simple_clusters}
@@ -310,18 +320,12 @@ Now to view the number break-down of the `spray_management` treatments
 table(slim_PM_dat$spray_management)
 ```
 
-There are few 'Early_plus' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.  
-
+There are few 'Early_plus' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
 
 ```{r simpler_clusters_remove}
 slimmer_PM_dat <-
    slim_PM_dat[slim_PM_dat$spray_management != "Early_plus", ]
-
 ```
-
-
-
-
 
 ****
 
@@ -345,7 +349,6 @@ cbind(Dose = head(slimmer_PM_dat$trial),
 Let's test the dose effect in a basic linear mixed effect model.
 
 ```{r dose_lmer}
-
 m1 <-
    lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
            (1 | trial),
@@ -356,9 +359,7 @@ m2 <-
            (1 | trial_noDose),
         data = slimmer_PM_dat)
 
-anova(m1,m2)
-
-
+anova(m1, m2)
 ```
 
 Using the model without dose produces a lower AIC, however we should accept the data with dose as there is a significant difference between the models and we should accept the more complicated model `m2`. 
@@ -366,7 +367,8 @@ We will try and evaluate dose in the meta-analysis, however for now we will remo
 
 ```{r}
 slimmer_PM_dat$trial <- slimmer_PM_dat$trial_noDose
-slimmer_PM_dat <- slimmer_PM_dat[,colnames(slimmer_PM_dat) != "trial_noDose"] #remove second trial column
+slimmer_PM_dat <-
+   slimmer_PM_dat[, colnames(slimmer_PM_dat) != "trial_noDose"] #remove second trial column
 write.csv(slimmer_PM_dat, file = "cache/slimmer_PM_clusterdat.csv", row.names = FALSE)
 ```
 
@@ -387,11 +389,12 @@ Trial_Dpress <- slimmer_PM_dat %>%
    filter(fungicide_ai == "control") %>%
    summarise(AUDPC_C = mean(AUDPC_m, na.rm = TRUE))
 
-median_AUDPC <- median(as.vector(Trial_Dpress$AUDPC_C), na.rm = TRUE)   
+median_AUDPC <-
+   median(as.vector(Trial_Dpress$AUDPC_C), na.rm = TRUE)
 
 sort(Trial_Dpress$AUDPC_C)
 
-for(i in unique(slimmer_PM_dat$trial_ref)) {
+for (i in unique(slimmer_PM_dat$trial_ref)) {
    if (is.na(Trial_Dpress[Trial_Dpress$trial_ref == i, "AUDPC_C"])) {
       next()
    }
@@ -409,7 +412,6 @@ for(i in unique(slimmer_PM_dat$trial_ref)) {
       
    }
 }
-
 ```
 
 
@@ -426,26 +428,12 @@ There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_re
 
 ### Row spacing
 
-We may want to consider row spacing in the trials, However one of the locations has NA as the row spacing. 
+We may want to consider row spacing in the trials, However one of the locations has `NA` as the row spacing. 
 For now let's assign the most used row spacing of 0.33 m.
 
-```{r}
+```{r assign_row_spacing_missing}
 slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),]
 slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),"row_spacing"] <- 0.33
 
-
 write.csv(slimmer_PM_dat, file = here("cache/slimmer_PM_clusterdat.csv"), row.names = FALSE)
 ```
-
-
-
-
-```{r delete_this_chunk, eval=FALSE, include=FALSE}
-PM_MB_means$infected_days <- as.numeric(PM_MB_means$harvest_date - PM_MB_means$first_sign_disease)
-
-plot(AUDPC_m ~ infected_days, data = PM_MB_means)
-plot(grain_yield.t.ha. ~ infected_days, data = PM_MB_means)
-
-PM_MB_means$harvest_date - PM_MB_means$first_sign_disease
-```
-
