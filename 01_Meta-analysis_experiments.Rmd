@@ -6,9 +6,8 @@ pacman::p_load(tidyverse, kableExtra, leaflet, htmltools,schoolmath)
 source("R/import_data.R")
 ```
 
-This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern
-Queensland.
-It is worth noting in particular Professor Malcolm Riley's and Dr Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2016.
+This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland.
+It is worth noting in particular Professor Malcolm Riley's and Dr. Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2016.
 
 Studies were conducted in the following locations and years and were considered for inclusion in this analysis.
 
@@ -95,41 +94,56 @@ kable(
 
 ## Powdery mildew rating scales
 
-**2001 - 2004 trials**  
-Trial data were obtained from a non-published manuscript.  
-Ratings for powdery mildew were on a 1-5 rating scale where 1 = no sign of disease, 2 = 1-30% diseased leaf area, 3 = 31-65% diseased leaf area, 4 = 66-99% diseased leaf area and 5 = complete defoliation.  
-Comparing these trials which have not used the 1-9 rating scale will be converted using a
-percentage change.  
+**2001 - 2004 trials**
 
-**2013 Field trials**  
+Trial data were obtained from a non-published manuscript.
+
+### 1 - 5 powdery mildew rating scale
+
+Ratings for powdery mildew were on a 1 - 5 rating scale where
+
+   1 - No sign of disease
+
+   2 - 1 - 30&nbsp;% diseased leaf area
+
+   3 - 31 - 65&nbsp;% diseased leaf area
+
+   4 - 66 - 99&nbsp;% diseased leaf area and
+
+   5 - Complete defoliation
+      
+Comparing these trials which have not used the 1 - 9 rating scale will be converted using a percentage change.
+
+**2013 Field trials**
+
 Trials from 2013 were all conducted by the [Northern Growers Alliance (NGA)](https://www.nga.org.au/).
 The raw data were obtained from Lawrie Price.
-NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments. Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.html).  
+NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments.
+Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.html).
 
+### 1 - 9 powdery mildew rating scale
 
-### 1 - 9 Powdery mildew rating scale  
-
-   1. No powdery mildew colonies observed on any plant
+   1 - No powdery mildew colonies observed on any plant
    
-   2. Small colonies in lower 1/3 of canopy, up to 75% of plants affected
+   2 - Small colonies in lower 1/3 of canopy, up to 75&nbsp;% of plants affected
    
-   3. Colonies in lower 1/2 of canopy, >75% of plants affected
+   3 - Colonies in lower 1/2 of canopy, >75&nbsp;% of plants affected
    
-   4. Colonies in lower 2/3 of canopy, up to 75% of plants affected
+   4 - Colonies in lower 2/3 of canopy, up to 7&nbsp;5% of plants affected
    
-   5. Colonies in lower 2/3 of canopy, >75% of plants affected
+   5 - Colonies in lower 2/3 of canopy, >75&nbsp;% of plants affected
    
-   6. Colonies in lower 2/3 of canopy, 100% of plants affected
+   6 - Colonies in lower 2/3 of canopy, 100&nbsp;% of plants affected
    
-   7. Colonies in lower 2/3 of canopy of 100% of plants, some plants with colonies also in top 1/3 of canopy
+   7 - Colonies in lower 2/3 of canopy of 10&nbsp;0% of plants, some plants with colonies also in top 1/3 of canopy
    
-   8. Colonies to top of plant with >75% of plants affected
+   8 - Colonies to top of plant with >75&nbsp;% of plants affected
    
-   9. Colonies to top of plant with 100% of plants affected and heavy leaf drop
+   9 - Colonies to top of plant with 100&nbsp;% of plants affected and heavy leaf drop
 
 ## Experiment locations  
 
-The following map displays experiment locations which were considered for inclusion in this meta-analysis.  
+The following map displays experiment locations which were considered for inclusion in this meta-analysis.
 
 ```{r Experiment_locations, echo=FALSE}
 experiment_sites <- data.frame(
