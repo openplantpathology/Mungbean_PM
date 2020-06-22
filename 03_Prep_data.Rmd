@@ -1,10 +1,15 @@
 # Prepare data for meta-analysis
-## Set environment and import data  
+
+## Set environment and import data
 
 ```{r load_libraries, include=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(tidyverse, kableExtra, agricolae, lme4, here)
+if (!require("theme.usq"))
+   devtools::install_github("adamhsparks/theme.usq")
+library(theme.usq)
+theme_set(theme_usq())
 ```
 
 ```{r import_data}
@@ -151,7 +156,6 @@ PM_MB_means$vi <-
 PM_MB_means %>%
    ggplot(aes(x = grain_yield.t.ha., y = vi)) +
    geom_point()
-
 ```
 
 We see here that the sample variance generally decreases or has no association with the grain yield.
