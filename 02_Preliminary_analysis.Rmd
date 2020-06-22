@@ -105,7 +105,7 @@ The DMIs have the same fungicide mode of action and are good candidates to be po
 
 Amistar Xtra and Custodia are both contain strobilurin and triazole mixes, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.
 
-Perhaps best way forward is to focus the meta-analysis on only the triazoles/DMIs.
+Perhaps best way forward is to focus the meta-analysis on only the DMIs.
 This can then be compared to an additional meta-analysis including azoxystrobin as a comparison.
    
 *****
