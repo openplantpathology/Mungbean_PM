@@ -36,9 +36,9 @@ The experiment summaries report either standard deviation, least square differen
 First we will convert LSD and standard deviation to sample variance.
 Then we will impute variances for the trials which did not report any form of variance (`NA`).
 
-### Converting least-squares to sample variance  
+### Converting least-squares to sample variance
 
-First Let's get a list the of trials that reported LSD.
+First let's get a list the of trials that reported LSD.
 
 ```{r all_LSD_trials}
 Trials <- PM_MB_means %>%
@@ -138,7 +138,9 @@ PM_MB_means[PM_MB_means$trial_ref %in% Trials$trial_ref, ]$Y_error_type <-
 
 
 ### Check variance of data-set
-Our data currently uses sample variance to define the yield error. We should expect that when yield increases so does the variance. Let's quickly plot this to check.
+Our data currently uses sample variance to define the yield error.
+We should expect that when yield increases so does the variance.
+Let's quickly plot this to check.
 
 ```{r Var_mean_sqaures}
 # redefine sample variance calculated from mean square
@@ -152,7 +154,8 @@ PM_MB_means %>%
 
 ```
 
-We see here that the sample variance generally decreases or has no association with the grain yield. This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares which defines between trial variation and is a the more generic error term.  
+We see here that the sample variance generally decreases or has no association with the grain yield.
+This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares which defines between trial variation and is a the more generic error term.
 
 ```{r Var_MeanSquarePlot}
 PM_MB_means %>%
@@ -165,10 +168,13 @@ PM_MB_means %>%
 &nbsp;  
 
 
-## Reduce data set to required variables  
-Let's tidy up the data set into a data frame of only the variables which are required for the analysis.  
+## Reduce data set to required variables
 
-First remove the irrelevant columns/variables. Then calculate fungicide application timing variables relative to the first sign of disease. Entries with NA in the grain yield or powdery mildew severity are also removed from the data.    
+Let's tidy up the data set into a data frame of only the variables which are required for the analysis.
+
+First remove the irrelevant columns/variables.
+Then calculate fungicide application timing variables relative to the first sign of disease.
+Entries with `NA` in the grain yield or powdery mildew severity are also removed from the data.
 
 ```{r clustered_fungicide_applications}
 source("R/slimming_PM_dat.R") # see R script for the code which reduces the data.
@@ -317,9 +323,10 @@ slimmer_PM_dat <-
 
 ## Test dose effect
 
-Earlier we noted there were different doses of propiconazole which might influence our analysis. 
-Let's check this by comparing a linear mixed effect model including and excluding dose. 
-We already have a factor breaking down the dose in the `trial` variable, Let's make a new one without dose.
+Earlier we noted there were different doses of propiconazole which might influence our analysis.
+Let's check this by comparing a linear mixed effect model including and excluding dose.
+We already have a factor breaking down the dose in the `trial` variable.
+Let's make a new one without dose.
 
 ```{r dose_test}
 slimmer_PM_dat$trial_noDose <- paste(slimmer_PM_dat$trial_ref, slimmer_PM_dat$year,
@@ -331,7 +338,7 @@ cbind(Dose = head(slimmer_PM_dat$trial),
    kable()
 ```
 
-Let's test the dose effect in a basic linear mixed effect model
+Let's test the dose effect in a basic linear mixed effect model.
 
 ```{r dose_lmer}
 
@@ -402,7 +409,7 @@ for(i in unique(slimmer_PM_dat$trial_ref)) {
 ```
 
 
-Let's have a quick look to examine whether trials with high disease pressure sustain a greater yield loss.  
+Let's have a quick look to examine whether trials with high disease pressure sustain a greater yield loss.
 
 ```{r plot_disease_pressure}
 slimmer_PM_dat %>%
@@ -416,7 +423,8 @@ There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_re
 ### Row spacing
 
 We may want to consider row spacing in the trials, However one of the locations has NA as the row spacing. 
-For now Let's assign the most used row spacing of 0.33
+For now let's assign the most used row spacing of 0.33 m.
+
 ```{r}
 slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),]
 slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),"row_spacing"] <- 0.33
