@@ -32,7 +32,7 @@
   
 
 <link rel="next" href="studies-considered-in-meta-analysis.html"/>
-<script src="libs/header-attrs-2.2/header-attrs.js"></script>
+<script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -68,7 +69,7 @@
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Home</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contents"><i class="fa fa-check"></i><b>1.1</b> Contents</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#other-research-questions-which-are-not-the-focus-of-this-study"><i class="fa fa-check"></i><b>1.2</b> Other research questions which are not the focus of this study</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#other-research-questions-which-are-not-the-focus-of-this-study"><i class="fa fa-check"></i><b>1.2</b> Other research questions, which are not the focus of this study</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#possible-sources-of-variation-in-this-analysis."><i class="fa fa-check"></i><b>1.3</b> Possible sources of variation in this analysis.</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a>
@@ -107,18 +108,22 @@
 <li class="chapter" data-level="4.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>4.5</b> AUDPC visualise raw data</a>
 <ul>
 <li class="chapter" data-level="4.5.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#disease-presure-factor"><i class="fa fa-check"></i><b>4.5.1</b> Disease presure factor</a></li>
+<li class="chapter" data-level="4.5.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#row-spacing-1"><i class="fa fa-check"></i><b>4.5.2</b> Row spacing</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="meta-analysis.html"><a href="meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Meta-analysis</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="meta-analysis.html"><a href="meta-analysis.html#grain-yield-meta-analysis"><i class="fa fa-check"></i><b>5.1</b> Grain yield meta-analysis</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="meta-analysis.html"><a href="meta-analysis.html#imputing-sample-variances"><i class="fa fa-check"></i><b>5.1.1</b> Imputing sample variances</a></li>
+<li class="chapter" data-level="5.1.1" data-path="meta-analysis.html"><a href="meta-analysis.html#formatting-variance"><i class="fa fa-check"></i><b>5.1.1</b> Formatting Variance</a></li>
+<li class="chapter" data-level="5.1.2" data-path="meta-analysis.html"><a href="meta-analysis.html#caluculate-standardised-mean-differences"><i class="fa fa-check"></i><b>5.1.2</b> Caluculate standardised mean differences</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="meta-analysis.html"><a href="meta-analysis.html#meta-analysis-1"><i class="fa fa-check"></i><b>5.2</b> Meta-analysis</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="meta-analysis.html"><a href="meta-analysis.html#metafor-package"><i class="fa fa-check"></i><b>5.2.1</b> metafor package</a></li>
-<li class="chapter" data-level="5.2.2" data-path="meta-analysis.html"><a href="meta-analysis.html#netmeta-package"><i class="fa fa-check"></i><b>5.2.2</b> netmeta package</a></li>
+<li class="chapter" data-level="5.2.2" data-path="meta-analysis.html"><a href="meta-analysis.html#profile-plots"><i class="fa fa-check"></i><b>5.2.2</b> Profile plots</a></li>
+<li class="chapter" data-level="5.2.3" data-path="meta-analysis.html"><a href="meta-analysis.html#metafor-comparisons"><i class="fa fa-check"></i><b>5.2.3</b> Metafor comparisons</a></li>
+<li class="chapter" data-level="5.2.4" data-path="meta-analysis.html"><a href="meta-analysis.html#netmeta-package"><i class="fa fa-check"></i><b>5.2.4</b> netmeta package</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>6</b> AUPDC meta-analysis</a>
@@ -174,28 +179,28 @@
 <div id="header">
 <h1 class="title">Powdery mildew yield loss mitigation strategies in mungbean, a meta-analysis.</h1>
 <p class="author"><em>Paul Melloy, Emerson Del Ponte and Adam H. Sparks</em></p>
-<p class="date"><em>16 June, 2020</em></p>
+<p class="date"><em>22 June, 2020</em></p>
 </div>
 <div id="home" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Home</h1>
-<p>This compendium details the statistical analysis and methods while undertaking a meta-analysis of fungicide efficacy trials for control of powdery mildew in mungbean.
-This meta-analysis will focus on the main aim of determining:</p>
+<p>This research compendium details the statistical analysis and methods of a meta-analysis of fungicide efficacy trials for controlling powdery mildew in mungbean.
+The meta-analysis’s main aim is to determine:</p>
 <blockquote>
 <p>When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields?</p>
 </blockquote>
 <div id="contents" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Contents</h2>
-<p>This compendia is broken down into seven sections:</p>
+<p>This compendium is broken down into seven sections:</p>
 <ol style="list-style-type: decimal">
-<li><a href="studies-considered-in-meta-analysis.html#studies-considered-in-meta-analysis">Details of the experiments which were included in the analysis</a>.<br />
+<li><a href="studies-considered-in-meta-analysis.html#studies-considered-in-meta-analysis">Details of the experiments, which were included in the analysis</a><br />
 </li>
-<li><a href="preliminary-analysis.html#preliminary-analysis">Preliminary data exploration which investigates possible variables that could influence the meta-analysis.</a>
+<li><a href="preliminary-analysis.html#preliminary-analysis">Preliminary data exploration which investigates possible variables that could influence the meta-analysis</a>
 <ol style="list-style-type: lower-alpha">
 <li><a href="preliminary-analysis.html#fungicides">Fungicides</a><br />
 </li>
 <li><a href="preliminary-analysis.html#mungbean-cultivars">Mungbean cultivar</a><br />
 </li>
-<li><a href="preliminary-analysis.html#row-spacing">Row spacing</a><br />
+<li><a href="prepare-data-for-meta-analysis.html#row-spacing-1">Row spacing</a><br />
 </li>
 <li><a href="preliminary-analysis.html#yield-vs-in-season-rain">Rainfall</a><br />
 </li>
@@ -204,41 +209,32 @@ This meta-analysis will focus on the main aim of determining:</p>
 </ol></li>
 <li><a href="prepare-data-for-meta-analysis.html#prepare-data-for-meta-analysis">Preparation of data for the meta-analysis</a><br />
 </li>
-<li><a href="manuscript.html#meta-analysis-2">Meta-analysis of the effect of fungicide spray scheduale on yield loss</a><br />
+<li><a href="manuscript.html#meta-analysis-2">Meta-analysis of the effect of fungicide spray schedule on yield loss</a><br />
 </li>
-<li><a href="aupdc-meta-analysis.html#aupdc-meta-analysis">Meta-analysis of the effect of fungicide spray scheduale on disease severity and yield loss</a></li>
+<li><a href="aupdc-meta-analysis.html#aupdc-meta-analysis">Meta-analysis of the effect of fungicide spray schedule on disease severity and yield loss</a></li>
 <li><a href="manuscript-wire-frame.html#manuscript-wire-frame">Manuscript Wireframe</a></li>
 <li><a href="manuscript.html#manuscript">Manuscript: A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew.</a></li>
 </ol>
 </div>
 <div id="other-research-questions-which-are-not-the-focus-of-this-study" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Other research questions which are not the focus of this study</h2>
+<h2><span class="header-section-number">1.2</span> Other research questions, which are not the focus of this study</h2>
 <ul>
-<li><p>How has the first sign of powdery mildew changed over the seasons and between
-experimental sites?</p></li>
-<li><p>Is there an ideal planting time, or fungicide management strategy, which could
-make use of powdery mildew defoliation during pod maturation resulting in an
-increased yield?</p></li>
+<li><p>How has the first sign of powdery mildew changed between the seasons and experimental sites?</p></li>
+<li><p>Is there an ideal planting time, or fungicide management strategy, which could make use of powdery mildew defoliation during pod maturation resulting in an increased yield?</p></li>
 <li><p>Do infections that occur before flowering increase the probable yield loss?</p></li>
-<li><p>What is the length of a mungbean season and how has it varied in this trial?</p>
-<ul>
-<li>This data has not been collected or is not accurate enough to be useful to
-answer this question.</li>
-</ul></li>
 </ul>
 </div>
 <div id="possible-sources-of-variation-in-this-analysis." class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Possible sources of variation in this analysis.</h2>
 <ul>
-<li>Variability among host genotypes.
+<li><p>Variability among host genotypes.</p>
 <ul>
-<li><p>The probable influence of season might be influenced by host genotype. This
-is because newer varieties were adopted into experimental trials as they were
-released.</p></li>
-<li><p>Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken,
-Crystal to Jade. Jade was the only cultivar used between 2015 and 2019.</p></li>
-<li><p>Estimations of plant maturity stages over each growing season. These
-estimations might able to be computed using APSIM.</p></li>
+<li><p>The probable influence of season might be influenced by host genotype.
+This is because newer varieties were adopted into experimental trials as they were released.</p></li>
+<li><p>Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken, Crystal to Jade.
+Jade was the only cultivar used between 2015 and 2019.</p></li>
+<li><p>Estimations of plant maturity stages over each growing season.
+These estimations might able to be computed using APSIM.</p></li>
 </ul></li>
 </ul>
 

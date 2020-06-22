@@ -13,53 +13,44 @@ description: "A meta-analysis of fungicide use in mungbean to control for yield 
 ---
 # Home
 
-This compendium details the statistical analysis and methods while undertaking a meta-analysis of fungicide efficacy trials for control of powdery mildew in mungbean. 
-This meta-analysis will focus on the main aim of determining:
+This research compendium details the statistical analysis and methods of a meta-analysis of fungicide efficacy trials for controlling powdery mildew in mungbean.
+The meta-analysis's main aim is to determine:
 
 > When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields?  
 
 ## Contents
-This compendia is broken down into seven sections:  
+This compendium is broken down into seven sections:  
 
-   1. [Details of the experiments which were included in the analysis][Studies considered in meta-analysis].  
-   2. [Preliminary data exploration which investigates possible variables that could influence the meta-analysis.][Preliminary Analysis]  
+   1. [Details of the experiments, which were included in the analysis][Studies considered in meta-analysis]  
+   2. [Preliminary data exploration which investigates possible variables that could influence the meta-analysis][Preliminary Analysis]  
       a. [Fungicides][Fungicides]  
       b. [Mungbean cultivar][Mungbean cultivars]  
       c. [Row spacing][Row spacing]  
       d. [Rainfall][Yield vs in-season rain]  
       e. [When conditions become suitable for powdery mildew infection][Season range and first incidence]  
    3. [Preparation of data for the meta-analysis][Prepare data for meta-analysis]  
-   4. [Meta-analysis of the effect of fungicide spray scheduale on yield loss][Meta-analysis]  
-   5. [Meta-analysis of the effect of fungicide spray scheduale on disease severity and yield loss][AUPDC meta-analysis]
+   4. [Meta-analysis of the effect of fungicide spray schedule on yield loss][Meta-analysis]  
+   5. [Meta-analysis of the effect of fungicide spray schedule on disease severity and yield loss][AUPDC meta-analysis]
    6. [Manuscript Wireframe][Manuscript wire frame]
    7. [Manuscript: A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew.][Manuscript]
 
-## Other research questions which are not the focus of this study
-+ How has the first sign of powdery mildew changed over the seasons and between
-experimental sites?  
+## Other research questions, which are not the focus of this study
 
-+ Is there an ideal planting time, or fungicide management strategy, which could
-make use of powdery mildew defoliation during pod maturation resulting in an
-increased yield?  
++ How has the first sign of powdery mildew changed between the seasons and experimental sites?
 
-+ Do infections that occur before flowering increase the probable yield loss?  
++ Is there an ideal planting time, or fungicide management strategy, which could make use of powdery mildew defoliation during pod maturation resulting in an increased yield?
 
-+ What is the length of a mungbean season and how has it varied in this trial?  
-
-   - This data has not been collected or is not accurate enough to be useful to
-   answer this question.  
-
++ Do infections that occur before flowering increase the probable yield loss?
 
 ## Possible sources of variation in this analysis.
 
-+ Variability among host genotypes.  
-   + The probable influence of season might be influenced by host genotype. This
-   is because newer varieties were adopted into experimental trials as they were
-   released.  
-   
-   + Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken,
-   Crystal to Jade. Jade was the only cultivar used between 2015 and 2019.  
-   
-   + Estimations of plant maturity stages over each growing season. These
-   estimations might able to be computed using APSIM.  
++ Variability among host genotypes.
 
+   + The probable influence of season might be influenced by host genotype.
+   This is because newer varieties were adopted into experimental trials as they were released.
+   
+   + Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken, Crystal to Jade.
+   Jade was the only cultivar used between 2015 and 2019.
+   
+   + Estimations of plant maturity stages over each growing season.
+    These estimations might able to be computed using APSIM.
