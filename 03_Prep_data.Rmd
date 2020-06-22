@@ -232,7 +232,7 @@ slim_PM_dat %<>%
 
 Let's look at these clusters to see where we have the most degrees of freedom.
 
-```{r cluster_clusters, warning=FALSE}
+```{r cluster_clusters}
 clusters <-
    unique(slim_PM_dat[c("cluster_1", "cluster_2", "cluster_3")])
 
