@@ -38,7 +38,7 @@ slim_PM_dat <- data.frame(
    AUDPC_sd = as.double(PM_MB_Mtemp$AUDPC_sd),
    AUDPS_m = as.double(PM_MB_Mtemp$AUDPS_m),
    AUDPS_sd = as.double(PM_MB_Mtemp$AUDPS_sd),
-   dose = PM_MB_Mtemp$dose
+   dose = factor(PM_MB_Mtemp$dose)
    
 )
 
