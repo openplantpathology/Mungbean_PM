@@ -353,9 +353,10 @@ anova(m1,m2)
 ```
 
 Using the model without dose produces a lower AIC, however we should accept the data with dose as there is a significant difference between the models and we should accept the more complicated model `m2`. 
-We will retain dose in the trial factor.
+We will try and evaluate dose in the meta-analysis, however for now we will remove the dose factor to reduce the possibility of overfitting the model.
 
 ```{r}
+slimmer_PM_dat$trial <- slimmer_PM_dat$trial_noDose
 slimmer_PM_dat <- slimmer_PM_dat[,colnames(slimmer_PM_dat) != "trial_noDose"] #remove second trial column
 write.csv(slimmer_PM_dat, file = "cache/slimmer_PM_clusterdat.csv", row.names = FALSE)
 ```
