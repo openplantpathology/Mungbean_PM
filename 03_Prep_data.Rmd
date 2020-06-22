@@ -146,18 +146,19 @@ Our data currently uses sample variance to define the yield error. We should exp
 # redefine sample variance calculated from mean square
 PM_MB_means$vi <-
    PM_MB_means$Y_Msquare /
-   (PM_MB_means$n * PM_MB_means$grain_yield.t.ha ^ 2)
+   (PM_MB_means$n)
 
 PM_MB_means %>%
-   ggplot(aes(x = grain_yield.t.ha, y = vi)) +
+   ggplot(aes(x = grain_yield.t.ha., y = vi)) +
    geom_point()
+
 ```
 
 We see here that the sample variance generally decreases or has no association with the grain yield. This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares which defines between trial variation and is a the more generic error term.  
 
 ```{r Var_MeanSquarePlot}
-slimmer_PM_dat %>%
-   ggplot(aes(x = grain_yield.t.ha, y = Y_Msquare)) +
+PM_MB_means %>%
+   ggplot(aes(x = grain_yield.t.ha., y = Y_Msquare)) +
    geom_point()
 ```
 
