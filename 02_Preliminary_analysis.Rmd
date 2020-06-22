@@ -774,11 +774,12 @@ season_dates %>%
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
 ```
 
-In most years, regardless of the age of the crop, powdery mildew establishes in March.
+In most years, regardless of the age of the crop, powdery mildew establishes in March, which is to be expected.
+The disease is driven by weather conditions and the plant is vulnerable at any growth stage.
 
 ### AUDPC visualise raw data  
 
-First let's check we have all the AUDPC observations.  
+First let's check we have all the AUDPC observations.
 
 ```{r AUDPC_check}
 PM_MB_means %>%
@@ -821,8 +822,8 @@ summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
 
 This is not what we would expect and the low R squared value of `r round(summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))$adj.r.squared,3)` perhaps there are additional factors influencing this relationship.
 
-let's tease out variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing the expected relationship. 
-Let's do the plot again for each trial where there are no missing values.  
+Let's tease out variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing the expected relationship.
+Let's do the plot again for each trial where there are no missing values.
 Note: The plots are ordered by mean yield of the trial.
 
 ```{r AUDPCxTrial}
@@ -872,14 +873,13 @@ sm2lg <- PM_MB_means %>%
    arrange(TY)
 
 for (i in sm2lg$trial_ref) {
-   dat1 <- PM_MB_means[PM_MB_means$trial_ref == i,]
+   dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
    if (any(is.na(dat1$grain_yield.t.ha.))) {
       next
    }
    if (any(is.na(dat1$AUDPS_m))) {
       next
    }
-   
    
    plot(
       grain_yield.t.ha. ~ AUDPS_m,
@@ -892,13 +892,13 @@ for (i in sm2lg$trial_ref) {
    )
    abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = dat1))
    points(grain_yield.t.ha. ~ AUDPS_m,
-          data = dat1[dat1$fungicide_ai == "control", ],
+          data = dat1[dat1$fungicide_ai == "control",],
           col = "red")
    
 }
-
 ```
-The plots from the AUPDS is similar to the AUDPC, however according to the linear model the AUDPC is a better, significant fit.  
+
+The plots from the AUPDS is similar to the AUDPC, however according to the linear model the AUDPC is a better, significant fit.
 
 A mixed effect model would be more suitable to investigate the interactive effects of location, season, and trial. 
 The mixed effect model will help us decide on the best approach and structure for our meta-analysis model.
