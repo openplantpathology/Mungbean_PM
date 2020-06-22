@@ -598,9 +598,9 @@ That is, the row spacing appeared to increase yield even if the amount of powder
 
 *****
 
-### Yield vs in-season rain  
+### Yield vs in-season rain
 
-In crop rain could be a significant factor which contributes to the end of season grain yield.
+In0-crop rain could be a significant factor which contributes to the end of season grain yield.
 To investigate this effect I will use a linear model (GY ~ SR) where seasonal rainfall represents a specific time frame with respect to planting time.
 Multiple time frames were tested from 20 days prior to planting, to 100 days after planting.  
 
