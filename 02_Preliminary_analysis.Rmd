@@ -110,7 +110,7 @@ This can then be compared to an additional meta-analysis including azoxystrobin 
    
 *****
 
-Before we exclude non-DMI fungicides lets have a look at the efficacy of the other fungicides in comparison to the DMIs.
+Before we exclude non-DMI fungicides let's have a look at the efficacy of the other fungicides in comparison to the DMIs.
 For this comparison we will focus on the proportional yield saved, relative to the no spray control.
 The primary focus of this research is the effect of fungicide on mitigating yield loss due to disease.
 We are using proportional yield, relative to the no spray control, to reduce the effect of location and seasonal influences.  
@@ -171,7 +171,7 @@ write.csv(PM_MB_means,
 ```
 
 
-Now we have calculated proportional yield gains we can inspect the difference between the fungicide active ingredients
+Now we have calculated proportional yield savings we can inspect the difference between the fungicide active ingredients
 
 ```{r Fungicide_x_nSprays_tble2, message=FALSE}
 PM_MB_means %>%
@@ -191,7 +191,7 @@ PM_MB_means %>%
          "Fungicide active ingredient",
          "Total fungicide applications",
          "n Treatments",
-         " 2.5% quartile",
+         "2.5% quartile",
          "Median proportional grain yield",
          "Mean proportional grain yield",
          "97.5 % quartile"
@@ -243,13 +243,13 @@ PM_MB_means %>%
 There is a small yield effect among the strobilurin fungicide mixes and the DMI fungicides. 
 While there is some differences in the variation between tebuconazole and propiconazole, the medians are very similar. 
 I think it is safe to combine these fungicides, with the same mode of action in the meta-analysis.
-The follow up spray seems to show an increase in yield protection.
+The follow-up spray seems to show an increase in yield protection.
 Interestingly sulphur sprays show good protection when sprayed twice.
 
 *****
 
 #### Fungicide Doses  
-From this point on we will investigate only the DMI fungicides, tebuconazole and propiconazole and disregard all other fungicide modes-of-action.
+From this point on we will investigate only the DMI fungicides, tebuconazole and propiconazole, and disregard all other fungicide modes-of-action.
 
 We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.
 
@@ -669,17 +669,17 @@ ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared)) +
    scale_fill_distiller(palette = "RdBu") 
 ```
 
-The approximate period when in-crop rainfall impacts the most on the mean harvest is between 14 - 67 days after planting.
+The approximate period when in-crop rainfall affects the most on the mean harvest is between 14 - 67 days after planting.
 
 *****
 
-
 ### Season range and first incidence
+
 Mungbean is a summer crop and powdery mildew requires cool conditions to establish.
 Therefore the disease can be avoided by planting early in summer or spring, avoiding cooler temperatures at the end of some seasons.
 Can we visualise when PM is most likely to establish over the calendar year?
 
-I'll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.  
+I'll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.
 
 ```{r first_incidence}
 # Create the data frame for the plot
@@ -694,7 +694,7 @@ season_dates <- PM_MB_means %>%
    )
 
 
-# For some trials where planting date and Harvest date is missing lets estimate 
+# For some trials where planting date and Harvest date is missing let's estimate 
 #     the season length by using the mean of all season lengths
 season_dates[is.na(season_dates$season_length),"cropping_season"] <- "Estimated"
 
@@ -771,15 +771,13 @@ season_dates %>%
    coord_flip() +
    scale_color_manual(values=c("black","grey70"))+
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
-
 ```
 
 In most years, regardless of the age of the crop, powdery mildew establishes in March.
 
-
 ### AUDPC visualise raw data  
 
-First lets check we have all the AUDPC observations.  
+First let's check we have all the AUDPC observations.  
 
 ```{r AUDPC_check}
 PM_MB_means %>%
@@ -797,13 +795,14 @@ write.csv(PM_MB_means,
           "cache/1911_PM_MB_means&Ygains.csv", row.names = FALSE)
 ```
 
+      _How well does 'area under the disease progress curve' (AUDPC) predict grain yield?_
+   
+   and
+      
+      _Does spray_management scenario mitigate yield loss through reducing AUDPC?_
 
-
->How well does 'area under the disease progress curve' (AUDPC) predict grain yield?  
-
-and _Does spray_management scenario mitigate yield loss through reducing AUDPC?_   
-
-We would expect to see grain yield decline with increasing AUDPC. Let's just plot yield vs AUDPC.  
+We would expect to see grain yield decline with increasing AUDPC.
+Let's just plot yield vs AUDPC.
 
 ```{r Yield_vs_AUDPC}
 
@@ -812,8 +811,8 @@ abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
 
 ```
 
-There appears to be a weak positive relationship between the two continuous variables.  
-Does a linear model confirm this?  
+There appears to be a weak positive relationship between the two continuous variables.
+Does a linear model confirm this?
 
 ```{r AUDPClm}
 summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
@@ -821,7 +820,7 @@ summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
 
 This is not what we would expect and the low R squared value of `r round(summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))$adj.r.squared,3)` perhaps there are additional factors influencing this relationship.
 
-Lets tease out variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing the expected relationship. 
+let's tease out variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing the expected relationship. 
 Let's do the plot again for each trial where there are no missing values.  
 Note: The plots are ordered by mean yield of the trial.
 
@@ -855,10 +854,10 @@ for (i in sm2lg$trial_ref) {
 }
 ```
 
-This sequence of graphs show that AUDPC and disease incidence tends not impact on yields if the season is a low yielding, ie lower than 1 tonne per hectare.  
-The higher the yield the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.  
+This sequence of graphs show that AUDPC and disease incidence tends not affect yields if the season is a low yielding season, _i.e._ lower than 1 tonne per hectare.
+The higher the yield, the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.
 
-Let's have a look again at the same sequence of graphs and analyses for area under the disease progress _stairs_.  
+Let's have a look again at the same sequence of graphs and analyses for area under the disease progress _stairs_.
 
 ```{r Yield_vs_AUDPS}
 plot(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means)
@@ -870,8 +869,6 @@ sm2lg <- PM_MB_means %>%
    group_by(trial_ref) %>%
    summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
    arrange(TY)
-
-
 
 for (i in sm2lg$trial_ref) {
    dat1 <- PM_MB_means[PM_MB_means$trial_ref == i,]
