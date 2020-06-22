@@ -155,7 +155,7 @@ PM_MB_means %>%
 ```
 
 We see here that the sample variance generally decreases or has no association with the grain yield.
-This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares which defines between trial variation and is a the more generic error term.
+This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares which defines between trial variation and is the more generic error term.
 
 ```{r Var_MeanSquarePlot}
 PM_MB_means %>%
