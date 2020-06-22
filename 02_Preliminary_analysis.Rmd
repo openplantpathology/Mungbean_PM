@@ -356,19 +356,17 @@ PM_MB_means %>%
       s4_DfromFS,
       s5_DfromFS
    ) %>%
-   drop_na(n_days) %>% 
+   drop_na(n_days) %>%
    ggplot(aes(x = spray, y = as.numeric(n_days))) +
    geom_violin() +
-   scale_x_discrete(
-      labels = c(
-         "First spray",
-         "Second spray",
-         "Third spray",
-         "Fourth spray",
-         "Fifth spray"
-      )
-   ) +
-   ylab("Days to First Sign of Disease")+
+   scale_x_discrete(labels = c(
+      "First spray",
+      "Second spray",
+      "Third spray",
+      "Fourth spray",
+      "Fifth spray"
+   )) +
+   ylab("Days to First Sign of Disease") +
    facet_grid(cols = vars(total_fungicide)) +
    coord_flip()
 ```
@@ -379,8 +377,9 @@ Three spray treatments seemed to be mostly used in experiments where preventativ
 
 *****
 
-### Mungbean cultivars  
-In general, mungbean varieties have the following resistance to powdery mildew.
+### Mungbean cultivars
+
+Australian mungbean varieties have the following resistance to powdery mildew.
 
    - Berken: Highly susceptible
    
@@ -419,17 +418,15 @@ First let's look at overall yields for each cultivar, where trial is not a facto
 # Outputs the table and graph
 source("R/yield_volatility.r") # function to investigate the volatility in yields
 # Volatility is the range between the upper and lower 97.5 and 2.5 % quartiles
-
 YV1 <-
    yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
 YV1[[2]] + 
    scale_fill_usq()
-
 YV1[[3]]
 ```
 
 This plot shows a large amount of yield volatility in all cultivars except Green Diamond.
-Green Diamond shows little volatility probably because this cultivar is only featured in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trial. 
+Green Diamond shows little volatility probably because this cultivar was only used in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trial. 
 
 Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray control treatments.
 
@@ -507,17 +504,17 @@ YV2_jade[[2]] +
 YV2_jade[[3]]
 ```
 
-There still remains a higher volatility in Jade and perhaps a greater shift in the probability curve including fungicide treatments vs probability curves including only no spray controls.
-Indicating that there might be a difference in powdery mildew tolerance between Jade and Crystal.  
+There still remains a higher volatility in Jade and perhaps a greater shift in the probability curve including fungicide treatments versus probability curves including only no spray controls.
+Indicating that there might be a difference in powdery mildew tolerance between Jade and Crystal.
 
-
-Overall there seems to be an influence of cultivar however this variation is not as distinct as the variation between trials.  
+Overall there seems to be an influence of cultivar.
+However this variation is not as distinct as the variation between trials.
 
 *****
 
 ### Row spacing  
 
-Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease.
+Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease as well as fungicide timing and efficacy.
 The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly.
 This finding has also been shown by several other researchers' work in Queensland and New South Wales as well.
 Eight trials used a row spacing of 0.75&nbsp;meters and tebuconazole as an active ingredient (AI).
@@ -539,11 +536,12 @@ PM_MB_means %>%
    scale_fill_usq(name = "Fungicide AI")
 ```
 
-Let's plot the row spacing treatments for the response variables yield and disease severity. The main questions are:  
+Let's plot the row spacing treatments for the response variables yield and disease severity.
+The main questions are:
 
-   * Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?  
+   * Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?
    
-   * If not, can we pool certain row spacing that have no significant difference?  
+   * If not, can we pool certain row spacing that have no significant difference?
 
 ```{r RS_severity}
 # Which row spacing leads to the higher disease severity
@@ -553,6 +551,8 @@ PM_MB_means %>%
    filter(fungicide_ai == "control") %>%
    ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
    geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
+   ylab("Final severity rating") +
+   xlab("Row spacing (m)") +
    ggtitle("Powdery mildew variation between different row spacing")
 ```
 
@@ -570,8 +570,7 @@ PM_MB_means %>%
    xlab("Row spacing (m)")
 ```
 
-In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.  
-
+In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.
 
 ```{r RS_yield}
 # Which row spacing leads to the higher yield potential
@@ -580,10 +579,10 @@ PM_MB_means %>%
              year == 2018) %>%
    ggplot(aes(
       y = as.numeric(grain_yield.t.ha.),
-      x = row_spacing,
+      x = as.factor(row_spacing),
       colour = location
    )) +
-   geom_jitter(width = 0.01) +
+   geom_jitter(width = 0.1) +
    ggtitle("Grain yield results for different row spacing at three locations") +
    xlab("Row spacing (m)") +
    ylab("Grain yield (t/ha)") +
@@ -591,9 +590,11 @@ PM_MB_means %>%
 ```
 
 The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial.
-However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.  
+However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.
 
-Overall row spacing may influence both powdery mildew severity and yield.  
+Overall row spacing may influence both powdery mildew severity and yield.
+However, in the studies that were conducted, no interaction was found between row spacing, powdery mildew severity and yield.
+That is, the row spacing appeared to increase yield even if the amount of powdery mildew increased and no relationship could be detected between an interaction of the three.
 
 *****
 
