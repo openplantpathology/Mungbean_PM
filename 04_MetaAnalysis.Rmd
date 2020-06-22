@@ -24,7 +24,7 @@ Let's get started with the analysis by first finding the best model fit that ans
    - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept.  
    - We will test spray management (our treatment) as a fixed effect and random slope to trial.  
 
-First lets compare models with and without a log transformed response variable to evaluate if the log transformed model better fits our assumptions of normality.  
+First let's compare models with and without a log transformed response variable to evaluate if the log transformed model better fits our assumptions of normality.  
 Next we will test whether including `spray_management` as a fixed effect variable significantly accounts for enough variation to be included in the model.  
 Finally we will test whether including `spray_management`  as a random slope significantly accounts for enough variation to be used in the model.  
 
@@ -70,7 +70,7 @@ There is no difference between the models, which means the the simpler model `m1
 summary(m11)
 ```
 
-This linear mixed effect model shows indicates:  
+This linear mixed effect model shows:  
 
    - A single `early` spray before first sign of powdery mildew is not likely to increase yields.  
    
@@ -115,9 +115,9 @@ for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
 The use of these imputed MSE was giving a varied outcome each time it was run. 
 The next code chunk removes the studies without variation to observe what the meta-analysis outcome would be.
 
-```{r remove_NA_MSE}
+```{r remove_yieldErrorNAs}
 slimmer_PM_dat <- 
-   slimmer_PM_dat[!is.na(slimmer_PM_dat$Y_Msquare),]
+   slimmer_PM_dat[!is.na(slimmer_PM_dat$yield_error),]
 
 ```
 
@@ -139,6 +139,7 @@ kable(table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year),
 ```
 Treatments Late_plus and early don't have very good comparison to other treatments.  
   
+Let's visualise the spread of data in each treatments with box-plots.  
 
 ```{r treatment_means_plot}
 # class spray_management as a factor and reorder them for the plot
@@ -160,7 +161,7 @@ slimmer_PM_dat %>%
 ```
 
 There seems like little difference between the treatments, with exception to Late_plus. 
-Let's do this plot again, but lets look at the proportional mean difference between the treatments and the no spray control for each study.  
+Let's do this plot again, but let's look at the proportional mean difference between the treatments and the no spray control for each study.  
 This should reduce variation in yield due between trials.  
 
 ```{r plot_yieldProportion}
@@ -188,10 +189,10 @@ slimmer_PM_dat %>%
    coord_flip()
 ```
 
-Using the mean difference in the treatment effect seems to show the impact of each treatment better than just raw yield.
+Using the mean difference in the treatment effect seems to show the impact of each treatment better than just raw yield and reduces the variability in the treatments.
 We know there is a good deal of variability in our studies and between them. 
 Mungbean produces variable yields between seasons so we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
-Lets calculate the standardised mean difference for each treatment to reduce the variability in the meta-analysis.
+Let's calculate the standardised mean difference for each treatment to reduce the variability in the meta-analysis.
 
 ### Formatting Variance 
 
@@ -203,6 +204,9 @@ slimmer_PM_dat$vi <- slimmer_PM_dat$yield_error
 ```
 
 #### Calculate sample variance from mean square errors
+
+Currently our data frame has the sample variance calculated earlier, however we can approximate it using the mean squared error.
+Let's show the rational for our calculation and then add a secondary variance column (`vi2`)
 
 $MSE = Var + bias$  
 However if our MSE was calculated from an unbiased sample we can assume $bias = 0$ and therefore:  
@@ -217,7 +221,7 @@ The sample variance is a similar formula except we use $x$ instead of $y$.
 $S_{Var} = \frac{\sum_{x_1}^{x_n}(x_i - \overline{x})^2}{n - 1}$  
 $x$ being each observation within the experiment and $n$ being the number of samples in the whole trial.
 Therefore: 
-$S_{Var} = \frac{\frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n_y - 1}}{n_{x}}$  
+$S_{Var} = \frac{1}{n_{x}} \frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n_y - 1} $  
 Where $n_x$ is the number of samples within each treatment.
 
 ```{r MSE_2_SVar}
@@ -234,9 +238,9 @@ slimmer_PM_dat$vi2 <-
 
 We have removed the studies that don't report any variance from the analysis.
 
-### Caluculate standardised mean differences
-We may wish to undertake the meta-analysis using standardised mean differences. 
-Lets calculate them and add them to the dataframe.
+### Calculate standardised mean differences  
+
+Let's calculate standardised mean differences and add them to the data frame.
 ```{r StandardisedMeanDifference}
 slimmer_PM_dat$pooledSD <- NA
 slimmer_PM_dat$vi_C <- NA
@@ -259,9 +263,10 @@ slimmer_PM_dat$grain_SMD <- (slimmer_PM_dat$grain_yield.t.ha - slimmer_PM_dat$yi
 
 ```
 
-We can use the same sample variance because if you add or subtract from a random variable the variance does not change.
+We can use the same sample variance with the standardised mean difference.
+This is because if you add or subtract from a random variable, the variance does not change.
 
-Lets simplify our data
+Let's simplify our data
 ```{r metafor_organisation}
 dat1 <-
    slimmer_PM_dat %>%
@@ -298,21 +303,7 @@ dat1 <-
 
 ## Meta-analysis  
 ### metafor package  
-Let's load the `metafor` package we are using to analyse the data, then rearrange the factors we want to examine by placing the control treatment first. This way all treatments will be compared to the no spray controls.  
-Next we are log transforming the grain yield and calculating the variance from the trial mean squares.  
-Finally we will assign factor classes to the main variables in the meta-analysis. Note that variable trial is a combination of:
-
-   * Trial identifier  
-
-   * Trial year  
-
-   * Trial location  
-
-   * Host genotype  
-
-   * Trial row spacing  
-
-Lets inspect the data to determine if we need to transform the response variable
+Let's inspect the data to determine if we need to transform the response variable
 
 ```{r}
 hist(dat1$grain_yield.t.ha)
@@ -322,7 +313,8 @@ hist(dat1$grain_SMD)
 ```
 Standardised mean differences have a bit of a long tail however this is not bad and transformations with log or sqrt will not work on negative values.  
 
-Lets undertake the meta-analysis, we are using the `spray_management` variable as a moderator and a interactive term to the `trial` variable.
+Let's undertake the meta-analysis using the package `metafor`.
+Ee are using the `spray_management` variable as a moderator and a interactive term to the `trial` random variable.
 Because we want to know the difference between all treatments and we have no reference treatment, we will remove the intercept.
 ```{r Metafor-analysis}
 PM_mv <- rma.mv(
@@ -339,12 +331,11 @@ summary(PM_mv)
 In this result we can see that the `Early` treatment is not significantly different to zero, which in this case is the mean of the no spray control. 
 However the other treatments are significantly different to zero.
 The Qm [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, show the moderators significantly influence the model ($Q_M = 85.232, df = 5, p < 0.0001$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010]. 
-The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 40994.51, df = 105, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.    
+The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 47501.48, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.    
 
-Lets see if we can improve this model by including some other random effects and improving the random effect structure in the model.  
+Let's see if we can improve this model by including some other random effects and improving the random effect structure in the model.  
 
-
-```{r}
+```{r rma_noRandomInteractiveTerm}
 
 PM_mv_St <- rma.mv(
    yi = grain_SMD,
@@ -358,7 +349,7 @@ PM_mv_St <- rma.mv(
 AIC(PM_mv_St)
 anova(PM_mv, PM_mv_St)
 ```
-The simpler `PM_mv_St` model explains significantly less variation as the more complicated model `PM_mv`. So we will keep the original model.  
+The simpler `PM_mv_St` model explains significantly less variation as the more complicated model `PM_mv`. So we will keep the original model `PM_mv`.  
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis.
 The second table is in two parts(left and right). 
@@ -368,7 +359,7 @@ All comparisons were acceptable except for a comparison between `Early` and `Lat
 The fixed effects, in the last table, showed that yields in single early spray treatments are not significantly different to zero, or the no spray control. 
 
 ### Profile plots  
-Lets inspect the profile plots to ensure the model is not over-fitted. 
+Let's inspect the profile plots to ensure the model is not over-fitted. 
 We expect to see the estimate align with the peak of the curve. 
 Also that the shape of the line is a curve.  
 Caution! this will take some time to run.
