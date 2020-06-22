@@ -39,7 +39,7 @@ PM_MB_means %>%
 
 The experiment summaries report either standard deviation, least square differences or no error term (`NA`). 
 First we will convert LSD and standard deviation to sample variance.
-Then we will impute variances for the trials which did not report any form of variance (`NA`).
+Then we will impute variances for the trials, which did not report any form of variance (`NA`).
 
 ### Converting least-squares to sample variance
 
@@ -159,7 +159,7 @@ PM_MB_means %>%
 ```
 
 We see here that the sample variance generally decreases or has no association with the grain yield.
-This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares which defines between trial variation and is the more generic error term.
+This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares, which defines between trial variation and is the more generic error term.
 
 ```{r Var_MeanSquarePlot}
 PM_MB_means %>%
@@ -174,14 +174,14 @@ PM_MB_means %>%
 
 ## Reduce data set to required variables
 
-Let's tidy up the data set into a data frame of only the variables which are required for the analysis.
+Let's tidy up the data set into a data frame of only the variables, which are required for the analysis.
 
 First remove the irrelevant columns/variables.
 Then calculate fungicide application timing variables relative to the first sign of disease.
 Entries with `NA` in the grain yield or powdery mildew severity are also removed from the data.
 
 ```{r clustered_fungicide_applications}
-source("R/slimming_PM_dat.R") # see R script for the code which reduces the data.
+source("R/slimming_PM_dat.R") # see R script for the code, which reduces the data.
 
 slim_PM_dat %<>%
    mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
@@ -331,7 +331,7 @@ slimmer_PM_dat <-
 
 ## Test dose effect
 
-Earlier we noted there were different doses of propiconazole which might influence our analysis.
+Earlier we noted there were different doses of propiconazole, which might influence our analysis.
 Let's check this by comparing a linear mixed effect model including and excluding dose.
 We already have a factor breaking down the dose in the `trial` variable.
 Let's make a new one without dose.
@@ -424,11 +424,12 @@ slimmer_PM_dat %>%
 ```
 
 From this plot we see that in the trials with high disease pressure treatments on tended to produce lower yields. 
-There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_ref"]))` trials that contained no data for AUDPC and thus produced `NA` values.  
+There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_ref"]))` trials that contained no data for AUDPC and thus produced `NA` values.
 
 ### Row spacing
 
-We may want to consider row spacing in the trials, However one of the locations has `NA` as the row spacing. 
+We may want to consider row spacing in the trials.
+However one of the locations has `NA` as the row spacing.
 For now let's assign the most used row spacing of 0.33 m.
 
 ```{r assign_row_spacing_missing}
