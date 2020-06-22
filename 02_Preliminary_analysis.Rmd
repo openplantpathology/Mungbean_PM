@@ -330,7 +330,7 @@ This table shows that the majority of treatments inspected one and two spray man
 *****
 
 #### Timing of fungicide sprays  
-The timing of fungicide application can be crucial for maximum disease control and yield mitigation. 
+The timing of fungicide application can be crucial for maximum disease control and yield loss mitigation. 
 The experiments all relied on natural infection and thus infection at a standardised crop maturity stage was not possible. 
 To best estimate the effect of fungicide application timing we will use the day when the disease was first found in the field as a reference.
 The first sign of disease is a useful reference as it can be assessed with little training for the assessor.
