@@ -362,7 +362,7 @@ write.csv(slimmer_PM_dat, file = "cache/slimmer_PM_clusterdat.csv", row.names = 
 
 
 
-### Disease presure factor
+### Disease pressure factor
 We may wish to investigate the impact of spray management in mitigating the yield loss through the effect on the disease pressure. We will set a categorical variable to indicate the amount of disease pressure in the trial, which will be evaluated on the control plot. 
 We will create two categories, `lowD` and `highD`. 
 We will use the median `AUDPC` to separate the trials into these two groups.
@@ -403,24 +403,21 @@ for(i in unique(slimmer_PM_dat$trial_ref)) {
 ```
 
 
-Lets have a quick look to examine weather trials with high disease pressure sustain a greater yield loss.  
+Lets have a quick look to examine whether trials with high disease pressure sustain a greater yield loss.  
 
 ```{r plot_disease_pressure}
 slimmer_PM_dat %>%
    ggplot(aes(x = D_pres, y = grain_yield.t.ha))+
    geom_boxplot()
-
-slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),]
 ```
 
 From this plot we see that in the trials with high disease pressure treatments on tended to produce lower yields. 
 There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_ref"]))` trials that contained no data for AUDPC and thus produced `NA` values.  
 
-
 ### Row spacing
 
 We may want to consider row spacing in the trials, However one of the locations has NA as the row spacing. 
-Fow now lets assign the most used row spacing of 0.33
+For now lets assign the most used row spacing of 0.33
 ```{r}
 slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),]
 slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),"row_spacing"] <- 0.33
