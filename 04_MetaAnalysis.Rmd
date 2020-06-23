@@ -274,7 +274,6 @@ PM_mv_St <- rma.mv(
    data = dat1
 )
 
-dat1$trial[1]
 
 PM_mv_St1 <- rma.mv(
    yi = grain_SMD,
@@ -394,8 +393,6 @@ efficacy %>%
    geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper)) +
    coord_flip()
 
-max(slimmer_PM_dat[slimmer_PM_dat$cluster_1 == "Late" &
-                      ,"fungicide_timing_1"], na.rm = TRUE)
 ```
 
 Let's look at how well each of the number treatments compare to each other.
