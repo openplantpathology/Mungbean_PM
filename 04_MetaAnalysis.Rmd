@@ -291,7 +291,11 @@ dat1 <-
                    "Late",
                    "Late_plus"
                 )
-             )) %>%
+             ),
+          D_pres = 
+             factor(D_pres,
+                    c("lowD",
+                      "highD"))) %>%
    select(
       trial,
       trial_ref,
@@ -476,9 +480,46 @@ efficacy %>%
    geom_point(aes(size = 1 / SE), shape = 15) +
    geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper)) +
    coord_flip()
+
+max(slimmer_PM_dat[slimmer_PM_dat$cluster_1 == "Late" &
+                      ,"fungicide_timing_1"], na.rm = TRUE)
 ```
 
 Let's look at how well each of the number treatments compare to each other.
+
+### Disease pressure effect
+
+We also want to know if disease pressure exerts an effect on the desicion for spray control.
+Above we can see spraying at the first sign of powdery mildew or with in `r min(as.numeric(slimmer_PM_dat[slimmer_PM_dat$spray_management == "Late"| slimmer_PM_dat$spray_management == "Late_plus","fungicide_timing_1"]))` - `r min(as.numeric(slimmer_PM_dat[slimmer_PM_dat$spray_management == "Late"|                   slimmer_PM_dat$spray_management == "Late_plus","fungicide_timing_1"]))` days after first sign is effective at mitigating yield loss.
+Does this change between years of low and high disease pressure.
+
+We will add the intercept back into this model for ease of interpretation. 
+```{r D_pres-Meta}
+PM_mv_Dp <- rma.mv(
+   yi = grain_SMD,
+   vi,
+   mods = ~ spray_management *D_pres,
+   method = "ML",
+   random = ~ spray_management | trial,
+   struct = "UN",
+   data = dat1
+)
+
+summary(PM_mv_Dp)
+```
+
+These results show that the spray management variable we tested are not significantly better or worse between the two levels of disease pressure.
+It also shows that in trials with high disease pressure all treatments produced lower standardised mean differences. 
+Indicating that fungicide treatments were less effective at mitigating yeild loss in seasons which developed heavier infestations.  
+Finally lets compare the disease pressure model to the orignal model to see which one fits better.  
+
+```{r compareDvNDP}
+anova(PM_mv, PM_mv_Dp)
+```
+No significant difference which informs us to use the origninal model `PM_mv` which is the simplest.  
+
+****
+
 
 We can use the netmeta package to give a graphical representation of the pairwise comparisons.
 
