@@ -409,7 +409,9 @@ Let's have a quick look to examine whether trials with high disease pressure sus
 ```{r plot_disease_pressure}
 slimmer_PM_dat %>%
    ggplot(aes(x = D_pres, y = grain_yield.t.ha))+
-   geom_boxplot()
+   geom_boxplot() +
+   xlab("Disease pressure") +
+   ylab("Grain yield (t/ha)")
 ```
 
 From this plot we see that in the trials with high disease pressure tended to produce lower yields. 
