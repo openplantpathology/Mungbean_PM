@@ -220,6 +220,7 @@ dat1 <-
       D_pres,
       grain_yield.t.ha,
       grain_SMD,
+      dose,
       vi,
       vi2
       )
