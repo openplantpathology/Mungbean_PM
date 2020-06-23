@@ -356,13 +356,11 @@ anova(m1, m2)
 ```
 
 Using the model without dose produces a lower AIC, however we should accept the data with dose as there is a significant difference between the models and we should accept the more complicated model `m2`.
-We will try and evaluate dose in the meta-analysis, however for now we will remove the dose factor to reduce the possibility of overfitting the model.
+We will retain dose as a variable inside the `trial` factor.  
 
-```{r}
-slimmer_PM_dat$trial <- slimmer_PM_dat$trial_noDose
+```{r saveDat}
 slimmer_PM_dat <-
    slimmer_PM_dat[, colnames(slimmer_PM_dat) != "trial_noDose"] #remove second trial column
-write.csv(slimmer_PM_dat, file = "cache/slimmer_PM_clusterdat.csv", row.names = FALSE)
 ```
 
 
@@ -373,9 +371,7 @@ We will set a categorical variable to indicate the amount of disease pressure in
 We will create two categories, `lowD` and `highD`.
 We will use the median `AUDPC` to separate the trials into these two groups.
 
-```{r}
-slimmer_PM_dat <- read.csv(here("cache/slimmer_PM_clusterdat.csv"))
-
+```{r DiseasePressure}
 slimmer_PM_dat$D_pres <- NA_character_
 
 Trial_Dpress <- slimmer_PM_dat %>%
