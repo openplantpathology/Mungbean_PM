@@ -113,7 +113,7 @@ for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), ]$trial_ref) {
 ```
 
 The use of these imputed MSE was giving a varied outcome each time it was run. 
-The next code chunk removes the studies without variation to observe what the meta-analysis outcome would be.
+The next code chunk removes the studies without variation, given we can't reliably impute them.
 
 ```{r remove_yieldErrorNAs}
 slimmer_PM_dat <- 
@@ -278,8 +278,9 @@ dat1 <-
          "Recommended",
          "Recommended_plus",
          "Late",
-         "Late_plus"
-      )))%>%
+         "Late_plus")),
+      TrialDose = factor(paste(trial, dose, sep = "_"))
+      )%>%
    select(
       trial,
       trial_ref,
@@ -294,7 +295,7 @@ dat1 <-
       grain_SMD,
       vi,
       vi2
-   )
+      )
 ```
 
 
@@ -314,7 +315,7 @@ hist(dat1$grain_SMD)
 Standardised mean differences have a bit of a long tail however this is not bad and transformations with log or sqrt will not work on negative values.  
 
 Let's undertake the meta-analysis using the package `metafor`.
-Ee are using the `spray_management` variable as a moderator and a interactive term to the `trial` random variable.
+We are using the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
 Because we want to know the difference between all treatments and we have no reference treatment, we will remove the intercept.
 ```{r Metafor-analysis}
 PM_mv <- rma.mv(
@@ -346,10 +347,25 @@ PM_mv_St <- rma.mv(
    data = dat1
 )
 
-AIC(PM_mv_St)
-anova(PM_mv, PM_mv_St)
+dat1$trial[1]
+
+PM_mv_St1 <- rma.mv(
+   yi = grain_SMD,
+   vi, 
+   mods = ~ spray_management,
+   method = "ML",
+   random = list(~ 1|location/year/trial_ref/dose/host_genotype/factor(row_spacing)/spray_management),
+   data = dat1
+)
+
+
+AIC(PM_mv) # Printing the AIC of the model helps differentiate the models in the anova output
+anova(PM_mv, PM_mv_St1) # PM_mv is the better model
+
 ```
-The simpler `PM_mv_St` model explains significantly less variation as the more complicated model `PM_mv`. So we will keep the original model `PM_mv`.  
+
+The simpler `PM_mv_St` model explains significantly less variation as the more complicated model `PM_mv`. 
+So we will keep the original model `PM_mv`.  
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis.
 The second table is in two parts(left and right). 
@@ -364,7 +380,7 @@ We expect to see the estimate align with the peak of the curve.
 Also that the shape of the line is a curve.  
 Caution! this will take some time to run.
 
-```{r}
+```{r rmaProfilePlots}
 profile(PM_mv , tau2 = 1)
 profile(PM_mv , tau2 = 2)
 profile(PM_mv , tau2 = 3)
