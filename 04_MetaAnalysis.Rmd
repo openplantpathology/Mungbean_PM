@@ -35,102 +35,6 @@ To do this, in our model:
 
    - We will test spray management (our treatment) as a fixed effect and random slope to trial
 
-First let's compare models with and without a log transformed response variable to evaluate if the log transformed model better fits our assumptions of normality.
-Next we will test whether including `spray_management` as a fixed effect variable significantly accounts for enough variation to be included in the model.
-Finally we will test whether including `spray_management`  as a random slope significantly accounts for enough variation to be used in the model.
-
-```{r LME_slimmer_cluster_disease_mod}
-m8 <- lmer(grain_yield.t.ha * 1000 ~ factor(spray_management) +
-              (factor(spray_management) | trial),
-           data = slimmer_PM_dat)
-
-m9 <- lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
-              (factor(spray_management) | trial),
-           data = slimmer_PM_dat)
-
-m10 <- lmer(log(grain_yield.t.ha * 1000) ~
-               (factor(spray_management) | trial),
-            data = slimmer_PM_dat)
-
-m11 <-
-   lmer(log(grain_yield.t.ha * 1000) ~ factor(spray_management) +
-           (1 | trial),
-        data = slimmer_PM_dat)
-```
-
-```{r m8_vs_m9}
-anova(m8, m9) # m9 is significantly better model
-```
-There is a significant difference between `m8` and `m9`, with `m9` showing the best fit and lowest AIC: `r min(anova(m8, m9)$AIC)`.
-
-```{r m9_vs_m10}
-anova(m9, m10) # m9 is significantly better model
-```
-
-There is a significant difference between `m10` and `m9`, with `m9` showing the best fit and lowest AIC: `r min(anova(m9, m10)$AIC)`.  
-
-```{r m9_vs_m11}
-anova(m9, m11) # m11 is a simpler model which is no different to m9
-```
-
-There is no difference between the models, which means the the simpler model `m11` is the better model, also making it the best model from the four above with the lower AIC of -`r min(anova(m9, m11)$AIC)`).
-
-```{r}
-summary(m11)
-```
-
-This linear mixed effect model shows:
-
-   - A single `early` spray before first sign of powdery mildew is not likely to increase yields. 
-   
-   - One spray at the `recommended` timing, or two sprays starting at the `recommended` first spray, are likely to produce significantly higher grain yields compared to the no spray control.
-   
-   - The `Late_plus` spray which has one or more follow-up sprays after first sign are likely to increase the mean grain yield.
-   
-   - `Recommended_plus` spray treatments showed the highest mean grain yield, and was significantly higher than the no spray control. However showed no difference to either the `recommended` or `Late_plus` treatments.
-
-#### Imputing sample variances from Mean squares
-
-```{r imputing_MSE_dataSpread, eval=FALSE, include=FALSE}
-slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv")
-hist_usq(unique(slimmer_PM_dat$Y_Msquare))
-hist_usq(log(unique(slimmer_PM_dat$Y_Msquare))) # log mean square has a more normal distribution
-```
-
-Imputing using a log transformation of the data is required.
-Which trials need variance imputation?
-
-```{r imputing_MSE, eval=FALSE, include=FALSE}
-TrialMSQ <- slimmer_PM_dat %>%
-   group_by(trial_ref, location, year) %>%
-   summarise(unique(Y_Msquare))
-
-TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`), c("trial_ref", "location","year")]
-```
-
-
-
-```{r imputation_MSE, eval=FALSE, include=FALSE}
-for (i in TrialMSQ[is.na(TrialMSQ$`unique(Y_Msquare)`),]$trial_ref) {
-   slimmer_PM_dat[slimmer_PM_dat$trial_ref == i, "Y_Msquare"] <-
-      exp(rnorm(
-         n = 1,
-         mean = mean(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE),
-         sd(log(TrialMSQ$`unique(Y_Msquare)`), na.rm = TRUE)
-      ))
-}
-```
-
-The use of these imputed MSE was giving a varied outcome each time it was run. 
-The next code chunk removes the studies without variation, given we can't reliably impute them.
-
-```{r remove_yieldErrorNAs}
-slimmer_PM_dat <- 
-   slimmer_PM_dat[!is.na(slimmer_PM_dat$yield_error),]
-```
-
-Before analysis let's have a look at the trimmed down modified data.
-
 First, how well the data is compared across the trial years and trials.
 
 ```{r table_of_nTreatments}
@@ -146,6 +50,9 @@ kable(
       position = "center"
    )
 ```
+
+Before analysis let's have a look at the trimmed down modified data.
+
 
 Treatments Late_plus and early don't have very good comparison to other treatments.
   
@@ -205,8 +112,13 @@ Let's calculate the standardised mean difference for each treatment to reduce th
 
 ### Formatting Variance 
 
+First lets remove any entries missing variance.
+
 ```{r remove_studies}
 any(is.na(slimmer_PM_dat$yield_error))
+
+slimmer_PM_dat <- 
+   slimmer_PM_dat[!is.na(slimmer_PM_dat$yield_error),]
 
 slimmer_PM_dat$vi <- slimmer_PM_dat$yield_error
 ```
