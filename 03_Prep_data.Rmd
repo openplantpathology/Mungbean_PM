@@ -28,8 +28,7 @@ Let's look at what type of statistical error was reported for the trials that us
 ```{r variance_types}
 PM_MB_means %>%
    filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole"|
-             fungicide_ai == "200 g/L azoxystrobin + 80 g/L cyproconazole") %>%
+             fungicide_ai == "propiconazole") %>%
    group_by(trial_ref, location, year , Y_error_type, fungicide_ai) %>%
    summarise(DMI_treatments = length(Y_error_type)) %>%
    arrange(Y_error_type) %>%
@@ -317,7 +316,7 @@ table(slim_PM_dat$spray_management)
 There are few 'Early_plus' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
 
 ```{r simpler_clusters_remove}
-slimmer_PM_dat <- 
+slimmer_PM_dat <-
    slim_PM_dat[slim_PM_dat$spray_management != "Early_plus", ]
 ```
 
