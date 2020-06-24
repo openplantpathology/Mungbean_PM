@@ -42,7 +42,8 @@ slim_PM_dat <- data.frame(
    
 )
 
-
+# This loop only deletes Trials which did not test either
+#  Propiconazole or Tebuconazole
 for(i in levels(slim_PM_dat$trial_ref)){
    if(i == levels(slim_PM_dat$trial_ref)[1]){
       rows_to_delete <- vector()
