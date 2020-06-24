@@ -122,21 +122,13 @@ A spray schedule with a single spray, and a spray schedule with two or three spr
 The division of the treatments into these six categories created one category with insufficient numbers of treatments to provide a reliable sample. 
 'Early' treatments with more than one spray contained five replicates and were therefore removed from the subsequent meta-analysis.  
 
-What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays and late with multiple sprays.  
+What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.  
 
-For the trials which we had raw data, mean grain yields for each were calculated and the mean squared error within trial obtained from an anova of each study. 
+For the trials which we had raw data, mean grain yields and sample variance for each treatments calculated. 
 Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. [@Ngugi2011]. 
 The T-critical value was determined from the 30 degrees of freedom using a t-distribution table. 
-For the remainder of the trial data only the treatment means and variance were reported, except for Gatton in 2012 and Emerald in 2015. 
-The Gatton and Emerald trials reported treatment means without accompaning variance. 
-The Gatton and Emerald trials also reported no significant difference in yield between the treatments. 
-When imputing the variance for these trials they were checked to ensure the new variances did not confer a significant difference between the treatments. 
-If the new variance did confer a significant differance between any of the treatments the imputation function was rerun.
-Trial variance was imputed by sampling from a normal distribution where the mean and standard deviation were calculated from the log of all the trials mean square errors.  
-$rnorm(\overline{x}_{log(MSE_{1}) \dots, log(MSE_{n})}, \sigma_{log(MSE_{1}) \dots, log(MSE_{n})})$  
-Where $MSE$ is the mean squared error of each trial and $n$ is the total number of trials. 
-Sample variance was computed from the trial MSE using the following equation, where $i$ is the $i$th trial, n is the number of replicates and $\overline{Y}$ is the mean grain yield for that treatment.  
-$v_i = MSE_{i}/(n_{i} * \overline{Y}_{i}^2)$  
+For the remainder of the trial data, the treatment means and variance were reported, except for Gatton in 2012 and Emerald in 2015. 
+The Gatton and Emerald trials reported treatment means without accompanying variance and were thus removed prior to the analysis. 
 
 The data were analysed in the R statistical software environment using two meta-analysis packages, `metafor` and `netmeta`. 
 
