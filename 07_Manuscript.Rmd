@@ -5,119 +5,90 @@ pacman::p_load(tidyverse, kableExtra, here)
 
 # Data
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
-
 ```
 
 # Manuscript
 
-
 ## Introduction
-Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption, and constitutes an affordable source of protein [@PulseAustralia]. 
-The bean pod or grain can be consumed raw or added to meals after sprouting. 
-Dried mungbean grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].  
 
-In Australia mungbean is grown in southern Queensland and northern New South Wales as a short season summer legume crop. 
-Approximately 90% of mungbean yields are exported and economic returns can be lucrative for growers. 
-Mungbean potentially yields up to 2.3 tonnes per hectare and has a value of up to \$ 1300 AUD a tonne [@QueenslandGovernment2019]. 
-However these potential crop yields can be limited by a range of diseases[@Kelly2017a].
-Powdery mildew (*Podosphaera xanthii*), for instance, can reduce yields by up to 40% [@Chankaew2013]. 
-Fortunately a number of strategies are available to reduce the damage powdery mildew inflicts on mungbean yields.
+Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption and constitutes an affordable source of protein [@PulseAustralia].
+The bean pod or grain can be consumed raw or added to meals after sprouting.
+The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
 
+In Australia mungbean is grown in southern Queensland and northern New South Wales as a short season summer legume crop.
+Approximately 90&nbsp;% of Australian mungbean produced is exported and economic returns can be lucrative for growers with a value of up to \$1300&nbsp;AU a tonne [@QueenslandGovernment2019].
+Mungbean potentially yields up to 3 tonnes per hectare but the average Australian farm still yields less than 1 tonne per hectare [@Chauhan2018].
 
-### Managements strategies
-#### and conditions for infection
-Planting date is an effective strategy for preventing the development of powdery mildew in mungbean. 
-Powdery mildew infection requires cool temperatures, between 22$^\circ$ and 26$^\circ$C, and a leaf surface that is not overly wet for infection [@Kelly2017a]. 
-In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures which normally commence in March.  
-Therefore a delayed sowing date increases the possibility powdery mildew will infect earlier in the crop development leading to greater yield losses.  
+Part of the low yields can be attributed to a range of diseases that affect the crop [@Kelly2017a].
+Two major foliar diseases, tan spot or common wilt (_Curtobacterium flaccumfaciens_ pv. _flaccumfaciens_) and halo blight (_Pseudomonas savastanoi_ pv. _phaseolicola_), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
+While a third disease, powdery mildew, is frequently controlled through an integrated disease management strategy of fungicide treatments and cultural practices.
+The disease can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars.
 
-Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy.
-Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013]. 
-In Australia, quantitative resistance has also been incorporated a couple of varieties which are commercially available. 
-Jade-AU is recommended as containing the best disease resistance to powdery mildew (moderately susceptible), while also conferring quantifiable resistance to other foliar diseases such as tan spot and halo blight [@AustralianMungbeanAssociation]. 
-Because cultivar choice does not confer complete resistance to powdery mildew, additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are suitable.  
+Powdery mildew is caused by two separate genera of fungi in Australia _Podosphaera xanthii_ and an unnamed _Psuedoidium sp._ (Kiss and Kelly Personal Communication).
+While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
 
-The recent release of 'PowderyMildewMBM', a decision support system (DSS), increases the ease for preparing a fungicide spray schedule to manage powdery mildew [@Diggle]. 
-PowderyMildewMBM provides a cost benefit analysis to growers for fungicide spray schedule scenarios.
-The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit.
+Weather conditions that favour the development of the disease are cool temperatures between 22&deg; and 26&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
+Because of this, planting date is an effective strategy for preventing the development of powdery mildew in mungbean.
+In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
+Therefore, a delayed sowing date of late January into February increases the possibility powdery mildew will infect earlier in the crop development cycle and cause greater yield losses than in earlier sown mungbean crops.
 
-### Fungicide resistance
-Fungicide application costs in Australia are relatively cheap, and we estimate these costs to be approximately \$ 20 AUD per hectare. 
-Lucrative returns of up to \$ 2260 per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than necessary. 
-Excessive use of fungicides may not only be a cost not regained, but also leads to fungicide resistance. 
-*Podosphaera xanthii* is categorised by FRAC as a 'High risk' candidate to evolve fungicide resistance [@FRACrisk2019]. 
-The evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with fungicide resistance potential in mind.
-Powdery mildew has an extensive track record of rapidly developing fungicide resistance. 
-In cucurbits, powdery mildew has evolved resistance to numerous fungicide classes, such as benzimidazoles, DMIs, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines [@Mcgrath2001]. 
-The resistance to benzimidazole was developed within three years of it's registration [@Peterson1973]. 
-In cereal crops _Blumeria graminis_ [OR Erysiphe???] showed lower sensitivity to strobilurins in 1998, two years after the fungicide began being used in Europe [@Chin2001].
+Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy. <!-- Citation needed -->
+Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013].
+In Australia, quantitative resistance has also been incorporated into few commercially available varieties.
+Jade-AU <!-- Need PBR emblem here --> has the the best disease resistance to powdery mildew (moderately susceptible).
+Because cultivar choice does not confer complete resistance to powdery mildew, additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are conducive.
 
+There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in Australian mungbean. 
+Much of the experimental work has been published by funding agencies and state government extension departments as extension bulletins or other related type materials.
+Past field trials in eastern Australia have tested a range of fungicide active ingredients while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
+Early trials showed that for a fungicide application to provide maximum efficacy, a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary was the most effective [@Sparks2017]. 
+Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a; <!-- insert all published trials here -->].
 
-To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered. 
-Excessive fungicide sprays by a single active increase the selection pressure on the pathogen to evolve resistance [@Brent2007]. 
-If any pathogen strains which contain fungicide resistance are present in a population, regular use of that fungicide will increase it's proportion of fungicide resistant strains in the population. 
-Managing the disease with fungicides for the highest economic return is likely not to require eradication of the causal pathogen. 
-Integrated pest management practices focus on using only the required number of chemical control to protect the economic return. 
-These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection. 
-
-The timing of fungicide sprays are critical for their efficacy and for limiting fungicide resistant strains from emerging. 
-Fungicide applications made too early would increase costs without providing any benefit to yields, while potentially selecting for pathogen strains possessing fungicide resistance. 
-Applications which are made too late allow the disease to establish and damage the crop productivity, while making subsequent sprays difficult to reduce the disease incidence.
-
-
-### Previous studies - fungicide work
-There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in mungbean despite numerous experimental trials.
-Results of these past trials have been published as reports on websites or newsletters produced by funding agencies and state government extension departments. 
-Past field trials in eastern Australia have trialled a range of fungicide active ingredients, while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
-
-{A number of fungicides for treating powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a; insert all published trials here]. 
-However } _remove_ 
-
-### Meta-analysis
-Meta-analyses are statistical tools which can aggregate the results from a collection of experiments in order to provide a weighted estimate of the true size of the 'effect'.
-When aggregating studies, each one should have a similar aim and measure the same effects. 
-The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect, because it considers the amount of variance in each study, and weights the influence of each study on the treatment effects according to the study statistical accuracy.
-
-
+Meta-analyses are statistical tools which can analyse a collection of experiments, which have a similar aim, and estimates the difference between the control and treatment means.
+Using a meta-analysis can be useful in situations like this where several studies exist, that have the same objective but may not provide a clear answer to the question due to variation in the results within the individual studies.
+The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect, because it considers the amount of variance in each study and weights the influence of each on the treatment effects according to the study's statistical accuracy.
+Using a meta-analysis on the <!-- more goes here ? -->
 
 ### Aims
 
-The aim of this meta-analysis was to determine, from a collection of unpublished studies, what spray management scenario provides the greatest yield protection from powdery mildew in mungbean.
+The aim of this meta-analysis was to determine, from a collection of unpublished studies, what spray management scenario provides the greatest yield protection from powdery mildew in Australian mungbean.
 
-*****
+## Materials and Methods
 
-
-## Materials and methods
-
-The data for this meta-analysis study were obtained from through personal correspondence with colleagues and collaborating institutions.
-The majority of the trials were undertaken by Malcolm Riley and Dr Sue Thompson with The Department of Agriculture and Primary industries (DAF). 
-Trials undertaken in 2013 season were conducted by the Northern growers alliance [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
-The most recent trials were undertaken by DAF and the University of Southern Queensland (USQ) from 2017 to 2019. 
-Trial data from all years were in different formats with varying levels of information.
+The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
+The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue Thompson with the Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
+Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
+<!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> The most recent trials starting from 2016 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2016 to 2019. 
+Trial data were in different formats with varying levels of information.
 Some trial data reported means of each treatment, with all but one study reporting variance along with the mean. 
-Twenty six trials in total were collated, Raw data were obtained from 17 trials and the treatment means were obtained for the remainder.  
 
-Details of trial data are presented within a research compendium which was prepared to supplement this publication [insert reference to compendium].  
 
-The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the northern grains regions of eastern Australia.  
+<<<<<<< HEAD
+Twenty six trials in total were collated.   
+
+Details of trial data are presented within a research compendium which was prepared to supplement this publication [<!-- DOI to reference to compendium -->].
+
+The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia's summer crops.
 Trial data had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield. 
 The data were subset to only include treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset. 
-Subsequently the 26 trials were reduced to 17 using the same fungicide doses (Table 1). 
-With only a small number of trials to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis.
+Subsequently the 26 trials were reduced to 16 using the same fungicide doses (Table 1). 
+With only a small number of trials, and to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis.
 
-All trials included in this analysis were a randomised complete block design and not previously published in peer-reviewed literature.
+All trials included in this analysis were randomised complete block designs and not previously published in peer-reviewed literature.
 
-While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design. 
+While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design.
+
 These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar and supplementary irrigation.
-To account for this variation, and the variation from season and location, between trials, a single 'trial' factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and dose. 
-Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale (Table 2). 
-The 2013 NGA trials however (table 1), reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy. 
-Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, conversion to the ordinal scale 1 - 9 was strait-forward.  
+To account for the variation between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and dose. 
+Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 -- 9 ordinal scale (Table 2). 
+However, the 2013 NGA trials (Table 1) reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy.
+
+Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, a conversion to mean plot incidence on the ordinal 1 -- 9 scale was strait-forward.  
 
 The timing of fungicide application treatments, was defined with reference to the recorded date when powdery mildew first occurred in the trial. 
 An 'Early' fungicide application treatment, refers to a fungicide spray schedule that commences with the first spray prior to the disease being observed in the trial. 
 'Recommended' refers to a fungicide spray schedule which commences within three days following the first sign of disease, and 'late' treatments which commence between 7 - 13 days after the first sign of disease. 
-The total number of fungicide applications were binned in to two categories. 
+The number of fungicide applications were binned in to two categories.
 A spray schedule with a single spray, and a spray schedule with two or three spray applications (_plus). 
 The division of the treatments categorised: 13 Early treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
 Due to insufficient sample size of 'EarlyPlus' treatments they were removed from the subsequent meta-analysis.  
@@ -125,50 +96,57 @@ Due to insufficient sample size of 'EarlyPlus' treatments they were removed from
 A two level categorical disease pressure factor, 'low disease pressure' or 'high disease pressure' was binned using the mean AUDPC of the no spray control plot.
 The two levels were separated via the median AUDPC (153.63) of the no spray control plots.  
 
-What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.  
+What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.
 
 Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
 The sample variance was calculated from the raw data when available or the least squares statistic in trial reports. 
-Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. [@Ngugi2011]. 
+Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. [-@Ngugi2011].
 The T-critical value was determined from the 30 degrees of freedom using a t-distribution table. 
 The 2012 Gatton and 2015 Emerald trials reported treatment means without accompanying variance and were thus removed from the dataset  prior to the analysis. 
 
-The data were analysed in the R statistical software environment using two meta-analysis packages, `metafor` and `netmeta`. 
+The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
 
 
-```{r Table1_ExperimentalDetail, echo=TRUE, message=FALSE, warning=FALSE}
-
+```{r Table1_ExperimentalDetail, echo=FALSE, message=FALSE, warning=FALSE}
 PM_Mdat %>%
-   filter(fungicide_ai == "tebuconazole" | fungicide_ai == "propiconazole") %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole") %>%
    group_by(trial_ref) %>%
-   summarise(year = unique(year),
-             location = unique(location),
-             planting_date = unique(planting_date),
-             first_sign_disease = unique(first_sign_disease))%>%
-   arrange(year)%>%
-   mutate(Research_org = c(rep("Queensland DAF",times =4),
-                           rep("Northern Growers Alliance", times = 4),
-                           rep("Queensland DAF",times =4),
-                           rep("USQ", times = 5))) %>%
-   kable(caption = "Table 1: Description of Experiments")%>%
+   summarise(
+      year = unique(year),
+      location = unique(location),
+      planting_date = unique(planting_date),
+      first_sign_disease = unique(first_sign_disease)
+   ) %>%
+   arrange(year) %>%
+   mutate(Research_org = c(
+      rep("Queensland DAF", times = 4),
+      rep("Northern Growers Alliance", times = 4),
+      rep("Queensland DAF", times = 4),
+      rep("USQ", times = 5)
+   )) %>%
+   kable(caption = "Table 1: Description of Experiments") %>%
    kable_styling(fixed_thead = TRUE,
                  full_width = TRUE) %>%
    scroll_box(width = "900px", height = "500px")
 ```
 
-```{r}
-data.frame(Scale = 1:9,
-           `Scale Description` = c("No sign of powdery mildew",
-                                "Small colonies in lower 1/3 of canopy, up to 75% of plants affected",
-                                "Colonies in lower 1/2 of canopy, > 75 % of plants affected",
-                                "Colonies in lower 2/3 of canopy, up to 75 % of plants affected",
-                                "Colonies in lower 2/3 of canopy, > 75 % of plants affected",
-                                "Colonies in lower 2/3 of canopy, 100 % of plants affected",
-                                "Colonies in lower 2/3 of canopy, 100 % of plants, with some plants with colonies in the top 1/3 of canopy",
-                                "Colonies to top of the plant with > 75 % of plants affected",
-                                "Colonies to top of the plant with > 100 % of plants affected and heavy leaf drop"
-                                )) %>%
-   kable(caption = "Table 2: Powdery Mildew severity scoring scale")%>%
+```{r Table2_1to9Scale, echo=FALSE}
+data.frame(
+   Scale = 1:9,
+   `Scale Description` = c(
+      "No sign of powdery mildew",
+      "Small colonies in lower 1/3 of canopy, up to 75% of plants affected",
+      "Colonies in lower 1/2 of canopy, > 75 % of plants affected",
+      "Colonies in lower 2/3 of canopy, up to 75 % of plants affected",
+      "Colonies in lower 2/3 of canopy, > 75 % of plants affected",
+      "Colonies in lower 2/3 of canopy, 100 % of plants affected",
+      "Colonies in lower 2/3 of canopy, 100 % of plants, with some plants with colonies in the top 1/3 of canopy",
+      "Colonies to top of the plant with > 75 % of plants affected",
+      "Colonies to top of the plant with > 100 % of plants affected and heavy leaf drop"
+   )
+) %>%
+   kable(caption = "Table 2: Powdery Mildew severity scoring scale") %>%
    kable_styling(fixed_thead = T, full_width = T)
 ```
 
@@ -180,11 +158,42 @@ data.frame(Scale = 1:9,
 
 ## Discussion
 
-### Fungicide resistance
-According to the Fungicide resistance Action Committee (FRAC) it is important to alternate or mix Fungicides with different modes of action to avoid fungicide resistance. 
-At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin). 
-This fungicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor. 
-Quinone is required in cell metabolism and active in the mitochondrial complex III. 
+
+A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
+PowderyMildewMBM provides a cost benefit analysis to growers for fungicide spray schedule scenarios.
+The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit.
+<!-- Think about how to word this, that we are using this to validate the app: The findings of this meta-analysis confirm the recommendations that PowderyMildewMBM gives in most situations would be correct. -->
+
+### Fungicide Resistance
+
+Fungicide application costs in Australia are relatively cheap.
+We estimate these costs to be approximately \$20&nbsp;AU per hectare.
+Lucrative returns of up to \$2260&nbsp;AU per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than necessary.
+Excessive use of fungicides are not only costly, but lead to problems such as fungicide resistance.
+_Podosphaera xanthii_ is categorised by the Australian Fungicide resistance Action Committee (FRAC) as a 'High risk' candidate to evolve fungicide resistance.
+Prior experiences confirm that the evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with potential fungicide resistance in mind.
+Powdery mildew is one such group of fungal pathogens with an extensive track record of rapidly developing fungicide resistance.
+In cucurbits, it evolved resistance to benzimidazole within three years of its registration [@Peterson1973] and has evolved resistance to numerous fungicide classes, such as benzimidazoles, demethylation inhibitors, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines since [@Mcgrath2001].
+In cereal crops _Blumeria graminis_ showed reduced sensitivity to strobilurins in 1998, two years after the fungicides began being used in Europe [@Chin2001].
+
+To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered.
+Excessive fungicide sprays by a single active increase the selection pressure on the pathogen to evolve resistance [@Brent2007]. 
+If any strains of the pathogen with resistance to the fungicide are present in a population regular use of the fungicide will increase it's proportion in the population. 
+Managing the disease with fungicides for the highest economic return is likely not to require eradication of the causal pathogen. 
+Integrated pest management practices focus on using only the required number of chemical control to protect the economic return. 
+These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection.
+
+The timing of fungicide sprays are critical for their efficacy and for limiting fungicide resistant strains from emerging. 
+Fungicide applications made too early would increase costs without providing any benefit to yields. 
+Applications which are made too late allow the disease to establish and damage the crop productivity, while making subsequent sprays difficult to reduce the disease incidence.
+
+According to the Fungicide resistance Action Committee (FRAC) it is important to alternate or mix fungicides with different modes of action to avoid fungicide resistance. 
+At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin).
+This fungicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor.
+Quinone is required in cell metabolism and active in the mitochondrial complex III.
 However FRAC recommends that applications of QoIs or strobilurins, singularly or as a mixture, should not be applied consecutively and alternated with a fungicide from a different group [@Brent2007]. 
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
 Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.
+
+# References
+
