@@ -203,6 +203,8 @@ slimmer_PM_dat$grain_SMD <-
    (slimmer_PM_dat$grain_yield.t.ha - slimmer_PM_dat$yi_C) / slimmer_PM_dat$pooledSD
 ```
 
+$SMD = \frac{Y_i-\overline{Y_c}}{\sigma_p}$
+
 We can use the same sample variance with the standardised mean difference.
 This is because if you add or subtract from a random variable, the variance does not change.
 
