@@ -364,7 +364,7 @@ slimmer_PM_dat <-
 ```
 
 
-### Disease pressure factor
+## Disease pressure factor
 
 We may wish to investigate the impact of spray management in mitigating the yield loss through the effect on the disease pressure.
 We will set a categorical variable to indicate the amount of disease pressure in the trial, which will be evaluated on the control plot.
@@ -381,6 +381,7 @@ Trial_Dpress <- slimmer_PM_dat %>%
 
 median_AUDPC <-
    median(as.vector(Trial_Dpress$AUDPC_C), na.rm = TRUE)
+median_AUDPC
 
 sort(Trial_Dpress$AUDPC_C)
 
@@ -417,11 +418,12 @@ slimmer_PM_dat %>%
 From this plot we see that in the trials with high disease pressure tended to produce lower yields. 
 There are `r length(unique(slimmer_PM_dat[is.na(slimmer_PM_dat$D_pres),"trial_ref"]))` trials that contained no data for AUDPC and thus produced `NA` values.
 
-### Row spacing
+## Row spacing
 
 We may want to consider row spacing in the trials.
 However one of the locations has `NA` as the row spacing.
-For now let's assign the most used row spacing of 0.33 m.
+For now let's assign the most used row spacing of 0.33 m as an approximation so the model can analyse this as a continuous variable. 
+If we decide to use the row_spacing column as a factor in the final model we will need to remove this approximation.  
 
 ```{r assign_row_spacing_missing}
 slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),]
