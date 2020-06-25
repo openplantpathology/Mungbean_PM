@@ -104,6 +104,11 @@ Sample variance for the 2012 Kingaroy study was calculated from the reported lea
 The T-critical value was determined from the 30 degrees of freedom using a t-distribution table. 
 The 2012 Gatton and 2015 Emerald trials reported treatment means without accompanying variance and were thus removed from the dataset  prior to the analysis. 
 
+This analysis use the grain yield standardised mean difference (SMD) as the response variable. 
+SMD were chosen to reduce the inherent variability between trials due to location and seasonal effects on grain yields.  
+$SMD = \frac{Y_i-\overline{Y_c}}{\sigma_p}$ [@HigginsGreen]  
+Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean and $\sigma_p$ is the trial pooled standard deviation.
+
 The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
 
 
