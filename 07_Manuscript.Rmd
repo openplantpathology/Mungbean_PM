@@ -107,7 +107,17 @@ The 2012 Gatton and 2015 Emerald trials reported treatment means without accompa
 This analysis use the grain yield standardised mean difference (SMD) as the response variable. 
 SMD were chosen to reduce the inherent variability between trials due to location and seasonal effects on grain yields.  
 $SMD = \frac{Y_i-\overline{Y_c}}{\sigma_p}$ [@HigginsGreen]  
-Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean and $\sigma_p$ is the trial pooled standard deviation.
+Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean and $\sigma_p$ is the trial pooled standard deviation. 
+
+Similar to Paul et. al. [-@Paul2007], we fitted a multivariate random effects model  
+$Y_i \sim N(\mu,s_i^2 + \sigma^2)$  
+where $Y_i$ is the response, a vector of the SMD grain yield for each treatment in the $i$th trial over $K$ trials($i$  = 1, ...$K$). 
+$Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $Si_^2$ and a between trial variance of $\sigma^2$.  
+**Moderator variables.** The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule ($SPRAY_{Sched}$). 
+The intercept was omitted from the model so each treatment would be evaluated against zero, which represents the control mean. 
+Linear contrasts were used to compare the mean effect sizes between each spray schedule treatment and their respecting standard errors and confidence intervals. 
+
+
 
 The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
 
