@@ -109,7 +109,7 @@ All trials included in this analysis were a randomised complete block design and
 
 While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design. 
 These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar and supplementary irrigation.
-To account for this variation, and the variation from season and location, between trials, a single 'trial' factor was created to describe the main variables; trial location, trial season, host genotype, row spacing, and dose. 
+To account for this variation, and the variation from season and location, between trials, a single 'trial' factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and dose. 
 Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 - 9 ordinal scale (Table 2). 
 The 2013 NGA trials however (table 1), reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy. 
 Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, conversion to the ordinal scale 1 - 9 was strait-forward.  
@@ -119,16 +119,19 @@ An 'Early' fungicide application treatment, refers to a fungicide spray schedule
 'Recommended' refers to a fungicide spray schedule which commences within three days following the first sign of disease, and 'late' treatments which commence between 7 - 13 days after the first sign of disease. 
 The total number of fungicide applications were binned in to two categories. 
 A spray schedule with a single spray, and a spray schedule with two or three spray applications (_plus). 
-The division of the treatments into these six categories created one category with insufficient numbers of treatments to provide a reliable sample. 
-'Early' treatments with more than one spray contained five replicates and were therefore removed from the subsequent meta-analysis.  
+The division of the treatments categorised: 13 Early treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
+Due to insufficient sample size of 'EarlyPlus' treatments they were removed from the subsequent meta-analysis.  
+
+A two level categorical disease pressure factor, 'low disease pressure' or 'high disease pressure' was binned using the mean AUDPC of the no spray control plot.
+The two levels were separated via the median AUDPC (153.63) of the no spray control plots.  
 
 What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.  
 
-For the trials which we had raw data, mean grain yields and sample variance for each treatments calculated. 
+Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
+The sample variance was calculated from the raw data when available or the least squares statistic in trial reports. 
 Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. [@Ngugi2011]. 
 The T-critical value was determined from the 30 degrees of freedom using a t-distribution table. 
-For the remainder of the trial data, the treatment means and variance were reported, except for Gatton in 2012 and Emerald in 2015. 
-The Gatton and Emerald trials reported treatment means without accompanying variance and were thus removed prior to the analysis. 
+The 2012 Gatton and 2015 Emerald trials reported treatment means without accompanying variance and were thus removed from the dataset  prior to the analysis. 
 
 The data were analysed in the R statistical software environment using two meta-analysis packages, `metafor` and `netmeta`. 
 
