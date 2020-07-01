@@ -8,6 +8,7 @@ pacman::p_load(tidyverse,
                lme4,
                RColorBrewer,
                metafor,
+               here,
                netmeta)
 
 if (!require("theme.usq"))
@@ -314,12 +315,17 @@ PM_mv_St1 <- rma.mv(
    data = dat1
 )
 
+
 AIC(PM_mv) # Printing the AIC of the model helps differentiate the models in the anova output
-anova(PM_mv, PM_mv_St1) # PM_mv is the better model
+anova(PM_mv, PM_mv_St) # PM_mv is the better model
+AIC(PM_mv_St)
+anova(PM_mv_St, PM_mv_St1) # PM_mv_St is the better model
 ```
 
 The simpler `PM_mv_St` model explains significantly less variation than the more complicated model `PM_mv`.
 So we will keep the original model `PM_mv`.
+
+I have also tested the structure for testing the random trial and spray_management variables, these show that there is no significant difference to the models `PM_mv_St` and `PM_mv_St1` and that the originally method of specifying the random variables within the `trial` factor provides us with the best model.
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis.
 The second table is in two parts (left and right). 
@@ -373,7 +379,7 @@ change_labels <- function(x1) {
 
 source("R/p_star.R")
 
-data.frame(
+table3 <- data.frame(
    contrasts = change_labels(meta_cont$hyp[, 1]),
    estimates = meta_cont$Lb,
    se = meta_cont$se,
@@ -381,6 +387,7 @@ data.frame(
    pval = meta_cont$pval,
    VisP = p_star(meta_cont$pval)
 )
+write.csv(table3, here("cache/Table3_contrasts.csv"), row.names = FALSE)
 ```
 
 Results show with the exclusion of the no spray `control` and `Late` treatments, `Early` applications are significantly worse than all other treatments leading to lower yield estimates.
