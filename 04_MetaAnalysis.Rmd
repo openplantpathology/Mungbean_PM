@@ -286,8 +286,8 @@ summary(PM_mv)
 
 In this result we can see that the `Early` treatment is not significantly different from zero, which in this case is the mean of the no spray `control`.
 However the other treatments are significantly different from zero.
-The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M = 24.4769, df = 5, p = 0.0002$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
-The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 47501.76, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.
+The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M = 26.22, df = 5, p < 0.0001$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
+The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.
 
 Let's see if we can improve this model by including some other random effects and improving the random effect structure in the model.
 
@@ -383,9 +383,9 @@ data.frame(
 )
 ```
 
-Results show with the exclusion of the no spray `control`, `Early` applications are significantly worse than all other treatments leading to lower yield estimates.
-`Late_plus` is estimated to save the most yield compared and is significantly higher than all other treatments except `Recommended_plus`.
-Let's look at how well each of the number treatments compare to each other.
+Results show with the exclusion of the no spray `control` and `Late` treatments, `Early` applications are significantly worse than all other treatments leading to lower yield estimates.
+`Late_plus` is estimated to save the most yield however it is only significantly higher than `Early` and `Late` treatments.
+Let's put these values in a plot to visualise the differences between treatments.
 
 First we will format the results into a data frame.
 
@@ -457,9 +457,7 @@ summary(PM_mv_Dp)
 ```
 
 These results show that the spray management variable we tested are not significantly better or worse between the two levels of disease pressure.
-It also shows that in trials with high disease pressure, all treatments produced lower standardised mean differences. 
-Indicating that fungicide treatments were less effective at mitigating yield loss in seasons, which developed more severe infection levels.
-Finally let's compare the disease pressure model to the original model to see which one fits better.
+It seems that disease preasure does not improve the models ability to assess the most effective fungicide spray management option. Let's compare the disease pressure model to the original model to test this assumption.
 
 ```{r compareDvNDP}
 anova(PM_mv, PM_mv_Dp)
