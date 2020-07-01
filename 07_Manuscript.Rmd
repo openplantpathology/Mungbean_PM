@@ -60,14 +60,11 @@ The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue
 Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
 <!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> The most recent trials starting from 2016 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2016 to 2019. 
 Trial data were in different formats with varying levels of information.
-Some trial data reported means of each treatment, with all but one study reporting variance along with the mean. 
+Some trial data reported means of each treatment, with all but one study reporting some form of variance along with the mean. 
 
-
-<<<<<<< HEAD
 Twenty six trials in total were collated.   
 
 Details of trial data are presented within a research compendium which was prepared to supplement this publication [<!-- DOI to reference to compendium -->].
-
 The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia's summer crops.
 Trial data had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield. 
 The data were subset to only include treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset. 
@@ -83,20 +80,21 @@ To account for the variation between trials, and the treatments within trials, a
 Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 -- 9 ordinal scale (Table 2). 
 However, the 2013 NGA trials (Table 1) reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy.
 
-Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, a conversion to mean plot incidence on the ordinal 1 -- 9 scale was strait-forward.  
+Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, a conversion to mean plot incidence on the ordinal 1 -- 9 scale was straight-forward.  
 
-The timing of fungicide application treatments, was defined with reference to the recorded date when powdery mildew first occurred in the trial. 
-An 'Early' fungicide application treatment, refers to a fungicide spray schedule that commences with the first spray prior to the disease being observed in the trial. 
-'Recommended' refers to a fungicide spray schedule which commences within three days following the first sign of disease, and 'late' treatments which commence between 7 - 13 days after the first sign of disease. 
+The timing of fungicide application treatments, was defined in relation to the recorded date when powdery mildew first occurred in the trial. 
+An 'Early' fungicide application treatment, referred to a fungicide spray schedule that commenced the first spray prior to the disease being observed in the trial. 
+'Recommended' refers to a fungicide spray schedule which commences following the first sign of disease, within three days. 
+'Late' treatments commence between 7 - 13 days after the first sign of disease. 
 The number of fungicide applications were binned in to two categories.
-A spray schedule with a single spray, and a spray schedule with two or three spray applications (_plus). 
+A spray schedule with a single spray, and a spray schedule with two or three spray applications (Plus). 
 The division of the treatments categorised: 13 Early treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
-Due to insufficient sample size of 'EarlyPlus' treatments they were removed from the subsequent meta-analysis.  
-
-A two level categorical disease pressure factor, 'low disease pressure' or 'high disease pressure' was binned using the mean AUDPC of the no spray control plot.
-The two levels were separated via the median AUDPC (153.63) of the no spray control plots.  
+'EarlyPlus' treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.  
 
 What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.
+
+A categorical disease pressure factor was created by binning trials based on the mean AUDPC of the no spray control plot into two levels: 'low disease pressure' or 'high disease pressure'.
+The two levels were separated via the median AUDPC (153.63) of the no spray control plots.  
 
 Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
 The sample variance was calculated from the raw data when available or the least squares statistic in trial reports. 
@@ -111,13 +109,11 @@ Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean 
 
 Similar to Paul et. al. [-@Paul2007], we fitted a multivariate random effects model  
 $Y_i \sim N(\mu,s_i^2 + \sigma^2)$  
-where $Y_i$ is the response, a vector of the SMD grain yield for each treatment in the $i$th trial over $K$ trials($i$  = 1, ...$K$). 
+where $Y_i$ is the response, a vector of the SMD grain yield for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$). 
 $Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $Si_^2$ and a between trial variance of $\sigma^2$.  
 **Moderator variables.** The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule ($SPRAY_{Sched}$). 
-The intercept was omitted from the model so each treatment would be evaluated against zero, which represents the control mean. 
+The intercept was omitted from the model so each treatment would be reported against zero, which represents the control mean. 
 Linear contrasts were used to compare the mean effect sizes between each spray schedule treatment and their respecting standard errors and confidence intervals. 
-
-
 
 The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
 
