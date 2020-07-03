@@ -355,7 +355,7 @@ m2 <-
 anova(m1, m2)
 ```
 
-Using the model without dose produces a lower AIC, however we should accept the data with dose as there is a significant difference between the models and we should accept the more complicated model `m2`.
+Using the model without dose produces a lower AIC, however we should accept the data with dose as there is a significant difference between the models and we should accept the more complicated model `m1`.
 We will retain dose as a variable inside the `trial` factor.  
 
 ```{r saveDat}
