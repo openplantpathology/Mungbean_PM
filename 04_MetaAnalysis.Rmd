@@ -467,9 +467,12 @@ These results show that the spray management variable we tested are not signific
 It seems that disease preasure does not improve the models ability to assess the most effective fungicide spray management option. Let's compare the disease pressure model to the original model to test this assumption.
 
 ```{r compareDvNDP}
+AIC(PM_mv_Dp)
+anova(PM_mv_Dp, btt = "D_pres")
 anova(PM_mv, PM_mv_Dp)
 ```
 
+A Wald test of `D_pres` shows the moderator is not significant in accounting for heterogeneity (P = 0.4859).
 No significant difference which informs us to use the original model `PM_mv`, which is the simplest.
 
 ****
