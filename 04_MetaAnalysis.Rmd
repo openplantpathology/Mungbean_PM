@@ -291,27 +291,45 @@ The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_wit
 The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.
 
 Lets look at the trial variability in this model with a forest plot
-```{r forestP, fig.height= 40, fig.width=10}
-# If anyone knows how to fix the margins here it would be helpful!!!!!!!!!!!!!!!!
-metafor::forest(PM_mv, cex =0.75 , width = 5,
-                ilab = cbind(dat1$trial_ref, dat1$location, dat1$year, dat1$row_spacing, dat1$host_genotype, dat1$dose,
-                             as.character(dat1$spray_management)),
-                ilab.xpos = c(-6.5, -5.5,-4.75,-4.15,-3.4,-2.5,-1),
+```{r forestP, fig.height= 25, fig.width=20}
+polys <- data.frame(ref = names(coef(PM_mv)),
+                    x = coef(PM_mv),
+                    ci.lb = PM_mv$ci.lb,
+                    ci.ub = PM_mv$ci.ub,
+                    rows = c(112.8, 64.8, 22.8,93.5, 1.8))
+
+metafor::forest(PM_mv, cex = 1.25 , width = 5,
+                order = "fit",
+                rows = c(126:114, 111:95, 92:66, 63:24, 21:3),
+                ilab = cbind(dat1$trial_ref, dat1$location, dat1$year, 
+                             dat1$row_spacing, dat1$host_genotype, dat1$dose),
+                ilab.xpos = c(-2.8, -2.2,-2.05,-1.95,-1.7,-1.5),
                 slab = NA, 
-                xlim = c(-7, 3.5),
-                ylim = c(4,119),
-                xlab = "Grain yield mean difference")
+                xlim = c(-3, 2.2),
+                ylim = c(4,129),
+                xlab = "Grain yield mean difference",
+                addfit = FALSE,
+                efac = c(0.5,2,0.2))
 
 ### add text with Q-value, dfs, p-value, and I^2 statistic
 text(-5.1, -0.8, pos=3, cex=0.75, bquote(paste("RE Model for All Studies (Q = ",
      .(formatC(PM_mv$QE, digits=2, format="f")), ", df = ", .(PM_mv$k - PM_mv$p),
      ", p = ", .(formatC(PM_mv$QEp, digits=3, format="f")), ") ")))
 
+
 ### add column headings to the plot
-text(c(-6.5, -5.5,-4.75,-4.15,-3.4,-2.5,-1), 117.9,cex = 0.85, 
-     c("Trial\nReference", "Location", "Year", "Row\nSpacing","Host\nCultivar","DMI dose","SM"),
+text(c(-6.5, -5.5,-4.75,-4.15,-3.4,-2.5), 127.9,cex = 0.85, 
+     c("Trial\nReference", "Location", "Year", "Row\nSpacing","Host\nCultivar","DMI dose"),
      font = 2)
 
+addpoly(x = polys$x,
+        ci.lb = polys$ci.lb,
+        ci.ub = polys$ci.ub,
+        col ="black",
+        rows = polys$rows,
+        cex = 1.3,
+        efac = 0.2,
+        font = "Arial Rounded MT Bold")
 ```
 
 
