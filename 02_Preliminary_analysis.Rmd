@@ -902,3 +902,35 @@ The plots from the AUPDS is similar to the AUDPC, however according to the linea
 
 A mixed effect model would be more suitable to investigate the interactive effects of location, season, and trial. 
 The mixed effect model will help us decide on the best approach and structure for our meta-analysis model.
+
+
+```{r}
+beans <- read.csv(here("data/FAOSTAT_data_7-6-2020.csv"))
+
+glimpse(beans)
+
+beans %>%
+   filter(Item == "Beans, dry",
+          Element == "Area harvested")%>%
+   select(Year,Value)
+   ggplot(aes(y = Value, x = Year))+
+   geom_point()+
+   geom_smooth()
+
+beans %>%
+   filter(Item == "Beans, dry",
+          Element == "Yield")%>%
+   ggplot(aes(y = Value *0.1, x = Year))+
+   geom_point()+
+   geom_smooth()
+
+
+beans %>%
+   filter(Item == "Beans, dry",
+          Element == "Production")%>%
+   ggplot(aes(y = Value, x = Year))+
+   geom_point()+
+   geom_smooth(method = "lm")
+
+```
+
