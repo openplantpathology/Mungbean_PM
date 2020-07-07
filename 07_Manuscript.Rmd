@@ -11,16 +11,20 @@ PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 
 ## Introduction
 
-Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption and constitutes an affordable source of protein [@PulseAustralia].
+Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption as an affordable source of protein [@PulseAustralia].
 The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
 
-In Australia mungbean is grown in southern Queensland and northern New South Wales as a short season summer legume crop.
-Approximately 90&nbsp;% of Australian mungbean produced is exported and economic returns can be lucrative for growers with a value of up to \$1300&nbsp;AU a tonne [@QueenslandGovernment2019].
-Mungbean potentially yields up to 3 tonnes per hectare but the average Australian farm still yields less than 1 tonne per hectare [@Chauhan2018].
+Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was not until the 1960s until that mungbean was grown commercially [@aboutAMA].
+At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is included.
+In the decade leading up to 2018 35 - 86.4 thousand hectares of dried beans are being planted per year [@FAOSTAT]. 
+This increase is attributed to the improved yields in the new cultivars and value of the crop [@Clarry2016].
+Currently mungbean is predominantly grown in southern Queensland and northern New South Wales as a short season summer legume crop.
+In 2019, approximately 90&nbsp;% of Australian mungbean produced is exported and economic returns can be lucrative for growers with a value of up to \$1300&nbsp;AU a tonne [@QueenslandGovernment2019].
+Mungbean potentially yields up to 3 tonnes per hectare, but due to high variability in yields between seasons and locations, the average Australian farm still yields less than 1 tonne per hectare [@Chauhan2018].
 
-Part of the low yields can be attributed to a range of diseases that affect the crop [@Kelly2017a].
-Two major foliar diseases, tan spot or common wilt (_Curtobacterium flaccumfaciens_ pv. _flaccumfaciens_) and halo blight (_Pseudomonas savastanoi_ pv. _phaseolicola_), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
+Low yields, in part, can be attributed to a range of diseases that affect the crop [@Kelly2017a].
+Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfaciens* pv. _flaccumfaciens_) and halo blight (_Pseudomonas savastanoi_ pv. _phaseolicola_), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
 While a third disease, powdery mildew, is frequently controlled through an integrated disease management strategy of fungicide treatments and cultural practices.
 The disease can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars.
 
@@ -94,7 +98,7 @@ The division of the treatments categorised: 13 Early treatments; 5 'EarlyPlus', 
 What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.
 
 A categorical disease pressure factor was created by binning trials based on the mean AUDPC of the no spray control plot into two levels: 'low disease pressure' or 'high disease pressure'.
-The two levels were separated via the median AUDPC <!-- Should this be encoded not hard coded in case it changes? -->(153.63) of the no spray control plots.  
+The two levels were separated via the median AUDPC (`r as.double(read.csv(here("cache/median_AUDPC_C.csv")))`) of the no spray control plots.  
 
 Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
 The sample variance was calculated from the raw data when available or the least squares statistic in trial reports. 
@@ -103,19 +107,25 @@ The T-critical value was determined from the 30 degrees of freedom using a t-dis
 The 2012 Gatton and 2015 Emerald trials reported treatment means without accompanying variance and were thus removed from the dataset  prior to the analysis. 
 
 This analysis uses the grain yield standardised mean difference (SMD) as the response variable. 
-SMD were chosen to reduce the inherent variability between trials due to location and seasonal effects on grain yields.
-$SMD = \frac{Y_i-\overline{Y_c}}{\sigma_p}$ [@HigginsGreen]
-Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean and $\sigma_p$ is the trial pooled standard deviation.
+SMD were chosen to reduce the inherent variability between trials due to location and seasonal effects on grain yields. 
+$SMD = \frac{Y_i-\overline{Y_c}}{\sigma_p}$ [@HigginsGreen] 
+Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean and $\sigma_p$ is the trial pooled standard deviation.  
 
 Similar to Paul et. al. [-@Paul2007], we fitted a multivariate random effects model
 $Y_i \sim N(\mu,s_i^2 + \sigma^2)$
-where $Y_i$ is the response, a vector of the SMD grain yield for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$).
-$Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $Si_^2$ and a between trial variance of $\sigma^2$.
+where $Y_i$ is the response, a vector of the SMD grain yield for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$). 
+$Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $Si_^2$ and a between trial variance of $\sigma^2$.  
+
 **Moderator variables.** The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule ($SPRAY_{Sched}$).
-The intercept was omitted from the model so each treatment would be reported against zero, which represents the control mean.
-Linear contrasts were used to compare the mean effect sizes between each spray schedule treatment and their respecting standard errors and confidence intervals.
+The intercept was omitted from the model so each treatment would be reported against zero, which represents the control mean. 
+Linear contrasts were used to compare the mean effect sizes between each spray schedule treatment and their respecting standard errors and confidence intervals.  
+
+Additional meta-analysis models tested variables ... for their influence on the SpraySheduale variables ability to mitigate yield loss. 
+For the variable disease pressure a Wald-type test was used to test the impact of this variable on the model as a whole.
+
 
 The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
+
 
 ```{r Table1_ExperimentalDetail, echo=FALSE, message=FALSE, warning=FALSE}
 PM_Mdat %>%
@@ -160,17 +170,31 @@ data.frame(
    kable_styling(fixed_thead = T, full_width = T)
 ```
 
+
 ## Results
 
-Overall the meta-analysis indicated that, with the exception of `Early` single sprays all the the spray schedules were effective at protecting mungbean yields relative to the no spray controls (Figure 1).
-Treatments incorporating multiple fungicide applications, `recommendedPlus` and `LatePlus` produced the highest yield protection estimates at 196 and 220&nbsp;kg&nbsp;/&nbsp;ha respectively (Table 3). 
+<!-- Write about first sign of disease in March -->
+Overall the meta-analysis indicated that, with the exception of `Early` single sprays all the the spray schedules were effective at protecting mungbean yields, relative to the no spray controls (Figure 1). 
+Treatments which incorporating multiple fungicide applications, `RecommendedPlus` and `LatePlus` produced the highest mean yield protection estimates at 196.4 (SE = 48.7&nbsp;kg&nbsp;/&nbsp;ha) and 219.9&nbsp;kg&nbsp;/&nbsp;ha (SE = 47.4&nbsp;kg&nbsp;/&nbsp;ha) respectively (Table 3). 
 Both `RecommendedPlus` and `LatePlus` were also significantly higher than single applications starting `Early` (P = 0.008 and P = 0.003 respectively) and `Late`(P = 0.05 and P = 0.03 respectively). 
-Within the single fungicide application treatments `recommended` provided the highest yield protection, and was estimated at saving an average of 160 kg / ha relative to the no spray control (P < 0.0001). `recommended` treatments were was also significantly higher than `Early` treatments by 122 kg / ha (P = 0.004).  
+However, comparing `LatePlus` and `Early` should done with caution given these treatments did not occur within the same trial for any of the 15 trials included in the meta-analysis. 
+Within the single fungicide application treatments `Recommended` provided the highest yield protection, and was estimated at saving an average of 159.9 kg / ha (SE = 30.5 kg / ha) relative to the no spray control (P < 0.0001). 
+`Recommended` treatments were was also significantly higher than `Early` treatments by 122.1 kg / ha (SE = 42.1 kg / ha)(P = 0.004). 
+Single `Late` applications were effective at significantly mitigating the effect of powdery mildew on yield by a mean of 122 kg / ha (SE = 39.2 kg / ha)(P = 0.0019). 
+However, this estimate was not significantly different to single `Early` or `Recommended` treatments (P = 0.119; P = 0.278 respectively).
 
 The $Q_M$ omnibus test of moderators, shows the moderators significantly influence the model ($Q_M = 26.22, df = 5, p < 0.0001$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
-The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators, which might influence grain yield.
+The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators, which might influence grain yield.  
 
-A log-ratio test, based on a chi-squared distribution, indicated that retaining the `SpraySchedule` variable as a random interactive term provided a significantly better model (P = 0.0179).
+A log-ratio test, based on a chi-squared distribution, indicated that retaining the `SpraySchedule` variable as a random interactive term provided a significantly better model (P = 0.0179). 
+An inspection of log-likelihood profile plots showed the model, for each random interactive term, provided a reasonable estimate of $\tau^2$, with no indication the variables were over-fit.  
+
+While the addition of disease pressure, as an interactive moderator term to `SpraySchedule`, did explain slightly more residual heterogeneity, shown by a lower $Q_E = 409.91,$. 
+The model including disease pressure did not significantly improve the model (P = 0.4859) and did not significantly explain differences in the SpraySchedule term, and therefore disease pressure was not included in the final model. 
+
+
+
+
 
 ```{r table3_Contrasts}
 T3 <- read.csv(here("cache/Table3_contrasts.csv"), stringsAsFactors = FALSE)
@@ -179,12 +203,24 @@ T3 %>%
 ```
 
 
+
+
 ## Discussion
+Mungbeans have only recently been cultivated in Australia, with the first commercial crops planted in the 1960s []. 
+ 
+Despite the improved knowledge for cultivating mungbean this 40 year period from 1980 and today, variability in yields and quality persist due to seasonal differences and the need to refine best management practices. 
+Between trial variability was 
 
 A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
 PowderyMildewMBM provides a cost benefit analysis to growers for fungicide spray schedule scenarios.
 The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit.
 <!-- Think about how to word this, that we are using this to validate the app: The findings of this meta-analysis confirm the recommendations that PowderyMildewMBM gives in most situations would be correct. -->
+
+Within a normal meta-analysis the number direct treatment comparisons, undertaken within the same trial, for each treatment is important for understanding how robust the meta-analysis estimates are for those treatments. 
+However network meta-analyses permit indirect comparisons, for when two treatments may not occur in the same experiment. 
+For the indirect difference between two treatments is equal to the difference between the difference in those two treatments with one other treament in common ($d_{AB} = d_{AC} - d_{BC}$)[@Jansen2011]
+For example treatments `Early` and `LatePlus` never occurred within the same trial for any trials included in the meta-analysis. 
+M
 
 ### Fungicide Resistance
 
