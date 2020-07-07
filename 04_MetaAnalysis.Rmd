@@ -290,6 +290,31 @@ However the other treatments are significantly different from zero.
 The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M = 26.22, df = 5, p < 0.0001$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
 The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.
 
+Lets look at the trial variability in this model with a forest plot
+```{r forestP, fig.height= 40, fig.width=10}
+# If anyone knows how to fix the margins here it would be helpful!!!!!!!!!!!!!!!!
+metafor::forest(PM_mv, cex =0.75 , width = 5,
+                ilab = cbind(dat1$trial_ref, dat1$location, dat1$year, dat1$row_spacing, dat1$host_genotype, dat1$dose,
+                             as.character(dat1$spray_management)),
+                ilab.xpos = c(-6.5, -5.5,-4.75,-4.15,-3.4,-2.5,-1),
+                slab = NA, 
+                xlim = c(-7, 3.5),
+                ylim = c(4,119),
+                xlab = "Grain yield mean difference")
+
+### add text with Q-value, dfs, p-value, and I^2 statistic
+text(-5.1, -0.8, pos=3, cex=0.75, bquote(paste("RE Model for All Studies (Q = ",
+     .(formatC(PM_mv$QE, digits=2, format="f")), ", df = ", .(PM_mv$k - PM_mv$p),
+     ", p = ", .(formatC(PM_mv$QEp, digits=3, format="f")), ") ")))
+
+### add column headings to the plot
+text(c(-6.5, -5.5,-4.75,-4.15,-3.4,-2.5,-1), 117.9,cex = 0.85, 
+     c("Trial\nReference", "Location", "Year", "Row\nSpacing","Host\nCultivar","DMI dose","SM"),
+     font = 2)
+
+```
+
+
 Let's see if we can improve this model by including some other random effects and improving the random effect structure in the model.
 
 ```{r rma_noRandomInteractiveTerm}
@@ -474,6 +499,60 @@ anova(PM_mv, PM_mv_Dp)
 
 A Wald test of `D_pres` shows the moderator is not significant in accounting for heterogeneity (P = 0.4859).
 No significant difference which informs us to use the original model `PM_mv`, which is the simplest.
+
+### Test for bias in indirect comparisons 
+Treatments `Early` and `LatePlus` did not co-occur in any of the trials considered in the meta-analysis.
+Indirect comparisons are ok to interpret in the results of a network meta-analysis, however if there are biases between trials including `Early` or `LatePlus` treatments then the results are likely bias. 
+Therefore we wish to do a quick check that the trials which included `Early` treatments did not significantly differ from trials which incorportated `LatePlus`,
+Lets create a data.frame of values for this comparison
+
+```{r}
+Ear <- 
+   dat1 %>%
+   filter(spray_management == "Early")%>%
+   distinct(trial_ref)
+
+LP <- 
+   dat1 %>%
+   filter(spray_management == "Late_plus")%>%
+   distinct(trial_ref)
+
+dat1$indirectC <- NA
+
+dat1 %>%
+   filter(trial_ref == Ear$trial_ref)
+
+dat1[dat1$trial_ref == Ear$trial_ref, "indirectC"] <- "Ear"
+dat1[dat1$trial_ref == LP$trial_ref, "indirectC"] <- "LP"
+
+dat1 %>%
+   filter(!is.na(indirectC))%>%
+   ggplot(aes(x = indirectC, y = grain_MD))+
+   geom_boxplot()
+
+dat1 %>%
+   filter(!is.na(indirectC),
+          spray_management != "Early",
+          spray_management != "Late_plus")%>%
+   ggplot(aes(x = indirectC, y = grain_MD))+
+   geom_boxplot()
+
+dat1[dat1$trial_ref == LP$trial_ref, "indirectC"] <- "LP"
+dat1[dat1$trial_ref == Ear$trial_ref, "indirectC"] <- "Ear"
+
+dat2 <- dat1 %>%
+   filter(!is.na(indirectC),
+          spray_management != "Early",
+          spray_management != "Late_plus")
+
+table(dat2$spray_management, dat2$indirectC)
+
+summary(aov(grain_MD ~ indirectC + spray_management + trial_ref, data = dat2))
+
+```
+
+This anova shows that there is no significant difference between the trials, spray_management or the specific trials with either `Early` or `Late_plus`. 
+Therefore there is low risk that interpreting results from this indirect comparison between `Early` and `Late_plus`.
 
 ****
 
