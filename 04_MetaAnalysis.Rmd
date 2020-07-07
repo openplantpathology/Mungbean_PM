@@ -292,21 +292,28 @@ The analysis shows there is still a significant amount of residual heterogeneity
 
 Lets look at the trial variability in this model with a forest plot
 ```{r forestP, fig.height= 25, fig.width=20}
-polys <- data.frame(ref = names(coef(PM_mv)),
+change_labels <- function(x1) {
+   x1 <- gsub(pattern = "spray_management",
+              replacement = "",
+              x = x1)
+   x1
+}
+
+polys <- data.frame(ref = change_labels(names(coef(PM_mv))),
                     x = coef(PM_mv),
                     ci.lb = PM_mv$ci.lb,
                     ci.ub = PM_mv$ci.ub,
-                    rows = c(112.8, 64.8, 22.8,93.5, 1.8))
+                    rows = c(120.60, 68.6, 24.6,99.6, 1.6))
 
-metafor::forest(PM_mv, cex = 1.25 , width = 5,
+metafor::forest(PM_mv, cex = 1.15 , width = 5,
                 order = "fit",
-                rows = c(126:114, 111:95, 92:66, 63:24, 21:3),
+                rows = c(134:122, 117:101, 96:70, 65:26, 21:3),
                 ilab = cbind(dat1$trial_ref, dat1$location, dat1$year, 
                              dat1$row_spacing, dat1$host_genotype, dat1$dose),
-                ilab.xpos = c(-2.8, -2.2,-2.05,-1.95,-1.7,-1.5),
+                ilab.xpos = c(-3.3, -2.85,-2.55,-2.35,-2.15,-1.85),
                 slab = NA, 
-                xlim = c(-3, 2.2),
-                ylim = c(4,129),
+                xlim = c(-3.5, 2.5),
+                ylim = c(4,137),
                 xlab = "Grain yield mean difference",
                 addfit = FALSE,
                 efac = c(0.5,2,0.2))
@@ -318,8 +325,12 @@ text(-5.1, -0.8, pos=3, cex=0.75, bquote(paste("RE Model for All Studies (Q = ",
 
 
 ### add column headings to the plot
-text(c(-6.5, -5.5,-4.75,-4.15,-3.4,-2.5), 127.9,cex = 0.85, 
+text(c(-3.3, -2.85,-2.55,-2.35,-2.15,-1.85, -1.5), 137.9,cex = 1, 
      c("Trial\nReference", "Location", "Year", "Row\nSpacing","Host\nCultivar","DMI dose"),
+     font = 2)
+
+text(-2.35, polys$rows ,cex = 1.3, 
+     paste0(polys$ref," Spray Schedule - (tau^2 = " ,round(PM_mv$tau2, digits = 3), ") "),
      font = 2)
 
 addpoly(x = polys$x,
@@ -330,6 +341,7 @@ addpoly(x = polys$x,
         cex = 1.3,
         efac = 0.2,
         font = "Arial Rounded MT Bold")
+
 ```
 
 
