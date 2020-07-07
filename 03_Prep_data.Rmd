@@ -383,6 +383,8 @@ median_AUDPC <-
    median(as.vector(Trial_Dpress$AUDPC_C), na.rm = TRUE)
 median_AUDPC
 
+write.csv(median_AUDPC, here("cache/median_AUDPC_C.csv"), row.names = FALSE)
+
 sort(Trial_Dpress$AUDPC_C)
 
 for (i in unique(slimmer_PM_dat$trial_ref)) {
