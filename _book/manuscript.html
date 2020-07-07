@@ -54,6 +54,69 @@
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 </head>
 
@@ -108,11 +171,9 @@
 <ul>
 <li class="chapter" data-level="4.3.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>4.3.1</b> Cluster fungicide applications</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#test-dose-effect"><i class="fa fa-check"></i><b>4.4</b> Test dose effect</a>
-<ul>
-<li class="chapter" data-level="4.4.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#disease-pressure-factor"><i class="fa fa-check"></i><b>4.4.1</b> Disease pressure factor</a></li>
-<li class="chapter" data-level="4.4.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.4.2</b> Row spacing</a></li>
-</ul></li>
+<li class="chapter" data-level="4.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#test-dose-effect"><i class="fa fa-check"></i><b>4.4</b> Test dose effect</a></li>
+<li class="chapter" data-level="4.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#disease-pressure-factor"><i class="fa fa-check"></i><b>4.5</b> Disease pressure factor</a></li>
+<li class="chapter" data-level="4.6" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.6</b> Row spacing</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Grain yield meta-analysis</a>
 <ul>
@@ -193,7 +254,7 @@ While the pathogens are obligate parasites, secondary hosts that allow the patho
 Because of this, planting date is an effective strategy for preventing the development of powdery mildew in mungbean.
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
 Therefore, a delayed sowing date of late January into February increases the possibility powdery mildew will infect earlier in the crop development cycle and cause greater yield losses than in earlier sown mungbean crops.</p>
-<p>Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as a sole powdery mildew management strategy. <!-- Citation needed -->
+<p>Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy. <!-- Citation needed -->
 Quantitative disease resistance has been observed in some breeding lines overseas <span class="citation">(Pandey et al. <a href="#ref-Pandey2018" role="doc-biblioref">2018</a>; Chankaew et al. <a href="#ref-Chankaew2013" role="doc-biblioref">2013</a>)</span>.
 In Australia, quantitative resistance has also been incorporated into few commercially available varieties.
 Jade-AU <!-- Need PBR emblem here --> has the the best disease resistance to powdery mildew (moderately susceptible).
@@ -219,36 +280,48 @@ The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue
 Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) <span class="citation">(Northern Growers Alliance <a href="#ref-goolhi2013" role="doc-biblioref">2013</a><a href="#ref-goolhi2013" role="doc-biblioref">a</a>, <a href="#ref-premer2013" role="doc-biblioref">2013</a><a href="#ref-premer2013" role="doc-biblioref">d</a>, <a href="#ref-Millmerran2013" role="doc-biblioref">2013</a><a href="#ref-Millmerran2013" role="doc-biblioref">c</a>, <a href="#ref-Marysmount2013" role="doc-biblioref">2013</a><a href="#ref-Marysmount2013" role="doc-biblioref">b</a>)</span>.
 <!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> The most recent trials starting from 2016 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2016 to 2019.
 Trial data were in different formats with varying levels of information.
-Some trial data reported means of each treatment, with all but one study reporting variance along with the mean.
-Raw data were obtained for 26 trials in total.</p>
-<p>Details of trial data are presented within a research compendium which was prepared to supplement this publication [<!-- DOI to reference to compendium -->].</p>
-<p>The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia’s summer crops.
-Trial data had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; and crop yield.
-A total of 26 trials were collated and from these trials we selected the most frequently tested fungicides that had the same mode of action.
-The data were subset to only include treatments using demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole, to reduce confounding effects of fungicides with different modes of action.
-Subsequently the 26 trials were reduced to 17 using the same fungicide doses (Table 1).
-With only a small number of trials and to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis.</p>
-<p>All trials included in this analysis were a randomised complete block designs and not previously published in peer-reviewed literature.
-Some trials and results were reported online via the GRDC.
-While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials included additional variables in the experimental design.
-These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar and supplementary irrigation, in addition to trial location and season.
-To account for this variation between trials, and the treatments within trials, a single ‘trial’ factor was created to describe the main variables; trial location, trial season, host genotype and row spacing.
+Some trial data reported means of each treatment, with all but one study reporting some form of variance along with the mean.</p>
+<p>Twenty six trials in total were collated.</p>
+<p>Details of trial data are presented within a research compendium which was prepared to supplement this publication [<!-- DOI to reference to compendium -->].
+The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia’s summer crops.
+Trial data had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield.
+The data were subset to only include treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset.
+Subsequently the 26 trials were reduced to 16 using the same fungicide doses (Table 1).
+With only a small number of trials, and to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis.</p>
+<p>All trials included in this analysis were randomised complete block designs and not previously published in peer-reviewed literature.</p>
+<p>While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design.</p>
+<p>These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar and supplementary irrigation.
+To account for the variation between trials, and the treatments within trials, a single ‘trial’ factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and dose.
 Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 – 9 ordinal scale (Table 2).
-However, the 2013 NGA trials (Table 1) reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy.
-Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, it was strait-forward to calculate the equivalent incidence on the ordinal 1 – 9 scale.</p>
-<p>The timing of fungicide applications, with reference to when the disease first occurred in the trial, and number of applications were used to define a treatment variable.
-An ‘Early’ fungicide application, refers to a fungicide spray schedule that commences with the first spray prior to the disease being observed in the trial.
-‘Recommended’ refers to a fungicide spray schedule which commences within three days following the first sign of disease, and ‘late’ treatments which commence four days or later than first sign.
+However, the 2013 NGA trials (Table 1) reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy.</p>
+<p>Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, a conversion to mean plot incidence on the ordinal 1 – 9 scale was straight-forward.</p>
+<p>The timing of fungicide application treatments, was defined in relation to the recorded date when powdery mildew first occurred in the trial.
+An ‘Early’ fungicide application treatment, referred to a fungicide spray schedule that commenced the first spray prior to the disease being observed in the trial.
+‘Recommended’ refers to a fungicide spray schedule which commences following the first sign of disease, within three days.
+‘Late’ treatments commence between 7 - 13 days after the first sign of disease.
 The number of fungicide applications were binned in to two categories.
-A spray schedule with a single spray, and a spray schedule with one or more sprays to a maximum of three applications.
-The division of the treatments into these six categories created two categories with insufficient numbers of treatments to provide a reliable sample.
-Single late sprays contained two replicates and multiple early sprays contained five replicates and were therefore removed from the subsequent meta-analysis.</p>
+A spray schedule with a single spray, and a spray schedule with two or three spray applications (Plus).
+The division of the treatments categorised: 13 Early treatments; 5 ‘EarlyPlus’, 32 ‘Recommended’; 46 ‘RecommendedPlus’; 17 ‘Late’; and 20 ‘LatePlus.
+’EarlyPlus’ treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.</p>
 <p>What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.</p>
-<p>Mean grain yields and sample variance for each treatment was calculated for trials for which we had the raw data.
+<p>A categorical disease pressure factor was created by binning trials based on the mean AUDPC of the no spray control plot into two levels: ‘low disease pressure’ or ‘high disease pressure’.
+The two levels were separated via the median AUDPC <!-- Should this be encoded not hard coded in case it changes? -->(153.63) of the no spray control plots.</p>
+<p>Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
+The sample variance was calculated from the raw data when available or the least squares statistic in trial reports.
 Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. <span class="citation">(<a href="#ref-Ngugi2011" role="doc-biblioref">2011</a>)</span>.
 The T-critical value was determined from the 30 degrees of freedom using a t-distribution table.
-For the remainder of the trial data, the treatment means and variance were reported, except for Gatton in 2012 and Emerald in 2015.
-The Gatton and Emerald trials reported treatment means without accompanying variance and were thus removed prior to the analysis.</p>
+The 2012 Gatton and 2015 Emerald trials reported treatment means without accompanying variance and were thus removed from the dataset prior to the analysis.</p>
+<p>This analysis uses the grain yield standardised mean difference (SMD) as the response variable.
+SMD were chosen to reduce the inherent variability between trials due to location and seasonal effects on grain yields.
+<span class="math inline">\(SMD = \frac{Y_i-\overline{Y_c}}{\sigma_p}\)</span> <span class="citation">(<span class="citeproc-not-found" data-reference-id="HigginsGreen"><strong>???</strong></span>)</span>
+Where <span class="math inline">\(Y_i\)</span> is the treatment mean, <span class="math inline">\(Y_c\)</span> is the no spray control treatment mean and <span class="math inline">\(\sigma_p\)</span> is the trial pooled standard deviation.</p>
+<p>Similar to Paul et. al. <span class="citation">(<a href="#ref-Paul2007" role="doc-biblioref">2007</a>)</span>, we fitted a multivariate random effects model
+<span class="math inline">\(Y_i \sim N(\mu,s_i^2 + \sigma^2)\)</span>
+where <span class="math inline">\(Y_i\)</span> is the response, a vector of the SMD grain yield for each treatment in the <span class="math inline">\(i\)</span>th trial over total number (<span class="math inline">\(K\)</span>) of trials(<span class="math inline">\(i\)</span> = 1, …<span class="math inline">\(K\)</span>).
+<span class="math inline">\(Y_i\)</span> is estimated from a normal distribution with the mean <span class="math inline">\(\mu\)</span>, sample variance of <span class="math inline">\(Si_^2\)</span> and a between trial variance of <span class="math inline">\(\sigma^2\)</span>.
+<strong>Moderator variables.</strong> The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule (<span class="math inline">\(SPRAY_{Sched}\)</span>).
+The intercept was omitted from the model so each treatment would be reported against zero, which represents the control mean.
+Linear contrasts were used to compare the mean effect sizes between each spray schedule treatment and their respecting standard errors and confidence intervals.</p>
 <p>The data were analysed in the R statistical software environment, version 4.0.1, <span class="citation">(Team <a href="#ref-RCoreTeam2020" role="doc-biblioref">2020</a>)</span> using two contributed meta-analysis packages, <code>metafor</code>, version 2-4.0, <span class="citation">(Viechtbauer <a href="#ref-Viechtbauer2010" role="doc-biblioref">2010</a>)</span> and <code>netmeta</code>, version 1.2-1, <span class="citation">(Rücker et al. <a href="#ref-Rucker2020" role="doc-biblioref">2020</a>)</span>.</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:900px; ">
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -713,6 +786,239 @@ Colonies to top of the plant with &gt; 100 % of plants affected and heavy leaf d
 </div>
 <div id="results" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> Results</h2>
+<p>Overall the meta-analysis indicated that, with the exception of <code>Early</code> single sprays all the the spray schedules were effective at protecting mungbean yields relative to the no spray controls (Figure 1).
+Treatments incorporating multiple fungicide applications, <code>recommendedPlus</code> and <code>LatePlus</code> produced the highest yield protection estimates at 196 and 220 kg / ha respectively (Table 3).
+Both <code>RecommendedPlus</code> and <code>LatePlus</code> were also significantly higher than single applications starting <code>Early</code> (P = 0.008 and P = 0.003 respectively) and <code>Late</code>(P = 0.05 and P = 0.03 respectively).
+Within the single fungicide application treatments <code>recommended</code> provided the highest yield protection, and was estimated at saving an average of 160 kg / ha relative to the no spray control (P &lt; 0.0001). <code>recommended</code> treatments were was also significantly higher than <code>Early</code> treatments by 122 kg / ha (P = 0.004).</p>
+<p>The <span class="math inline">\(Q_M\)</span> omnibus test of moderators, shows the moderators significantly influence the model (<span class="math inline">\(Q_M = 26.22, df = 5, p &lt; 0.0001\)</span>) and we can reject the null hypothesis (<span class="math inline">\(H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0\)</span>) that there is no difference between the moderators <span class="citation">(Viechtbauer <a href="#ref-Viechtbauer2010" role="doc-biblioref">2010</a>)</span>.
+The analysis shows there is still a significant amount of residual heterogeneity (<span class="math inline">\(Q_E = 568.31, df = 111, p &lt; 0.0001\)</span>) not captured by the spray management moderator indicating other possible moderators, which might influence grain yield.</p>
+<p>A log-ratio test, based on a chi-squared distribution, indicated that retaining the <code>SpraySchedule</code> variable as a random interactive term provided a significantly better model (P = 0.0179).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="manuscript.html#cb1-1"></a>T3 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Table3_contrasts.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb1-2"><a href="manuscript.html#cb1-2"></a>T3 <span class="op">%&gt;%</span></span>
+<span id="cb1-3"><a href="manuscript.html#cb1-3"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+contrasts
+</th>
+<th style="text-align:right;">
+estimates
+</th>
+<th style="text-align:right;">
+se
+</th>
+<th style="text-align:right;">
+z_val
+</th>
+<th style="text-align:right;">
+pval
+</th>
+<th style="text-align:left;">
+VisP
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+-Early + Recommended = 0
+</td>
+<td style="text-align:right;">
+0.1221
+</td>
+<td style="text-align:right;">
+0.0421
+</td>
+<td style="text-align:right;">
+2.8990
+</td>
+<td style="text-align:right;">
+0.0037
+</td>
+<td style="text-align:left;">
+**
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Early + Recommended_plus = 0
+</td>
+<td style="text-align:right;">
+0.1587
+</td>
+<td style="text-align:right;">
+0.0596
+</td>
+<td style="text-align:right;">
+2.6617
+</td>
+<td style="text-align:right;">
+0.0078
+</td>
+<td style="text-align:left;">
+**
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Early + Late = 0
+</td>
+<td style="text-align:right;">
+0.0843
+</td>
+<td style="text-align:right;">
+0.0541
+</td>
+<td style="text-align:right;">
+1.5595
+</td>
+<td style="text-align:right;">
+0.1189
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Early + Late_plus = 0
+</td>
+<td style="text-align:right;">
+0.1821
+</td>
+<td style="text-align:right;">
+0.0603
+</td>
+<td style="text-align:right;">
+3.0203
+</td>
+<td style="text-align:right;">
+0.0025
+</td>
+<td style="text-align:left;">
+**
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Recommended + Recommended_plus = 0
+</td>
+<td style="text-align:right;">
+0.0365
+</td>
+<td style="text-align:right;">
+0.0371
+</td>
+<td style="text-align:right;">
+0.9858
+</td>
+<td style="text-align:right;">
+0.3242
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Recommended + Late = 0
+</td>
+<td style="text-align:right;">
+-0.0378
+</td>
+<td style="text-align:right;">
+0.0349
+</td>
+<td style="text-align:right;">
+-1.0850
+</td>
+<td style="text-align:right;">
+0.2779
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Recommended + Late_plus = 0
+</td>
+<td style="text-align:right;">
+0.0600
+</td>
+<td style="text-align:right;">
+0.0446
+</td>
+<td style="text-align:right;">
+1.3445
+</td>
+<td style="text-align:right;">
+0.1788
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Recommended_plus + Late = 0
+</td>
+<td style="text-align:right;">
+-0.0744
+</td>
+<td style="text-align:right;">
+0.0375
+</td>
+<td style="text-align:right;">
+-1.9812
+</td>
+<td style="text-align:right;">
+0.0476
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Recommended_plus + Late_plus = 0
+</td>
+<td style="text-align:right;">
+0.0235
+</td>
+<td style="text-align:right;">
+0.0453
+</td>
+<td style="text-align:right;">
+0.5174
+</td>
+<td style="text-align:right;">
+0.6049
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+-Late + Late_plus = 0
+</td>
+<td style="text-align:right;">
+0.0978
+</td>
+<td style="text-align:right;">
+0.0446
+</td>
+<td style="text-align:right;">
+2.1932
+</td>
+<td style="text-align:right;">
+0.0283
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+</tr>
+</tbody>
+</table></li>
+</ul></li>
+</ul>
 </div>
 <div id="discussion" class="section level2" number="8.4">
 <h2><span class="header-section-number">8.4</span> Discussion</h2>
@@ -724,7 +1030,7 @@ The user inputs weather, crop, and economic inputs into the DSS and the applicat
 <h3><span class="header-section-number">8.4.1</span> Fungicide Resistance</h3>
 <p>Fungicide application costs in Australia are relatively cheap.
 We estimate these costs to be approximately $20 AU per hectare.
-Lucrative returns of up to $2260 AU per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew more than necessary.
+Lucrative returns of up to $2260 AU per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew when they are unnecessary.
 Excessive use of fungicides are not only costly, but lead to problems such as fungicide resistance.
 <em>Podosphaera xanthii</em> is categorised by the Australian Fungicide resistance Action Committee (FRAC) as a ‘High risk’ candidate to evolve fungicide resistance.
 Prior experiences confirm that the evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with potential fungicide resistance in mind.
@@ -796,6 +1102,9 @@ Sulphur is a non-systemic protectant and thus provides an excellent option for r
 </div>
 <div id="ref-Pandey2018">
 <p>Pandey, Abhay K., Rishi R. Burlakoti, Lawrence Kenyon, and Ramakrishnan M. Nair. 2018. “Perspectives and Challenges for Sustainable Management of Fungal Diseases of Mungbean [<em>Vigna radiata</em> (L.) R. Wilczek var. <em>radiata</em>]: A Review.” <em>Frontiers in Environmental Science</em> 6 (June): 53. <a href="https://doi.org/10.3389/fenvs.2018.00053">https://doi.org/10.3389/fenvs.2018.00053</a>.</p>
+</div>
+<div id="ref-Paul2007">
+<p>Paul, P. A., P. E. Lipps, D. E. Hershman, M. P. Mcmullen, M. A. Draper, and L. V. Madden. 2007. “Disease Control and Pest Management A Quantitative Review of Tebuconazole Effect on Fusarium Head Blight and Deoxynivalenol Content in Wheat” 97 (2): 211. <a href="https://doi.org/10.1094/PHYTO-97-2-0211">https://doi.org/10.1094/PHYTO-97-2-0211</a>.</p>
 </div>
 <div id="ref-Peterson1973">
 <p>Peterson, R. A. 1973. “Field resistance to benomyl in cucurbit powdery mildew.” <em>Australian Plant Pathology Society Newsletter</em> 2 (4): 27–28. <a href="https://doi.org/10.1071/APP9730027a">https://doi.org/10.1071/APP9730027a</a>.</p>
@@ -878,6 +1187,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
