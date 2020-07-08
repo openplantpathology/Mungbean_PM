@@ -302,8 +302,40 @@ change_labels <- function(x1) {
    x1
 }
 
-for_rows <- function(head_row, gap = NULL, r_order = NULL, ord_var){
+for_rows <- function(head_row, gap = NULL, r_order = NULL, ord_var, index){
    if(is.null(gap)){gap <- 0}
+   
+   trows_F <- function(x1, head_row, gap){
+   if(x1 <= length(dat1$spray_management) &&
+      x1 > length(dat1$spray_management) - (sum(dat1$spray_management == "Early"))){
+      return(x1 + (head_row - length(dat1$spray_management)) - 2)}
+   if(x1 <= length(dat1$spray_management) - (sum(dat1$spray_management == "Early")) &&
+      x1 > length(dat1$spray_management) - 
+      (sum(dat1$spray_management == "Early") + sum(dat1$spray_management == "Late"))){
+      return(x1 + (head_row - length(dat1$spray_management)) - (2 + gap))}
+   if(x1 <= length(dat1$spray_management) - 
+      (sum(dat1$spray_management == "Early") + sum(dat1$spray_management == "Late"))&&
+      x1 > length(dat1$spray_management) - 
+      (sum(dat1$spray_management == "Early") + sum(dat1$spray_management == "Late") +
+       sum(dat1$spray_management == "Recommended"))){
+      return(x1 + (head_row - length(dat1$spray_management)) - (2 + gap * 2))}
+   if(x1 <= length(dat1$spray_management) - 
+      (sum(dat1$spray_management == "Early") + sum(dat1$spray_management == "Late") +
+       sum(dat1$spray_management == "Recommended")) &&
+      x1 > length(dat1$spray_management) - 
+      (sum(dat1$spray_management == "Early") + sum(dat1$spray_management == "Late") +
+       sum(dat1$spray_management == "Recommended") + sum(dat1$spray_management == "Recommended_plus"))){
+      return(x1 + (head_row - length(dat1$spray_management)) - (2 + gap * 3))}
+   if(x1 <= length(dat1$spray_management) - 
+      (sum(dat1$spray_management == "Early") + sum(dat1$spray_management == "Late") +
+       sum(dat1$spray_management == "Recommended") + sum(dat1$spray_management == "Recommended_plus")) &&
+      x1 > length(dat1$spray_management) - 
+      (sum(dat1$spray_management == "Early") + sum(dat1$spray_management == "Late") +
+       sum(dat1$spray_management == "Recommended") + sum(dat1$spray_management == "Recommended_plus") +
+       sum(dat1$spray_management == "Late_plus"))){
+      return(x1 + (head_row - length(dat1$spray_management)) - (2 + gap * 4))}
+
+      }
    
    stitle_row <- head_row - c(2,
                               15 + gap,
@@ -312,6 +344,8 @@ for_rows <- function(head_row, gap = NULL, r_order = NULL, ord_var){
                               99 + (gap*4))
    
    ord_rows <- order(order(dat1[,ord_var]))
+   
+   
       
    ks1 <- c(sum(dat1$spray_management == "Early"),
             sum(dat1$spray_management == "Late"),
@@ -329,14 +363,11 @@ for_rows <- function(head_row, gap = NULL, r_order = NULL, ord_var){
                        (stitle_row[4] - 2.5) - ord_rows[ks1[3]+1:ks1[4]],
                        (stitle_row[5] - 2.5) - ord_rows[ks1[4]+1:ks1[5]]
                        ),
-            trows3 = ord_rows
+            
+            trows3 = unlist(sapply(index1$ID2,trows_F, head_row = head_row, gap = gap)),
 
               
-              trows = c((stitle_row[1]-1.5):(stitle_row[1]-0.5 - ks1[1]),
-                        (stitle_row[2]-1.5):(stitle_row[2]-0.5 - ks1[2]),
-                        (stitle_row[3]-1.5):(stitle_row[3]-0.5 - ks1[3]),
-                        (stitle_row[4]-1.5):(stitle_row[4]-0.5 - ks1[4]),
-                        (stitle_row[5]-1.5):(stitle_row[5]-0.5 - ks1[5])))
+              trows = index)
    
    if(is.null(r_order) == FALSE){
       dat2$trows <- dat2$trows[r_order]
@@ -345,7 +376,6 @@ for_rows <- function(head_row, gap = NULL, r_order = NULL, ord_var){
 }
 
 
-rows1 <- for_rows(156, ord_var = "spray_management")
 
 polys <- data.frame(ref = change_labels(names(coef(PM_mv))),
                     x = coef(PM_mv),
@@ -357,14 +387,16 @@ polys <- data.frame(ref = change_labels(names(coef(PM_mv))),
 dat1$ID <- 1:116
 
 index1 <- dat1 %>%
+   mutate(spray_management = factor(spray_management, levels = c("Early", "Late","Recommended", "Recommended_plus","Late_plus")))%>%
    arrange(desc(spray_management), location, desc(grain_MD))%>%
    select(ID) %>%
    mutate(ID2 = order(ID))
 
+rows1 <- for_rows(156, index = index1$ID2, gap = 5)
 
 forest1  <- metafor::forest(PM_mv, cex = 1.15 , width = 5,
                 #order = "fit",
-                rows = (index1$ID2)+50,
+                rows = rows1$trows3,
                 ilab = cbind(dat1$trial_ref, dat1$location, dat1$year, 
                              dat1$row_spacing, dat1$host_genotype, dat1$dose,
                              as.character(dat1$spray_management)),
