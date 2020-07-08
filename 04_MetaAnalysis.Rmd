@@ -284,6 +284,9 @@ PM_mv <- rma.mv(
 )
 summary(PM_mv)
 ```
+```{r}
+(PM_mv$b - PM_mv$ci.ub) / PM_mv$se
+```
 
 In this result we can see that the `Early` treatment is not significantly different from zero, which in this case is the mean of the no spray `control`.
 However the other treatments are significantly different from zero.
@@ -291,7 +294,7 @@ The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_wit
 The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.
 
 Lets look at the trial variability in this model with a forest plot
-```{r forestP, fig.height= 25, fig.width=20}
+```{r forestP, fig.height= 40, fig.width=20}
 change_labels <- function(x1) {
    x1 <- gsub(pattern = "spray_management",
               replacement = "",
@@ -299,21 +302,76 @@ change_labels <- function(x1) {
    x1
 }
 
+for_rows <- function(head_row, gap = NULL, r_order = NULL, ord_var){
+   if(is.null(gap)){gap <- 0}
+   
+   stitle_row <- head_row - c(2,
+                              15 + gap,
+                              32 + (gap*2),
+                              59 + (gap*3),
+                              99 + (gap*4))
+   
+   ord_rows <- order(order(dat1[,ord_var]))
+      
+   ks1 <- c(sum(dat1$spray_management == "Early"),
+            sum(dat1$spray_management == "Late"),
+            sum(dat1$spray_management == "Recommended"),
+            sum(dat1$spray_management == "Recommended_plus"),
+            sum(dat1$spray_management == "Late_plus"))
+   
+   dat2 <- list(stitle_row = stitle_row,
+                
+              pred_row = stitle_row - c(15,29,42,19,21),
+              
+            trows2 = c((stitle_row[1] - 2.5) - ord_rows[1:ks1[1]],
+                       (stitle_row[2] - 2.5) - ord_rows[ks1[1]+1:ks1[2]],
+                       (stitle_row[3] - 2.5) - ord_rows[ks1[2]+1:ks1[3]],
+                       (stitle_row[4] - 2.5) - ord_rows[ks1[3]+1:ks1[4]],
+                       (stitle_row[5] - 2.5) - ord_rows[ks1[4]+1:ks1[5]]
+                       ),
+            trows3 = ord_rows
+
+              
+              trows = c((stitle_row[1]-1.5):(stitle_row[1]-0.5 - ks1[1]),
+                        (stitle_row[2]-1.5):(stitle_row[2]-0.5 - ks1[2]),
+                        (stitle_row[3]-1.5):(stitle_row[3]-0.5 - ks1[3]),
+                        (stitle_row[4]-1.5):(stitle_row[4]-0.5 - ks1[4]),
+                        (stitle_row[5]-1.5):(stitle_row[5]-0.5 - ks1[5])))
+   
+   if(is.null(r_order) == FALSE){
+      dat2$trows <- dat2$trows[r_order]
+   }
+   dat2
+}
+
+
+rows1 <- for_rows(156, ord_var = "spray_management")
+
 polys <- data.frame(ref = change_labels(names(coef(PM_mv))),
                     x = coef(PM_mv),
                     ci.lb = PM_mv$ci.lb,
                     ci.ub = PM_mv$ci.ub,
-                    rows = c(120.60, 68.6, 24.6,99.6, 1.6))
+                    rows = rows1$pred_row)
 
-metafor::forest(PM_mv, cex = 1.15 , width = 5,
-                order = "fit",
-                rows = c(134:122, 117:101, 96:70, 65:26, 21:3),
+
+dat1$ID <- 1:116
+
+index1 <- dat1 %>%
+   arrange(desc(spray_management), location, desc(grain_MD))%>%
+   select(ID) %>%
+   mutate(ID2 = order(ID))
+
+
+forest1  <- metafor::forest(PM_mv, cex = 1.15 , width = 5,
+                #order = "fit",
+                rows = (index1$ID2)+50,
                 ilab = cbind(dat1$trial_ref, dat1$location, dat1$year, 
-                             dat1$row_spacing, dat1$host_genotype, dat1$dose),
-                ilab.xpos = c(-3.3, -2.85,-2.55,-2.35,-2.15,-1.85),
+                             dat1$row_spacing, dat1$host_genotype, dat1$dose,
+                             as.character(dat1$spray_management)),
+                ilab.xpos = c(-3.3, -2.85,-2.55,-2.35,-2.15,-1.85, -1.5),
                 slab = NA, 
                 xlim = c(-3.5, 2.5),
-                ylim = c(4,137),
+                ylim = c(11,157),
                 xlab = "Grain yield mean difference",
                 addfit = FALSE,
                 efac = c(0.5,2,0.2))
@@ -325,13 +383,15 @@ text(-5.1, -0.8, pos=3, cex=0.75, bquote(paste("RE Model for All Studies (Q = ",
 
 
 ### add column headings to the plot
-text(c(-3.3, -2.85,-2.55,-2.35,-2.15,-1.85, -1.5), 137.9,cex = 1, 
+text(c(-3.3, -2.85,-2.55,-2.35,-2.13,-1.85), 156,cex = 1, 
      c("Trial\nReference", "Location", "Year", "Row\nSpacing","Host\nCultivar","DMI dose"),
      font = 2)
 
-text(-2.35, polys$rows ,cex = 1.3, 
+text(-0.8, rows1$stitle_row ,cex = 1.3, 
      paste0(polys$ref," Spray Schedule - (tau^2 = " ,round(PM_mv$tau2, digits = 3), ") "),
      font = 2)
+
+text(-3.45, -3:160, cex=1,-3:160)
 
 addpoly(x = polys$x,
         ci.lb = polys$ci.lb,
@@ -341,6 +401,8 @@ addpoly(x = polys$x,
         cex = 1.3,
         efac = 0.2,
         font = "Arial Rounded MT Bold")
+abline(h = rows1$pred_row -2)
+
 
 ```
 
