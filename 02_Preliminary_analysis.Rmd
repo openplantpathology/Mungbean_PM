@@ -856,6 +856,31 @@ for (i in sm2lg$trial_ref) {
 }
 ```
 
+Based on a GRDC report by Sue Thompson [-@SueThompson2016] we want to know what the yield loss was in on cultivar Jade in the 2016 Trials.
+```{r}
+dat3 <- PM_MB_means %>%
+   filter(year == "2016",
+          host_genotype == "Jade",
+          fungicide_ai == "control")%>%
+   group_by(location)%>%
+   summarise(C_Yield = mean(grain_yield.t.ha., na.rm = TRUE))
+   
+dat3$F_Yield <- PM_MB_means %>%
+   filter(year == "2016",
+          host_genotype == "Jade",
+          fungicide_ai != "control")%>%
+   group_by(location)%>%
+   summarise(F_Yield = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
+   pull(F_Yield)
+
+dat3 %>% 
+   mutate(diff = F_Yield - C_Yield) %>%
+   mutate(percent = (diff/F_Yield)*100)
+   
+   
+
+```
+
 This sequence of graphs show that AUDPC and disease incidence tends not affect yields if the season is a low yielding season, _i.e._ lower than 1 tonne per hectare.
 The higher the yield, the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.
 
