@@ -15,18 +15,18 @@ Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south
 The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
 
+<!-- Mungbean is a new crop to Australia, Despite being introduced in Austlalia in the 1930s Mungbean has only been commercially produced as late as 1960s -->
 Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was not until the 1960s until that mungbean was grown commercially [@aboutAMA].
-At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is included.
-In the decade leading up to 2018 35 - 86.4 thousand hectares of dried beans are being planted per year [@FAOSTAT]. 
-This increase is attributed to the improved yields in the new cultivars and value of the crop [@Clarry2016].
+At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is categorised at the FAO statistics data repository [@FAOSTAT].
+In the decade leading up to 2018 between 35 - 86.4 thousand hectares of dried beans were planted annually. 
+This increase is attributed high value export markets and to the improved yields in the new cultivars [@Clarry2016].
 Currently mungbean is predominantly grown in southern Queensland and northern New South Wales as a short season summer legume crop.
-In 2019, approximately 90&nbsp;% of Australian mungbean produced is exported and economic returns can be lucrative for growers with a value of up to \$1300&nbsp;AU a tonne [@QueenslandGovernment2019].
+In 2019, approximately 90&nbsp;% of Australian mungbean was grown for export with lucrative returns of up to \$1300&nbsp;AU a tonne [@QueenslandGovernment2019].
 Mungbean potentially yields up to 3 tonnes per hectare, but due to high variability in yields between seasons and locations, the average Australian farm still yields less than 1 tonne per hectare [@Chauhan2018].
 
 Low yields, in part, can be attributed to a range of diseases that affect the crop [@Kelly2017a].
 Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfaciens* pv. _flaccumfaciens_) and halo blight (_Pseudomonas savastanoi_ pv. _phaseolicola_), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
-While a third disease, powdery mildew, is frequently controlled through an integrated disease management strategy of fungicide treatments and cultural practices.
-The disease can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars.
+While a third disease, powdery mildew, can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars, the damage can be mitigated through an integrated disease management strategy of fungicide treatments and cultural practices.  
 
 Powdery mildew is caused by two separate genera of fungi in Australia _Podosphaera xanthii_ and an unnamed _Psuedoidium sp._ (Kiss and Kelly Personal Communication).
 While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
@@ -36,11 +36,12 @@ Because of this, planting date is an effective strategy for preventing the devel
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
 Therefore, a delayed sowing date of late January into February increases the possibility powdery mildew will infect earlier in the crop development cycle and cause greater yield losses than in earlier sown mungbean crops.
 
-Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy. <!-- Citation needed -->
+In Australia, quantitative resistance to powdery mildew has also been incorporated into few commercially available varieties.
+Jade-AU <!-- Need PBR emblem here --> has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also containing some notable resistance [@Sparks2017].
+Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy. 
+Evidence of this is shown by the 2016 field trials with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 21 % were recorded [@SueThompson2016]. <!-- Citation does not mention 21% loss I calculated it, the citation is in reference to that field trial though, acceptable??? -->
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013].
-In Australia, quantitative resistance has also been incorporated into few commercially available varieties.
-Jade-AU <!-- Need PBR emblem here --> has the the best disease resistance to powdery mildew (moderately susceptible).
-Because cultivar choice does not confer complete resistance to powdery mildew, additional strategies such as fungicide treatments are necessary to limit yield loss when conditions for the disease are conducive.
+Additional strategies to cultivar choice, such as fungicide treatments, are necessary to limit yield loss when conditions for the disease are conducive.
 
 There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in Australian mungbean. 
 Much of the experimental work has been published by funding agencies and state government extension departments as extension bulletins or other related type materials.
