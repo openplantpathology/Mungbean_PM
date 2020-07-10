@@ -39,32 +39,35 @@ Cultivar selection is an additional strategy to mitigate yield damage from powde
 In Australia, quantitative resistance to powdery mildew has also been incorporated into few commercially available varieties.
 Jade-AU <!-- Need PBR emblem here --> has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also containing some notable resistance [@Sparks2017].
 However commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy. 
-Evidence of this is shown by the 2016 field trials with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 21 % were recorded [@SueThompson2016]. <!-- Citation does not mention 21% loss I calculated it, the citation is in reference to that field trial though, acceptable??? -->
+Evidence of this is shown by the 2016 field trials with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 32.7 % were recorded [@SueThompson2016]. 
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013].
 Additional strategies to cultivar choice, such as fungicide treatments, are necessary to limit yield loss when conditions for the disease are conducive.
 
 There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in Australian mungbean. 
 Much of the experimental work has been published by funding agencies and state government extension departments as extension bulletins or other related type materials.
 Past field trials in eastern Australia have tested a range of fungicide active ingredients while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
-Early trials showed that for a fungicide application to provide maximum efficacy, a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary was the most effective [@Sparks2017]. 
-However due to the variability in the results between seasons and experiments very few of these studies produced a clear result based on a statistical analysis. 
-This variability between the result of field trials, for the best time to apply fungicide treatments to mitigate yield damage presents an uncertainty for the best practice of fungicide application. 
-<!-- This is where I am working right now :) :) :) -->
+Early trials showed that for fungicide applications to protect yield, a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary was the most effective [@SueThompson2016; @Sparks2017]. 
+However due to the variability in the results between seasons and experiments few of these studies produced a clear result based on a statistical analysis. 
+This variability thus presents some uncertainty for the best practice of fungicide spray schedules to mitigate yield losses from powdery mildew. 
 
 
-Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a; <!-- insert all published trials here -->].
-
-Meta-analyses are statistical tools which can analyse a collection of experiments, which have a similar aim, and estimates the difference between the control and treatment means.
+The collection of experiments mentioned above and other unpublished trials proved an excellent opportunity for a meta-analysis.
+Meta-analyses are statistical tools which can analyse a collection of experiments, which have a similar aim, and produces a more accurate estimate of the true effect being measured.
 Using a meta-analysis can be useful in situations like this where several studies exist, that have the same objective but may not provide a clear answer to the question due to variation in the results within the individual studies.
-The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect, because it considers the amount of variance in each study and weights the influence of each on the treatment effects according to the study's statistical accuracy.
-Using a meta-analysis on the <!-- more goes here ? -->
+The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect, because it considers the amount of variance in each study and weights the influence of each studies treatment effects according to it's statistical accuracy.
+Typically meta-analyses consider the effect of a single treatment against a control group accross multiple independant studies [@Madden2011]. 
+However meta-analyses can also consider effect differences between multiple treatments and a control group, these are called multi-variate or network meta-analyses [@MaddenEtAl2016]. 
+Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies. 
+In-direct comparisons can be made between these two treatments if the both had direct comparisons with one or more treatments in common, assuming no significant bias in the studies which investigated each of the treatments which are subject to a indirect comparison [@Jansen2011].
 
-### Aims
-
+Considering the recent launch in 2019 of the decision support system (DSS) PowderyMildewMDM [@Diggle], which provides a cost benefit analysis to assists growers in thier decidion 'if' and 'when' apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
 The aim of this meta-analysis was to determine, from a collection of unpublished studies, what spray management scenario provides the greatest yield protection from powdery mildew in Australian mungbean.
 
-## Materials and Methods
+<!--Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a;  insert all published trials here -->.
 
+
+## Materials and Methods
+<!-- This is where I am working right now (Paul) :) :) :) -->
 The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
 The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue Thompson with the Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
 Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
