@@ -15,8 +15,7 @@ Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south
 The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
 
-<!-- Mungbean is a new crop to Australia, Despite being introduced in Austlalia in the 1930s Mungbean has only been commercially produced as late as 1960s -->
-Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was not until the 1960s until that mungbean was grown commercially [@aboutAMA].
+Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was only as recent as the 1960s until that mungbean was grown commercially [@aboutAMA].
 At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is categorised at the FAO statistics data repository [@FAOSTAT].
 In the decade leading up to 2018 between 35 - 86.4 thousand hectares of dried beans were planted annually. 
 This increase is attributed high value export markets and to the improved yields in the new cultivars [@Clarry2016].
@@ -24,11 +23,11 @@ Currently mungbean is predominantly grown in southern Queensland and northern Ne
 In 2019, approximately 90&nbsp;% of Australian mungbean was grown for export with lucrative returns of up to \$1300&nbsp;AU a tonne [@QueenslandGovernment2019].
 Mungbean potentially yields up to 3 tonnes per hectare, but due to high variability in yields between seasons and locations, the average Australian farm still yields less than 1 tonne per hectare [@Chauhan2018].
 
-Low yields, in part, can be attributed to a range of diseases that affect the crop [@Kelly2017a].
-Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfaciens* pv. _flaccumfaciens_) and halo blight (_Pseudomonas savastanoi_ pv. _phaseolicola_), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
+The high variability in yields, in part, can be attributed to a range of diseases that affect the crop [@Kelly2017a].
+Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfaciens* pv. _flaccumfaciens_) and halo blight (*Pseudomonas savastanoi* pv. *phaseolicola*), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
 While a third disease, powdery mildew, can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars, the damage can be mitigated through an integrated disease management strategy of fungicide treatments and cultural practices.  
 
-Powdery mildew is caused by two separate genera of fungi in Australia _Podosphaera xanthii_ and an unnamed _Psuedoidium sp._ (Kiss and Kelly Personal Communication).
+Powdery mildew is caused by two separate genera of fungi in Australia *Podosphaera xanthii* and an unnamed *Psuedoidium sp.* (Kiss and Kelly Personal Communication).
 While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
 
 Weather conditions that favour the development of the disease are cool temperatures between 22&deg; and 26&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
@@ -36,9 +35,10 @@ Because of this, planting date is an effective strategy for preventing the devel
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
 Therefore, a delayed sowing date of late January into February increases the possibility powdery mildew will infect earlier in the crop development cycle and cause greater yield losses than in earlier sown mungbean crops.
 
+Cultivar selection is an additional strategy to mitigate yield damage from powdery mildew. 
 In Australia, quantitative resistance to powdery mildew has also been incorporated into few commercially available varieties.
 Jade-AU <!-- Need PBR emblem here --> has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also containing some notable resistance [@Sparks2017].
-Commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy. 
+However commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy. 
 Evidence of this is shown by the 2016 field trials with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 21 % were recorded [@SueThompson2016]. <!-- Citation does not mention 21% loss I calculated it, the citation is in reference to that field trial though, acceptable??? -->
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013].
 Additional strategies to cultivar choice, such as fungicide treatments, are necessary to limit yield loss when conditions for the disease are conducive.
@@ -47,6 +47,11 @@ There is almost a complete lack of peer-reviewed literature summarising fungicid
 Much of the experimental work has been published by funding agencies and state government extension departments as extension bulletins or other related type materials.
 Past field trials in eastern Australia have tested a range of fungicide active ingredients while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
 Early trials showed that for a fungicide application to provide maximum efficacy, a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary was the most effective [@Sparks2017]. 
+However due to the variability in the results between seasons and experiments very few of these studies produced a clear result based on a statistical analysis. 
+This variability between the result of field trials, for the best time to apply fungicide treatments to mitigate yield damage presents an uncertainty for the best practice of fungicide application. 
+<!-- This is where I am working right now :) :) :) -->
+
+
 Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a; <!-- insert all published trials here -->].
 
 Meta-analyses are statistical tools which can analyse a collection of experiments, which have a similar aim, and estimates the difference between the control and treatment means.
@@ -229,11 +234,11 @@ Fungicide application costs in Australia are relatively cheap.
 We estimate these costs to be approximately \$20&nbsp;AU per hectare.
 Lucrative returns of up to \$2260&nbsp;AU per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew when they are unnecessary.
 Excessive use of fungicides are not only costly, but lead to problems such as fungicide resistance.
-_Podosphaera xanthii_ is categorised by the Australian Fungicide resistance Action Committee (FRAC) as a 'High risk' candidate to evolve fungicide resistance.
+*Podosphaera xanthii* is categorised by the Australian Fungicide resistance Action Committee (FRAC) as a 'High risk' candidate to evolve fungicide resistance.
 Prior experiences confirm that the evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with potential fungicide resistance in mind.
 Powdery mildew is one such group of fungal pathogens with an extensive track record of rapidly developing fungicide resistance.
 In cucurbits, it evolved resistance to benzimidazole within three years of its registration [@Peterson1973] and has evolved resistance to numerous fungicide classes, such as benzimidazoles, demethylation inhibitors, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines since [@Mcgrath2001].
-In cereal crops _Blumeria graminis_ showed reduced sensitivity to strobilurins in 1998, two years after the fungicides began being used in Europe [@Chin2001].
+In cereal crops *Blumeria graminis* showed reduced sensitivity to strobilurins in 1998, two years after the fungicides began being used in Europe [@Chin2001].
 
 To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered.
 Excessive fungicide sprays by a single active increase the selection pressure on the pathogen to evolve resistance [@Brent2007]. 
