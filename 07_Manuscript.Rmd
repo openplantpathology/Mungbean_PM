@@ -16,7 +16,7 @@ The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
 
 Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was only as recent as the 1960s until that mungbean was grown commercially [@aboutAMA].
-At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is categorised at the FAO statistics data repository [@FAOSTAT].
+At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is categorised by the FAO statistics data repository [@FAOSTAT].
 In the decade leading up to 2018 between 35 - 86.4 thousand hectares of dried beans were planted annually. 
 This increase is attributed high value export markets and to the improved yields in the new cultivars [@Clarry2016].
 Currently mungbean is predominantly grown in southern Queensland and northern New South Wales as a short season summer legume crop.
@@ -28,9 +28,10 @@ Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfacie
 While a third disease, powdery mildew, can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars, the damage can be mitigated through an integrated disease management strategy of fungicide treatments and cultural practices.  
 
 Powdery mildew is caused by two separate genera of fungi in Australia *Podosphaera xanthii* and an unnamed *Psuedoidium sp.* (Kiss and Kelly Personal Communication).
-While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
+While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified. <!-- Perhaps some more information here about the biology, infection time, latent period, how long in a cycle -PM-->
 
 Weather conditions that favour the development of the disease are cool temperatures between 22&deg; and 26&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
+
 Because of this, planting date is an effective strategy for preventing the development of powdery mildew in mungbean.
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
 Therefore, a delayed sowing date of late January into February increases the possibility powdery mildew will infect earlier in the crop development cycle and cause greater yield losses than in earlier sown mungbean crops.
@@ -60,7 +61,7 @@ However meta-analyses can also consider effect differences between multiple trea
 Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies. 
 In-direct comparisons can be made between these two treatments if the both had direct comparisons with one or more treatments in common, assuming no significant bias in the studies which investigated each of the treatments which are subject to a indirect comparison [@Jansen2011].
 
-Considering the recent launch in 2019 of the decision support system (DSS) PowderyMildewMDM [@Diggle], which provides a cost benefit analysis to assists growers in thier decidion 'if' and 'when' apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
+Considering the recent launch in 2019 of the decision support system (DSS) PowderyMildewMDM [@Diggle], which provides a cost benefit analysis to assists growers in their decision 'if' and 'when' apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
 The aim of this meta-analysis was to determine, from a collection of unpublished studies, what spray management scenario provides the greatest yield protection from powdery mildew in Australian mungbean.
 
 <!--Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a;  insert all published trials here -->.
@@ -71,7 +72,7 @@ The aim of this meta-analysis was to determine, from a collection of unpublished
 The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
 The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue Thompson with the Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
 Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
-<!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> The most recent trials starting from 2016 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2016 to 2019. 
+<!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> The most recent trials starting from 2015 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2015 to 2019. 
 Trial data were in different formats with varying levels of information.
 Some trial data reported means of each treatment, with all but one study reporting some form of variance along with the mean. 
 
@@ -88,8 +89,8 @@ All trials included in this analysis were randomised complete block designs and 
 
 While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design.
 
-These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications, cultivar and supplementary irrigation.
-To account for the variation between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and dose. 
+These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications and cultivar.
+To account for the variation attributed to some of these variables between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and fungicide dose. 
 Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 -- 9 ordinal scale (Table 2). 
 However, the 2013 NGA trials (Table 1) reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy.
 
@@ -101,7 +102,7 @@ An 'Early' fungicide application treatment, referred to a fungicide spray schedu
 'Late' treatments commence between 7 - 13 days after the first sign of disease. 
 The number of fungicide applications were binned in to two categories.
 A spray schedule with a single spray, and a spray schedule with two or three spray applications (Plus). 
-The division of the treatments categorised: 13 Early treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
+The division of the treatments categorised: 13 'Early' treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
 'EarlyPlus' treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.  
 
 What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.
@@ -112,24 +113,26 @@ The two levels were separated via the median AUDPC (`r as.double(read.csv(here("
 Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
 The sample variance was calculated from the raw data when available or the least squares statistic in trial reports. 
 Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. [-@Ngugi2011].
-The T-critical value was determined from the 30 degrees of freedom using a t-distribution table. 
+The T-critical value was determined from the 30 degrees of freedom and probability of $a = 0.1$ using a t-distribution table. <!-- Checking this reference the T-critical value might need to be adjusted to 2.042 using an alpha of 0.05, or as Ngugi choses df = inf and alpha of 0.05 -->
 The 2012 Gatton and 2015 Emerald trials reported treatment means without accompanying variance and were thus removed from the dataset  prior to the analysis. 
 
-This analysis uses the grain yield standardised mean difference (SMD) as the response variable. 
-SMD were chosen to reduce the inherent variability between trials due to location and seasonal effects on grain yields. 
-$SMD = \frac{Y_i-\overline{Y_c}}{\sigma_p}$ [@HigginsGreen] 
-Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean and $\sigma_p$ is the trial pooled standard deviation.  
+This analysis uses response ratio, or means difference (MD) as the response variable. 
+MD were chosen to reduce the inherent variability between trials due to location and seasonal effects on grain yields by assessing the effect of fungicide spray schedule on the difference between the treatments and no spray control plot. 
+$MD = {Y_i-\overline{Y_c}}$ [@HigginsGreen] 
+Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean .  
 
 Similar to Paul et. al. [-@Paul2007], we fitted a multivariate random effects model
 $Y_i \sim N(\mu,s_i^2 + \sigma^2)$
-where $Y_i$ is the response, a vector of the SMD grain yield for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$). 
+where $Y_i$ is the response, a vector of the MD grain yield for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$). 
 $Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $Si_^2$ and a between trial variance of $\sigma^2$.  
 
-**Moderator variables.** The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule ($SPRAY_{Sched}$).
-The intercept was omitted from the model so each treatment would be reported against zero, which represents the control mean. 
-Linear contrasts were used to compare the mean effect sizes between each spray schedule treatment and their respecting standard errors and confidence intervals.  
+**Moderator variables.** The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule ($SPRAY_{Sched}$). 
+`SpraySchedule` was assigned as an inside factor to the outside factor `trial` to provide correlated random effects between the different `SpraySchedule` treatments within `trials`. 
 
-Additional meta-analysis models tested variables ... for their influence on the SpraySheduale variables ability to mitigate yield loss. 
+The intercept was omitted from the model so each treatment would be reported against zero, which represents the control mean. 
+Linear contrasts were used to compare the mean effect sizes between each spray schedule treatment and their respective standard errors and confidence intervals.  
+
+Additional meta-analysis models tested variables ... for their influence on the SpraySchedule variables ability to mitigate yield loss. 
 For the variable disease pressure a Wald-type test was used to test the impact of this variable on the model as a whole.
 
 
@@ -215,9 +218,9 @@ T3 %>%
 
 
 ## Discussion
-Mungbeans have only recently been cultivated in Australia, with the first commercial crops planted in the 1960s []. 
- 
-Despite the improved knowledge for cultivating mungbean this 40 year period from 1980 and today, variability in yields and quality persist due to seasonal differences and the need to refine best management practices. 
+The current advice provided to growers for when to commence fungicide applications for control of powdery mildew is at the first sign of the disease [@SueThompson2016]. This meta-analysis confirms this advice by showing that applying the first fungicide application, within three days of first sign (Recommended) and up to 13 days for as was seen in the `Late` treatments. In addition spray schedules with follow-up fungicide applications made at least two weeks after the first application were on average more effective at reducing yield loss due to powdery mildew, which again follows the advice given by Thompson et. al [@SueThompson2016]. Fungicide applications which were made prior to any sign of the disease we not effective at saving yield.  
+
+ Despite the improved knowledge for cultivating mungbean this 40 year period from 1980 and today, variability in yields and quality persist due to seasonal differences and the need to refine best management practices. 
 Between trial variability was 
 
 A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
@@ -227,7 +230,7 @@ The user inputs weather, crop, and economic inputs into the DSS and the applicat
 
 Within a normal meta-analysis the number direct treatment comparisons, undertaken within the same trial, for each treatment is important for understanding how robust the meta-analysis estimates are for those treatments. 
 However network meta-analyses permit indirect comparisons, for when two treatments may not occur in the same experiment. 
-For the indirect difference between two treatments is equal to the difference between the difference in those two treatments with one other treament in common ($d_{AB} = d_{AC} - d_{BC}$)[@Jansen2011]
+For the indirect difference between two treatments is equal to the difference between the difference in those two treatments with one other treatment in common ($d_{AB} = d_{AC} - d_{BC}$)[@Jansen2011]
 For example treatments `Early` and `LatePlus` never occurred within the same trial for any trials included in the meta-analysis. 
 M
 
