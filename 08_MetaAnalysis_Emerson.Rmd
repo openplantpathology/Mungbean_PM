@@ -373,7 +373,7 @@ efficacy
 Let's view these comparisons in a plot.
 
 ```{r metafor_plot}
-efficacy %>%
+YieldContrasts <- efficacy %>%
    filter(Treatment != "control") %>% 
    mutate(Treatment = factor(Treatment, levels = rev(
       c(
@@ -395,6 +395,8 @@ efficacy %>%
    geom_point(aes(size = 1 / SE), shape = 15) +
    geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper)) +
    coord_flip()
+
+YieldContrasts
 ```
 
 
@@ -402,7 +404,7 @@ efficacy %>%
 ### Test for bias in indirect comparisons 
 Treatments `Early` and `LatePlus` did not co-occur in any of the trials considered in the meta-analysis.
 Indirect comparisons are ok to interpret in the results of a network meta-analysis, however if there are biases between trials including `Early` or `LatePlus` treatments then the results are likely bias. 
-Therefore we wish to do a quick check that the trials which included `Early` treatments did not significantly differ from trials which incorportated `LatePlus`,
+Therefore we wish to do a quick check that the trials which included `Early` treatments did not significantly differ from trials which incorporated `LatePlus`,
 Lets create a data.frame of values for this comparison
 
 ```{r}
@@ -546,4 +548,5 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 
 ```{r Save_meta_data, eval=FALSE}
 write.csv(slimmer_PM_dat, file = "data/GYmeta_data.csv")
+save(dat1, efficacy, PM_mv, YieldContrasts, file = here("cache/Meta-analysisData.Rdata"))
 ```

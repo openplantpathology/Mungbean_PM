@@ -749,7 +749,7 @@ season_dates$trial_ref <-
           levels = levels(season_dates$trial_ref)[rev(order(season_dates$First_sign_PM))])
 
 # Plot
-season_dates %>%
+SeasonPlot <- season_dates %>%
    ggplot() +
    geom_pointrange(aes(
       x = trial_ref,
@@ -772,6 +772,8 @@ season_dates %>%
    coord_flip() +
    scale_color_manual(values=c("black","grey70"))+
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
+
+SeasonPlot
 ```
 
 In most years, regardless of the age of the crop, powdery mildew establishes in March, which is to be expected.
@@ -957,5 +959,9 @@ beans %>%
    geom_point()+
    geom_smooth(method = "lm")
 
+```
+
+```{r}
+save(SeasonPlot, file = here("cache/PreliminaryData.Rdata"))
 ```
 
