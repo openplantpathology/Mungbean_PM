@@ -5,6 +5,8 @@ pacman::p_load(tidyverse, kableExtra, here)
 
 # Data
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
+load(file = here("cache/Meta-analysisData.Rdata"))
+load(file = here("cache/PreliminaryData.Rdata"))
 ```
 
 # Manuscript
@@ -68,7 +70,6 @@ The aim of this meta-analysis was to determine, from a collection of unpublished
 
 
 ## Materials and Methods
-<!-- This is where I am working right now (Paul) :) :) :) -->
 The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
 The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue Thompson with the Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
 Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
@@ -105,6 +106,8 @@ A spray schedule with a single spray, and a spray schedule with two or three spr
 The division of the treatments categorised: 13 'Early' treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
 'EarlyPlus' treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.  
 
+<!-- Passage here about trial sowing times and first sign of disease (Figure 1)  PM -->
+
 What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.
 
 A categorical disease pressure factor was created by binning trials based on the mean AUDPC of the no spray control plot into two levels: 'low disease pressure' or 'high disease pressure'.
@@ -138,6 +141,9 @@ For the variable disease pressure a Wald-type test was used to test the impact o
 
 The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
 
+```{r Figure2_treatForest}
+YieldContrasts
+```
 
 ```{r Table1_ExperimentalDetail, echo=FALSE, message=FALSE, warning=FALSE}
 PM_Mdat %>%
@@ -186,7 +192,7 @@ data.frame(
 ## Results
 
 <!-- Write about first sign of disease in March -->
-Overall the meta-analysis indicated that, with the exception of `Early` single sprays all the the spray schedules were effective at protecting mungbean yields, relative to the no spray controls (Figure 1). 
+Overall the meta-analysis indicated that, with the exception of `Early` single sprays all the the spray schedules were effective at protecting mungbean yields, relative to the no spray controls (Figure 2). 
 Treatments which incorporating multiple fungicide applications, `RecommendedPlus` and `LatePlus` produced the highest mean yield protection estimates at 196.4 (SE = 48.7&nbsp;kg&nbsp;/&nbsp;ha) and 219.9&nbsp;kg&nbsp;/&nbsp;ha (SE = 47.4&nbsp;kg&nbsp;/&nbsp;ha) respectively (Table 3). 
 Both `RecommendedPlus` and `LatePlus` were also significantly higher than single applications starting `Early` (P = 0.008 and P = 0.003 respectively) and `Late`(P = 0.05 and P = 0.03 respectively). 
 However, comparing `LatePlus` and `Early` should done with caution given these treatments did not occur within the same trial for any of the 15 trials included in the meta-analysis. 
@@ -205,6 +211,9 @@ While the addition of disease pressure, as an interactive moderator term to `Spr
 The model including disease pressure did not significantly improve the model (P = 0.4859) and did not significantly explain differences in the SpraySchedule term, and therefore disease pressure was not included in the final model. 
 
 
+```{r Figure1}
+SeasonPlot
+```
 
 
 
@@ -218,9 +227,31 @@ T3 %>%
 
 
 ## Discussion
-The current advice provided to growers for when to commence fungicide applications for control of powdery mildew is at the first sign of the disease [@SueThompson2016]. This meta-analysis confirms this advice by showing that applying the first fungicide application, within three days of first sign (Recommended) and up to 13 days for as was seen in the `Late` treatments. In addition spray schedules with follow-up fungicide applications made at least two weeks after the first application were on average more effective at reducing yield loss due to powdery mildew, which again follows the advice given by Thompson et. al [@SueThompson2016]. Fungicide applications which were made prior to any sign of the disease we not effective at saving yield.  
+The current advice provided to growers for when to commence fungicide applications for control of powdery mildew, is spray at the first sign of the disease and if necessary a follow-up spray two weeks later [@SueThompson2016; @Sparks2017]. 
+This meta-analysis confirms that advice, by showing that applying the first fungicide application, within three days of first sign will significantly mitigate yield loss from powdery mildew ($Recommended$, P = `r signif(PM_mv$pval[3],2)`). 
+However in addition to this the analysis also showed spray schedules which commenced 'late', up to 13 days after first sign of the disease was still effective at mitigating yield loss ($Late$, P =  `r signif(PM_mv$pval[5],2)`). 
+Additionally, spray schedules with follow-up fungicide applications made at least two weeks after the first application were on average more effective at reducing yield loss due to powdery mildew, which again follows the advice given by Thompson et. al [@SueThompson2016].
+This meta-analysis adds certainty to the advice which is currently given to growers, especially around any uncertainty that Early sprays might be effective at suppressing the disease. 
+We show here that Early fungicide applications, which were made prior to any sign of the disease, were not effective at mitigating yield loss.  
 
- Despite the improved knowledge for cultivating mungbean this 40 year period from 1980 and today, variability in yields and quality persist due to seasonal differences and the need to refine best management practices. 
+The results also provide a effective spray window for mitigating yield losses, given that spray schedules commenced `Late` were still significantly effective at mitigating yield loss (P = `signif(PM_mv$pval[5],2)`) at least up to 13 days after the first sign of disease. 
+Growers typically don't have the time to inspect their crop regularly for the first sign of powdery mildew. 
+Also weather conditions and logistical issues might prevent them from getting machinery in the paddock to treat the disease immediately after it is spotted. 
+These issues and perhaps other on farm duties might delay a timely application, which might permit the disease time to establish. 
+Knowing a delay of up to two weeks will not lead to significant yield losses can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
+However care should be taken to ensure if a second follow-up fungicide application is necessary, sufficient time should be permitted to schedule the spray and avoid the end of season withholding periods on fungicides.
+
+It is important to note, the studies included in this meta-analysis were intentionally sown late to ensure infection during the experiment. 
+While growers may have to choose sowing mungbeans late, if the crop is sown too late there is a risk of it being frosted-out.
+Regardless in most cases growers will likely have sown earlier than the trials used here reducing the risk of powdery mildew, and also reducing the requirements for fungicide applications.
+Despite the confidence in the result of this model discretion is still required for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
+<!-- Insert Powdery mildew plug here-->
+<!-- This is where I am working right now (Paul) :) :) :) -->
+
+These results suggest that when weather conditions cool and become suitable for powdery mildew growers should scout their every week to two weeks 
+
+
+Despite the improved knowledge for cultivating mungbean this 40 year period from 1980 and today, variability in yields and quality persist due to seasonal differences and the need to refine best management practices. 
 Between trial variability was 
 
 A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
