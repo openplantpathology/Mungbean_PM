@@ -14,7 +14,8 @@ pacman::p_load(tidyverse,
                RColorBrewer,
                metafor,
                here,
-               netmeta)
+               netmeta,
+               multcomp)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -239,7 +240,8 @@ dat1 <-
              factor(D_pres,
                     c("lowD",
                       "highD")),
-          grain_MD = grain_yield.t.ha - yi_C) %>%
+          grain_MD = grain_yield.t.ha - yi_C,
+          id = row_number()) %>%
    select(
       trial,
       trial_ref,
@@ -257,8 +259,8 @@ dat1 <-
       vi,
       yield_error,
       vi2,
-      n
-      )
+      n,
+      id)
 ```
 
 ## metafor analysis
@@ -282,8 +284,6 @@ We are using the `spray_management` variable as a moderator and an interactive t
 Because we want to know the difference between all treatments and we have no reference treatment, we will remove the intercept.
 
 ```{r Metafor-analysis}
-dat1$id <- 1:nrow(dat1)
-
 PM_mv <- rma.mv(
    yi = grain_yield.t.ha,
    vi,
@@ -297,12 +297,16 @@ PM_mv <- rma.mv(
 
 
 summary(PM_mv)
-library(multcomp)
+```
+
+```{r PM_Mv_Contrast}
+source("R/simple_summary.R")
 summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none"))
+simple_summary(summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none")))
 plot(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))))
+```
 
-
-
+```{r DisPressComparison}
 PM_mv2 <- rma.mv(
    yi = grain_yield.t.ha,
    vi,
@@ -313,6 +317,7 @@ PM_mv2 <- rma.mv(
    control=list(optimizer="optim"),
    data = dat1
 )
+summary(PM_mv2)
 summary(glht(PM_mv2, linfct=cbind(contrMat(rep(7,12), type="Tukey"))), test=adjusted("none"))
 plot(glht(PM_mv2, linfct=cbind(contrMat(rep(7,12), type="Tukey"))))
 
@@ -550,3 +555,38 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 write.csv(slimmer_PM_dat, file = "data/GYmeta_data.csv")
 save(dat1, efficacy, PM_mv, YieldContrasts, file = here("cache/Meta-analysisData.Rdata"))
 ```
+
+
+```{r compare2PowderyMildewMDM}
+
+PMBM <- 
+   data.frame(Sprays = c(rep(1,20), rep(2,20)),
+              Disease = rep(c(rep("NotPresent", 5),
+                          rep("LowerCanopy", 5),
+                          rep("MidCanopy", 5),
+                          rep("UpperCanopy", 5)),2),
+              CropMaturity = rep(c("Vegetative", "Budding", "Flowering",
+                                   "EarlyPod", "LatePod"), 8),
+              mitigation = c(0.57, 0.855, 0.95,0.95,0.95,
+                             0.45995, 0.52919,0.5530,0.390,0.1642,
+                             0.291258,0.351051, 0.2454,0.1409,0.4717,
+                             0,0.059597,0.093034,0.0682476,0.0215584,
+                             0.95,0.95,0.95,0.95,0.95,
+                             0.766588,0.6991,0.55042,0.390056,0.1642,
+                             0.485429,0.390,0.2454,0.140904,0.0471684,
+                             0.0791,0.086068,0.093034,0.0682476,0.0215584))
+
+# what is the mean age of the plant in our data when disease first occurs and we apply the first spray?
+source("R/import_data.R")
+PM_MB_dat <- import_data()
+mean(PM_MB_dat$first_sign_disease - PM_MB_dat$planting_date, na.rm =TRUE) # 46.3 days (which is when the plant is flowering)
+
+#What proportion of the yield was saved?
+1 - (coef(PM_mv)[1] /(coef(PM_mv)[1] + coef(PM_mv)[3]))
+1- (coef(PM_mv)[1] /(coef(PM_mv)[1] + coef(PM_mv)[4]))
+
+PMBM %>%
+   filter(CropMaturity == "Flowering")
+
+```
+
