@@ -227,43 +227,41 @@ T3 %>%
 
 
 ## Discussion
-The current advice provided to growers for when to commence fungicide applications for control of powdery mildew, is spray at the first sign of the disease and if necessary a follow-up spray two weeks later [@SueThompson2016; @Sparks2017]. 
+The current advice provided to growers for when to commence fungicide applications for control of powdery mildew, is spray at the first sign of the disease then if necessary a follow-up spray two weeks later [@SueThompson2016; @Sparks2017]. 
 This meta-analysis confirms that advice, by showing that applying the first fungicide application, within three days of first sign will significantly mitigate yield loss from powdery mildew ($Recommended$, P = `r signif(PM_mv$pval[3],2)`). 
-However in addition to this the analysis also showed spray schedules which commenced 'late', up to 13 days after first sign of the disease was still effective at mitigating yield loss ($Late$, P =  `r signif(PM_mv$pval[5],2)`). 
-Additionally, spray schedules with follow-up fungicide applications made at least two weeks after the first application were on average more effective at reducing yield loss due to powdery mildew, which again follows the advice given by Thompson et. al [@SueThompson2016].
+In addition, spray schedules which commenced 'late', up to 13 days after first sign of the disease were still effective at mitigating yield loss ($Late$, P =  `r signif(PM_mv$pval[5],2)`).
+Spray schedules which included follow-up fungicide applications were on average more effective at reducing yield loss due to powdery mildew, which again follows the advice given by Thompson et. al [@SueThompson2016].
 This meta-analysis adds certainty to the advice which is currently given to growers, especially around any uncertainty that Early sprays might be effective at suppressing the disease. 
 We show here that Early fungicide applications, which were made prior to any sign of the disease, were not effective at mitigating yield loss.  
 
-The results also provide a effective spray window for mitigating yield losses, given that spray schedules commenced `Late` were still significantly effective at mitigating yield loss (P = `signif(PM_mv$pval[5],2)`) at least up to 13 days after the first sign of disease. 
-Growers typically don't have the time to inspect their crop regularly for the first sign of powdery mildew. 
-Also weather conditions and logistical issues might prevent them from getting machinery in the paddock to treat the disease immediately after it is spotted. 
-These issues and perhaps other on farm duties might delay a timely application, which might permit the disease time to establish. 
-Knowing a delay of up to two weeks will not lead to significant yield losses can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
-However care should be taken to ensure if a second follow-up fungicide application is necessary, sufficient time should be permitted to schedule the spray and avoid the end of season withholding periods on fungicides.
+The results also provide a effective spray window for mitigating yield losses, given that spray schedules which commenced 'Late' were still significantly effective at mitigating yield loss (P = `signif(PM_mv$pval[5],2)`) at least 13 days after the first sign of disease. 
+Growers typically don't have the time to inspect their crop regularly for the first sign of powdery mildew and therefore powdery mildew may not be spotted within the first couple of days of it establishing. 
+Also weather conditions and logistical issues might prevent growers from getting machinery in the paddock to treat the disease immediately after it is spotted. 
+These issues, and perhaps other on farm duties, might delay a timely application, permitting the disease more time to establish. 
+Knowing a delay of up to two weeks may not lead to yield losses can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
+However care should be taken to ensure if a second follow-up fungicide application is necessary, sufficient time should be permitted to schedule the spray and avoid the end of season fungicide withholding periods.  
 
-It is important to note, the studies included in this meta-analysis were intentionally sown late to ensure infection during the experiment. 
-While growers may have to choose sowing mungbeans late, if the crop is sown too late there is a risk of it being frosted-out.
-Regardless in most cases growers will likely have sown earlier than the trials used here reducing the risk of powdery mildew, and also reducing the requirements for fungicide applications.
-Despite the confidence in the result of this model discretion is still required for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
-<!-- Insert Powdery mildew plug here-->
+It is important to note, the studies included in this meta-analysis were intentionally sown late in the season to ensure infection during the experiment (Figure 1). 
+While certain circumstances may force growers to sow mungbeans late, if the crop is sown too late there is a risk of frost impacting on the yield.
+Regardless in most cases growers are likely to sow earlier in the season, lowering their risk of powdery mildew and reducing the requirements for fungicide applications.
+Despite the significance in the result some discretion for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
+The PowderyMildewMBM considers these variables, crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
+
+
 <!-- This is where I am working right now (Paul) :) :) :) -->
 
 These results suggest that when weather conditions cool and become suitable for powdery mildew growers should scout their every week to two weeks 
 
 
-Despite the improved knowledge for cultivating mungbean this 40 year period from 1980 and today, variability in yields and quality persist due to seasonal differences and the need to refine best management practices. 
-Between trial variability was 
-
 A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
 PowderyMildewMBM provides a cost benefit analysis to growers for fungicide spray schedule scenarios.
-The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit.
+The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit. 
+The meta-analysis is limited in scope to the timing of application and therefore we can't validate all the variables available in PowderyMildewMDM. 
+However our results validate the decision of the app developers to not recommend prophylactic fungicide applications. 
+If the powdery mildew is not observed in the crop the app advises the user to keep monitoring for disease.  
 <!-- Think about how to word this, that we are using this to validate the app: The findings of this meta-analysis confirm the recommendations that PowderyMildewMBM gives in most situations would be correct. -->
+<!-- I am finding it difficult to say that our findings confirm recommendations of the app, given the app does not advise on early late or recommended spray timing AND we don't investigate the differences in yield mitigations under the variables in the app (growth stage and weather) [Paul]-->
 
-Within a normal meta-analysis the number direct treatment comparisons, undertaken within the same trial, for each treatment is important for understanding how robust the meta-analysis estimates are for those treatments. 
-However network meta-analyses permit indirect comparisons, for when two treatments may not occur in the same experiment. 
-For the indirect difference between two treatments is equal to the difference between the difference in those two treatments with one other treatment in common ($d_{AB} = d_{AC} - d_{BC}$)[@Jansen2011]
-For example treatments `Early` and `LatePlus` never occurred within the same trial for any trials included in the meta-analysis. 
-M
 
 ### Fungicide Resistance
 
