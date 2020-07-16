@@ -7,6 +7,8 @@ pacman::p_load(tidyverse, kableExtra, here)
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 load(file = here("cache/Meta-analysisData.Rdata"))
 load(file = here("cache/PreliminaryData.Rdata"))
+PM_MB_dat%>% 
+   filter(fungicide_ai == "tebuconazole")
 ```
 
 # Manuscript
@@ -51,14 +53,13 @@ Much of the experimental work has been published by funding agencies and state g
 Past field trials in eastern Australia have tested a range of fungicide active ingredients while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
 Early trials showed that for fungicide applications to protect yield, a single fungicide application at first sign of the disease with another follow-up application two weeks later if necessary was the most effective [@SueThompson2016; @Sparks2017]. 
 However due to the variability in the results between seasons and experiments few of these studies produced a clear result based on a statistical analysis. 
-This variability thus presents some uncertainty for the best practice of fungicide spray schedules to mitigate yield losses from powdery mildew. 
-
+This variability presents uncertainty for the best practice of fungicide spray schedules to mitigate yield losses from powdery mildew. 
 
 The collection of experiments mentioned above and other unpublished trials proved an excellent opportunity for a meta-analysis.
 Meta-analyses are statistical tools which can analyse a collection of experiments, which have a similar aim, and produces a more accurate estimate of the true effect being measured.
 Using a meta-analysis can be useful in situations like this where several studies exist, that have the same objective but may not provide a clear answer to the question due to variation in the results within the individual studies.
 The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect, because it considers the amount of variance in each study and weights the influence of each studies treatment effects according to it's statistical accuracy.
-Typically meta-analyses consider the effect of a single treatment against a control group accross multiple independant studies [@Madden2011]. 
+Typically meta-analyses consider the effect of a single treatment against a control group across multiple independent studies [@Madden2011]. 
 However meta-analyses can also consider effect differences between multiple treatments and a control group, these are called multi-variate or network meta-analyses [@MaddenEtAl2016]. 
 Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies. 
 In-direct comparisons can be made between these two treatments if the both had direct comparisons with one or more treatments in common, assuming no significant bias in the studies which investigated each of the treatments which are subject to a indirect comparison [@Jansen2011].
@@ -227,50 +228,47 @@ T3 %>%
 
 
 ## Discussion
-The current advice provided to growers for when to commence fungicide applications for control of powdery mildew, is spray at the first sign of the disease then if necessary a follow-up spray two weeks later [@SueThompson2016; @Sparks2017]. 
+The current advice provided to growers for when to commence fungicide applications for control of powdery mildew, is to spray at the first sign of the disease then if necessary a follow-up spray two weeks later [@SueThompson2016; @Sparks2017]. 
 This meta-analysis confirms that advice, by showing that applying the first fungicide application, within three days of first sign will significantly mitigate yield loss from powdery mildew ($Recommended$, P = `r signif(PM_mv$pval[3],2)`). 
 In addition, spray schedules which commenced 'late', up to 13 days after first sign of the disease were still effective at mitigating yield loss ($Late$, P =  `r signif(PM_mv$pval[5],2)`).
 Spray schedules which included follow-up fungicide applications were on average more effective at reducing yield loss due to powdery mildew, which again follows the advice given by Thompson et. al [@SueThompson2016].
 This meta-analysis adds certainty to the advice which is currently given to growers, especially around any uncertainty that Early sprays might be effective at suppressing the disease. 
 We show here that Early fungicide applications, which were made prior to any sign of the disease, were not effective at mitigating yield loss.  
 
-The results also provide a effective spray window for mitigating yield losses, given that spray schedules which commenced 'Late' were still significantly effective at mitigating yield loss (P = `signif(PM_mv$pval[5],2)`) at least 13 days after the first sign of disease. 
-Growers typically don't have the time to inspect their crop regularly for the first sign of powdery mildew and therefore powdery mildew may not be spotted within the first couple of days of it establishing. 
+This meta-analysis also provides a effective spray window for mitigating yield losses, given that spray schedules which commenced 'Late' were still significantly effective at mitigating yield loss (P = `signif(PM_mv$pval[5],2)`) 7 - 13 days after the first sign of disease. 
+Growers typically don't have the time to inspect their crop regularly for the first sign of powdery mildew and therefore the disease may not be spotted within the first couple of days of it establishing. 
 Also weather conditions and logistical issues might prevent growers from getting machinery in the paddock to treat the disease immediately after it is spotted. 
 These issues, and perhaps other on farm duties, might delay a timely application, permitting the disease more time to establish. 
-Knowing a delay of up to two weeks may not lead to yield losses can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
+Knowing a delay of up to two weeks may not lead to yield losses, can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
 However care should be taken to ensure if a second follow-up fungicide application is necessary, sufficient time should be permitted to schedule the spray and avoid the end of season fungicide withholding periods.  
 
 It is important to note, the studies included in this meta-analysis were intentionally sown late in the season to ensure infection during the experiment (Figure 1). 
 While certain circumstances may force growers to sow mungbeans late, if the crop is sown too late there is a risk of frost impacting on the yield.
-Regardless in most cases growers are likely to sow earlier in the season, lowering their risk of powdery mildew and reducing the requirements for fungicide applications.
-Despite the significance in the result some discretion for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
+Regardless in most cases growers are likely to sow mungbeans earlier in the season, lowering their risk of powdery mildew and reducing the requirements for fungicide applications.
+Despite the significance in these results, some discretion for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
 The PowderyMildewMBM considers these variables, crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
 
-
-<!-- This is where I am working right now (Paul) :) :) :) -->
-
-These results suggest that when weather conditions cool and become suitable for powdery mildew growers should scout their every week to two weeks 
-
-
-A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
-PowderyMildewMBM provides a cost benefit analysis to growers for fungicide spray schedule scenarios.
+PowderyMildewMBM provides a cost-benefit analysis to growers for fungicide spray schedule scenarios.
 The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit. 
-The meta-analysis is limited in scope to the timing of application and therefore we can't validate all the variables available in PowderyMildewMDM. 
-However our results validate the decision of the app developers to not recommend prophylactic fungicide applications. 
+The scope of the meta-analysis is limited to the timing of application and therefore we can't validate all the variables available in PowderyMildewMDM. 
+However our results validate the decision of the app developers not to recommend prophylactic fungicide applications. 
 If the powdery mildew is not observed in the crop the app advises the user to keep monitoring for disease.  
 <!-- Think about how to word this, that we are using this to validate the app: The findings of this meta-analysis confirm the recommendations that PowderyMildewMBM gives in most situations would be correct. -->
 <!-- I am finding it difficult to say that our findings confirm recommendations of the app, given the app does not advise on early late or recommended spray timing AND we don't investigate the differences in yield mitigations under the variables in the app (growth stage and weather) [Paul]-->
 
+Scouting the crop for powdery mildew might not be necessary during the warmer months of the season. 
+However when weather conditions cool and become suitable for powdery mildew, our results suggest weekly inspections would be ideal to ensure timely fungicide applications if necessary. 
+Scouting at intervals greater than 12-13 days, might risk crop losses if a spray schedule does not commence within the spray window mentioned above.
+More work is needed to understand when 'late' fungicide applications are too late.
+Data from the trials included in this experiment show regardless of crop sowing date, powdery mildew establishes on average in the month of March
 
-### Fungicide Resistance
-
-Fungicide application costs in Australia are relatively cheap.
-We estimate these costs to be approximately \$20&nbsp;AU per hectare.
-Lucrative returns of up to \$2260&nbsp;AU per hectare over a short three month season may tempt growers into applying fungicide to control diseases such as powdery mildew when they are unnecessary.
-Excessive use of fungicides are not only costly, but lead to problems such as fungicide resistance.
-*Podosphaera xanthii* is categorised by the Australian Fungicide resistance Action Committee (FRAC) as a 'High risk' candidate to evolve fungicide resistance.
-Prior experiences confirm that the evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with potential fungicide resistance in mind.
+We estimate the costs of applying tebuconazole fungicide at \$4.18 AUD / ha, if fungicide is purchased at \$15 / L [@Simfendorfer2011] and applications cost are $2 per hectare [@QueenslandGovernment2019]. 
+The meta-analysis estimates yield savings of between `r coef(PM_mv)[3]*1000` kg / ha (Recommended) and `r coef(PM_mv)[4]*1000` kg / ha (RecommendedPlus). 
+These average yield savings would save \$`r (coef(PM_mv)[3]*1000)` AUD / ha for a single application at first sign and `r coef(PM_mv)[4]*1000` AUD / ha if a follow-up application is made.
+Lucrative returns such as these may tempt growers into applying fungicide to control diseases such as powdery mildew when they are unnecessary.
+Excessive use of fungicides are highly likely to lead ongoing problems such as fungicide resistance.
+*Podosphaera xanthii* is categorised by the Australian Fungicide resistance Action Committee (FRAC) as a 'High risk' candidate to evolve fungicide resistance [@FRACrisk2019].
+Evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with potential fungicide resistance in mind.
 Powdery mildew is one such group of fungal pathogens with an extensive track record of rapidly developing fungicide resistance.
 In cucurbits, it evolved resistance to benzimidazole within three years of its registration [@Peterson1973] and has evolved resistance to numerous fungicide classes, such as benzimidazoles, demethylation inhibitors, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines since [@Mcgrath2001].
 In cereal crops *Blumeria graminis* showed reduced sensitivity to strobilurins in 1998, two years after the fungicides began being used in Europe [@Chin2001].
@@ -293,6 +291,16 @@ Quinone is required in cell metabolism and active in the mitochondrial complex I
 However FRAC recommends that applications of QoIs or strobilurins, singularly or as a mixture, should not be applied consecutively and alternated with a fungicide from a different group [@Brent2007]. 
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
 Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.
+<!-- This is where I am working right now (Paul) :) :) :) -->
+
+
+
+
+
+
+A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
+
+
 
 # References
 
