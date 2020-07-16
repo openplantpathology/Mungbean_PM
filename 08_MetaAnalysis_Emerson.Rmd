@@ -556,7 +556,8 @@ write.csv(slimmer_PM_dat, file = "data/GYmeta_data.csv")
 save(dat1, efficacy, PM_mv, YieldContrasts, file = here("cache/Meta-analysisData.Rdata"))
 ```
 
-
+One aspect we would like to consider is how the results of this meta-analysis compares to how the PowderyMildewMBM estimates the effect of fungicide applications on grain yields.
+Below we create a data frame of the mitigation factors for each spray scenario so we can compare them to the outcomes of the meta-analysis.
 ```{r compare2PowderyMildewMDM}
 
 PMBM <- 
@@ -589,4 +590,4 @@ PMBM %>%
    filter(CropMaturity == "Flowering")
 
 ```
-
+To to a better comparison I need to know how the mitigation factor is calculated with the estimated yields
