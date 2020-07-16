@@ -242,9 +242,10 @@ These issues, and perhaps other on farm duties, might delay a timely application
 Knowing a delay of up to two weeks may not lead to yield losses, can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
 However care should be taken to ensure if a second follow-up fungicide application is necessary, sufficient time should be permitted to schedule the spray and avoid the end of season fungicide withholding periods.  
 
-It is important to note, the studies included in this meta-analysis were intentionally sown late in the season to ensure infection during the experiment (Figure 1). 
+It is important to note, the studies included in this meta-analysis were intentionally sown late in the season to ensure powdery mildew infection (Figure 1). 
 While certain circumstances may force growers to sow mungbeans late, if the crop is sown too late there is a risk of frost impacting on the yield.
-Regardless in most cases growers are likely to sow mungbeans earlier in the season, lowering their risk of powdery mildew and reducing the requirements for fungicide applications.
+Regardless according to the Australian Mungbean Assocsiation sowing guide [@AMA], mungbeans should not be sown later than January in the Darling Downs, the region where the majority of trials were undertaken.
+If mungbeans are planted according to this guide the crops are at a lower risk of powdery mildew, reducing the requirement for fungicide applications.<!-- This is where I am working right now (Paul) :) :) :) -->
 Despite the significance in these results, some discretion for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
 The PowderyMildewMBM considers these variables, crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
 
@@ -291,7 +292,7 @@ Quinone is required in cell metabolism and active in the mitochondrial complex I
 However FRAC recommends that applications of QoIs or strobilurins, singularly or as a mixture, should not be applied consecutively and alternated with a fungicide from a different group [@Brent2007]. 
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
 Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.
-<!-- This is where I am working right now (Paul) :) :) :) -->
+
 
 
 
