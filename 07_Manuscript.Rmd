@@ -71,26 +71,23 @@ The aim of this meta-analysis was to determine, from a collection of unpublished
 
 ## Materials and Methods
 The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
-The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue Thompson with the Queensland Department of Agriculture, Fisheries and Forestry (DAF). <!-- This should not be in the paper, they can be acknowledged at the end -->
 Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
 <!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> 
 The most recent trials starting from 2015 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2015 to 2019. 
 Trial data were in different formats with varying levels of information.
-Some trial data reported means of each treatment, with all but one study reporting some form of variance along with the mean. 
+Some trials we obtained the raw data others the reported means of each treatment, with all but one study reporting some form of variance along with the mean. 
+Twenty six trials in total were collated.  
 
-Twenty six trials in total were collated.   
-
-Details of trial data are presented within a research compendium which was prepared to supplement this publication [<!-- DOI to reference to compendium -->].
+To ensure the correct question was asked of the analysis the data needed to conform to a strict criteria. 
 The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia's summer crops.
 Trial data had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield. 
 The data were subset to only include treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset. 
 Subsequently the 26 trials were reduced to 16 using the same fungicide doses (Table 1). 
-With only a small number of trials, and to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis.
-
-All trials included in this analysis were randomised complete block designs and not previously published in peer-reviewed literature.
+Details of trial data are presented within a research compendium which was prepared to supplement this publication [<!-- DOI to reference to compendium -->].
+With only a small number of trials, and to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis. 
+All trials included in this analysis were randomised complete block designs and not previously published in peer-reviewed literature.  
 
 While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design.
-
 These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications and cultivar.
 To account for the variation attributed to some of these variables between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and fungicide dose. 
 Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 -- 9 ordinal scale (Table 2). 
@@ -293,6 +290,7 @@ However FRAC recommends that applications of QoIs or strobilurins, singularly or
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
 Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.
 
+### Future work
 
 
 
@@ -300,6 +298,12 @@ Sulphur is a non-systemic protectant and thus provides an excellent option for r
 
 
 A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
+
+# Acknowldgments
+The authors wish to acknowledge the work done by Professor Malcolm Riley and Dr Sue Thompson whom undertook many of the trials incorporated in this analysis from 2004 - 2015. 
+The Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
+The National Growers association and Lawrie Price for contributing data.
+The Grains Research and Development Corporation who funded this research.
 
 # References
 
