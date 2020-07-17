@@ -64,7 +64,7 @@ However meta-analyses can also consider effect differences between multiple trea
 Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies. 
 In-direct comparisons can be made between these two treatments if the both had direct comparisons with one or more treatments in common, assuming no significant bias in the studies which investigated each of the treatments which are subject to a indirect comparison [@Jansen2011].  
 
-Considering the recent launch in 2019 of the decision support system (DSS) PowderyMildewMDM [@Diggle], which provides a cost benefit analysis to assists growers in their decision 'if' and 'when' apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
+Considering the recent launch in 2019 of the decision support system (DSS) PowderyMildewMBM [@Diggle], which provides a cost benefit analysis to assists growers in their decision 'if' and 'when' apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
 The aim of this meta-analysis was to determine, from a collection of unpublished studies, what spray management scenario provides the greatest yield protection from powdery mildew in Australian mungbean.  
 
 
@@ -235,12 +235,13 @@ Spray schedules which included follow-up fungicide applications were on average 
 This meta-analysis adds certainty to the advice which is currently given to growers, especially around any uncertainty that Early sprays might be effective at suppressing the disease. 
 We show here that Early fungicide applications, which were made prior to any sign of the disease, were not effective at mitigating yield loss.  
 
-This meta-analysis also provides a effective spray window for mitigating yield losses, given that spray schedules which commenced 'Late' were still significantly effective at mitigating yield loss (P = `signif(PM_mv$pval[5],2)`) 7 - 13 days after the first sign of disease. 
-Growers typically don't have the time to inspect their crop regularly for the first sign of powdery mildew and therefore the disease may not be spotted within the first couple of days of it establishing. 
-Also weather conditions and logistical issues might prevent growers from getting machinery in the paddock to treat the disease immediately after it is spotted. 
+This meta-analysis also provides a effective spray window for mitigating yield losses, given that spray schedules which commenced `Late` were still significantly effective at mitigating yield loss (P = `r signif(PM_mv$pval[5],2)`) 7 - 13 days after the first sign of disease. 
+Growers typically do not have the time to inspect their crop regularly for the first sign of powdery mildew and therefore the disease may not be spotted within the first couple of days of it establishing. 
+Also, weather conditions and logistical issues might prevent growers from getting machinery in the paddock to treat the disease immediately after it is spotted. 
 These issues, and perhaps other on farm duties, might delay a timely application, permitting the disease more time to establish. 
 Knowing a delay of up to two weeks may not lead to yield losses, can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
-However attention should be made to the label requirements when first planning a spray schedule. Second applications, if they are needed, should be applied at least 10 - 14 days after the first application and not within 21 days of harvest [@APVMAcustodia].
+However attention should be made to the label requirements when first planning a spray schedule.
+Second applications, if they are needed, should be applied at least 10 - 14 days after the first application and not within 21 days of harvest [@APVMAcustodia].
 
 It is important to note, the studies included in this meta-analysis were intentionally sown late in the season to ensure powdery mildew infection (Figure 1). 
 While certain circumstances may force growers to sow mungbeans late, if the crop is sown too late there is a risk of frost impacting on the yield.
@@ -251,7 +252,7 @@ The PowderyMildewMBM considers these variables, crop growth stage and weather, t
 
 PowderyMildewMBM provides a cost-benefit analysis to growers for fungicide spray schedule scenarios.
 The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit. 
-The scope of the meta-analysis is limited to the timing of application and therefore we can't validate all the variables available in PowderyMildewMDM. 
+The scope of the meta-analysis is limited to the timing of application and therefore we can't validate all the variables available in PowderyMildewMBM. 
 However our results validate the decision of the app developers not to recommend prophylactic fungicide applications. 
 If the powdery mildew is not observed in the crop the app advises the user to keep monitoring for disease.  
 <!-- Think about how to word this, that we are using this to validate the app: The findings of this meta-analysis confirm the recommendations that PowderyMildewMBM gives in most situations would be correct. -->
@@ -259,7 +260,7 @@ If the powdery mildew is not observed in the crop the app advises the user to ke
 
 Scouting the crop for powdery mildew might not be necessary during the warmer months of the season. 
 However when weather conditions cool and become suitable for powdery mildew, our results suggest weekly inspections would be ideal to ensure timely fungicide applications if necessary. 
-Scouting at intervals greater than 12-13 days, might risk crop losses if a spray schedule does not commence within the spray window mentioned above.
+Scouting at intervals greater than 12 - 13 days, might risk crop losses if a spray schedule does not commence within the spray window mentioned above.
 More work is needed to understand when 'late' fungicide applications are too late.
 Data from the trials included in this experiment show regardless of crop sowing date, powdery mildew establishes on average in the month of March
 
