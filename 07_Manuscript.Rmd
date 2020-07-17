@@ -7,8 +7,6 @@ pacman::p_load(tidyverse, kableExtra, here)
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 load(file = here("cache/Meta-analysisData.Rdata"))
 load(file = here("cache/PreliminaryData.Rdata"))
-PM_MB_dat%>% 
-   filter(fungicide_ai == "tebuconazole")
 ```
 
 # Manuscript
@@ -19,7 +17,7 @@ Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south
 The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
 
-Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was only as recent as the 1960s until that mungbean was grown commercially [@aboutAMA, @Chuahan2018].
+Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was only as recent as the 1960s until that mungbean was grown commercially [@aboutAMA, @Chauhan2018].
 At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is categorised by the FAO statistics data repository [@FAOSTAT].
 In the decade leading up to 2018 between 35 - 86.4 thousand hectares of dried beans were planted annually. 
 This increase is attributed high value export markets and to the improved yields in the new cultivars [@Clarry2016].
