@@ -73,9 +73,10 @@ The aim of this meta-analysis was to determine, from a collection of unpublished
 
 ## Materials and Methods
 The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
-The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue Thompson with the Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
+The majority of the trials were undertaken by Professor Malcolm Riley and Dr Sue Thompson with the Queensland Department of Agriculture, Fisheries and Forestry (DAF). <!-- This should not be in the paper, they can be acknowledged at the end -->
 Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
-<!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> The most recent trials starting from 2015 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2015 to 2019. 
+<!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> 
+The most recent trials starting from 2015 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2015 to 2019. 
 Trial data were in different formats with varying levels of information.
 Some trial data reported means of each treatment, with all but one study reporting some form of variance along with the mean. 
 
@@ -301,8 +302,6 @@ Sulphur is a non-systemic protectant and thus provides an excellent option for r
 
 
 A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
-
-
 
 # References
 
