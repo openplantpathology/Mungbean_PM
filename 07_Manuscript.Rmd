@@ -7,6 +7,7 @@ pacman::p_load(tidyverse, kableExtra, here)
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 load(file = here("cache/Meta-analysisData.Rdata"))
 load(file = here("cache/PreliminaryData.Rdata"))
+source(here("R/reportP.R"))
 ```
 
 # Manuscript
@@ -226,24 +227,29 @@ T3 %>%
 
 ## Discussion
 The current advice provided to growers for when to commence fungicide applications for control of powdery mildew, is to spray at the first sign of the disease then if necessary a follow-up spray two weeks later [@SueThompson2016; @Sparks2017]. 
-This meta-analysis confirms that advice, by showing that applying the first fungicide application, within three days of first sign will significantly mitigate yield loss from powdery mildew ($Recommended$, P = `r signif(PM_mv$pval[3],2)`). 
-In addition, spray schedules which commenced 'late', up to 13 days after first sign of the disease were still effective at mitigating yield loss ($Late$, P =  `r signif(PM_mv$pval[5],2)`).
-Spray schedules which included follow-up fungicide applications were on average more effective at reducing yield loss due to powdery mildew, which again follows the advice given by Thompson et. al [@SueThompson2016].
+This meta-analysis confirms that advice, by showing that applying the first fungicide application, within three days of first sign will significantly mitigate yield loss from powdery mildew by between `r round(PM_mv$ci.lb[3],5)*1000` to `r round(PM_mv$ci.ub[3],5)*1000` kg / ha ($Recommended$, `r reportP(PM_mv$pval[3])`). 
+In addition, spray schedules which commenced 'late', up to 13 days after first sign of the disease were still effective at mitigating yield loss by  `r round(PM_mv$ci.lb[5],5)*1000` to `r round(PM_mv$ci.ub[5],5)*1000` kg / ha ($Late$,`r reportP(PM_mv$pval[5])`).
+Spray schedules which included follow-up fungicide applications were on average more effective at reducing yield loss due to powdery mildew by; 
+`r round(PM_mv$ci.lb[4],5)*1000` to `r round(PM_mv$ci.ub[4],5)*1000` kg / ha in the $RecommendedPlus$ treatments (`r reportP(PM_mv$pval[4])`) and
+`r round(PM_mv$ci.lb[6],5)*1000` to `r round(PM_mv$ci.ub[6],5)*1000` kg / ha in the $LatePlus$ treatments (`r reportP(PM_mv$pval[6])`) (Figure 1)
+which again follows the advice given by Thompson et. al [@SueThompson2016].
 This meta-analysis adds certainty to the advice which is currently given to growers, especially around any uncertainty that Early sprays might be effective at suppressing the disease. 
-We show here that Early fungicide applications, which were made prior to any sign of the disease, were not effective at mitigating yield loss.  
+We show here Early fungicide applications, which were made prior to any sign of the disease, were not effective at mitigating yield loss.  
 
-This meta-analysis also provides a effective spray window for mitigating yield losses, given that spray schedules which commenced `Late` were still significantly effective at mitigating yield loss (P = `r signif(PM_mv$pval[5],2)`) 7 - 13 days after the first sign of disease. 
+This meta-analysis also provides a effective spray window for fungicide applications, given that spray schedules which commenced 'late' were still significantly effective at mitigating yield loss ($Late$ `r reportP(PM_mv$pval[5])`) 7 - 13 days after the first sign of disease. 
 Growers typically do not have the time to inspect their crop regularly for the first sign of powdery mildew and therefore the disease may not be spotted within the first couple of days of it establishing. 
 Also, weather conditions and logistical issues might prevent growers from getting machinery in the paddock to treat the disease immediately after it is spotted. 
 These issues, and perhaps other on farm duties, might delay a timely application, permitting the disease more time to establish. 
 Knowing a delay of up to two weeks may not lead to yield losses, can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
 However attention should be made to the label requirements when first planning a spray schedule.
 Second applications, if they are needed, should be applied at least 10 - 14 days after the first application and not within 21 days of harvest [@APVMAcustodia].
+If time permitted a second spray after the first 'late' application, on average the meta-analysis shows this would be optimal, as the $LatePlus$ treatment significantly limited yield loss by `r round(T3$estimates[10], 4)*1000` kg / ha, when compared to the $Late$, single spray treatment `r reportP(T3$pval[10]`).
 
-It is important to note, the studies included in this meta-analysis were intentionally sown late in the season to ensure powdery mildew infection (Figure 1). 
-While certain circumstances may force growers to sow mungbeans late, if the crop is sown too late there is a risk of frost impacting on the yield.
+It is important to note, the studies included in this meta-analysis may not reflect a 'normal' mungbean season. 
+All the included experiments were intentionally sown late in the season to ensure powdery mildew infection (Figure 1). 
+While certain circumstances may force growers to sow mungbeans late, many may decide to fallow their fields instead of risking an early frost damaging the crop and yields.
 Regardless, according to the Australian Mungbean Association sowing guide [@AMAplanting], mungbeans should not be sown later than January in the Darling Downs, the region where the majority of trials were undertaken.
-If mungbeans are planted according to this guide the crops are at a lower risk of powdery mildew, reducing the requirement for fungicide applications.<!-- This is where I am working right now (Paul) :) :) :) -->
+If the planting guide is adhered to the mungbean would be at a lower risk of powdery mildew, reducing the requirement for fungicide applications.<!-- This is where I am working right now (Paul) :) :) :) -->
 Despite the significance in these results, some discretion for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
 The PowderyMildewMBM considers these variables, crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
 
