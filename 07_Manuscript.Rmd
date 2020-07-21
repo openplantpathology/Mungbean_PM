@@ -246,16 +246,21 @@ Second applications, if they are needed, should be applied at least 10 - 14 days
 If time permitted a second spray after the first 'late' application, on average the meta-analysis shows this would be optimal, as the $LatePlus$ treatment significantly limited yield loss by `r round(T3$estimates[10], 4)*1000` kg / ha, when compared to the $Late$, single spray treatment `r reportP(T3$pval[10]`).
 
 It is important to note, the studies included in this meta-analysis may not reflect a 'normal' mungbean season. 
-All the included experiments were intentionally sown late in the season to ensure powdery mildew infection (Figure 1). 
-While certain circumstances may force growers to sow mungbeans late, many may decide to fallow their fields instead of risking an early frost damaging the crop and yields.
+All the included experiments were intentionally sown late in the season, from January through to as late as early March, to ensure powdery mildew infection (Figure 1). 
+While certain circumstances may force growers to sow mungbeans late, many may decide to fallow their fields instead of risking a powdery mildew epidemics and an early frost damaging the crop and yields.
 Regardless, according to the Australian Mungbean Association sowing guide [@AMAplanting], mungbeans should not be sown later than January in the Darling Downs, the region where the majority of trials were undertaken.
-If the planting guide is adhered to the mungbean would be at a lower risk of powdery mildew, reducing the requirement for fungicide applications.<!-- This is where I am working right now (Paul) :) :) :) -->
+If the planting guide is adhered to the mungbean would be at a lower risk of powdery mildew, reducing the requirement for fungicide applications. 
+An example of this are the 2013 trials in Premer (AM1303) and Millmerran (BB1305) where the first sign of powdery mildew was sighted 60 and 62 days after planting, when the crop was flowering. 
+Both trials reported a significant difference in powdery mildew severity between the fungicide treatments, however neither trial showed a significant difference in yield [@Millmerran2013, @premer2013]. 
+The average yield saved for single $Recommended$ fungicide applications were 28.59 and 0.61 kg / ha for Premer and Millmerran respectively. 
+However the average yield saved from the treatments categorised $RecommendedPlus$ were -76.93 and -30.64 kg / ha for Premer and Millmerran respectively.
+<!-- This is where I am working right now (Paul) :) :) :) -->
 Despite the significance in these results, some discretion for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
-The PowderyMildewMBM considers these variables, crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
+The PowderyMildewMBM considers crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
 
-PowderyMildewMBM provides a cost-benefit analysis to growers for fungicide spray schedule scenarios.
+PowderyMildewMBM also provides a cost-benefit analysis to growers for fungicide spray schedule scenarios.
 The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit. 
-The scope of the meta-analysis is limited to the timing of application and therefore we can't validate all the variables available in PowderyMildewMBM. 
+The scope of the meta-analysis is limited to the timing of fungicide application and therefore we can't validate all the variables available in PowderyMildewMBM. 
 However our results validate the decision of the app developers not to recommend prophylactic fungicide applications. 
 If the powdery mildew is not observed in the crop the app advises the user to keep monitoring for disease.  
 <!-- Think about how to word this, that we are using this to validate the app: The findings of this meta-analysis confirm the recommendations that PowderyMildewMBM gives in most situations would be correct. -->
