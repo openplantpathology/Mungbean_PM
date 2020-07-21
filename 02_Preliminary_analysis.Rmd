@@ -939,7 +939,7 @@ glimpse(beans)
 beans %>%
    filter(Item == "Beans, dry",
           Element == "Area harvested")%>%
-   select(Year,Value)
+   select(Year,Value)%>%
    ggplot(aes(y = Value, x = Year))+
    geom_point()+
    geom_smooth()
