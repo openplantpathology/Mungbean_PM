@@ -250,12 +250,12 @@ All the included experiments were intentionally sown late in the season, from Ja
 While certain circumstances may force growers to sow mungbeans late, many may decide to fallow their fields instead of risking a powdery mildew epidemics and an early frost damaging the crop and yields.
 Regardless, according to the Australian Mungbean Association sowing guide [@AMAplanting], mungbeans should not be sown later than January in the Darling Downs, the region where the majority of trials were undertaken.
 If the planting guide is adhered to the mungbean would be at a lower risk of powdery mildew, reducing the requirement for fungicide applications. 
-An example of this are the 2013 trials in Premer (AM1303) and Millmerran (BB1305) where the first sign of powdery mildew was sighted 60 and 62 days after planting, when the crop was flowering. 
-Both trials reported a significant difference in powdery mildew severity between the fungicide treatments, however neither trial showed a significant difference in yield [@Millmerran2013, @premer2013]. 
-The average yield saved for single $Recommended$ fungicide applications were 28.59 and 0.61 kg / ha for Premer and Millmerran respectively. 
-However the average yield saved from the treatments categorised $RecommendedPlus$ were -76.93 and -30.64 kg / ha for Premer and Millmerran respectively.
-<!-- This is where I am working right now (Paul) :) :) :) -->
-Despite the significance in these results, some discretion for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
+An example of this is if we inspect the six trials which powdery mildew manifested 60 days or greater after planting (Trial references: AM1304, mung1819/01, mung1011/01, AM1303, AM1305 and BB1305). 
+Of these trials, four directly compared single $Recommended$ fungicide applications and $RecommendedPlus$ (AM1303, AM1305, BB1305 and mung1819/01), two of which (AM1305 and mung1819/01) produced at least one treatment $RecommendedPlus$ treatment with a higher grain yield the $Recommended$ treatments. 
+However, neither AM1305 or mung1819/01 neither contained $Recommended$ or $RecommendedPlus$ treatments with higher mean yields than the no-spray control.
+This indicating there is likely no benefit to applying two fungicide applications when the disease manifests later than 60 days into the growing season. 
+Further the trials undertaken in 2013, such as Premer (AM1303), Goolhi (AM1305) Marys Mount (AM1304) and Millmerran (BB1305) reported a significant difference in powdery mildew severity between the fungicide treatments, however neither trial showed a significant difference in grain yield between treatments [@Millmerran2013, @premer2013, @Marysmount2013, @goolhi2013]. 
+Therefore, discretion is still required for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
 The PowderyMildewMBM considers crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
 
 PowderyMildewMBM also provides a cost-benefit analysis to growers for fungicide spray schedule scenarios.
@@ -267,32 +267,21 @@ If the powdery mildew is not observed in the crop the app advises the user to ke
 <!-- I am finding it difficult to say that our findings confirm recommendations of the app, given the app does not advise on early late or recommended spray timing AND we don't investigate the differences in yield mitigations under the variables in the app (growth stage and weather) [Paul]-->
 
 Scouting the crop for powdery mildew might not be necessary during the warmer months of the season. 
-However when weather conditions cool and become suitable for powdery mildew, our results suggest weekly inspections would be ideal to ensure timely fungicide applications if necessary. 
-Scouting at intervals greater than 12 - 13 days, might risk crop losses if a spray schedule does not commence within the spray window mentioned above.
-More work is needed to understand when 'late' fungicide applications are too late.
-Data from the trials included in this experiment show regardless of crop sowing date, powdery mildew establishes on average in the month of March
+Data from the trials included in this experiment show regardless of crop sowing date, powdery mildew establishes on average in the month of March which marks the beginning of Autumn (Figure 1).
+Considering the results of the meta-analysis, weekly inspections would be ideal to ensure timely fungicide applications if necessary. 
+Scouting at intervals greater than 12 - 13 days, might risk crop losses if a spray schedule does not commence within aforementioned the spray window.
+More work is needed to understand when 'late' fungicide applications are too late.  
 
 We estimate the costs of applying tebuconazole fungicide at \$4.18 AUD / ha, if fungicide is purchased at \$15 / L [@Simfendorfer2011] and applications cost are $2 per hectare [@QueenslandGovernment2019]. 
-The meta-analysis estimates yield savings of between `r coef(PM_mv)[3]*1000` kg / ha (Recommended) and `r coef(PM_mv)[4]*1000` kg / ha (RecommendedPlus). 
+The meta-analysis estimates average yield savings of between `r coef(PM_mv)[3]*1000` kg / ha ($Recommended$) and `r coef(PM_mv)[4]*1000` kg / ha ($RecommendedPlus$). 
 These average yield savings would save \$`r (coef(PM_mv)[3]*1000)` AUD / ha for a single application at first sign and `r coef(PM_mv)[4]*1000` AUD / ha if a follow-up application is made.
 Lucrative returns such as these may tempt growers into applying fungicide to control diseases such as powdery mildew when they are unnecessary.
 Excessive use of fungicides are highly likely to lead ongoing problems such as fungicide resistance.
 *Podosphaera xanthii* is categorised by the Australian Fungicide resistance Action Committee (FRAC) as a 'High risk' candidate to evolve fungicide resistance [@FRACrisk2019].
 Evolution of fungicide resistance can occur quickly, especially when spray schedules are not designed with potential fungicide resistance in mind.
 Powdery mildew is one such group of fungal pathogens with an extensive track record of rapidly developing fungicide resistance.
-In cucurbits, it evolved resistance to benzimidazole within three years of its registration [@Peterson1973] and has evolved resistance to numerous fungicide classes, such as benzimidazoles, demethylation inhibitors, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines since [@Mcgrath2001].
+In cucurbits, *P. xanthii* evolved resistance to benzimidazole within three years of its registration [@Peterson1973] and has evolved resistance to numerous fungicide classes, such as benzimidazoles, demethylation inhibitors, organophosphates, hydroxypyrimidines, quinone inhibitors and quinoxalines since [@Mcgrath2001].
 In cereal crops *Blumeria graminis* showed reduced sensitivity to strobilurins in 1998, two years after the fungicides began being used in Europe [@Chin2001].
-
-To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered.
-Excessive fungicide sprays by a single active increase the selection pressure on the pathogen to evolve resistance [@Brent2007]. 
-If any strains of the pathogen with resistance to the fungicide are present in a population regular use of the fungicide will increase it's proportion in the population. 
-Managing the disease with fungicides for the highest economic return is likely not to require eradication of the causal pathogen. 
-Integrated pest management practices focus on using only the required number of chemical control to protect the economic return. 
-These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection.
-
-The timing of fungicide sprays are critical for their efficacy and for limiting fungicide resistant strains from emerging. 
-Fungicide applications made too early would increase costs without providing any benefit to yields. 
-Applications which are made too late allow the disease to establish and damage the crop productivity, while making subsequent sprays difficult to reduce the disease incidence.
 
 According to the Fungicide resistance Action Committee (FRAC) it is important to alternate or mix fungicides with different modes of action to avoid fungicide resistance. 
 At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin).
@@ -301,6 +290,14 @@ Quinone is required in cell metabolism and active in the mitochondrial complex I
 However FRAC recommends that applications of QoIs or strobilurins, singularly or as a mixture, should not be applied consecutively and alternated with a fungicide from a different group [@Brent2007]. 
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
 Sulphur is a non-systemic protectant and thus provides an excellent option for rotation to limit the emergence of fungicide resistance.
+
+To extend the time that a fungicide remains effective against the target pathogen, strategic use of the fungicide must be considered.
+Excessive fungicide sprays by a single active increase the selection pressure on the pathogen to evolve resistance [@Brent2007]. 
+If any strains of the pathogen with resistance to the fungicide are present in a population regular use of the fungicide will increase it's proportion in the population. 
+Therefore, managing the disease with fungicides for the highest economic return is likely not to require eradication of the causal pathogen. 
+Integrated pest management practices focus on using only the required number of chemical control to protect the economic return. 
+These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection.
+
 
 ### Future work
 
