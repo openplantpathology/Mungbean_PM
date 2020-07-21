@@ -433,3 +433,100 @@ slimmer_PM_dat[is.na(slimmer_PM_dat$row_spacing),"row_spacing"] <- 0.33
 
 write.csv(slimmer_PM_dat, file = here("cache/slimmer_PM_clusterdat.csv"), row.names = FALSE)
 ```
+
+### Mungbeans age and yield saved
+The time at which powdery mildew infects in the seasons and the age of the plant might affect the AUDPC and the loss in yield.
+Lets have a look at the age of each trial when each powdery mildew infected it.
+We will use the difference between `planting_date` and `first_sign_disease` as a proxy for crop maturity.
+```{r age_andYield}
+dat1 <- slimmer_PM_dat %>%
+   mutate(days2PM = first_sign_disease - planting_date)%>%
+   arrange(desc(days2PM))%>%
+   select(trial_ref, year, location,spray_management, days2PM,grain_yield.t.ha, 
+          yield_gain, prop_yield_gain,  AUDPC_m,D_pres,PM_final_severity)
+dat1
+```
+From these trials I am most interested in the experiments that directly compare `Recommended` with `Recommended_P_plus` and/or `Late` with `Late_plus`. 
+Therefore I will not inspect, `AM1304` (Marys Mount).  
+
+We can see that the crops which were likely the most mature, did not show large yield gains, in particular:
+   * Hermitage 2019  
+   * Premer  
+   * Goolhi  
+   * Millmerran  
+
+Lets look at this in a quick box plot. 
+We will only look at trials where powdery mildew set in at flowering which is approximately 60 days after planting.
+```{r ageBoxPlot}
+dat1 %>%
+   filter(days2PM >= 60) %>%
+   filter(spray_management != "control" &
+             trial_ref != "AM1304" )%>%
+   group_by(trial_ref,spray_management)%>%
+   ggplot(aes(x= spray_management, y = yield_gain, colour = trial_ref))+
+   geom_boxplot()+
+   geom_hline(yintercept = 0)
+```
+We can see in these experiments five experiments there is clearly no benefit to applying a second fungicide application. 
+
+For completeness lets test this with powdery mildew infection commencing 40 - 60 days after planting, instead of greater than 60.  
+
+```{r PM40_2_59_days}
+dat1 %>%
+   filter(days2PM < 60 &
+             days2PM >= 40) %>%
+   filter(spray_management != "control")%>%
+   group_by(trial_ref,spray_management)%>%
+   ggplot(aes(x= spray_management, y = yield_gain, colour = trial_ref))+
+   geom_boxplot()+
+   geom_hline(yintercept = 0)
+```
+We can see here all four experiments benefited, on average, from more than one spray.  
+
+Lets estimate the age of the crop based on crop maturity observations, we will use the `PM_MB_means` which include some observations of crop maturity.
+
+```{r whatAreTheAges}
+dat2 <- PM_MB_means%>%
+   mutate(flower = lubridate::ymd(flowering_date) - lubridate::ymd(planting_date),
+          pod = lubridate::ymd(pod_fill_date) - lubridate::ymd(planting_date),
+          late_pod = lubridate::ymd(mid_late_pod_fill) - lubridate::ymd(planting_date))%>%
+   select(location, year, flower, pod, late_pod)%>%
+   distinct()%>%
+   arrange(desc(flower))
+
+index1 <- apply(dat2, 1 , function(X) !all(is.na(X[c("flower", "pod", "late_pod")])))
+
+dat2[index1,]   
+as.double(mean(dat2[index1,"flower"], na.rm = TRUE))
+as.double(mean(dat2[index1,"pod"], na.rm = TRUE))
+as.double(mean(dat2[index1,"late_pod"], na.rm = TRUE))
+```
+
+We can see that flowering and podding can be variable, and depends on the cumulative degree days <!-- reference here to APSIM model-->. 
+however on average flowering starts `r as.double(mean(dat2[index1,"flower"], na.rm = TRUE))` days after sowing, podding starts `r as.double(mean(dat2[index1,"pod"], na.rm = TRUE))`, and late podding `r as.double(mean(dat2[index1,"late_pod"], na.rm = TRUE))` 
+
+
+
+
+
+```{r}
+#filter(location == "Premer" | location == "Millmerran")%>%
+   group_by(trial, trial_ref,location,year)%>%
+   summarise(latent = mean(days2PM))%>%
+   pull(latent)
+   
+sum(temp2 < 60)/length(temp2)
+   
+
+
+
+dat2[,c("flower", "pod", "black_pod")]
+
+mean(   
+-0.030637255,
+-0.058210784)
+
+mean(
+-0.076933551,
+-0.087826797)
+```
