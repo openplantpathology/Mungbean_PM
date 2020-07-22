@@ -11,7 +11,7 @@ source(here("R/reportP.R"))
 ```
 
 # Manuscript
-
+<!-- need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide -->
 ## Introduction
 
 Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption as an affordable source of protein [@PulseAustralia].
@@ -298,21 +298,30 @@ Therefore, managing the disease with fungicides for the highest economic return 
 Integrated pest management practices focus on using only the required number of chemical control to protect the economic return. 
 These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection.
 
+Advising use of fungicide for disease control to protect yields should also consider the harm it may do to symbiotic relationships with microbiota. 
+While some nitrogen fixing symbiont show a level of tolerance to fungicides, all are detrimentally affected by increasing concentrations of fungicide leading to lower nodulation and biomass accumulation [@Ahemad2011, @Shahid2019]. 
+Therefore if a grower is relying on rhizobia inoculation to help meet the crops nitrogen requirements, untimely and excessive applications of a systemic fungicide for powdery mildew control may actually reduce yields. 
 
 ### Future work
+This meta-analysis provides a ballast for the direction of future powdery mildew research in mungbean. 
+However it does not provide enough certainty to when late fungicide applications would be too late to protect yield losses due to the disease. 
+Future experiments should take note of physiological maturity of the crop throughout the season so 'crop age' might be considered as a covariate in future analyses.
+In cases where mungbean physiological maturity may not have been recorded the APSIM mungbean module [@RobertsonAPSIMlegume2002].  
+
+Early detection of powdery mildew is vital for an effective fungicidal control response.
+Data from the collection of 26 studies in the Northern Grain region, indicate powdery mildew is likely to manifest on crops in the first month of autumn. 
+This data together with additional observations may permit models to predict the likely onset of the disease given weather parameters, providing an early warning system for growers to scout their crop for signs of powdery mildew.
+However an improved understanding of the pathogen biology is also needed to ensure models are as accurate as they can be.
+The population genetics, epidemiology and alternate hosts are all poorly understood in this host-pathogen relationship.
+The recent discovery of a second powdery mildew species which infects mungbean highlights the paucity of knowledge on this disease. 
 
 
 
-
-
-
-A recent development, the release of an app for tablet devices, 'PowderyMildewMBM' a decision support system (DSS) tool, increases the ease of preparing a fungicide spray schedule to manage powdery mildew [@Diggle].
-
-# Acknowldgments
+## Acknowledgments
 The authors wish to acknowledge the work done by Professor Malcolm Riley and Dr Sue Thompson whom undertook many of the trials incorporated in this analysis from 2004 - 2015. 
 The Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
 The National Growers association and Lawrie Price for contributing data.
 The Grains Research and Development Corporation who funded this research.
 
-# References
+## References
 
