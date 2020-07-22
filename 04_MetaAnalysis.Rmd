@@ -9,7 +9,8 @@ pacman::p_load(tidyverse,
                RColorBrewer,
                metafor,
                here,
-               netmeta)
+               netmeta,
+               multcomp)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -284,64 +285,7 @@ PM_mv <- rma.mv(
 )
 summary(PM_mv)
 ```
-```{r}
-(PM_mv$b - PM_mv$ci.ub) / PM_mv$se
-```
 
-In this result we can see that the `Early` treatment is not significantly different from zero, which in this case is the mean of the no spray `control`.
-However the other treatments are significantly different from zero.
-The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M = 26.22, df = 5, p < 0.0001$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
-The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.
-
-Lets look at the trial variability in this model with a forest plot
-```{r forestP, fig.height= 40, fig.width=17}
-source(here("R/change_labels.R"))
-source(here("R/forest_rows.R"))
-
-### Sort and arrange data-frame occordingly and produce a index vector to inform the order of each "Trial" on the plot
-index1 <- dat1 %>%
-   mutate(ID = seq_along(trial_ref)) %>%
-   mutate(spray_management = 
-             factor(spray_management, 
-                    levels = c("Early","Late","Recommended",
-                    "Recommended_plus","Late_plus"))) %>%
-   arrange(desc(spray_management), location, desc(grain_MD)) %>%
-   mutate(ID2 = order(ID))%>%
-   pull(ID2)
-
-### Use forest rows function to return a list of where to place on the plot: sub-titles, each trial row, and summary prediction for each treatment.
-### this list can be used below to reference where to plot each variable
-rows1 <- forest_rows(head_row = 156, 
-                     ord_var = dat1$spray_management, 
-                     index = index1, 
-                     gap = 5, 
-                     row_offset = -2)
-
-### A data-frame of meta-model coefficients used to produce the summary polygons for each treatment
-polys <- data.frame(ref = change_labels(names(coef(PM_mv))),
-                    x = coef(PM_mv),
-                    ci.lb = PM_mv$ci.lb,
-                    ci.ub = PM_mv$ci.ub)[c(1,4,2,3,5),]
-polys$rows <- rows1$pred_row - 1.5
-
-forest1  <- metafor::forest(PM_mv, cex = 1.15 , width = 5,
-                #order = "fit",
-                rows = rows1$trows-1.5,
-                ilab = cbind(dat1$year, 
-                             dat1$row_spacing, dat1$host_genotype, dat1$dose),
-                ilab.xpos = c(-2.35,-2.1,-1.8,-1.4),
-                slab = NA, 
-                xlim = c(-2.9, 2.2),
-                ylim = c(18,157),
-                xlab = "Grain yield mean difference",
-                addfit = FALSE,
-                efac = c(0.2,0.15,0.2),
-                at = seq(-1,1.5, 0.5))
-
-### code which puts lines and annotations on the plot, its a bit long...
-source(here("R/add_annotations.R"))
-
-```
 
 
 Let's see if we can improve this model by including some other random effects and improving the random effect structure in the model.
@@ -382,6 +326,8 @@ So we will keep the original model `PM_mv`.
 I have also tested the structure for testing the random trial and spray_management variables, these show that there is no significant difference to the models `PM_mv_St` and `PM_mv_St1` and that the originally method of specifying the random variables within the `trial` factor provides us with the best model.
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis.
+This effectively shows the heterogeneity between experiments for these partivular treatments.
+
 The second table is in two parts (left and right). 
 The left part, rho, is the correlation of variation between the specified treatments.
 All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho.
