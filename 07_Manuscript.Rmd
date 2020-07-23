@@ -118,8 +118,8 @@ The two levels were separated via the median AUDPC (`r as.double(read.csv(here("
 
 Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
 The sample variance was calculated from the raw data when available or the least squares statistic in trial reports. 
-Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 1.697 and the approach reported in Ngugi et al. [-@Ngugi2011].
-The T-critical value was determined from the 30 degrees of freedom and probability of $a = 0.1$ using a t-distribution table. <!-- Checking this reference the T-critical value might need to be adjusted to 2.042 using an alpha of 0.05, or as Ngugi choses df = inf and alpha of 0.05 -->
+Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 2.042 and the approach reported in Ngugi et al. [-@Ngugi2011].
+The T-critical value was determined from the 30 degrees of freedom and probability of $a = 0.05$ using a t-distribution table. 
 The 2012 Gatton and 2015 Emerald trials reported treatment means without accompanying variance and were thus removed from the dataset  prior to the analysis. 
 
 This analysis uses response ratio, or means difference (MD) as the response variable. 
@@ -127,7 +127,7 @@ MD were chosen to reduce the inherent variability between trials due to location
 $MD = {Y_i-\overline{Y_c}}$ [@HigginsGreen] 
 Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean .  
 
-Similar to Paul et. al. [-@Paul2007], we fitted a multivariate random effects model
+Similar to Paul *et. al.* [-@Paul2007], we fitted a multivariate random effects model
 $Y_i \sim N(\mu,s_i^2 + \sigma^2)$
 where $Y_i$ is the response, a vector of the MD grain yield for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$). 
 $Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $Si_^2$ and a between trial variance of $\sigma^2$.  
@@ -204,14 +204,14 @@ Within the single fungicide application treatments `Recommended` provided the hi
 Single `Late` applications were effective at significantly mitigating the effect of powdery mildew on yield by a mean of 122 kg / ha (SE = 39.2 kg / ha)(P = 0.0019). 
 However, this estimate was not significantly different to single `Early` or `Recommended` treatments (P = 0.119; P = 0.278 respectively).
 
-The $Q_M$ omnibus test of moderators, shows the moderators significantly influence the model ($Q_M = 26.22, df = 5, p < 0.0001$) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
-The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = 568.31, df = 111, p < 0.0001$) not captured by the spray management moderator indicating other possible moderators, which might influence grain yield.  
+The $Q_M$ omnibus test of moderators, shows the moderators significantly influence the model ($Q_M =$ `r PM_mv$QM` $,df =$ `r PM_mv$m`, `r reportP(PM_mv$QMp)`) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
+The analysis shows there is still a significant amount of residual heterogeneity ($Q_E =$ `r PM_mv$QE` $,df=$ `r PM_mv$k - PM_mv$m`, `r reportP(PM_mv$QEp)`) not captured by the spray management moderator indicating other possible moderators, which might influence grain yield.  
 
 A log-ratio test, based on a chi-squared distribution, indicated that retaining the `SpraySchedule` variable as a random interactive term provided a significantly better model (P = 0.0179). 
 An inspection of log-likelihood profile plots showed the model, for each random interactive term, provided a reasonable estimate of $\tau^2$, with no indication the variables were over-fit.  
 
 While the addition of disease pressure, as an interactive moderator term to `SpraySchedule`, did explain slightly more residual heterogeneity, shown by a lower $Q_E = 409.91,$. 
-The model including disease pressure did not significantly improve the model (P = 0.4859) and did not significantly explain differences in the SpraySchedule term, and therefore disease pressure was not included in the final model. 
+The model including disease pressure did not significantly improve the model (P = 0.4859) and did not significantly explain differences in the `SpraySchedule` term, and therefore disease pressure was not included in the final model. 
 
 
 ```{r Figure1}
