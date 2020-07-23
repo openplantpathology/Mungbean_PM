@@ -5,13 +5,14 @@
 
 
 ### add column headings to the plot
-text(c(-2.7, -2.35,-2.1,-1.8,-1.4), 156,cex = 1, 
+text(c(-2.7, -2.35,-2.1,-1.8,-1.4)+1, 156,cex = 1, 
      c("Location", "Year", "Row\nSpacing","Host\nCultivar","DMI dose"),
      font = 2)
 
 ### Add subtitles for each SpraySchedule breakdown
-text(-2, rows1$stitle_row ,cex = 1.3, 
-     paste0(c("Early", "Late", "Recommended", "RecommededPlus", "LatePlus")," Spray Schedule - (tau^2 = " ,round(PM_mv$tau2, digits = 3), ") "),
+text(-1, rows1$stitle_row ,cex = 1.3, 
+     paste0(c("control","Early", "Late", "Recommended", "RecommededPlus", "LatePlus"),
+            " Spray Schedule - (tau^2 = " ,round(PM_mv$tau2, digits = 3), ") "),
      font = 2)
 
 addpoly(x = polys$x,
@@ -25,16 +26,16 @@ addpoly(x = polys$x,
 abline(h = rows1$stitle_row +1)
 
 ### Early lines
-lines(c(-2.9,-1.25),c(153,153), col = "grey70")
+lines(c(-2.9,-1.25)+1,c(153,153), col = "grey70")
 text(x = -2.7, y = 152.5, 
      labels = "Missen Flats" ,cex=1)
-lines(c(-2.9,-1.25),c(147,147), col = "grey70")
+lines(c(-2.9,-1.25)+1,c(147,147), col = "grey70")
 text(x = -2.7, y = 146.5, 
      labels = "Marys Mount" ,cex=1)
-lines(c(-2.9,-1.25),c(146,146), col = "grey70")
+lines(c(-2.9,-1.25)+1,c(146,146), col = "grey70")
 text(x = -2.7, y = 145.5, 
      labels = "Hermitage" ,cex=1)
-lines(c(-2.9,-1.25),c(140,140), col = "grey70")
+lines(c(-2.9,-1.25)+1,c(140,140), col = "grey70")
 
 ### Late lines
 lines(c(-2.9,-1.25),c(135,135), col = "grey70")

@@ -8,7 +8,10 @@ forest_rows <- function(head_row, ord_var, index,
                sum(ord_var == "Early") + sum(ord_var == "Late") + 
                   sum(ord_var == "Recommended") + sum(ord_var == "Recommended_plus"),
                sum(ord_var == "Early") + sum(ord_var == "Late") + 
-                  sum(ord_var == "Recommended") + sum(ord_var == "Recommended_plus") + sum(ord_var == "Late_plus"))
+                  sum(ord_var == "Recommended") + sum(ord_var == "Recommended_plus") + sum(ord_var == "Late_plus"),
+               sum(ord_var == "Early") + sum(ord_var == "Late") + 
+                  sum(ord_var == "Recommended") + sum(ord_var == "Recommended_plus") + sum(ord_var == "Late_plus") +
+                  sum(ord_var == "control"))
    
    trows_F <- function(x1, head_row, gap){
       if(x1 <= length(ord_var) &&
@@ -32,13 +35,18 @@ forest_rows <- function(head_row, ord_var, index,
          x1 > length(ord_var) - breaks[5]){
          return(x1 + (head_row - length(ord_var)) - (gap * 4))}
       
+      if(x1 <= length(ord_var) - breaks[5] &&
+         x1 > length(ord_var) - breaks[6]){
+         return(x1 + (head_row - length(ord_var)) - (gap * 5))}
+      
    }
    
    stitle_row <- head_row - c(stitle_row_offset,
                               stitle_row_offset + breaks[1] + gap,
                               stitle_row_offset + breaks[2] + (gap*2),
                               stitle_row_offset + breaks[3] + (gap*3),
-                              stitle_row_offset + breaks[4] + (gap*4))
+                              stitle_row_offset + breaks[4] + (gap*4),
+                              stitle_row_offset + breaks[5] + (gap*5))
    
    
    dat2 <- list(stitle_row = stitle_row,
@@ -47,7 +55,8 @@ forest_rows <- function(head_row, ord_var, index,
                                         stitle_row_offset + breaks[2] + gap,
                                         stitle_row_offset + breaks[3] + (gap*2),
                                         stitle_row_offset + breaks[4] + (gap*3),
-                                        stitle_row_offset + breaks[5] + (gap*4)),
+                                        stitle_row_offset + breaks[5] + (gap*4),
+                                        stitle_row_offset + breaks[6] + (gap*5)),
                 
                 trows = unlist(sapply(index,trows_F, head_row = head_row, gap = gap)) + row_offset,
                 
