@@ -12,6 +12,8 @@ source(here("R/reportP.R"))
 
 # Manuscript
 <!-- need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide -->
+<!-- To ensure formatting matches, I suggest that you create a Word template and knit this document using that -->
+
 ## Introduction
 
 Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption as an affordable source of protein [@Lambrides2007].
