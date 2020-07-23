@@ -243,7 +243,7 @@ These issues, and perhaps other on farm duties, might delay a timely application
 Knowing a delay of up to two weeks may not lead to yield losses, can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
 However attention should be made to the label requirements when first planning a spray schedule.
 Second applications, if they are needed, should be applied at least 10 - 14 days after the first application and not within 21 days of harvest [@APVMAcustodia].
-If time permitted a second spray after the first 'late' application, on average the meta-analysis shows this would be optimal, as the $LatePlus$ treatment significantly limited yield loss by `r round(T3$estimates[10], 4)*1000` kg / ha, when compared to the $Late$, single spray treatment `r reportP(T3$pval[10]`).
+If time permitted a second spray after the first 'late' application, on average the meta-analysis shows this would be optimal, as the $LatePlus$ treatment significantly limited yield loss by `r round(T3$estimates[10], 4)*1000` kg / ha, when compared to the $Late$, single spray treatment `r reportP(T3$pval[10])`.
 
 It is important to note, the studies included in this meta-analysis may not reflect a 'normal' mungbean season. 
 All the included experiments were intentionally sown late in the season, from January through to as late as early March, to ensure powdery mildew infection (Figure 1). 
