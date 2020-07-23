@@ -14,7 +14,7 @@ source(here("R/reportP.R"))
 <!-- need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide -->
 ## Introduction
 
-Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption as an affordable source of protein [@PulseAustralia].
+Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption as an affordable source of protein [@Lambrides2007].
 The bean pod or grain can be consumed raw or added to meals after sprouting.
 The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
 
