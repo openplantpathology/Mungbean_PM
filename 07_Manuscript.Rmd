@@ -14,13 +14,15 @@ source(here("R/reportP.R"))
 <!-- need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide -->
 ## Introduction
 
-Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption as an affordable source of protein [@PulseAustralia].
+Mungbean [*Vigna radiata* (L.) Wilczek] is a pulse crop primarily grown in south-east Asia for human consumption as an affordable source of protein [@Lambrides2007].
 The bean pod or grain can be consumed raw or added to meals after sprouting.
-The dried grain can also be ground into a protein enriched flour for uses such as noodles, biscuits and cakes [@Chankaew2013].
+The dried grain can also be ground into a protein enriched flour for uses in noodles, biscuits and cakes [@Chankaew2013].
 
-Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop and it was only as recent as the 1960s until that mungbean was grown commercially [@aboutAMA, @Chauhan2018].
-At the end of the 1980s between 3 - 10 thousand hectares were being harvested for dried beans, of which mungbean is categorised by the FAO statistics data repository [@FAOSTAT].
-In the decade leading up to 2018 between 35 - 86.4 thousand hectares of dried beans were planted annually. 
+Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop.
+However, it was only somewhat recently, the 1960s that mungbean was grown commercially [@Lawn1978; @Chauhan2018].
+Prior to the 1970s the total area grown in Australia rarely exceeded 1000 hectares [@Lawn1978].
+At the end of the 1980s, between 3,000 to 10,0000 hectares were being harvested for dried beans in Australia, of which mungbean is categorised by the FAO statistics data repository [@FAOSTAT].
+In the decade leading up to 2018 between 35 - 86.4 thousand hectares of dried beans were planted annually.
 This increase is attributed high value export markets and to the improved yields in the new cultivars [@Clarry2016].
 Currently mungbean is predominantly grown in southern Queensland and northern New South Wales as a short season summer legume crop.
 In 2019, approximately 90&nbsp;% of Australian mungbean was grown for export with lucrative returns of up to \$1300&nbsp;AU a tonne [@QueenslandGovernment2019].
