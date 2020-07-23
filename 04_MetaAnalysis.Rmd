@@ -281,8 +281,8 @@ All comparisons were acceptable except for a comparison between `Early` and `Lat
 
 In this result we can see that the `Early` treatment is not significantly different to the intercept, which in this case is the mean of the no spray `control`.
 However the other treatments are significantly different from the no-spray control (intercept).
-The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M =$ `r PM_mv$QM` $, df = $ `r PM_mv$m`, `r reportP(PM_mv$QMp)`) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
-The analysis shows there is still a significant amount of residual heterogeneity ($Q_E = $`r PM_mv$QM` $, df = $`r PM_mv$k - PM_mv$m`, `r reportP(PM_mv$QEp)` ) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.  
+The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M =$ `r PM_mv$QM` $,df =$ `r PM_mv$m`, `r reportP(PM_mv$QMp)`) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
+The analysis shows there is still a significant amount of residual heterogeneity ($Q_E =$ `r PM_mv$QM` $,df=$ `r PM_mv$k - PM_mv$m`, `r reportP(PM_mv$QEp)` ) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.  
 
 
 ```{r PM_Mv_Contrast}
@@ -336,7 +336,7 @@ We expect to see the estimate align with the peak of the curve.
 Also that the shape of the line is a curve.
 Caution! this will take some time to run.
 
-```{r profile_plots, message=FALSE, results="hide"}
+```{r profile_plots, eval=FALSE, message=FALSE, include=FALSE, results="hide"}
 profile(PM_mv, tau2 = 1)
 profile(PM_mv, tau2 = 2)
 profile(PM_mv, tau2 = 3)

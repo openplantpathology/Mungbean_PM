@@ -65,7 +65,7 @@ Our data contained 30 degrees of freedom which equates to a 'T-crit' value of 1.
 This value is the same for both trials "mung1112/01" and "mung1112/02".
 
 ```{r LSD_2_Sampling_Variance}
-Tcrit <- 1.697 # 0.05 and DFw = 30
+Tcrit <- 2.042 # 0.05 and DFw = 30
 
 for (i in Trials$trial_ref) {
    DFw <-
@@ -506,27 +506,3 @@ We can see that flowering and podding can be variable, and depends on the cumula
 however on average flowering starts `r as.double(mean(dat2[index1,"flower"], na.rm = TRUE))` days after sowing, podding starts `r as.double(mean(dat2[index1,"pod"], na.rm = TRUE))`, and late podding `r as.double(mean(dat2[index1,"late_pod"], na.rm = TRUE))` 
 
 
-
-
-
-```{r}
-#filter(location == "Premer" | location == "Millmerran")%>%
-   group_by(trial, trial_ref,location,year)%>%
-   summarise(latent = mean(days2PM))%>%
-   pull(latent)
-   
-sum(temp2 < 60)/length(temp2)
-   
-
-
-
-dat2[,c("flower", "pod", "black_pod")]
-
-mean(   
--0.030637255,
--0.058210784)
-
-mean(
--0.076933551,
--0.087826797)
-```
