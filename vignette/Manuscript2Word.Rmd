@@ -14,6 +14,11 @@ link-citations: yes
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, knitr, here)
 
+if (!require("theme.usq"))
+   devtools::install_github("adamhsparks/theme.usq")
+library(theme.usq)
+theme_set(theme_usq())
+
 # Data
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 load(file = here("cache/Meta-analysisData.Rdata"))
@@ -21,9 +26,8 @@ load(file = here("cache/PreliminaryData.Rdata"))
 source(here("R/reportP.R"))
 ```
 
+***
 
-
-# Manuscript
 <!-- need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide -->
 <!-- To ensure formatting matches, I suggest that you create a Word template and knit this document using that -->
 
@@ -68,10 +72,10 @@ There is almost a complete lack of peer-reviewed literature summarising fungicid
 Much of the experimental work has been published by funding agencies and state government extension departments as extension bulletins or other related type materials.
 Past field trials in eastern Australia have tested a range of fungicide active ingredients while also attempting to evaluate the best application time for the highest efficacy [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013; @SueThompson2016; @Kelly2017a; @Thompson2016]. 
 Early trials showed that for fungicide applications to protect yield, a single fungicide application at first sign of the disease with another follow-up application two weeks later, if necessary, was the most effective [@SueThompson2016; @Sparks2017]. 
-However due to the variability in the results between seasons and experiments few of these studies produced a clear result based on a statistical analysis. 
+However, due to the variability in the results between seasons and experiments, few of these studies produced a clear result based on a statistical analysis. 
 This variability presents uncertainty for the best practice of fungicide spray schedules to mitigate yield losses from powdery mildew.  
 
-<!--Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a;  insert all published trials here -->.
+<!--Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a;  insert all published trials here -->
 
 The collection of experiments mentioned above and other unpublished trials present an excellent opportunity for a meta-analysis.
 Meta-analyses are statistical tools which can analyse a collection of experiments, which have a similar aim, and produces a more accurate estimate of the true effect being measured.
@@ -183,10 +187,12 @@ PM_Mdat %>%
       rep("Queensland DAF", times = 4),
       rep("USQ", times = 5)
    )) %>%
-   kable(caption = "Table 1: Description of Experiments")
+   kable(caption = "Table 1: Description of Experiments", booktabs = T, align = "c")
 ```
+
 <br>
 <br>
+
 ```{r Table2_1to9Scale, echo=FALSE}
 data.frame(
    Scale = 1:9,
@@ -202,7 +208,7 @@ data.frame(
       "Colonies to top of the plant with > 100 % of plants affected and heavy leaf drop"
    )
 ) %>%
-   kable(caption = "Table 2: Powdery Mildew severity scoring scale") 
+   kable(caption = "Table 2: Powdery Mildew severity scoring scale",  align = "cl") 
 ```
 <br>
 
