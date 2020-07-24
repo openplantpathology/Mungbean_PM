@@ -1,0 +1,18 @@
+﻿
+/* Adam Dimech's Plant Breeder's Webfont */
+/* http://www.adonline.id.au/fonts/plant-breeders-webfont */
+
+@font-face {
+    font-family: 'adonline-PBR';
+    src: url('adonline-pbr-webfont.eot');
+    src: url('adonline-pbr-webfont.eot#iefix') format('embedded-opentype'),
+         url('adonline-pbr-webfont.woff') format('woff'),
+         url('adonline-pbr-webfont.ttf') format('truetype'),
+         url('adonline-pbr-webfont.svg#adonline-pbr') format('svg');
+}
+
+.pbr {
+	font-family: 'adonline-PBR';
+}
+
+
