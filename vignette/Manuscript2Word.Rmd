@@ -12,7 +12,8 @@ link-citations: yes
 
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, knitr, here)
+pacman::p_load(tidyverse, knitr, here, kableExtra, flextable, officer)
+options(knitr.table.format = "html")
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -187,7 +188,20 @@ PM_Mdat %>%
       rep("Queensland DAF", times = 4),
       rep("USQ", times = 5)
    )) %>%
-   kable(caption = "Table 1: Description of Experiments", booktabs = T, align = "c")
+   flextable()%>%
+   set_caption("Table 1: Description of Experiments") %>%
+   set_header_labels(trial_ref = "Unique Trial Reference",
+                     year = "Year",
+                     location = "Trial Location",
+                     planting_date = "Planting Date",
+                     first_sign_disease = "First sign of disease date",
+                     Research_org = "Research organisation")%>%
+   autofit(add_w = 0.5)%>%
+   align(j = c(1,4,5), align = "center", part = "all")%>%
+   fontsize(size = 9)%>%
+   width(j = 1:4, 1)%>%
+   width(j = 5, 1.1)%>%
+   width(j = 6, 1.7)
 ```
 
 <br>
@@ -208,7 +222,13 @@ data.frame(
       "Colonies to top of the plant with > 100 % of plants affected and heavy leaf drop"
    )
 ) %>%
-   kable(caption = "Table 2: Powdery Mildew severity scoring scale",  align = "cl") 
+   flextable()%>%
+   set_caption("Table 2: Powdery Mildew severity scoring scale") %>%
+   set_header_labels(Scale.Description = "Scale Description")%>%
+   autofit()%>%
+   fontsize(size = 9)%>%
+   align(j = c(1), align = "center", part = "all")%>%
+   width(j = 2, 6.2)
 ```
 <br>
 
@@ -243,8 +263,25 @@ SeasonPlot
 
 ```{r table3_Contrasts}
 T3 <- read.csv(here("cache/Table3_contrasts.csv"), stringsAsFactors = FALSE)
+T3[,2:5] <- round(T3[,2:5], 4)
 T3 %>%
-   kable()
+   mutate(contrasts = gsub("-","",contrasts))%>%
+   mutate(contrasts = gsub(" \\+"," -",contrasts))%>%
+   mutate(contrasts = gsub(" = 0","",contrasts))%>%
+   flextable()%>%
+   set_caption("Table 3: Estimated grain yield contrasts between each spray scheduale") %>%
+   autofit(add_w = 0.2)%>%
+   align(j = c(2,3,4), align = "center", part = "all") %>%
+   set_header_labels(contrasts = "Treatment contrasts",
+                     estimates = "Estimate",
+                     se = "Std Error",
+                     z_val = "Z-Score",
+                     pval = "P-Value",
+                     VisP = " ")%>%
+   fontsize(size = 9)%>%
+   width(j = 5,0.7)%>%
+   width(j = 6, .3)
+
 ```
 
 <br>
