@@ -122,9 +122,11 @@ PM_MB_means$grain_yield.t.ha. <-
    as.numeric(PM_MB_means$grain_yield.t.ha.) # NAs produced due to some cells having text description to why there is no specific data
 
 for (i in unique(PM_MB_means$trial_ref)) {
+   # Loop code over each trial reference
    dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
    
    if (any(is.na(unique(dat1$row_spacing)))) {
+      # If there is no recorded row.spacing don't calculate proportional yield, skip to the next trial
       warning(
          unique(dat1$trial_ref),
          "at",
@@ -137,24 +139,28 @@ for (i in unique(PM_MB_means$trial_ref)) {
    }
    
    for (j in unique(dat1$row_spacing)) {
+      # Loop within trial row_spacing
       dat2 <- dat1[dat1$row_spacing == j, ]
       controlY <-
-         mean(dat2[dat2$fungicide_ai == "control", "grain_yield.t.ha."])
+         mean(dat2[dat2$fungicide_ai == "control", "grain_yield.t.ha."]) #Mean taken as some trials had multiple control reps
       
+      # Calculate the yield gain relative to the no spray control (controlY)
       dat2$yield_gain <- dat2$grain_yield.t.ha. - controlY
       dat2$prop_YG <- dat2$yield_gain  /  controlY
       
+      # insert NA as yeild_gain and proportional yield gain for the controls
       dat2[dat2$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
          NA
       
+      # Reassign values to row_spacing subset
       dat1[dat1$row_spacing == j, ] <- dat2
    }
+   # Reassign values to trial_ref subset
    PM_MB_means[PM_MB_means$trial_ref == i, ] <- dat1
 }
 
 # ____________________________________________
 # calculate yield gain and prop_yield gain for experiments with no row spacing data
-
 dat1 <- PM_MB_means[PM_MB_means$trial_ref == "AM1303", ]
 
 controlY <-
