@@ -10,15 +10,16 @@ biblio-style: apalike
 link-citations: yes
 ---
 
+
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, knitr, here, kableExtra, flextable, officer)
-options(knitr.table.format = "html")
+pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
 theme_set(theme_usq())
+
 
 # Data
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
@@ -27,8 +28,9 @@ load(file = here("cache/PreliminaryData.Rdata"))
 source(here("R/reportP.R"))
 ```
 
-***
 
+
+# Manuscript
 <!-- need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide -->
 <!-- To ensure formatting matches, I suggest that you create a Word template and knit this document using that -->
 
@@ -93,43 +95,44 @@ The aim of this meta-analysis was to determine, from a collection of unpublished
 
 
 ## Materials and Methods
-The data for this study were obtained from through personal correspondence with colleagues and collaborating institutions.
-Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [@goolhi2013; @premer2013; @Millmerran2013; @Marysmount2013].
+The data for this study were obtained through personal correspondence with colleagues and collaborating institutions.
+Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [-@goolhi2013; -@premer2013; -@Millmerran2013; -@Marysmount2013].
 <!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> 
 The most recent trials starting from 2015 were undertaken by the University of Southern Queensland (USQ) with the assistance of Queensland DAF from 2015 to 2019. 
 Trial data were in different formats with varying levels of information.
-Some trials we obtained the raw data others the reported means of each treatment, with all but one study reporting some form of variance along with the mean. 
+Some trials we obtained the raw data, others the reported means of each treatment, with all but one study reporting some form of variance along with the mean. 
 Twenty six trials in total were collated.  
 
-To ensure the correct question was asked of the analysis the data needed to conform to a strict criteria. 
+To ensure the correct question was asked of the analysis, the data needed to conform to a strict criteria. 
 The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia's summer crops.
 Trial data had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield. 
-The data were subset to only include treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset. 
-Subsequently the 26 trials were reduced to 16 using the same fungicide doses (Table 1). 
-Details of trial data are presented within a research compendium which was prepared to supplement this publication [<!-- DOI to reference to compendium -->].
-With only a small number of trials, and to increase the replication, we made no distinction between the tebuconazole and propiconazole in the analysis. 
-All trials included in this analysis were randomised complete block designs and not previously published in peer-reviewed literature.  
+The data were subset to only include fungicide treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset. 
+Subsequently the 26 trials were reduced to 16 trials (Table 1). 
+Details of trial data are presented within a research compendium which was prepared as a supplement to this publication [<!-- DOI to reference to compendium -->].
+Due to the limited number of trials meeting the selection criteria, we made no distinction between the tebuconazole and propiconazole fungicide treatments within the analysis to ensure sufficient replication. 
+All trials included in this analysis used a randomised complete block design, and were not previously published in peer-reviewed literature.  
+
+From the trials which were included `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 12))` planted in late December, `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 1))` in January and `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 2))` trials planted in February (Table 1).  
 
 While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design.
 These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications and cultivar.
-To account for the variation attributed to some of these variables between trials, and the treatments within trials, a single 'trial' factor was created to describe the main variables; a trial reference code, trial location, trial season, host genotype, row spacing, and fungicide dose. 
+To account for the variation attributed to some of these variables between trials, and the treatments within trials, a single $trial$ factor was created.
+The $trial$ variable made distinctions between the following between and within trial variables: unique trial reference code, trial location, trial season, host genotype, row spacing, and fungicide dose. 
 Most of the studies which were used in this analysis assessed powdery mildew incidence on a 1 -- 9 ordinal scale (Table 2). 
-However, the 2013 NGA trials (Table 1) reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the canopy; lower, middle or upper canopy.
+However, the 2013 NGA trials (Table 1) reported incidence as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the lower, middle or upper canopy.
 
 Given the ordinal scale ranked plants on the percent of foliage up the plant showing the disease, a conversion to mean plot incidence on the ordinal 1 -- 9 scale was straight-forward.  
 
 The timing of fungicide application treatments, was defined in relation to the recorded date when powdery mildew first occurred in the trial. 
-An 'Early' fungicide application treatment, referred to a fungicide spray schedule that commenced the first spray prior to the disease being observed in the trial. 
-'Recommended' refers to a fungicide spray schedule which commences following the first sign of disease, within three days. 
-'Late' treatments commence between 7 - 13 days after the first sign of disease. 
+An 'Early' fungicide application treatment, referred to a fungicide spray schedule that commenced prior to the disease being observed in the trial. 
+'Recommended' referred to a fungicide spray schedule which commenced 1 -- 3 days following the first sign of disease. 
+'Late' treatments commenced between 7 and 13 days after the first sign of disease. 
+There were no spray schedule treatments which began between 4 and 6 days after the first sign of powdery mildew. 
 The number of fungicide applications were binned in to two categories.
 A spray schedule with a single spray, and a spray schedule with two or three spray applications (Plus). 
-The division of the treatments categorised: 13 'Early' treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
+The division of the treatments produced: 13 'Early' treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
 'EarlyPlus' treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.  
-
-<!-- Passage here about trial sowing times and first sign of disease (Figure 1)  PM -->
-
-What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.
+What remained was the mean yield for total of 173 treatments in the following five spray schedule categories: no spray control, single early spray, single recommended spray, recommended with multiple sprays, single late spray, and late with multiple sprays.  
 
 A categorical disease pressure factor was created by binning trials based on the mean AUDPC of the no spray control plot into two levels: 'low disease pressure' or 'high disease pressure'.
 The two levels were separated via the median AUDPC (`r as.double(read.csv(here("cache/median_AUDPC_C.csv")))`) of the no spray control plots.  
@@ -148,7 +151,7 @@ Where $Y_i$ is the treatment mean, $Y_c$ is the no spray control treatment mean 
 Similar to Paul *et. al.* [-@Paul2007], we fitted a multivariate random effects model
 $Y_i \sim N(\mu,s_i^2 + \sigma^2)$
 where $Y_i$ is the response, a vector of the MD grain yield for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$). 
-$Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $Si_^2$ and a between trial variance of $\sigma^2$.  
+$Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $S_i^2$ and a between trial variance of $\sigma^2$.  
 
 **Moderator variables.** The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule ($SPRAY_{Sched}$). 
 `SpraySchedule` was assigned as an inside factor to the outside factor `trial` to provide correlated random effects between the different `SpraySchedule` treatments within `trials`. 
@@ -167,10 +170,14 @@ The data were analysed in the R statistical software environment, version 4.0.1,
 ```{r Figure2_treatForest, echo = FALSE}
 YieldContrasts
 ```
-
 <br>
-
+<br>
 ```{r Table1_ExperimentalDetail, echo=FALSE, message=FALSE, warning=FALSE}
+# Add a star to the trials which were not in the final analysis
+PM_Mdat[!PM_Mdat$trial_ref %in% slimmer_PM_dat$trial_ref, "trial_ref"] <-
+   sapply(PM_Mdat[!PM_Mdat$trial_ref %in% slimmer_PM_dat$trial_ref,"trial_ref"], paste0, "*")
+
+# Build table 
 PM_Mdat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole") %>%
@@ -203,10 +210,8 @@ PM_Mdat %>%
    width(j = 5, 1.1)%>%
    width(j = 6, 1.7)
 ```
-
 <br>
 <br>
-
 ```{r Table2_1to9Scale, echo=FALSE}
 data.frame(
    Scale = 1:9,
@@ -230,7 +235,7 @@ data.frame(
    align(j = c(1), align = "center", part = "all")%>%
    width(j = 2, 6.2)
 ```
-<br>
+
 
 ## Results
 
@@ -253,15 +258,15 @@ An inspection of log-likelihood profile plots showed the model, for each random 
 While the addition of disease pressure, as an interactive moderator term to `SpraySchedule`, did explain slightly more residual heterogeneity, shown by a lower $Q_E = 409.91,$. 
 The model including disease pressure did not significantly improve the model (P = 0.4859) and did not significantly explain differences in the `SpraySchedule` term, and therefore disease pressure was not included in the final model. 
 
-<br>
 
-```{r Figure1}
+```{r Figure1, echo=FALSE}
 SeasonPlot
 ```
 
 <br>
+<br>
 
-```{r table3_Contrasts}
+```{r table3_Contrasts, echo = FALSE}
 T3 <- read.csv(here("cache/Table3_contrasts.csv"), stringsAsFactors = FALSE)
 T3[,2:5] <- round(T3[,2:5], 4)
 T3 %>%
@@ -281,10 +286,9 @@ T3 %>%
    fontsize(size = 9)%>%
    width(j = 5,0.7)%>%
    width(j = 6, .3)
-
 ```
 
-<br>
+
 
 
 ## Discussion
@@ -386,6 +390,7 @@ The National Growers association and Lawrie Price for contributing data.
 The Grains Research and Development Corporation who funded this research.
 
 ## References
+
 
 
 

@@ -1,5 +1,4 @@
 
-
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, kableExtra, here, flextable, officer)
@@ -101,7 +100,7 @@ Details of trial data are presented within a research compendium which was prepa
 Due to the limited number of trials meeting the selection criteria, we made no distinction between the tebuconazole and propiconazole fungicide treatments within the analysis to ensure sufficient replication. 
 All trials included in this analysis used a randomised complete block design, and were not previously published in peer-reviewed literature.  
 
-From the trials which were included `r sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 12)` planted in late December, `r sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 1)` in January and `r sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 12)` trials planted in February (Table 1).  
+From the trials which were included `r sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 12)` planted in late December, `r sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 1)` in January and `r sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 2)` trials planted in February (Table 1).  
 
 While the main aim of all the trials collected for this study were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional variables in the experimental design.
 These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications and cultivar.
@@ -115,8 +114,8 @@ Given the ordinal scale ranked plants on the percent of foliage up the plant sho
 The timing of fungicide application treatments, was defined in relation to the recorded date when powdery mildew first occurred in the trial. 
 An 'Early' fungicide application treatment, referred to a fungicide spray schedule that commenced prior to the disease being observed in the trial. 
 'Recommended' referred to a fungicide spray schedule which commenced 1 -- 3 days following the first sign of disease. 
-'Late' treatments commenced between 7 -- 13 days after the first sign of disease. 
-There were no spray schedule treatments which began between 4 -- 6 days after the first sign of powdery mildew. 
+'Late' treatments commenced between 7 and 13 days after the first sign of disease. 
+There were no spray schedule treatments which began between 4 and 6 days after the first sign of powdery mildew. 
 The number of fungicide applications were binned in to two categories.
 A spray schedule with a single spray, and a spray schedule with two or three spray applications (Plus). 
 The division of the treatments produced: 13 'Early' treatments; 5 'EarlyPlus', 32 'Recommended'; 46 'RecommendedPlus'; 17 'Late'; and 20 'LatePlus.
