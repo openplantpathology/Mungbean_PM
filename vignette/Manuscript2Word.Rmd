@@ -1,10 +1,24 @@
 ---
 title: "A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean"
-author: "Paul Melloy, Emerson Del Ponte and Adam H. Sparks"
+author:
+  - Paul Melloy:
+      email: Paul.Melloy@usq.edu.au
+      institute: USQ
+      correspondence: true
+  - Emerson Del Ponte:
+      institute: UFV
+  - Adam H. Sparks:
+      institute: USQ
+institute:
+  - USQ: University of Southern Queensland, Centre for Crop Health, Toowoomba, Queensland, Australia
+  - UFV: Departmento de Fitopatologia, Universidade Federal de Viçosa, Brazil
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
    word_document:
       reference_docx: "Manuscript2Word_Template.docx"
+      pandoc_args:
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
 bibliography: "../Mungbean.bib"
 biblio-style: apalike
 link-citations: yes
