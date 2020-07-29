@@ -11,8 +11,6 @@ link-citations: yes
 ---
 
 
-
-
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english)
@@ -30,11 +28,28 @@ load(file = here("cache/PreliminaryData.Rdata"))
 source(here("R/reportP.R"))
 ```
 
-
-
-# Manuscript
-<!-- need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide -->
+<!-- 
+Need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide 
+https://www.agronomy.org/publications/journals/author-resources/aj-instructions#headline-article-requirements 
+-->
 <!-- To ensure formatting matches, I suggest that you create a Word template and knit this document using that -->
+
+
+## Core ideas
+<!-- up to 85 words per idea -->
+
+## Authors - affiliations and email address
+
+
+
+##### PAGE BREAK
+
+## Abstract
+
+## Abrebiations
+
+
+##### PAGE BREAK
 
 ## Introduction
 
@@ -383,7 +398,18 @@ However an improved understanding of the pathogen biology is also needed to ensu
 The population genetics, epidemiology and alternate hosts are all poorly understood in this host-pathogen relationship.
 The recent discovery of a second powdery mildew species which infects mungbean highlights the paucity of knowledge on this disease. 
 
+## Conclusion
 
+## Supplemental Material
+Supplementary material can be found in the following research compendium.
+<!-- Insert DOI, perhaps we can render the completed bookdown to PDF to add as the supplementary materials (Paul)-->
+
+## Data Availability
+All data and code used in the preparation of this manuscript can be found in the associated research compendium.
+<!-- Should we submit the raw data to a data repository like OSF and Figshare? (Paul) -->
+
+## Conflict of Interest Statement
+The authors of this paper have no conflicting interest in the research presented in this manuscript
 
 ## Acknowledgments
 The authors wish to acknowledge the work done by Professor Malcolm Riley and Dr Sue Thompson whom undertook many of the trials incorporated in this analysis from 2004 - 2015. 
