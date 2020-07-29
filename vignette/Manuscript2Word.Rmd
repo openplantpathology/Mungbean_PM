@@ -1,25 +1,24 @@
 ---
 title: "A meta-analysis of fungicide spray schedules to minimise yield loss from powdery mildew in Australian mungbean"
 author:
-   - Paul Melloy:
+  - Paul Melloy:
       email: Paul.Melloy@usq.edu.au
       institute: USQ
       correspondence: true
-   - Emerson Del Ponte:
+  - Emerson Del Ponte:
       institute: UFV
-   - Adam H. Sparks:
+  - Adam H. Sparks:
       institute: USQ
 institute:
-  - USQ: University of Southern Queensland, Centre for Crop Health, Toowoomba, Qld 4350, Australia
-  - UFV: Universidade Federal de Viçosa, Departamento de Fitopatologia, 36570-000 MG, Brazil 
+  - USQ: University of Southern Queensland, Centre for Crop Health, Toowoomba, Queensland, Australia
+  - UFV: Universidade Federal de Viçosa, Departamento de Fitopatologia, 36570-000 MG, Brazil
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
    word_document:
-      toc: no
+      reference_docx: "Manuscript2Word_Template.docx"
       pandoc_args:
-         - '--lua-filter=scholarly-metadata.lua'
-         - '--lua-filter=author-info-blocks.lua'
-         reference_docx: "Manuscript2Word_Template.docx"
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
 bibliography: "../Mungbean.bib"
 biblio-style: apalike
 link-citations: yes
