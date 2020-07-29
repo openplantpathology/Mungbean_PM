@@ -24,13 +24,13 @@ bibliography: "../Mungbean.bib"
 biblio-style: apalike
 link-citations: yes
 abstract: |
-         Insert abstract here.
+         *Abstract* Insert abstract here.
 ---
 
 
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english)
+pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english,pander)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
