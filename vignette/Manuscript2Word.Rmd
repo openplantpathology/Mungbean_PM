@@ -28,23 +28,22 @@ abstract: |
 ---
 
 
-
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english,pander)
+pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english, pander)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
 theme_set(theme_usq())
 
-
 # Data
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 load(file = here("cache/Meta-analysisData.Rdata"))
 load(file = here("cache/PreliminaryData.Rdata"))
-T3 <- read.csv(here("cache/Table3_contrasts.csv"), stringsAsFactors = FALSE)
-T3[,2:5] <- round(T3[,2:5], 4)
+T3 <-
+   read.csv(here("cache/Table3_contrasts.csv"), stringsAsFactors = FALSE)
+T3[, 2:5] <- round(T3[, 2:5], 4)
 source(here("R/reportP.R"))
 ```
 
@@ -57,14 +56,6 @@ Type of Paper: Article
 :::
 <!-- Is anyone aware of a way to put the "Type of paper" text above the renderd YAML header? ... or ... Specify extra text in the header which is rendered as a different style? 
 I am considering dropping the lua files and just codeing in the different styles to suit the MDPI_Agronomy_Template.docx -->
-
-
-<!-- 
-Need to ensure the format of this manuscript adheres to the MDPI Agronomy style guide 
-https://www.agronomy.org/publications/journals/author-resources/aj-instructions#headline-article-requirements 
--->
-<!-- To ensure formatting matches, I suggest that you create a Word template and knit this document using that -->
-
 
 ## Introduction
 
