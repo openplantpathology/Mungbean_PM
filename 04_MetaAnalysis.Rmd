@@ -269,7 +269,7 @@ summary(PM_mv)
 ```
 
 The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis.
-This effectively shows the heterogeneity between experiments for these partivular treatments.
+This effectively shows the heterogeneity between experiments for these particular treatments.
 
 
 The tau^2 also gives us the heterogeneity between trials and indicates `Recommended_plus` showed the highest heterogeneity between experiments followed by `Late_plus`, `Late` then `Recommended`, with `Early` and the no-spray `control` showing the least heterogeneity.
