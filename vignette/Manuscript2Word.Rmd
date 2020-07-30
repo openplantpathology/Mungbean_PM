@@ -21,15 +21,16 @@ output:
       - '--lua-filter=scholarly-metadata.lua'
       - '--lua-filter=author-info-blocks.lua'
 bibliography: "../Mungbean.bib"
-biblio-style: apalike
+csl: "multidisciplinary-digital-publishing-institute.csl"
 link-citations: yes
 abstract: |
          **Abstract:** Insert abstract here.
 ---
 
+
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english)
+pacman::p_load(tidyverse, kableExtra, here, flextable, officer, english,pander)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -43,12 +44,13 @@ load(file = here("cache/Meta-analysisData.Rdata"))
 load(file = here("cache/PreliminaryData.Rdata"))
 source(here("R/reportP.R"))
 ```
+
 ::: {custom-style="Art_type"}
 Type of Paper: Article
 :::
 
 ::: {custom-style="keywords"}
-**Keywords:** meta-analysis, powdery mildew, mungbean, fungicide                                                      
+**Keywords:** meta-analysis, powdery mildew, mungbean, fungicide `r print("                                                       ")`                                                     
 :::
 <!-- Is anyone aware of a way to put the "Type of paper" text above the renderd YAML header? ... or ... Specify extra text in the header which is rendered as a different style? 
 I am considering dropping the lua files and just codeing in the different styles to suit the MDPI_Agronomy_Template.docx -->
@@ -59,17 +61,6 @@ Need to ensure the format of this manuscript adheres to the MDPI Agronomy style 
 https://www.agronomy.org/publications/journals/author-resources/aj-instructions#headline-article-requirements 
 -->
 <!-- To ensure formatting matches, I suggest that you create a Word template and knit this document using that -->
-
-
-
-##### PAGE BREAK
-
-## Abstract
-
-## Abbreviations
-
-
-##### PAGE BREAK
 
 ## Introduction
 
