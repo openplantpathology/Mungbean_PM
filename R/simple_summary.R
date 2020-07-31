@@ -19,16 +19,10 @@ simple_summary <-
       
       data.frame(contrast = rename_index(index_name = ind_names, char_name = names1),
                  coefficients = sum_meta[["test"]]$coefficients,
+                 StdErr = sum_meta[["test"]]$sigma,
+                 'Zvalue' = sum_meta[["test"]]$tstat,
                  pvals = sum_meta[["test"]]$pvalues,
                  sig = p_star(sum_meta[["test"]]$pvalues)
                                          )
          
    }
-
-
-
-#### TESTING
-# 
-# summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none"))[["test"]]$pvalues
-# colnames(summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none"))[["test"]]$coefficients)
-simple_summary(summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none")))
