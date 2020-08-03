@@ -89,6 +89,8 @@ output:
     base_format: rticles::mdpi_article
 ---
 
+<!-- For reference in writing for MDPI, <https://www.mdpi.com/authors/layout> -->
+
 ```{r MEsummary_Libraries1, message=FALSE, echo=FALSE, include=FALSE}
 if (!require("pacman"))
   install.packages("pacman")
