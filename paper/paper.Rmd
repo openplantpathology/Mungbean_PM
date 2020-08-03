@@ -1,5 +1,5 @@
 ---
-title: A meta-analysis of fungicide spray schedules to minimise yield loss from powdery mildew in Australian mungbean
+title: A Meta-analysis of Fungicide Spray Schedules to Minimise Yield Loss From Powdery Mildew in Australian Mungbean
 author:
   - name: Paul Melloy
     affil: 1,*
@@ -150,7 +150,7 @@ The collection of experiments mentioned above and other unpublished trials prese
 Meta-analyses are statistical tools, which can analyse a collection of experiments, that have a similar aim, and produces a more accurate estimate of the true effect being measured.
 Using a meta-analysis can be useful in situations like this where several studies exist that have the same objective but may not provide a clear answer to the question due to variation in the results within the individual studies.
 The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect because it considers the amount of variance in each study and weights the influence of each studies treatment effects according to its statistical accuracy.
-Typically meta-analyses consider the effect of a single treatment against a control group across multiple independent studies [@Madden2011]. 
+Typically meta-analyses consider the effect of a single treatment against a control group across multiple independent studies [@Madden2011].
 However meta-analyses can also consider effect differences between multiple treatments and a control group.
 These are called multi-variate or network meta-analyses [@MaddenEtAl2016]. 
 Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies. 
