@@ -8,7 +8,7 @@ author:
     affil: 2
     orcid: 0000-0003-4398-409X
   - name: Adam H. Sparks
-    affil: 3
+    affil: 1
     orcid: 0000-0002-0061-8359
 affiliation:
   - num: 1
@@ -16,19 +16,11 @@ affiliation:
       University of Southern Queensland
       Centre for Crop Health
       Toowoomba, Queensland, 4350 Australia
-    email: Paul.Melloy@usq.edu.au
   - num: 2
     address: |
       Universidade Federal de Viçosa
       Departamento de Fitopatologia
       Viçosa, 36570-000 Minas Gearais, Brazil
-    email: delponte@ufv.br
-  - num: 3
-    address: |
-      University of Southern Queensland
-      Centre for Crop Health
-      Toowoomba, Queensland, 4350 Australia
-    email: Adam.Sparks@usq.edu.au
 correspondence: |
   Paul.Melloy@usq.edu.au; Tel.: +61 7 4631 5527
 journal: agronomy
@@ -131,7 +123,7 @@ While a third disease, powdery mildew, can reduce yields by up to 40% [@Chankaew
 
 While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
 The disease life cycle can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites [@Sparks2017].
-Weather conditions that favour the rapid development of the disease are cool temperatures between 22$ˆ{\circ}$ and 26&nbsp;$ˆ{\circ}$C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
+Weather conditions that favour the rapid development of the disease are cool temperatures between 22&nbsp;&deg; and 26&nbsp;&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
 
 Due to the requirement for cool temperatures for infection, planting date is an effective strategy for preventing the development of powdery mildew in mungbean [@AMAplanting].
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
