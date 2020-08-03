@@ -110,12 +110,12 @@ The dried grain can also be ground into a protein enriched flour for uses in noo
 Mungbean was first brought to Australia in the 1930s for use as a forage or green manure crop.
 However, it was only somewhat recently, during the 1960s that mungbean was grown commercially [@Lawn1978; @Chauhan2018].
 Prior to the 1970s the total area grown in Australia rarely exceeded 1000 hectares [@Lawn1978].
-At the end of the 1980s, between 3,000 to 10,0000 hectares were being harvested for dried beans in Australia, of which mungbean is categorised by the FAO statistics data repository [@FAOSTAT].
-In the decade leading up to 2018, between 35 - 86.4 thousand hectares of dried beans were planted annually.
+At the end of the 1980s, between 3,000 to 10,0000 hectares were being harvested for dried beans in Australia, of which mungbean is categorised by the Food and Agriculture Organization of the United Nations' statistics data repository [@FAOSTAT].
+In the decade leading up to 2018, between 35 - 86.4 thousand hectares of dried beans were planted annually in Australia.
 This increase is attributed to high value export markets and to the improved yields in the new cultivars [@Clarry2016].
 Currently mungbean is predominantly grown in southern Queensland and northern New South Wales as a short season summer legume crop.
 In 2019, approximately 90% of Australian mungbean was grown for export with lucrative returns of up to \$1300&nbsp;AU per tonne [@QueenslandGovernment2019].
-Mungbean potentially yields up to three tonnes per hectare [@ThomasRobert2004], but due to high variability in yields between seasons and locations, the average Australian farm still yields less than one tonne per hectare [@Chauhan2018].
+Mungbean potentially yields up to 3 tonnes per hectare [@ThomasRobert2004], but due to high variability in yields between seasons and locations, the average Australian farm still yields less than 1 tonne per hectare [@Chauhan2018].
 
 The high variability in yields can in part be attributed to a range of diseases that affect the crop [@Kelly2017a].
 Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfaciens* pv. _flaccumfaciens_) and halo blight (*Pseudomonas savastanoi* pv. *phaseolicola*), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
@@ -168,7 +168,7 @@ Trials undertaken in the 2013 season were conducted by the Northern Growers Alli
 <!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> 
 Trial data were obtained in different formats with varying levels of information.
 Some trials we obtained the raw data, others the reported means of each treatment, with all but one study reporting some form of variance along with the mean.
-Twenty six trials in total were collated.
+In total, 26 trials were collated.
 
 To ensure the correct question was asked of the analysis, the data needed to conform to a strict criteria.
 The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia's summer crops.
