@@ -82,8 +82,6 @@ conflictsofinterest: |
   please state 'The founding sponsors had no role in the design of the study; 
   in the collection, analyses, or interpretation of data; in the writing of the 
   manuscript, an in the decision to publish the results'.
-sampleavailability: |
-  Samples of the compounds ...... are available from the authors.
 abbreviations:
   - short: MDPI
     long: Multidisciplinary Digital Publishing Institute
@@ -136,7 +134,7 @@ While a third disease, powdery mildew, can reduce yields by up to 40% [@Chankaew
 
 Powdery mildew is caused by two separate genera of fungi in Australia *Podosphaera xanthii* and an unnamed *Psuedoidium sp.* (Kiss and Kelly Personal Communication).
 While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified. 
-The disease lifecycle can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites [@Sparks2017].
+The disease life cycle can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites [@Sparks2017].
 Weather conditions that favour the rapid development of the disease are cool temperatures between 22&deg; and 26&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].  
 
 Due to the requirement for cooler temperatures for infection, planting date is an effective strategy for preventing the development of powdery mildew in mungbean [@AMAplanting].
@@ -185,7 +183,7 @@ Twenty six trials in total were collated.
 
 To ensure the correct question was asked of the analysis, the data needed to conform to a strict criteria.
 The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia's summer crops.
-Data from trials undertaken in this regionhad to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield. 
+Data from trials undertaken in this region had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield. 
 The data were subset to only include fungicide treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset.
 Subsequently the 26 trials were reduced to 17 trials (Table 1). 
 Two more trials were also removed because grain yield variance, which was required for the meta-analysis, was not reported, reducing the number of trials down to 15. 
@@ -429,7 +427,7 @@ In cereal crops *Blumeria graminis* showed reduced sensitivity to strobilurins i
 
 According to the Fungicide Resistance Action Committee (FRAC) it is important to alternate or mix fungicides with different modes of action to avoid fungicide resistance. 
 At the time of writing, in Australia one fungicide is registered with the to treat powdery mildew in mungbean, Veritas/Custodia (200 g/L tebuconazole with 120 g/L azoxystrobin).
-This fungicide provides dual action: tebeconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor.
+This fungicide provides dual action: tebuconazole disrupts C-14 demethylase, required in sterol biosynthesis for cell membranes; and azoxystrobin, a Quinone outside inhibitor.
 Quinone is required in cell metabolism and active in the mitochondrial complex III.
 However FRAC recommends that applications of QoIs or strobilurins, singularly or as a mixture, should not be applied consecutively and alternated with a fungicide from a different group [@Brent2007]. 
 For mungbean, past experiments have shown some success with sulphur applications to control powdery mildew. 
