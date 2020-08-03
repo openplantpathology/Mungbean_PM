@@ -118,7 +118,7 @@ In 2019, approximately 90% of Australian mungbean was grown for export with lucr
 Mungbean potentially yields up to 3 tonnes per hectare [@ThomasRobert2004], but due to high variability in yields between seasons and locations, the average Australian farm still yields less than 1 tonne per hectare [@Chauhan2018].
 
 The high variability in yields can in part be attributed to a range of diseases that affect the crop [@Kelly2017a].
-Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfaciens* pv. _flaccumfaciens_) and halo blight (*Pseudomonas savastanoi* pv. *phaseolicola*), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
+Two major foliar diseases, tan spot or common wilt (*Curtobacterium flaccumfaciens* pv. *flaccumfaciens*) and halo blight (*Pseudomonas savastanoi* pv. *phaseolicola*), are the main focus of the Australian Mungbean Improvement programme's resistance breeding efforts due to lack of effective chemical controls for them.
 While a third disease, powdery mildew, can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars, the damage can be mitigated through an integrated disease management strategy of fungicide treatments and cultural practices.
 
 While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
