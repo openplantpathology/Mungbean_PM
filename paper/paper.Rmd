@@ -318,19 +318,6 @@ However the $Late_{plus}$ only showed significantly greater yield saved when com
 Consideration should be given when comparing $Late_{plus}$ and $Early_{single}$ treatments given they did not occur within the same trial for any of the 15 trials included in the meta-analysis. 
 Within the single fungicide application treatments $Late_{single}$ provided the highest yield protection, and was estimated at saving an average of `r round(PM_mv$b[5,1] * 1000, 2)` kg / ha (SE = `r round(PM_mv$se[5] * 1000, 2)` kg / ha) relative to the no spray control (`r reportP(PM_mv$pval[5])`). 
 $Early_{single}$ treatments were significantly lower than all other treatments (Table 3) and reported a mean estimate `r abs(round(PM_mv$b[2,1] * 1000, 2))` kg / ha (SE = `r round(PM_mv$se[2] * 1000, 2)` kg / ha) lower than the no spray control (`r reportP(PM_mv$pval[2])`).  
-=======
-<!-- AHS - Seems that there is something missing here in this first line? -->
-
-$control$, $Early_{single}$, $Recommended_{single}$, $Recommended_{plus}$, $Late_{single}$, and $Late_{plus}$.  
-Overall the meta-analysis indicated that, with the exception of the $Early_{single}$ treatment, all the the spray schedules were effective at protecting mungbean yields relative to the no spray controls (Figure \@ref(fig:Figure1)). 
-Treatments which incorporating multiple fungicide applications, $Recommended_{plus}$ and $Late_{plus}$, produced the highest mean yield protection estimates at `r round(PM_mv$b[4,1] * 1000, 2)` (SE = `r round(PM_mv$se[4] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha) and `r round(PM_mv$b[6,1] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha (SE = `r round(PM_mv$se[6] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha) respectively (Table \@ref(tab:Table3)). 
-Both $Recommended_{plus}$ and $Late_{plus}$ were also significantly higher than single applications $Early_{single}$ (P = `r T3$pval[2]` and P = `r T3$pval[4]` respectively) and $Late_{single}$(P = `r T3$pval[8]` and P = `r T3$pval[10]` respectively). 
-However, comparing $Late_{plus}$ and $Early_{single}$ should done with caution given these treatments did not occur within the same trial for any of the 15 trials included in the meta-analysis. 
-Within the single fungicide application treatments `Recommended` provided the highest yield protection, and was estimated at saving an average of 159.9 kg / ha (SE = 30.5 kg / ha) relative to the no spray control (P < 0.0001). 
-`Recommended` treatments were was also significantly higher than `Early` treatments by 122.1 kg / ha (SE = 42.1 kg / ha)(P = 0.004). 
-Single `Late` applications were effective at significantly mitigating the effect of powdery mildew on yield by a mean of 122 kg / ha (SE = 39.2 kg / ha)(P = 0.0019). 
-However, this estimate was not significantly different to single `Early` or `Recommended` treatments (P = 0.119; P = 0.278 respectively).
->>>>>>> ac3ed156ba3818392aec04fc713e4ec20f52d07a
 
 The $Q_M$ omnibus test of moderators, shows the moderators significantly influence the model ($Q_M =$ `r PM_mv$QM` $,df =$ `r PM_mv$m`, `r reportP(PM_mv$QMp)`) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
 The analysis shows there is still a significant amount of residual heterogeneity ($Q_E =$ `r PM_mv$QE` $,df=$ `r PM_mv$k - PM_mv$m`, `r reportP(PM_mv$QEp)`) not captured by the spray management moderator indicating other possible moderators, which might influence grain yield.  
@@ -371,6 +358,7 @@ PM_Mdat %>%
     is.na(harvest_date) ~ mean(harvest_date,na.rm = TRUE) - planting_date,
     TRUE ~ harvest_date - planting_date
   ))
+
 
 # For some trials where planting date and Harvest date is missing let's estimate 
 #     the season length by using the mean of all season lengths
@@ -450,11 +438,6 @@ season_dates %>%
    scale_color_manual(values=c("black","grey70"))+
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
 
-
-=======
-```{r Figure2, echo=FALSE, fig.cap="Season plot"}
-SeasonPlot
->>>>>>> ac3ed156ba3818392aec04fc713e4ec20f52d07a
 ```
 
 ```{r Table3, echo = FALSE}
