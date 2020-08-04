@@ -76,6 +76,8 @@ conflictsofinterest: |
 abbreviations:
   - short: DSS
     long: Decision support system
+  - short: AUDPC
+    long: Area under the disease progress curve
 output:
   bookdown::pdf_book:
     base_format: rticles::mdpi_article
@@ -94,6 +96,8 @@ library(theme.usq)
 theme_set(theme_usq())
 
 # Data
+source(here("R/import_data.R")) # load `import_data()`
+PM_MB_means <- import_data()
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 load(file = here("cache/Meta-analysisData.Rdata"))
 load(file = here("cache/PreliminaryData.Rdata"))
@@ -122,8 +126,6 @@ Along with these bacterial, fungal and phytoplasma caused diseases, another fung
 The disease in Australia currently is thought to be caused by *Podosphaera xanthii*, however, this description has changed over time and a second species has also been cited as causing the disease but not yet officially classified [@Kelly2019].
 Other research refers to the causal agent as *Erysiphe polygoni* outside of Australia [@Thakur1995].
 
-The damage can be mitigated through an integrated disease management strategy of fungicide treatments and cultural practices and loci conferring resistance in mungbean have been identified [@Humphry2003; @Zhang2008]. However, to date, the focus in Australia has remained on breeding for disease resistance to bacterial diseases rather than powdery mildew due to the wide availability of fungicides for use in controlling powdery mildew. <!-- Best to get a quote from Col here so we can say "personal comm". I've heard him say this at a mungbean field day, I believe. -->
-
 While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
 The disease life cycle can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites [@Sparks2017].
 Weather conditions that favour the rapid development of the disease are cool temperatures between 22&nbsp;&deg; and 26&nbsp;&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
@@ -132,9 +134,9 @@ Due to the requirement for cool temperatures for infection, planting date is an 
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
 Therefore, delayed sowing dates of late January into February increase the possibility powdery mildew will infect earlier in the crop's life cycle and cause greater yield losses than in earlier sown mungbean crops.
 
-Cultivar selection is an additional strategy to mitigate yield damage from powdery mildew. 
-In Australia, quantitative resistance to powdery mildew has also been incorporated into few commercially available varieties.
-Jade-AU <span class="pbr">(pbr)</span> <!-- Need PBR emblem here --> has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also containing some notable resistance [@Sparks2017].
+Cultivar selection is an additional strategy to mitigate yield damage from powdery mildew.
+While loci conferring resistance in mungbean have been identified [@Humphry2003; @Zhang2008]; to date, the focus in Australia has remained on breeding for disease resistance to bacterial diseases rather than powdery mildew due to the wide availability of fungicides for use in controlling powdery mildew. <!-- Best to get a quote from Col here so we can say "personal comm". I've heard him say this at a mungbean field day, I believe. -->
+Currently, Jade-AU\pbr has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also having some resistance [@Sparks2017].
 However, commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy. 
 Evidence of this is shown by field trials conducted in 2016 with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 32.7% were recorded [@SueThompson2016].
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013], however no evidence for how they compare to Australian varietal resistance could be found.
@@ -155,7 +157,7 @@ Using a meta-analysis can be useful in situations like this where several studie
 The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect because it considers the amount of variance in each study and weights the influence of each studies treatment effects according to its statistical accuracy.
 Typically meta-analyses consider the effect of a single treatment against a control group across multiple independent studies [@Madden2011].
 However meta-analyses can also consider effect differences between multiple treatments and a control group.
-These are called multi-variate or network meta-analyses [@MaddenEtAl2016]. 
+These are called multi-variate or network meta-analyses [@Madden2016]. 
 Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies. 
 Indirect comparisons can be made between these two treatments if the both had direct comparisons with one or more treatments in common, assuming no significant bias in the studies that investigated each of the treatments and which are subject to a indirect comparison [@Jansen2011].
 
@@ -182,27 +184,27 @@ Two more trials were also removed because grain yield variance, which was requir
 
 ```{r Table1, echo=FALSE, message=FALSE, warning=FALSE}
 # Add a star to the trials which were not in the final analysis
-PM_Mdat[!PM_Mdat$trial_ref%in% slimmer_PM_dat$trial_ref, "trial_ref"] <-
-  sapply(PM_Mdat[!PM_Mdat$trial_ref%in% slimmer_PM_dat$trial_ref, "trial_ref"], paste0, "*")
+PM_Mdat[!PM_Mdat$trial_ref %in% slimmer_PM_dat$trial_ref, "trial_ref"] <-
+  sapply(PM_Mdat[!PM_Mdat$trial_ref %in% slimmer_PM_dat$trial_ref, "trial_ref"], paste0, "*")
 
 # Build table
-PM_Mdat%>%
+PM_Mdat %>%
   filter(fungicide_ai == "tebuconazole" |
-           fungicide_ai == "propiconazole")%>%
-  group_by(trial_ref)%>%
+           fungicide_ai == "propiconazole") %>%
+  group_by(trial_ref) %>%
   summarise(
     year = unique(year),
     location = unique(location),
     planting_date = unique(planting_date),
     first_sign_disease = unique(first_sign_disease)
-  )%>%
-  arrange(year)%>%
+  ) %>%
+  arrange(year) %>%
   mutate(Research_org = c(
     rep("DAF$^{a}$", times = 4),
     rep("NGA$^{b}$", times = 4),
     rep("DAF$^{a}$", times = 4),
     rep("USQ$^{c}$", times = 5)
-  ))%>%
+  )) %>%
   rename(
     `Unique Trial Reference` = trial_ref,
     Year = year,
@@ -210,12 +212,14 @@ PM_Mdat%>%
     `Planting Date` = planting_date,
     `Date First Sign` = first_sign_disease,
     `Research Organisation` = Research_org
-  )%>%
-  kable(format = "latex",
-        booktabs = TRUE,
-        escape = FALSE,
-        caption="Description of fungicide application experiments.")%>%
-  kable_styling()%>%
+  ) %>%
+  kable(
+    format = "latex",
+    booktabs = TRUE,
+    escape = FALSE,
+    caption = "Description of fungicide application experiments."
+  ) %>%
+  kable_styling() %>%
   footnote(
     alphabet = c(
       "Queensland Department of Agriculture, Fisheries and Forestry",
@@ -286,10 +290,10 @@ data.frame(
     "Colonies to top of the plant with > 75% of the plants affected",
     "Colonies to top of the plant with > 100% of the plants affected and heavy leaf drop"
   )
-)%>%
-kable(format = "latex",
-      booktabs = TRUE,
-      caption="Powdery mildew severity scoring scale.")%>%
+) %>%
+  kable(format = "latex",
+        booktabs = TRUE,
+        caption = "Powdery mildew severity scoring scale.") %>%
   kable_styling()
 ```
 
@@ -337,14 +341,14 @@ First sign of powdery mildew was observed as early as the 28th of February in th
 ```{r Figure2, echo=FALSE, caption="Season plot"}
 # Create the data frame for the plot
 season_dates <- PM_MB_means %>%
-   group_by(trial_ref) %>%
-   summarise(
-      Planting_date = unique(planting_date),
-      Harvest_date = unique(harvest_date),
-      First_sign_PM = unique(first_sign_disease),
-      season_length = as.Date(unique(harvest_date)) - as.Date(unique(planting_date)),
-      cropping_season = "Actual"
-   )
+  group_by(trial_ref) %>%
+  summarise(
+    Planting_date = unique(planting_date),
+    Harvest_date = unique(harvest_date),
+    First_sign_PM = unique(first_sign_disease),
+    season_length = as.Date(unique(harvest_date)) - as.Date(unique(planting_date)),
+    cropping_season = "Actual"
+  )
 mean(ymd(PM_Mdat$planting_date), na.rm = TRUE)
 
 PM_Mdat %>%
