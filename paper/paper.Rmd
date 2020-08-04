@@ -306,7 +306,6 @@ YieldContrasts
 
 # Results
 
-<<<<<<< HEAD
 Overall the meta-analysis indicated that, with the exception of the $Early_{single}$ treatment, all the the spray schedules were effective at protecting mungbean yields relative to the no spray controls (Figure \@ref(fig:Figure1)). 
 Treatments which incorporated multiple fungicide applications, $Recommended_{plus}$ and $Late_{plus}$, produced the highest mean yield protection estimates at `r round(PM_mv$b[4,1] * 1000, 2)` (SE = `r round(PM_mv$se[4] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha) and `r round(PM_mv$b[6,1] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha (SE = `r round(PM_mv$se[6] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha) respectively (Table 3). 
 The treatment that showed the most yield saved compared to the control, $Recommended_{plus}$, was also significantly higher than all other single applications, (
@@ -331,7 +330,6 @@ First sign of powdery mildew was observed as early as the 28th of February in th
 
 <!-- What is this `SeasonPlot`? I can't find any docs and no file named `SeasonPlot`. It should just be code here int the doc for easy editing. -->
 
-<<<<<<< HEAD
 ```{r Figure2, echo=FALSE, caption="Season plot"}
 # Create the data frame for the plot
 season_dates <- PM_MB_means %>%
