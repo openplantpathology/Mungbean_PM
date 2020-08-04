@@ -331,109 +331,56 @@ First sign of powdery mildew was observed as early as the 28th of February in th
 <!-- What is this `SeasonPlot`? I can't find any docs and no file named `SeasonPlot`. It should just be code here int the doc for easy editing. -->
 
 ```{r Figure2, echo=FALSE, caption="Season plot"}
-# Create the data frame for the plot
-season_dates <- PM_MB_means %>%
-   group_by(trial_ref) %>%
-   summarise(
-      Planting_date = unique(planting_date),
-      Harvest_date = unique(harvest_date),
-      First_sign_PM = unique(first_sign_disease),
-      season_length = as.Date(unique(harvest_date)) - as.Date(unique(planting_date)),
-      cropping_season = "Actual"
-   )
-mean(ymd(PM_Mdat$planting_date), na.rm = TRUE)
-
 PM_Mdat %>%
   distinct(trial_ref, planting_date, harvest_date,first_sign_disease) %>%
   mutate(planting_date = ymd(planting_date))%>%
   mutate(harvest_date = ymd(harvest_date))%>%
-    mutate(cropping_season = case_when(
+  mutate(first_sign_disease = ymd(first_sign_disease))%>%
+  mutate(cropping_season = case_when( # add categorical value for estimated season period
     is.na(planting_date) | is.na(harvest_date ) ~ "Estimated",
     TRUE ~ "Actual"))%>%
-  mutate(season_length = case_when(
-    is.na(planting_date) ~ harvest_date - mean(planting_date,na.rm = TRUE),
-    is.na(harvest_date) ~ mean(harvest_date,na.rm = TRUE) - planting_date,
-    TRUE ~ harvest_date - planting_date
-  ))
-
-
-# For some trials where planting date and Harvest date is missing let's estimate 
-#     the season length by using the mean of all season lengths
-season_dates[is.na(season_dates$season_length),"cropping_season"] <- "Estimated"
-
-season_dates[is.na(season_dates$Planting_date),"Planting_date"] <- 
-   season_dates[is.na(season_dates$Planting_date),"Harvest_date"] - 
-   as.numeric(mean(season_dates$season_length, na.rm = TRUE))
-
-season_dates[is.na(season_dates$Harvest_date),"Harvest_date"] <- 
-   season_dates[is.na(season_dates$Harvest_date),"Planting_date"] + 
-   as.numeric(mean(season_dates$season_length, na.rm = TRUE))
-
-season_dates[is.na(season_dates$season_length),"season_length"] <- 
-   mean(season_dates$season_length, na.rm = TRUE)
-
-season_dates$Planting_day <- yday(season_dates$Planting_date)
-season_dates$Disease_day <- yday(season_dates$First_sign_PM)
-
-season_dates[c(1:2,6), "Planting_day"] <- 1
-
-season_dates$Harvest_day <-
-   season_dates$Planting_day + season_dates$season_length
-
-first_day_month <- c(0, 31, 60, 91, 121, 152, 182, 212, 244, 274) + 1
-axis_labels_date <-
-   c(
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[1], "%b-%d"),
-      # Jan
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[2], "%b-%d"),
-      # Feb
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[3], "%b-%d"),
-      # March
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[4], "%b-%d"),
-      # April
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[5], "%b-%d"),
-      # May
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[6], "%b-%d"),
-      # June
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[7], "%b-%d"),
-      # July
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[8], "%b-%d"),
-      # August
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[9], "%b-%d"),
-      # Sept
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[10], "%b-%d") # October
-   )
-
-# reorder the factors so they will appear in chronological order
-# I used First sign because all trials have recorded this
-season_dates$trial_ref <-
-   factor(season_dates$trial_ref,
-          levels = levels(season_dates$trial_ref)[rev(order(season_dates$First_sign_PM))])
-
-# Plot
-season_dates %>%
-   ggplot() +
-   geom_pointrange(aes(
-      x = trial_ref,
-      y = Disease_day,
-      ymin = Planting_day,
-      ymax = Harvest_day,
-      colour = cropping_season
-   )) +
-   scale_y_continuous(limits = c(
-      0,
-      max(
-         season_dates$Planting_day +
-            season_dates$season_length,
-         na.rm = TRUE
-      )
-   ),
-   labels = axis_labels_date,
-   breaks = first_day_month) +
-   geom_point(aes(x = trial_ref, y = Disease_day)) +
-   coord_flip() +
-   scale_color_manual(values=c("black","grey70"))+
-   ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
+  mutate(plant_day = case_when( #for crops planted in late December minus 365 days from yday function
+    yday(planting_date) < 200 ~ yday(planting_date),
+    yday(planting_date) > 200 ~ yday(planting_date) - 365,
+  )) %>%
+  mutate(season_length = case_when(  # when either planting date or harvest date are missing use the overall mean season length as an estimate
+    is.na(planting_date) | is.na(harvest_date) ~
+      mean(yday(harvest_date) - plant_day,na.rm = TRUE),
+    TRUE ~ yday(harvest_date) - plant_day
+  ))%>%
+  mutate(plant_day = case_when( # estimate planting day  from mean season length
+    is.na(plant_day) ~ yday(harvest_date) - season_length,
+    TRUE ~ plant_day
+  ))%>%
+  mutate(harvest_day = case_when( #estimate harvest day from mean season length
+    is.na(harvest_date) ~ plant_day + season_length,
+    TRUE ~ yday(harvest_date)
+  ))%>%
+  mutate(trial_ref = factor(trial_ref, # reorder by the first_sign_of_disease
+                            levels = trial_ref[rev(order(ymd(first_sign_disease)))]))%>%
+  ggplot() +
+  geom_pointrange(aes(
+    x = trial_ref,
+    y = yday(first_sign_disease),
+    ymin = plant_day,
+    ymax = harvest_day,
+    colour = cropping_season
+   ))+
+  scale_y_continuous(limits = c(
+    -25,
+    183),
+    labels = paste(month(1:7, label = TRUE, abbr = TRUE), rep(1,7),sep = "-"),
+    breaks = yday(ymd(paste(rep(2018, 7),1:7, rep(1,7),sep = "-")))
+    ) +
+  geom_hline(yintercept = yday(ymd(paste(rep(2018, 7),1:7, rep(1,7),sep = "-"))), 
+             colour = "grey80",
+             linetype = 2)+
+  geom_point(aes(x = trial_ref, y = yday(first_sign_disease))) +
+  coord_flip() +
+  scale_color_manual(values=c("black","grey70"))+
+  ggtitle("Season length and first appearance of powdery mildew \nin each respective trial")+
+  xlab("Trial reference code")+
+  ylab(NULL)
 
 ```
 
