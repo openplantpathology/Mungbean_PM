@@ -135,7 +135,7 @@ slimmer_PM_dat %>%
 
 Using the mean difference in the treatment effect seems to show the effect of each treatment better than just raw yield and reduces the variability in the treatments.
 We know there is a good deal of variability in our studies and between them.
-Mungbean produces variable yields between seasons so ordinarilly we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
+Mungbean produces variable yields between seasons so ordinarily we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
 However for an arm-based analysis we calculate the differences between control and treatment after the meta-analysis.  
 
 ### Formating the response variable
