@@ -14,10 +14,6 @@
 
 \usepackage{longtable}
 
-% Plant Breeders' Rights glyph command
-\usepackage{scalerel}
-\newcommand{\pbr}{\scalerel*{\includegraphics{pbr_glyph}}{X}\ }
-
 % see https://stackoverflow.com/a/47122900
 
 %--------------------
@@ -191,13 +187,13 @@ Currently mungbean is predominantly grown in southern Queensland and northern Ne
 In 2019, approximately 90\% of Australian mungbean was grown for export with lucrative returns of up to \$1300~AU per tonne \citep{QueenslandGovernment2019}.
 Mungbean potentially yields up to 3 tonnes per hectare \citep{ThomasRobert2004}, but due to high variability in yields between seasons and locations, the average Australian farm still yields less than 1 tonne per hectare \citep{Chauhan2018}.
 
-The high variability in yields can in part be attributed to a range of diseases that affect the crop \citep{Wood1990, Conde1991, Fuhlbohm1996, Fuhlbohm2013, Wilson2001, Noble2019}.
-Along with these bacterial, fungal and phytoplasma caused diseases, another fungal disease, powdery mildew, can reduce yields by up to 40\% \citep{Chankaew2013} in susceptible cultivars.
+The high variability in yields can in part be attributed to a range of diseases that affect the crop that include fungi, bacteria and phytoplasmas {[}\citet{Wood1990}; \citet{Conde1991}; \citep{Thakur1995, Fuhlbohm1996, Fuhlbohm2013, Wilson2001, Noble2019}.
+Among the fungal diseases is powdery mildew, which can reduce yields by up to 40\% \citep{Chankaew2013} in susceptible cultivars.
 The disease in Australia currently is thought to be caused by \emph{Podosphaera xanthii}, however, this description has changed over time and a second species has also been cited as causing the disease but not yet officially classified \citep{Kelly2019}.
-Other research refers to the causal agent as \emph{Erysiphe polygoni} outside of Australia \citep{Thakur1995}.
+While other research outside of Australia refers to the causal agent as \emph{Erysiphe polygoni}.
 
-While the pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified.
-The disease life cycle can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites \citep{Sparks2017}.
+While the powdery mildew pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified in Australia.
+The disease cycle can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites \citep{Sparks2017}.
 Weather conditions that favour the rapid development of the disease are cool temperatures between 22~° and 26~°C, and a leaf surface that is not overly wet for infection \citep{Kelly2017a}.
 
 Due to the requirement for cool temperatures for infection, planting date is an effective strategy for preventing the development of powdery mildew in mungbean \citep{AMAplanting}.
@@ -206,10 +202,10 @@ Therefore, delayed sowing dates of late January into February increase the possi
 
 Cultivar selection is an additional strategy to mitigate yield damage from powdery mildew.
 While loci conferring resistance in mungbean have been identified \citep{Humphry2003, Zhang2008}; to date, the focus in Australia has remained on breeding for disease resistance to bacterial diseases rather than powdery mildew due to the wide availability of fungicides for use in controlling powdery mildew.
-Currently, Jade-AU\pbr has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also having some resistance \citep{Sparks2017}.
+Quantitative disease resistance has been observed in some breeding lines overseas \citep{Pandey2018, Chankaew2013}, however no evidence for how they compare to Australian varietal resistance could be found.
+Currently, Jade-AU has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also having some resistance \citep{Sparks2017}.
 However, commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy.
 Evidence of this is shown by field trials conducted in 2016 with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 32.7\% were recorded \citep{SueThompson2016}.
-Quantitative disease resistance has been observed in some breeding lines overseas \citep{Pandey2018, Chankaew2013}, however no evidence for how they compare to Australian varietal resistance could be found.
 Additional strategies to cultivar choice, such as fungicide treatments, are necessary to limit yield loss when conditions for the disease are conducive.
 
 There is almost a complete lack of peer-reviewed literature summarising fungicide efficacy on powdery mildew in Australian mungbean.
@@ -219,7 +215,7 @@ Early trials showed that for fungicide applications to protect yield, a single f
 However, due to the variability in the results between seasons and experiments, few of these studies produced a clear result based on a statistical analysis.
 This variability presents uncertainty for the best practice of fungicide spray schedules to mitigate yield losses from powdery mildew.
 
-The collection of experiments mentioned above and other unpublished trials present an excellent opportunity for a meta-analysis.
+The collection of experiments mentioned above and other unpublished trials conducted in Australia present an excellent opportunity for a meta-analysis.
 Meta-analyses are statistical tools, which can analyse a collection of experiments, that have a similar aim, and produces a more accurate estimate of the true effect being measured.
 Using a meta-analysis can be useful in situations like this where several studies exist that have the same objective but may not provide a clear answer to the question due to variation in the results within the individual studies.
 The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect because it considers the amount of variance in each study and weights the influence of each studies treatment effects according to its statistical accuracy.
@@ -397,72 +393,11 @@ The model including disease pressure did not significantly improve the model (P 
 
 First sign of powdery mildew was observed as early as the 28th of February in the 2013 trial at \ldots. ; and as late as the 12th of April in the 2018 trial at \ldots{}
 
-\begin{verbatim}
-## `summarise()` ungrouping output (override with `.groups` argument)
-\end{verbatim}
-
-\begin{verbatim}
-## [1] "2013-03-31"
-\end{verbatim}
-
-\begin{verbatim}
-##       trial_ref planting_date first_sign_disease harvest_date cropping_season
-## 1  mung0001/01*    2001-02-11         2001-03-16   2001-05-09          Actual
-## 2  mung0102/01*          <NA>         2002-02-07   2002-03-18       Estimated
-## 3  mung0102/02*    2002-01-29         2002-03-19   2002-05-15          Actual
-## 4  mung0102/03*    2002-02-12         2002-04-04   2002-05-30          Actual
-## 5  mung0102/04*    2002-02-12         2002-04-05   2002-05-17          Actual
-## 6  mung0304/01*    2004-02-21         2004-03-23   2004-04-28          Actual
-## 7  mung0910/01*    2010-01-22         2010-03-18   2010-05-14          Actual
-## 8  mung0910/02*    2010-01-29         2010-03-26   2010-05-19          Actual
-## 9   mung1011/01    2011-01-24         2011-03-28   2011-04-25          Actual
-## 10  mung1011/02    2011-02-02         2011-03-22         <NA>       Estimated
-## 11 mung1112/01*    2012-02-20         2012-04-02         <NA>       Estimated
-## 12  mung1112/02    2012-02-03         2012-03-12         <NA>       Estimated
-## 13       AM1303    2012-12-28         2013-02-28   2013-04-18          Actual
-## 14       BB1305    2013-01-12         2013-03-13   2013-05-06          Actual
-## 15       AM1304    2012-12-24         2013-03-16   2013-04-11          Actual
-## 16       AM1305    2013-01-23         2013-03-25   2013-06-20          Actual
-## 17  mung1415/01    2015-01-19         2015-03-16   2015-04-20          Actual
-## 18 mung1415/02*    2015-01-06         2015-03-02   2015-03-31          Actual
-## 19 mung1516/03*    2016-02-12         2016-03-17   2016-05-03          Actual
-## 20  mung1516/01    2016-02-03         2016-03-08   2016-05-06          Actual
-## 21  mung1516/02    2016-02-11         2016-03-09   2016-05-10          Actual
-## 22  mung1617/02    2017-01-27         2017-03-07   2017-05-11          Actual
-## 23  mung1617/01    2017-02-13         2017-03-24   2017-06-26          Actual
-## 24  mung1718/01    2018-02-13         2018-03-21   2018-05-31          Actual
-## 25  mung1819/01    2018-02-04         2018-04-12   2018-05-22          Actual
-## 26  mung1819/02    2018-02-18         2018-04-12   2018-05-22          Actual
-##    season_length
-## 1      87.0 days
-## 2   -3533.2 days
-## 3     106.0 days
-## 4     107.0 days
-## 5      94.0 days
-## 6      67.0 days
-## 7     112.0 days
-## 8     110.0 days
-## 9      91.0 days
-## 10    239.1 days
-## 11   -143.9 days
-## 12   -126.9 days
-## 13    111.0 days
-## 14    114.0 days
-## 15    108.0 days
-## 16    148.0 days
-## 17     91.0 days
-## 18     84.0 days
-## 19     81.0 days
-## 20     93.0 days
-## 21     89.0 days
-## 22    104.0 days
-## 23    133.0 days
-## 24    107.0 days
-## 25    107.0 days
-## 26     93.0 days
-\end{verbatim}
-
+\begin{figure}
+\centering
 \includegraphics{paper_files/figure-latex/Figure2-1.pdf}
+\caption{\label{fig:Figure2}Season plot}
+\end{figure}
 
 \begin{table}
 
