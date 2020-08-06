@@ -214,7 +214,7 @@ PM_Mdat %>%
     format = "latex",
     booktabs = TRUE,
     escape = FALSE,
-    caption = "Description of fungicide application experiments."
+    caption = "Description of fungicide application trials included in meta-analysis to determine the most effective fungicide spray schedule to minimise yield loss from powdery mildew in Australian mungbean. Trials were all conducted in the Grains Research and Development (GRDC) Northern Grains Region of eastern Australia to test application timing for the best control of powdery mildew of mungbean."
   ) %>%
   kable_styling() %>%
   footnote(
