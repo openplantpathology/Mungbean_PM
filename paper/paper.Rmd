@@ -1,5 +1,5 @@
 ---
-title: A Meta-analysis of Fungicide Spray Schedules to Minimise Yield Loss From Powdery Mildew in Australian Mungbean
+title: A Meta-analysis of Fungicide Spray Schedules to Minimise Yield Loss from Powdery Mildew in Australian Mungbean
 author:
   - name: Paul Melloy
     affil: 1,*
