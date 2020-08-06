@@ -150,8 +150,8 @@ This variability presents uncertainty for the best practice of fungicide spray s
 
 <!--Some of the fungicides tested for controlling powdery mildew in mungbean have been registered with the APVMA [@APVMA; @Kelly2017a;  insert all published trials here -->
 
-The collection of experiments mentioned above and other unpublished trials conducted in Australia present an excellent opportunity for a meta-analysis.
-Meta-analyses are statistical tools, which can analyse a collection of experiments, that have a similar aim, and produces a more accurate estimate of the true effect being measured.
+The collection of experiments mentioned above and other unpublished trials conducted in Australia presented an ideal opportunity for a meta-analysis to study fungicide timing to control mungbean powdery mildew.
+Meta-analyses are statistical tools which can analyse a collection of experiments that have a similar aim and produce a more accurate estimate of the true effect being measured.
 Using a meta-analysis can be useful in situations like this where several studies exist that have the same objective but may not provide a clear answer to the question due to variation in the results within the individual studies.
 The outcome of a meta-analysis provides a more accurate estimation of the true treatments effect because it considers the amount of variance in each study and weights the influence of each studies treatment effects according to its statistical accuracy.
 Typically meta-analyses consider the effect of a single treatment against a control group across multiple independent studies [@Madden2011].
@@ -160,29 +160,27 @@ These are called multi-variate or network meta-analyses [@Madden2016].
 Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies.
 Indirect comparisons can be made between these two treatments if the both had direct comparisons with one or more treatments in common, assuming no significant bias in the studies that investigated each of the treatments and which are subject to a indirect comparison [@Jansen2011].
 
-Considering the recent launch in November 2019 of the mobile app decision support system (DSS) PowderyMildewMBM [@Diggle], which provides a cost benefit analysis to assists growers in their decision "if" and "when" apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
+Considering the November 2019 launch of the mobile app decision support system (DSS) PowderyMildewMBM [@Diggle], which provides a cost benefit analysis to assists growers in their decision "if" and "when" apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
 The aim of this meta-analysis was to determine, from a collection of unpublished studies, what spray management scenario provides the greatest yield protection from powdery mildew in Australian mungbean.
 
 # Materials and Methods
 
-## Trial criteria for inclusion and description
+## Trial Criteria for Inclusion and Description
 
-The data for this study were obtained through personal correspondence with colleagues and collaborating institutions.
-Trials undertaken in the 2013 season were conducted by the Northern Growers Alliance (NGA) [-@goolhi2013; -@premer2013; -@Millmerran2013; -@Marysmount2013].
-<!-- should check, Sue and Mal moved to USQ in 2015 I think. Therefore the trials probably started with USQ earlier --> 
+The data for this study were obtained through studies that were conducted by the authors, FAIR (Findable, Accessible, Interoperable, Reusable) data available from GRDC Online Farm Trials <https://www.farmtrials.com.au/>, personal correspondence with colleagues and collaborating institutions.
 Trial data were obtained in different formats with varying levels of information.
-Some trials we obtained the raw data, others the reported means of each treatment, with all but one study reporting some form of variance along with the mean.
+Raw data was obtained for some trials, others reported only the means of each treatment, with all but one trial reporting some form of variance along with the mean.
 In total, 26 trials were collated.
 
-To ensure the correct question was asked of the analysis, the data needed to conform to a strict criteria.
-The criteria for inclusion of trial data in the meta-analysis required, a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains regions of eastern Australia, which grows the majority of Australia's summer crops.
-Data from trials undertaken in this region had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield. 
+To ensure the correct question was asked of the analysis, the data needed to conform to strict criteria for inclusion.
+The criteria for inclusion of trial data in the meta-analysis first required a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains region of eastern Australia, which grows the majority of Australia's summer crops.
+Data from trials conducted in this region had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield.
 The data were subset to only include fungicide treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset.
-Subsequently the 26 trials were reduced to 17 trials (Table \@ref(tab:Table1)).
-Two more trials were also removed because grain yield variance, which was required for the meta-analysis, was not reported, reducing the number of trials down to 15. 
+Subsequently, the 26 trials were reduced to 17 trials (Table \@ref(tab:Table1)).
+Two more trials were also removed because grain yield variance, which was required for the meta-analysis, was not reported, reducing the total number of trials in the meta-analysis down to 15.
 
 ```{r Table1, echo=FALSE, message=FALSE, warning=FALSE}
-# Add a star to the trials which were not in the final analysis
+# Adds a star to the trials which were not in the final analysis
 PM_Mdat[!PM_Mdat$trial_ref %in% slimmer_PM_dat$trial_ref, "trial_ref"] <-
   sapply(PM_Mdat[!PM_Mdat$trial_ref %in% slimmer_PM_dat$trial_ref, "trial_ref"], paste0, "*")
 
