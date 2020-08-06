@@ -78,6 +78,12 @@ abbreviations:
     long: Decision support system
   - short: AUDPC
     long: Area under the disease progress curve
+  - short: NGA
+    long: Northern Growers Alliance
+  - short: GRDC
+    long: Grains Research and Development Corporation
+  - short: DMI
+    long: Demethylase inhibitor
 output:
   bookdown::pdf_book:
     base_format: rticles::mdpi_article
