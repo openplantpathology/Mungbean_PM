@@ -179,11 +179,12 @@ Raw data was obtained for some trials, others reported only the means of each tr
 In total, 26 trials were collated.
 
 To ensure the correct question was asked of the analysis, the data needed to conform to strict criteria for inclusion.
-The criteria for inclusion of trial data in the meta-analysis first required a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains region of eastern Australia, which grows the majority of Australia's summer crops.
+The criteria for inclusion of data in the meta-analysis first required a field trial testing fungicide efficacy for powdery mildew control on mungbean in the Grains Research and Development (GRDC) northern grains region of eastern Australia, which grows the majority of Australia's summer crops.
 Data from trials conducted in this region had to include: the date when powdery mildew was first observed; disease incidence at the end of the growing season; fungicide application dates; the fungicide active ingredients; fungicide dose; and crop yield.
-The data were subset to only include fungicide treatments with the same mode of action; demethylase inhibitor (DMI) fungicides, tebuconazole and propiconazole were thus retained in the dataset.
-Subsequently, the 26 trials were reduced to 17 trials (Table \@ref(tab:Table1)).
-Two more trials were also removed because grain yield variance, which was required for the meta-analysis, was not reported, reducing the total number of trials in the meta-analysis down to 15.
+The data were subset to only include fungicide treatments with the same mode of action; demethylase inhibitor (DMI) fungicides.
+Thus only tebuconazole and propiconazole were retained in the dataset and the 26 trials were reduced to 17 trials.
+Two more trials were removed because grain yield variance, which was required for the meta-analysis, was not reported.
+This reduced the final number of trials included in the meta-analysis to 15 (Table \@ref(tab:Table1)).
 
 ```{r Table1, echo=FALSE, message=FALSE, warning=FALSE}
 # Adds a star to the trials which were not in the final analysis
