@@ -232,42 +232,45 @@ PM_Mdat %>%
   )
 ```
 
-From the trials which were included in the meta-analysis, `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 12))` were planted in late December, `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 1))` in January and `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 2))` were trials planted in February (Table \@ref(tab:Table1)).  
+From the trials which were included in the meta-analysis, `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 12))` were planted in late December, `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 1))` in January and `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 2))` were planted in February (Table \@ref(tab:Table1)).
 
-In the meta-analysis, to ensure sufficient replication, we made no distinction between the tebuconazole and propiconazole fungicide treatments within the trials that met the selection criteria. 
-The design of all trials included in this analysis were randomised complete block designs, and were not previously published in peer-reviewed literature. 
+In the meta-analysis, to ensure sufficient replication, we made no distinction between the tebuconazole and propiconazole fungicide treatments within the trials that met the selection criteria.
+The design of all trials included in this analysis were randomised complete block designs and were not previously published in peer-reviewed literature.
 Details of trial data are presented within a research compendium as a supplement to this publication [<!-- DOI to reference to compendium -->].
 
-**Response variable - Grain yield: **
-Grain yield (tonne per hectare), was used as the response variable for the meta-analysis. 
-Mean grain yields for each treatment were either obtained directly from trial reports, or calculated from the raw data when available.
-The sample variance was calculated from the raw data when available or the least squares statistic in the trial reports. 
-Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 2.042 and the approach reported in Ngugi et al. [-@Ngugi2011].
-The T-critical value was obtained from a t-distribution table using, 30 degrees of freedom and probability of $a = 0.05$.  
+## Response Variable - Grain Yield
+
+Grain yield (tonnes per hectare), was used as the response variable for the meta-analysis.
+Mean grain yields for each treatment were either obtained directly from trial reports or calculated from the raw data when available.
+The sample variance was calculated from the raw data when available or the least squares statistic in the trial reports.
+Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 2.042 and the approach reported in Ngugi *et al.* [-@Ngugi2011].
+The T-critical value was obtained from a t-distribution table using, 30 degrees of freedom and probability of $a = 0.05$.
 
 Similar to Paul *et al..* [-@Paul2007], we fitted a multivariate random effects model
 $Y_i \sim N(\mu,s_i^2 + \sigma^2)$
-where $Y_i$ is the response, a vector of the grain yield measurements (tonne per hectare) for each treatment in the $i$th trial over total number ($K$) of trials($i$  = 1, ...$K$). 
+where $Y_i$ is the response, a vector of the grain yield measurements (tonnes per hectare) for each treatment in the $i$th trial over total number ($K$) of trials ($i$  = 1, ...$K$). 
 $Y_i$ is estimated from a normal distribution with the mean $\mu$, sample variance of $S_i^2$ and a between trial variance of $\sigma^2$.
 
-**Trial Variables and moderators: **
-While the main aim of all the identified trials were to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional potential covariates in the experimental design.
+## Trial Variables and Moderators
+
+While the main aim of all the identified trials was to assess the efficacy of fungicide for control of powdery mildew, some trials tested additional potential covariates in the experimental design.
 These additional variables included: row spacing, fungicide active ingredient, fungicide dose, planting date, number of fungicide applications and cultivar.
 To account for the variation attributed to some of these variables between trials, and within trials, a single $trial$ factor was created.
 The $trial$ random variable made distinctions between the following variables: unique trial reference code, trial location, trial season, host genotype, row spacing, and fungicide dose.
 
-The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule). 
+The random effects meta-analysis was expanded to evaluate if the residual heterogeneity could be explained by spray schedule.
 Spray schedule was assigned as an inside factor to the outside random factor $trial$ to provide correlated random effects between the different spray schedule treatments within $trials$.
 
-The timing of fungicide application treatments, were defined in relation to the recorded date when powdery mildew first occurred in the trial.
-An $Early$ fungicide application treatment, referred to a fungicide spray schedule that commenced prior to the disease being observed in the trial.
+The timing of fungicide application treatments was defined in relation to the recorded date when powdery mildew first appeared in the trial.
+An $Early$ fungicide application treatment referred to a fungicide spray schedule that commenced prior to the disease being observed in the trial.
 $Recommended$ referred to a fungicide spray schedule which commenced 1 -- 3 days following the first sign of disease.
 $Late$ treatments commenced between 7 and 13 days after the first sign of disease. 
 There were no spray schedule treatments which began between 4 and 6 days after the first sign of powdery mildew.
-The number of fungicide applications were binned in to two categories.
+The number of fungicide applications was binned into two categories.
 A spray schedule with a $single$ spray, and a spray schedule with two or three spray applications $plus$.
 The division of the treatments produced: 13 $Early_{single}$ treatments; 5 $Early_{plus}$; 32 $Recommended_{single}$; 46 $Recommended_{plus}$; 17 $Late_{single}$; and 20 $Late_{plus}$.
-$Early_{plus}$ treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.  
+$Early_{plus}$ treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.
+
 What remained was the mean yield for a total of 173 treatments in the following five spray schedule categories: no spray $control$, $Early_{single}$, $Recommended_{single}$, $Recommended_{plus}$, $Late_{single}$, and $Late_{plus}$.
 
 An ordinal 1 -- 9 scale was used to describe the mean powdery mildew plot severity in most trials (Table \@ref(tab:Table2)).
