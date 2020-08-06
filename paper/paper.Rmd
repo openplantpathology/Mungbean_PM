@@ -282,6 +282,7 @@ AUDPC was calculated using the `agricolae` package in R [@agricolae2020].
 A categorical disease pressure factor was created by binning trials into two levels based on the mean AUDPC of the no spray control plot.
 The two levels, "low disease pressure" and "high disease pressure", were separated by the median AUDPC (`r as.double(read.csv(here("cache/median_AUDPC_C.csv")))`) of the no spray control plots.
 
+
 ```{r Table2, echo=FALSE}
 data.frame(
   Scale = 1:9,
