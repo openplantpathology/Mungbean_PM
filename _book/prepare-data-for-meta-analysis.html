@@ -1846,9 +1846,10 @@ We will only look at trials where powdery mildew set in at flowering which is ap
 <span id="cb37-3"><a href="prepare-data-for-meta-analysis.html#cb37-3" aria-hidden="true"></a><span class="st">   </span><span class="kw">filter</span>(spray_management <span class="op">!=</span><span class="st"> &quot;control&quot;</span> <span class="op">&amp;</span></span>
 <span id="cb37-4"><a href="prepare-data-for-meta-analysis.html#cb37-4" aria-hidden="true"></a><span class="st">             </span>trial_ref <span class="op">!=</span><span class="st"> &quot;AM1304&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb37-5"><a href="prepare-data-for-meta-analysis.html#cb37-5" aria-hidden="true"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref, spray_management) <span class="op">%&gt;%</span></span>
-<span id="cb37-6"><a href="prepare-data-for-meta-analysis.html#cb37-6" aria-hidden="true"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> spray_management, <span class="dt">y =</span> yield_gain, <span class="dt">colour =</span> trial_ref)) <span class="op">+</span></span>
+<span id="cb37-6"><a href="prepare-data-for-meta-analysis.html#cb37-6" aria-hidden="true"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> spray_management, <span class="dt">y =</span> yield_gain, <span class="dt">fill =</span> trial_ref)) <span class="op">+</span></span>
 <span id="cb37-7"><a href="prepare-data-for-meta-analysis.html#cb37-7" aria-hidden="true"></a><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
-<span id="cb37-8"><a href="prepare-data-for-meta-analysis.html#cb37-8" aria-hidden="true"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</span></code></pre></div>
+<span id="cb37-8"><a href="prepare-data-for-meta-analysis.html#cb37-8" aria-hidden="true"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb37-9"><a href="prepare-data-for-meta-analysis.html#cb37-9" aria-hidden="true"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/ageBoxPlot-1.png" width="672" /></p>
 <p>We can see in these experiments five experiments there is clearly no benefit to applying a second fungicide application.</p>
 <p>For completeness let’s test this with powdery mildew infection commencing 40 - 60 days after planting, instead of greater than 60.</p>
@@ -1857,9 +1858,10 @@ We will only look at trials where powdery mildew set in at flowering which is ap
 <span id="cb38-3"><a href="prepare-data-for-meta-analysis.html#cb38-3" aria-hidden="true"></a><span class="st">             </span>days2PM <span class="op">&gt;=</span><span class="st"> </span><span class="dv">40</span>) <span class="op">%&gt;%</span></span>
 <span id="cb38-4"><a href="prepare-data-for-meta-analysis.html#cb38-4" aria-hidden="true"></a><span class="st">   </span><span class="kw">filter</span>(spray_management <span class="op">!=</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb38-5"><a href="prepare-data-for-meta-analysis.html#cb38-5" aria-hidden="true"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref, spray_management) <span class="op">%&gt;%</span></span>
-<span id="cb38-6"><a href="prepare-data-for-meta-analysis.html#cb38-6" aria-hidden="true"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> spray_management, <span class="dt">y =</span> yield_gain, <span class="dt">colour =</span> trial_ref)) <span class="op">+</span></span>
+<span id="cb38-6"><a href="prepare-data-for-meta-analysis.html#cb38-6" aria-hidden="true"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> spray_management, <span class="dt">y =</span> yield_gain, <span class="dt">fill =</span> trial_ref)) <span class="op">+</span></span>
 <span id="cb38-7"><a href="prepare-data-for-meta-analysis.html#cb38-7" aria-hidden="true"></a><span class="st">   </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
-<span id="cb38-8"><a href="prepare-data-for-meta-analysis.html#cb38-8" aria-hidden="true"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</span></code></pre></div>
+<span id="cb38-8"><a href="prepare-data-for-meta-analysis.html#cb38-8" aria-hidden="true"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb38-9"><a href="prepare-data-for-meta-analysis.html#cb38-9" aria-hidden="true"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/PM40_2_59_days-1.png" width="672" /></p>
 <p>We can see here all four experiments benefited, on average, from more than one spray.</p>
 <p>Let’s estimate the age of the crop based on crop maturity observations, we will use the <code>PM_MB_means</code> which include some observations of crop maturity.</p>
@@ -1877,7 +1879,7 @@ We will only look at trials where powdery mildew set in at flowering which is ap
 <span id="cb39-12"><a href="prepare-data-for-meta-analysis.html#cb39-12" aria-hidden="true"></a><span class="st">   </span><span class="kw">apply</span>(dat2, <span class="dv">1</span> , <span class="cf">function</span>(X)</span>
 <span id="cb39-13"><a href="prepare-data-for-meta-analysis.html#cb39-13" aria-hidden="true"></a>      <span class="op">!</span><span class="st"> </span><span class="kw">all</span>(<span class="kw">is.na</span>(X[<span class="kw">c</span>(<span class="st">&quot;flower&quot;</span>, <span class="st">&quot;pod&quot;</span>, <span class="st">&quot;late_pod&quot;</span>)])))</span>
 <span id="cb39-14"><a href="prepare-data-for-meta-analysis.html#cb39-14" aria-hidden="true"></a></span>
-<span id="cb39-15"><a href="prepare-data-for-meta-analysis.html#cb39-15" aria-hidden="true"></a>dat2[index1, ]</span></code></pre></div>
+<span id="cb39-15"><a href="prepare-data-for-meta-analysis.html#cb39-15" aria-hidden="true"></a>dat2[index1,]</span></code></pre></div>
 <pre><code>##       location year  flower     pod late_pod
 ## 1       Goolhi 2013 71 days 85 days  NA days
 ## 2       Premer 2013 62 days NA days  NA days

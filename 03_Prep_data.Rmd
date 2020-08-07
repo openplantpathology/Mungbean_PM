@@ -479,8 +479,9 @@ dat1 %>%
    filter(spray_management != "control" &
              trial_ref != "AM1304") %>%
    group_by(trial_ref, spray_management) %>%
-   ggplot(aes(x = spray_management, y = yield_gain, colour = trial_ref)) +
+   ggplot(aes(x = spray_management, y = yield_gain, fill = trial_ref)) +
    geom_boxplot() +
+   scale_fill_usq() +
    geom_hline(yintercept = 0)
 ```
 
@@ -494,8 +495,9 @@ dat1 %>%
              days2PM >= 40) %>%
    filter(spray_management != "control") %>%
    group_by(trial_ref, spray_management) %>%
-   ggplot(aes(x = spray_management, y = yield_gain, colour = trial_ref)) +
+   ggplot(aes(x = spray_management, y = yield_gain, fill = trial_ref)) +
    geom_boxplot() +
+   scale_fill_usq() +
    geom_hline(yintercept = 0)
 ```
 
@@ -518,7 +520,7 @@ index1 <-
    apply(dat2, 1 , function(X)
       ! all(is.na(X[c("flower", "pod", "late_pod")])))
 
-dat2[index1, ]
+dat2[index1,]
 as.double(mean(dat2[index1, "flower"], na.rm = TRUE))
 as.double(mean(dat2[index1, "pod"], na.rm = TRUE))
 as.double(mean(dat2[index1, "late_pod"], na.rm = TRUE))
