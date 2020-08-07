@@ -357,7 +357,7 @@ An inspection of log-likelihood profile plots showed the model for each random i
 While the addition of disease pressure as an interactive moderator term to `SpraySchedule`, did explain slightly more residual heterogeneity as shown by a lower $Q_E = 409.91,$.
 The model including disease pressure did not significantly improve the model (P = 0.4859) and did not significantly explain differences in the `SpraySchedule` term, and therefore disease pressure was not included in the final model.
 
-```{r Figure2, echo=FALSE, fig.cap="Season plot"}
+```{r Figure2, echo=FALSE, fig.cap="Season length and first appearance of powdery mildew in each respective trial for fifteen mungbean trials conducted in the Grains Research and Developmet (GRDC) Northern Grains Region of eastern Australia to evaluate the most effective time of fungicide application to save yield from powdery mildew infection. Trials were conducted from 2001 to 2019 by Queensland Department of Agriculture, Fisheries and Forestry, Northern Growers Alliance and University of Southern Queensland and coalated for meta-analysis."}
 PM_Mdat %>%
   distinct(trial_ref, planting_date, harvest_date, first_sign_disease) %>%
   mutate(planting_date = ymd(planting_date)) %>%
