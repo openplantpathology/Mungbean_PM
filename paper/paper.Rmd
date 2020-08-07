@@ -463,18 +463,17 @@ While certain circumstances may force growers to sow mungbeans late, many may de
 Regardless, according to the Australian Mungbean Association sowing guide [@AMAplanting], mungbeans should not be sown later than January in the Darling Downs, the region where the majority of trials were undertaken.
 If the planting guide is adhered to the mungbean would be at a lower risk of powdery mildew, reducing the requirement for fungicide applications. 
 An example of this is if we inspect the six trials in which powdery mildew manifested 60 days or greater after planting (Trial references: AM1304, mung1819/01, mung1011/01, AM1303, AM1305 and BB1305). 
-Of these trials, four directly compared single $Recommended$ fungicide applications and $RecommendedPlus$ (AM1303, AM1305, BB1305 and mung1819/01), two of which (AM1305 and mung1819/01) produced at least one treatment $RecommendedPlus$ treatment with a higher grain yield the $Recommended$ treatments. 
-However, neither AM1305 or mung1819/01 neither contained $Recommended$ or $RecommendedPlus$ treatments with higher mean yields than the no-spray control.
+Of these trials, four directly compared single $Recommended$ fungicide applications and $Recommended_{plus}$ (AM1303, AM1305, BB1305 and mung1819/01), two of which (AM1305 and mung1819/01) produced at least one treatment $Recommended_{plus}$ treatment with a higher grain yield the $Recommended$ treatments. 
+However, neither AM1305 or mung1819/01 neither contained $Recommended$ or $Recommended_{plus}$ treatments with higher mean yields than the no-spray control.
 This indicating there is likely no benefit to applying two fungicide applications when the disease manifests later than 60 days into the growing season. 
-Further the trials undertaken in 2013, Premer (AM1303), Goolhi (AM1305) Marys Mount (AM1304) and Millmerran (BB1305), reported a significant difference in powdery mildew severity between the fungicide treatments, however none of the trials showed a significant difference in grain yield between treatments [@Millmerran2013, @premer2013, @Marysmount2013, @goolhi2013]. 
+Furthermore, the 2013 trials, Premer (AM1303), Goolhi (AM1305) Marys Mount (AM1304) and Millmerran (BB1305), reported a significant difference in powdery mildew severity between the fungicide treatments.
+However, none of the trials showed a significant difference in grain yield between treatments [@Millmerran2013, @premer2013, @Marysmount2013, @goolhi2013]. 
 Therefore, discretion is still required for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
-The PowderyMildewMBM considers crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
+To aid in making these decisions, DSS tools such as the PowderyMildewMBM consider crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle] and can help users make an informed decision.
 
-PowderyMildewMBM also provides a cost-benefit analysis to growers for fungicide spray schedule scenarios.
-The user inputs weather, crop, and economic inputs into the DSS and the application returns the probability that one or two fungicide sprays would protect yields sufficiently to increase the net profit. 
-The scope of the meta-analysis is limited to the timing of fungicide application and therefore we can not validate all the variables available in PowderyMildewMBM. 
-However our results validate the decision of the app developers not to recommend prophylactic fungicide applications. 
-If the powdery mildew is not observed in the crop the app advises the user to keep monitoring for disease.  
+The scope of the meta-analysis is limited to the timing of fungicide application and therefore we can not validate all the variables available in PowderyMildewMBM.
+However our results validate the decision of the app developers not to recommend prophylactic fungicide applications.
+If the powdery mildew is not observed in the crop the app advises the user to keep monitoring for disease.
 <!-- Think about how to word this, that we are using this to validate the app: The findings of this meta-analysis confirm the recommendations that PowderyMildewMBM gives in most situations would be correct. -->
 <!-- I am finding it difficult to say that our findings confirm recommendations of the app, given the app does not advise on early late or recommended spray timing AND we don't investigate the differences in yield mitigations under the variables in the app (growth stage and weather) [Paul]-->
 
