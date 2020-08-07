@@ -1,9 +1,11 @@
 # Studies considered in meta-analysis
 
 ```{r MEsummary_Libraries, message=FALSE, echo=FALSE}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, leaflet, htmltools,schoolmath)
-source("R/import_data.R")
+if (!require("pacman"))
+   install.packages("pacman")
+pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, schoolmath, here)
+source(here("R/import_data.R")
+)
 ```
 
 This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland.
