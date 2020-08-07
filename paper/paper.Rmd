@@ -139,7 +139,7 @@ The disease in Australia currently is thought to be caused by *Podosphaera xanth
 However, this description has changed over time and a second species has also been cited as causing the disease but not yet officially classified [@Kelly2019].
 While research outside of Australia refers to the causal agent of mungbean powdery mildew as *Erysiphe polygoni*.
 
-The disease cycle of the pathogen can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites [@PerezGarcia2009; @Sparks2017].
+The disease cycle of the pathogen can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, and which then disseminate to new infection sites [@PerezGarcia2009; @Sparks2017].
 Weather conditions that favour the rapid development of the disease are cool temperatures between 22&nbsp;&deg; and 26&nbsp;&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
 To date, the sexual cycle that produces chasomthecia has not been observed in Australian mungbean.
 And while the powdery mildew pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified in Australia.
