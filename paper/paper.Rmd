@@ -82,6 +82,8 @@ abbreviations:
     long: Demethylase inhibitor
   - short: DSS
     long: Decision support system
+  - short: FRAC
+    long: Fungicide Resistance Action Committee
   - short: GRDC
     long: Grains Research and Development Corporation
   - short: NGA
