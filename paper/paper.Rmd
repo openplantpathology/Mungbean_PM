@@ -82,8 +82,6 @@ abbreviations:
     long: Demethylase inhibitor
   - short: DSS
     long: Decision support system
-  - short: FAIR
-    long: Findable, Accessible, Interoperable, Reusable
   - short: FRAC
     long: Fungicide Resistance Action Committee
   - short: GRDC
@@ -141,12 +139,15 @@ The high variability in yields can in part be attributed to a range of diseases 
 Among the fungal diseases is powdery mildew, which can reduce yields by up to 40% [@Chankaew2013] in susceptible cultivars.
 The disease in Australia currently is thought to be caused by *Podosphaera xanthii*, syn. *Podosphaera fusca*.
 However, this description has changed over time and a second species has also been cited as causing the disease but not yet officially classified [@Kelly2019].
-While research outside of Australia refers to the causal agent of mungbean powdery mildew as *Erysiphe polygoni*.
+While research outside of Australia refers to the causal agent of mungbean powdery mildew as *Erysiphe polygoni* <!--Ref?-->. Here-after we will refer to the pathogen as *P. xanthii*
 
-The disease cycle of the pathogen can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, and which then disseminate to new infection sites [@PerezGarcia2009; @Sparks2017].
-Weather conditions that favour the rapid development of the disease are cool temperatures between 22&nbsp;&deg; and 26&nbsp;&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].
-To date, the sexual cycle that produces chasomthecia has not been observed in Australian mungbean.
-And while the powdery mildew pathogens are obligate parasites, secondary hosts that allow the pathogens to over-season between mungbean crops have not yet been identified in Australia.
+*P. xanthii*, is an obligate biotroph, requiring a living plant host to survive and complete it's lifecycle [@PerezGarcia2009]. 
+To date, the sexual cycle that produces chasomthecia has not been observed in Australian mungbean, and the pathogen is suspected to reproduce asexually.
+*P. xanthii* has one of the widest host ranges of the powdery mildews, an ability which likely assists this pathogen to survive between mungbean seasons on alternative hosts which have not yet been identified in Australia.
+The disease cycle of the pathogen can be as short as five days for a germinating conidia to infect the host and produce new reproductive structures, conidiophores, which produce more conidia, which disseminate to new infection sites [@PerezGarcia2009; @Sparks2017].
+Powdery mildew colonies of crowded conidophores can develop rapidly on leaf surfaces causing a loss in photosynthetic potential leading to reduced yield quantity and quality [@PerezGarcia2009]. 
+In severe cases leaves can become chlorotic and cause premature leaf senescence. 
+Weather conditions that favour the rapid development of the disease are cool temperatures between 22&nbsp;&deg; and 26&nbsp;&deg;C, and a leaf surface that is not overly wet for infection [@Kelly2017a].  
 
 Due to the requirement for cool temperatures for infection, planting date is an effective strategy for preventing the development of powdery mildew in mungbean [@AMAplanting].
 In southern Queensland and northern New South Wales, sowing dates between late spring (November) and mid-summer (January) are advised to avoid the conducive cooler autumn temperatures, which normally commence in March.
@@ -156,7 +157,8 @@ Cultivar selection is an additional strategy to mitigate yield damage from powde
 While loci conferring resistance in mungbean have been identified [@Humphry2003; @Zhang2008]; to date, the focus in Australia has remained on breeding for disease resistance to bacterial diseases rather than powdery mildew due to the wide availability of fungicides for use in controlling powdery mildew. <!-- Best to get a quote from Col here so we can say "personal comm". I've heard him say this at a mungbean field day, I believe. -->
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013], however no evidence for how they compare to Australian varietal resistance could be found.
 Currently, Jade-AU has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also having some resistance [@AMAGuide].
-However, commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy.
+However, commercially available m
+ungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy.
 Evidence of this is shown by field trials conducted in 2016 with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 32.7% were recorded [@SueThompson2016].
 Additional strategies to cultivar choice, such as fungicide treatments, are necessary to limit yield loss when conditions for the disease are conducive.
 
@@ -186,9 +188,9 @@ The aim of this meta-analysis was to determine, from a collection of unpublished
 
 ## Criteria for Trial Data Inclusion
 
-The data for this study were obtained through studies that were conducted by the authors, FAIR (Findable, Accessible, Interoperable, Reusable) data available from GRDC Online Farm Trials <https://www.farmtrials.com.au/>, and through personal correspondence with colleagues and collaborating institutions.
+The data for this study were obtained through studies that were conducted by the authors, data that were the intellectual property of the University of Southern Queensland, and through personal correspondence.
 Trial data were obtained in different formats with varying levels of information.
-Raw data was obtained for some trials, others reported only the means of each treatment, with all but one trial reporting some form of variance along with the mean.
+Raw data was obtained for some trials, others reported only the means of each treatment, with all but two trials reporting some form of variance along with the mean.
 In total, 26 trials were collated.
 
 To ensure the correct question was asked of the analysis, the data needed to conform to strict criteria for inclusion.
