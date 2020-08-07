@@ -314,14 +314,14 @@ data.frame(
   kable_styling()
 ```
 
-The mean difference in grain yield was estimated from the difference in model estimates of the non-treated control and each of the spray schedule treatments using fungicide.  
+The mean difference in grain yield was estimated from the difference in model estimates of the non-treated control and each of the fungicide spray schedule treatments.
 Disease pressure was tested against the basic model to determine if, when introduced as a moderator variable, it could significantly explain additional heterogeneity between the spray schedule treatments.
 A a Wald-type test was used to test the impact of the disease pressure factor.
 
-Linear contrasts were used to produce the mean difference in effect sizes, and their respective standard errors and 95% confidence intervals, between each spray schedule treatment.
+Linear contrasts were used to produce the mean difference in effect sizes and their respective standard errors and 95% confidence intervals between each spray schedule treatment.
 
 Additional meta-analysis models tested variables ... for their influence on the SpraySchedule variables ability to mitigate yield loss.
-For the variable disease pressure a Wald-type test was used to test the impact of this variable on the model as a whole.
+For the variable disease pressure a Wald-type test was used to test the effect of this variable on the model as a whole.
 
 The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
 
