@@ -330,7 +330,7 @@ Linear contrasts were used to produce the mean difference in effect sizes and th
 Additional meta-analysis models tested variables ... for their influence on the SpraySchedule variables ability to mitigate yield loss.
 For the variable disease pressure a Wald-type test was used to test the effect of this variable on the model as a whole.
 
-The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, `metafor`, version 2-4.0, [@Viechtbauer2010] and `netmeta`, version 1.2-1, [@Rucker2020].
+The data were analysed in the R statistical software environment, version 4.0.1, [@RCoreTeam2020] using two contributed meta-analysis packages, 'metafor', version 2-4.0, [@Viechtbauer2010] and 'netmeta', version 1.2-1, [@Rucker2020].
 
 ```{r Figure1, echo = FALSE, fig.cap = "Yield contrasts"}
 YieldContrasts
