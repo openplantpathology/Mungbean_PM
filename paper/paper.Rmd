@@ -82,6 +82,8 @@ abbreviations:
     long: Demethylase inhibitor
   - short: DSS
     long: Decision support system
+  - short: FAIR
+    long: Findable, Accessible, Interoperable, Reusable
   - short: FRAC
     long: Fungicide Resistance Action Committee
   - short: GRDC
