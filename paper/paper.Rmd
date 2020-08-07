@@ -357,56 +357,67 @@ The model including disease pressure did not significantly improve the model (P 
 
 ```{r Figure2, echo=FALSE, fig.cap="Season plot"}
 PM_Mdat %>%
-  distinct(trial_ref, planting_date, harvest_date,first_sign_disease) %>%
-  mutate(planting_date = ymd(planting_date))%>%
-  mutate(harvest_date = ymd(harvest_date))%>%
-  mutate(first_sign_disease = ymd(first_sign_disease))%>%
-  mutate(cropping_season = case_when( # add categorical value for estimated season period
-    is.na(planting_date) | is.na(harvest_date ) ~ "Estimated",
-    TRUE ~ "Actual"))%>%
-  mutate(plant_day = case_when( #for crops planted in late December minus 365 days from yday function
+  distinct(trial_ref, planting_date, harvest_date, first_sign_disease) %>%
+  mutate(planting_date = ymd(planting_date)) %>%
+  mutate(harvest_date = ymd(harvest_date)) %>%
+  mutate(first_sign_disease = ymd(first_sign_disease)) %>%
+  mutate(cropping_season = case_when(
+    # add categorical value for estimated season period
+    is.na(planting_date) | is.na(harvest_date) ~ "Estimated",
+    TRUE ~ "Actual"
+  )) %>%
+  mutate(plant_day = case_when(
+    #for crops planted in late December minus 365 days from yday function
     yday(planting_date) < 200 ~ yday(planting_date),
     yday(planting_date) > 200 ~ yday(planting_date) - 365,
   )) %>%
-  mutate(season_length = case_when(  # when either planting date or harvest date are missing use the overall mean season length as an estimate
+  mutate(season_length = case_when(
+    # when either planting date or harvest date are missing use the overall mean season length as an estimate
     is.na(planting_date) | is.na(harvest_date) ~
-      mean(yday(harvest_date) - plant_day,na.rm = TRUE),
+      mean(yday(harvest_date) - plant_day, na.rm = TRUE),
     TRUE ~ yday(harvest_date) - plant_day
-  ))%>%
-  mutate(plant_day = case_when( # estimate planting day  from mean season length
+  )) %>%
+  mutate(plant_day = case_when(
+    # estimate planting day  from mean season length
     is.na(plant_day) ~ yday(harvest_date) - season_length,
     TRUE ~ plant_day
-  ))%>%
-  mutate(harvest_day = case_when( #estimate harvest day from mean season length
+  )) %>%
+  mutate(harvest_day = case_when(
+    #estimate harvest day from mean season length
     is.na(harvest_date) ~ plant_day + season_length,
     TRUE ~ yday(harvest_date)
-  ))%>%
+  )) %>%
   mutate(trial_ref = factor(trial_ref, # reorder by the first_sign_of_disease
-                            levels = trial_ref[rev(order(ymd(first_sign_disease)))]))%>%
+                            levels = trial_ref[rev(order(ymd(first_sign_disease)))])) %>%
   ggplot() +
-  geom_pointrange(aes(
-    x = trial_ref,
-    y = yday(first_sign_disease),
-    ymin = plant_day,
-    ymax = harvest_day,
-    colour = cropping_season
-   ))+
-  scale_y_continuous(limits = c(
-    -25,
-    183),
-    labels = paste(month(1:7, label = TRUE, abbr = TRUE), rep(1,7),sep = "-"),
-    breaks = yday(ymd(paste(rep(2018, 7),1:7, rep(1,7),sep = "-")))
-    ) +
-  geom_hline(yintercept = yday(ymd(paste(rep(2018, 7),1:7, rep(1,7),sep = "-"))), 
-             colour = "grey80",
-             linetype = 2)+
+  geom_pointrange(
+    aes(
+      x = trial_ref,
+      y = yday(first_sign_disease),
+      ymin = plant_day,
+      ymax = harvest_day,
+      colour = cropping_season
+    )
+  ) +
+  scale_y_continuous(
+    limits = c(-25,
+               183),
+    labels = paste(month(1:7, label = TRUE, abbr = TRUE), rep(1, 7), sep = "-"),
+    breaks = yday(ymd(paste(
+      rep(2018, 7), 1:7, rep(1, 7), sep = "-"
+    )))
+  ) +
+  geom_hline(yintercept = yday(ymd(paste(
+    rep(2018, 7), 1:7, rep(1, 7), sep = "-"
+  ))),
+  colour = "grey80",
+  linetype = 2) +
   geom_point(aes(x = trial_ref, y = yday(first_sign_disease))) +
   coord_flip() +
-  scale_color_manual(values=c("black","grey70"))+
-  ggtitle("Season length and first appearance of powdery mildew \nin each respective trial")+
-  xlab("Trial reference code")+
+  scale_color_manual(values = c("black", "grey70")) +
+  ggtitle("Season length and first appearance of powdery mildew\nin each respective trial") +
+  xlab("Trial reference code") +
   ylab(NULL)
-
 ```
 
 ```{r Table3, echo = FALSE}
