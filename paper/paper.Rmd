@@ -312,7 +312,9 @@ data.frame(
 ) %>%
   kable(format = "latex",
         booktabs = TRUE,
-        caption = "Powdery mildew severity scoring scale.") %>%
+        caption = "Powdery mildew severity scoring scale.",
+        col.names = c("Scale",
+                      "Scale Description")) %>%
   kable_styling()
 ```
 
