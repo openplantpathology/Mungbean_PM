@@ -224,7 +224,7 @@ PM_Mdat %>%
     caption = "Description of fungicide application trials included in meta-analysis to determine the most effective fungicide spray schedule to minimise yield loss from powdery mildew in Australian mungbean. Trials were all conducted in the Grains Research and Development (GRDC) Northern Grains Region of eastern Australia to test application timing for the best control of powdery mildew of mungbean."
   ) %>%
   kable_styling() %>%
-  footnote(
+  kableExtra::footnote(
     alphabet = c(
       "Queensland Department of Agriculture, Fisheries and Forestry",
       "Northern Growers Alliance",
@@ -401,24 +401,18 @@ PM_Mdat %>%
 ```
 
 ```{r Table3, echo = FALSE}
-T3[, 2:5] <- round(T3[, 2:5], 4)
-T3%>%
-  mutate(contrasts = gsub("-", "", contrasts))%>%
-  mutate(contrasts = gsub(" \\+", " -", contrasts))%>%
-  mutate(contrasts = gsub(" = 0", "", contrasts))%>%
-  rename(
-    `Treatment contrasts` = contrasts,
-    Estimate = estimates,
-    `Standard Error` = se,
-    `Z-score` = z_val,
-    `P-value` = pval,
-    ` ` = VisP
-  )%>%
+contrast_Ssum[,2:5] <- round(contrast_Ssum[,2:5], 4)
+contrast_Ssum %>%
+  slice(grep("control", contrast, invert = TRUE)) %>%
+  mutate(pvals = reportP(pvals)) %>%
+  mutate(pvals = gsub("P = ","",pvals)) %>%
   kable(format = "latex",
         booktabs = TRUE,
-        caption = "Estimated grain yield contrasts between each spray schedule.")%>%
+        caption = "Table 3: Estimated grain yield contrasts between each spray schedule.",
+        col.names = c("Treatment contrasts","Estimated difference","Std Error","Z-Score","P-Value"," "))%>%
   kable_styling()%>%
-  footnote(general = c("** - signficant at 0.005 level",
+  kableExtra::footnote(general = c("*** - signficant at 0.001 level",
+                                   "** - signficant at 0.005 level",
                        "* - signficant at 0.05 level"))
 ```
 
