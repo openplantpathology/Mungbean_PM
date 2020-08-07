@@ -422,10 +422,10 @@ PM_Mdat %>%
 
 ```{r Table3, echo = FALSE}
 T3[, 2:5] <- round(T3[, 2:5], 4)
-T3 %>%
-  mutate(contrasts = gsub("-", "", contrasts)) %>%
-  mutate(contrasts = gsub(" \\+", " -", contrasts)) %>%
-  mutate(contrasts = gsub(" = 0", "", contrasts)) %>%
+T3%>%
+  mutate(contrasts = gsub("-", "", contrasts))%>%
+  mutate(contrasts = gsub(" \\+", " -", contrasts))%>%
+  mutate(contrasts = gsub(" = 0", "", contrasts))%>%
   rename(
     `Treatment contrasts` = contrasts,
     Estimate = estimates,
