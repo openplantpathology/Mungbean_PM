@@ -292,8 +292,9 @@ An ordinal 1 -- 9 scale was used to describe the mean powdery mildew plot severi
 However, the 2013 NGA trials (Table \@ref(tab:Table1)) reported mean plot severity as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the lower, middle or upper canopy.
 Given the ordinal scale ranked plots on the percent of foliage showing the disease from the lower canopy to the upper canopy, a conversion from percentage of the diseased canopy, to the 1 -- 9 scale was straight-forward.
 The end of season mean plot severity and date of first sign of disease were used to calculate the area under the disease progress curve (AUDPC) for each treatment.
-Additional powdery mildew mean plot severity observations made in-between these two observations were also included in the AUDPC calculation if they were available.
-AUDPC was calculated using the `agricolae` package in R [@agricolae2020].
+AUDPC was calculated as described by Campbell and Madden [@Campbell1990] using the `AUDPC()` function from the contributed R package 'agricolae', version 1.3-3 [@agricolae2020].
+
+Additional powdery mildew mean plot severity observations made in-between these two observations were also included in the AUDPC calculation where they were available.
 A categorical disease pressure factor was created by binning trials into two levels based on the mean AUDPC of the no spray control plot.
 The two levels, "low disease pressure" and "high disease pressure", were separated by the median AUDPC (`r as.double(read.csv(here("cache/median_AUDPC_C.csv")))`) of the no spray control plots.
 
