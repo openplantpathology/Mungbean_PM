@@ -255,7 +255,7 @@ Details of trial data are presented in a research compendium as a supplement to 
 Grain yield measured as tonnes per hectare was used as the response variable for the meta-analysis.
 Mean grain yields for each treatment were either obtained directly from trial reports or calculated from the raw data when available.
 The sample variance was calculated from the raw data when available or the least squares statistic in the trial reports.
-Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 2.042 and the approach reported in Ngugi  [-@Ngugi2011].
+Sample variance for the 2012 Kingaroy study was calculated from the reported least squares statistic using a T-critical value of 2.042 and the approach reported in Ngugi [@Ngugi2011].
 The T-critical value was obtained from a t-distribution table using, 30 degrees of freedom and probability of $a = 0.05$.
 
 Similar to Paul *et al..* [-@Paul2007], we fitted a multivariate random effects model
