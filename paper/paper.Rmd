@@ -504,26 +504,29 @@ Therefore, managing the disease with fungicides for the highest economic return 
 Integrated pest management practices focus on using only the required number of chemical control to protect the economic return.
 These strategies permit the presence of yield limiting diseases and pests if intervening would cost more than the economic return of protection.
 
+# Conclusion
+
 To aid in making these decisions and devising a good strategy, DSS tools such as the PowderyMildewMBM consider crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle] and can help users make an informed decision.
-Using these sorts of tools can reduce unnecesary and unprofitable fungicide applications, which may help lead to the development of fungicide resistance.
+Using these sorts of tools can reduce unnecessary and unprofitable fungicide applications, which may help lead to the development of fungicide resistance.
 
 <!-- I removed the part about inoculating mungbeans. This isn't common. They're lazy. Growers sometimes even look at adding N for them. I could be possibly persuaded to reinsert this section but it doesn't really fit the flow here, I don't think. If we need more text we might weave it in somehow. -->
 
-## Future Work
-
-This meta-analysis provides a ballast for the direction of future powdery mildew research in mungbean. 
-However it does not provide enough certainty to when late fungicide applications would be too late to protect yield losses due to the disease. 
-Future experiments should take note of physiological maturity of the crop throughout the season so "crop age" might be considered as a covariate in future analyses.
-In cases where mungbean physiological maturity may not have been recorded the APSIM mungbean module [@RobertsonAPSIMlegume2002].  
+To offer more benefit for future research, experiments should record physiological maturity of the crop throughout the season so "crop age" might be considered as a covariate in future analyses.
+<!-- I've commented this next line out, it seems to be incomplete:
+In cases where mungbean physiological maturity may not have been recorded the APSIM mungbean module [@RobertsonAPSIMlegume2002]. -->
 
 Early detection of powdery mildew is vital for an effective fungicidal control response.
-Data from the collection of 26 studies in the Northern Grain region, indicate powdery mildew is likely to manifest on crops in the first month of autumn. 
+Data from 26 studies in the Northern Grains Region indicate powdery mildew is likely to manifest on crops in the first month of autumn. 
 This data together with additional observations may permit models to predict the likely onset of the disease given weather parameters, providing an early warning system for growers to scout their crop for signs of powdery mildew.
 However an improved understanding of the pathogen biology is also needed to ensure models are as accurate as they can be.
 The population genetics, epidemiology and alternate hosts are all poorly understood in this host-pathogen relationship.
 The recent discovery of a second powdery mildew species, which infects mungbean highlights the paucity of knowledge on this disease.
 
-# Conclusion
+Currently, the recommendations that are provided appear to be the best practices for reducing losses due to mungbean powdery mildew.
+Care needs to be taken to adhere to them, especially no prophylactic sprays, to avoid the development of fungicide resistance in the powdery mildew pathogen populations.
+This meta-analysis provides a ballast for the direction of future powdery mildew control research in Australian mungbean.
+However, it does not provide certainty as to when late fungicide applications would be too late to protect yield losses due to the disease.
+Given the high value of mungbean at the farm-gate, further work could be done in this area that would benefit the Australian mungbean industry.
 
 # Supplemental Material
 Supplementary material can be found in the following research compendium.
