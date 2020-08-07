@@ -173,7 +173,7 @@ These are called multi-variate or network meta-analyses [@Madden2016].
 Multi-variate meta-analyses are particularly useful when there are no direct comparisons between two treatments in any of the included studies.
 Indirect comparisons can be made between these two treatments if the both had direct comparisons with one or more treatments in common, assuming no significant bias in the studies that investigated each of the treatments and which are subject to a indirect comparison [@Jansen2011].
 
-Considering the November 2019 launch of the mobile app decision support system (DSS) PowderyMildewMBM [@Diggle], which provides a cost benefit analysis to assists growers in their decision "if" and "when" apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
+With the November 2019 launch of the mobile app decision support system (DSS) PowderyMildewMBM [@Diggle], which provides a cost benefit analysis to assists growers in their decision "if" and "when" apply fungicide; a meta-analysis to evaluate and verify the best fungicide spray schedule seemed prudent.
 The aim of this meta-analysis was to determine, from a collection of unpublished studies, what spray management scenario provides the greatest yield protection from powdery mildew in Australian mungbean.
 
 # Materials and Methods
