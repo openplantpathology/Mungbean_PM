@@ -338,7 +338,7 @@ YieldContrasts
 
 # Results
 
-Overall the meta-analysis indicated that with the exception of the $Early_{single}$ treatment all the the spray schedules were effective at protecting mungbean yields relative to the no spray controls (Figure \@ref(fig:Figure1)).
+The meta-analysis indicated that with the exception of the $Early_{single}$ treatment all the the spray schedules were effective at protecting mungbean yields relative to the no spray controls (Figure \@ref(fig:Figure1)).
 Treatments which incorporated multiple fungicide applications, $Recommended_{plus}$ and $Late_{plus}$, produced the highest mean yield protection estimates at `r round(PM_mv$b[4,1] * 1000, 2)` (SE = `r round(PM_mv$se[4] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha) and `r round(PM_mv$b[6,1] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha (SE = `r round(PM_mv$se[6] * 1000, 2)`&nbsp;kg&nbsp;/&nbsp;ha) respectively (Table \@ref(tab:Table3)). 
 The treatment that showed the most yield saved compared to the control, $Recommended_{plus}$, was also significantly higher than all other single applications, (
 $Early_{single}$, `r reportP(contrast_Ssum$pvals[grep("Recommended_plus - Early",contrast_Ssum$contrast)])`, 
