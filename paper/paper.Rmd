@@ -74,16 +74,21 @@ conflictsofinterest: |
   in the collection, analyses, or interpretation of data; in the writing of the 
   manuscript, an in the decision to publish the results'.
 abbreviations:
-  - short: DSS
-    long: Decision support system
   - short: AUDPC
     long: Area under the disease progress curve
-  - short: NGA
-    long: Northern Growers Alliance
-  - short: GRDC
-    long: Grains Research and Development Corporation
+  - short: DAF
+    long: Queensland Department of Agriculture, Fisheries and Forestry
   - short: DMI
     long: Demethylase inhibitor
+  - short: DSS
+    long: Decision support system
+  - short: GRDC
+    long: Grains Research and Development Corporation
+  - short: NGA
+    long: Northern Growers Alliance
+  - short: USQ
+    long: University of Southern Queensland
+
 output:
   bookdown::pdf_book:
     base_format: rticles::mdpi_article
