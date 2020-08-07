@@ -144,7 +144,7 @@ Therefore, delayed sowing dates of late January into February increase the possi
 Cultivar selection is an additional strategy to mitigate yield damage from powdery mildew.
 While loci conferring resistance in mungbean have been identified [@Humphry2003; @Zhang2008]; to date, the focus in Australia has remained on breeding for disease resistance to bacterial diseases rather than powdery mildew due to the wide availability of fungicides for use in controlling powdery mildew. <!-- Best to get a quote from Col here so we can say "personal comm". I've heard him say this at a mungbean field day, I believe. -->
 Quantitative disease resistance has been observed in some breeding lines overseas [@Pandey2018; @Chankaew2013], however no evidence for how they compare to Australian varietal resistance could be found.
-Currently, Jade-AU has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also having some resistance [@Sparks2017].
+Currently, Jade-AU has the the best disease resistance to powdery mildew (moderately susceptible), with cv. Green Diamond also having some resistance [@AMAGuide].
 However, commercially available mungbean cultivars in Australia lack sufficient resistance to be used as the primary powdery mildew management strategy.
 Evidence of this is shown by field trials conducted in 2016 with the moderately susceptible cultivar, Jade-AU, where yield losses of up to 32.7% were recorded [@SueThompson2016].
 Additional strategies to cultivar choice, such as fungicide treatments, are necessary to limit yield loss when conditions for the disease are conducive.
