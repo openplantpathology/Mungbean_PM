@@ -87,7 +87,7 @@ abbreviations:
   - short: GRDC
     long: Grains Research and Development Corporation
   - short: NGA
-    long: Northern Growers Alliance
+    long: Northern Grower Alliance
   - short: USQ
     long: University of Southern Queensland
 
@@ -242,7 +242,7 @@ PM_Mdat %>%
   kableExtra::footnote(
     alphabet = c(
       "Queensland Department of Agriculture, Fisheries and Forestry",
-      "Northern Growers Alliance",
+      "Northern Grower Alliance",
       "University of Southern Queensland"
     )
   )
@@ -364,7 +364,7 @@ An inspection of log-likelihood profile plots showed the model for each random i
 While the addition of disease pressure as an interactive moderator term to `SpraySchedule`, did explain slightly more residual heterogeneity as shown by a lower $Q_E = 409.91,$.
 The model including disease pressure did not significantly improve the model (P = 0.4859) and did not significantly explain differences in the `SpraySchedule` term, and therefore disease pressure was not included in the final model.
 
-```{r Figure2, echo=FALSE, fig.cap="Season length and first appearance of powdery mildew in each respective trial for fifteen mungbean trials conducted in the Grains Research and Developmet (GRDC) Northern Grains Region of eastern Australia to evaluate the most effective time of fungicide application to save yield from powdery mildew infection. Trials were conducted from 2001 to 2019 by Queensland Department of Agriculture, Fisheries and Forestry, Northern Growers Alliance and University of Southern Queensland and coalated for meta-analysis."}
+```{r Figure2, echo=FALSE, fig.cap="Season length and first appearance of powdery mildew in each respective trial for fifteen mungbean trials conducted in the Grains Research and Developmet (GRDC) Northern Grains Region of eastern Australia to evaluate the most effective time of fungicide application to save yield from powdery mildew infection. Trials were conducted from 2001 to 2019 by Queensland Department of Agriculture, Fisheries and Forestry, Northern Grower Alliance and University of Southern Queensland and coalated for meta-analysis."}
 PM_Mdat %>%
   distinct(trial_ref, planting_date, harvest_date, first_sign_disease) %>%
   mutate(planting_date = ymd(planting_date)) %>%
@@ -549,6 +549,6 @@ The authors of this paper have no conflicting interest in the research presented
 # Acknowledgments
 The authors wish to acknowledge the work done by Professor Malcolm Riley and Dr Sue Thompson whom undertook many of the trials incorporated in this analysis from 2004 - 2015. 
 The Queensland Department of Agriculture, Fisheries and Forestry (DAF). 
-The National Growers association and Lawrie Price for contributing data.
+The Northern Grower Alliance and Lawrie Price for contributing data.
 The Grains Research and Development Corporation who funded this research.
 Thank you to Professor Levente Kiss for his kind assistance in improving this article.
