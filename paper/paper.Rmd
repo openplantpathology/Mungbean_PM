@@ -466,7 +466,7 @@ An example of this is if we inspect the six trials in which powdery mildew manif
 Of these trials, four directly compared single $Recommended$ fungicide applications and $RecommendedPlus$ (AM1303, AM1305, BB1305 and mung1819/01), two of which (AM1305 and mung1819/01) produced at least one treatment $RecommendedPlus$ treatment with a higher grain yield the $Recommended$ treatments. 
 However, neither AM1305 or mung1819/01 neither contained $Recommended$ or $RecommendedPlus$ treatments with higher mean yields than the no-spray control.
 This indicating there is likely no benefit to applying two fungicide applications when the disease manifests later than 60 days into the growing season. 
-Further the trials undertaken in 2013, such as Premer (AM1303), Goolhi (AM1305) Marys Mount (AM1304) and Millmerran (BB1305) reported a significant difference in powdery mildew severity between the fungicide treatments, however neither trial showed a significant difference in grain yield between treatments [@Millmerran2013, @premer2013, @Marysmount2013, @goolhi2013]. 
+Further the trials undertaken in 2013, Premer (AM1303), Goolhi (AM1305) Marys Mount (AM1304) and Millmerran (BB1305), reported a significant difference in powdery mildew severity between the fungicide treatments, however none of the trials showed a significant difference in grain yield between treatments [@Millmerran2013, @premer2013, @Marysmount2013, @goolhi2013]. 
 Therefore, discretion is still required for if fungicide applications are necessary given the crop growth stage and forecast weather conditions.
 The PowderyMildewMBM considers crop growth stage and weather, to assist decision making whether to spray or not to spray [@Diggle].  
 
