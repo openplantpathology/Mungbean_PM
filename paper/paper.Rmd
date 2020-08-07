@@ -416,8 +416,7 @@ PM_Mdat %>%
   linetype = 2) +
   geom_point(aes(x = trial_ref, y = yday(first_sign_disease))) +
   coord_flip() +
-  scale_color_manual(values = c("black", "grey70")) +
-  ggtitle("Season length and first appearance of powdery mildew\nin each respective trial") +
+  scale_color_manual(values = c("black", "grey70"), name = "Cropping Season") +
   xlab("Trial reference code") +
   ylab(NULL)
 ```
