@@ -10,8 +10,9 @@ pacman::p_load(tidyverse,
                devtools,
                reshape2,
                lme4,
-               kableExtra)
-source("R/import_data.R")
+               kableExtra,
+               here)
+source(here("R/import_data.R"))
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
