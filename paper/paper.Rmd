@@ -273,25 +273,25 @@ Spray schedule was assigned as an inside factor to the outside random factor $tr
 
 The timing of fungicide application treatments was defined in relation to the recorded date when powdery mildew first appeared in the trial.
 An $Early$ fungicide application treatment referred to a fungicide spray schedule that commenced prior to the disease being observed in the trial.
-$Recommended$ referred to a fungicide spray schedule which commenced 1 -- 3 days following the first sign of disease.
-$Late$ treatments commenced between 7 and 13 days after the first sign of disease. 
-There were no spray schedule treatments which began between 4 and 6 days after the first sign of powdery mildew.
-The number of fungicide applications was binned into two categories.
-A spray schedule with a $single$ spray, and a spray schedule with two or three spray applications $plus$.
-The division of the treatments produced: 13 $Early_{single}$ treatments; 5 $Early_{plus}$; 32 $Recommended_{single}$; 46 $Recommended_{plus}$; 17 $Late_{single}$; and 20 $Late_{plus}$.
-$Early_{plus}$ treatments were removed from the subsequent meta-analysis, due to an insufficient sample size.
+$Recommended$ referred to a fungicide spray schedule which commenced one to three days following the first sign of disease.
+$Late$ referred to treatments that were applied between seven and 13 days after the first sign of disease. 
+There were no spray schedule treatments that began between four and six days after the first sign of powdery mildew.
 
-What remained was the mean yield for a total of 173 treatments in the following five spray schedule categories: no spray $control$, $Early_{single}$, $Recommended_{single}$, $Recommended_{plus}$, $Late_{single}$, and $Late_{plus}$.
+The number of fungicide applications was binned into two categories.
+A spray schedule with only one application, $single$ and a spray schedule with two or three spray applications, $plus$.
+The division of the treatments produced: 13 $Early_{single}$ treatments; five $Early_{plus}$; 32 $Recommended_{single}$; 46 $Recommended_{plus}$; 17 $Late_{single}$; and 20 $Late_{plus}$.
+$Early_{plus}$ treatments were removed from the meta-analysis due to an insufficient sample size.
+
+The remaining data were the mean yields for a total of 173 treatments in the following five spray schedule categories: no spray $control$, $Early_{single}$, $Recommended_{single}$, $Recommended_{plus}$, $Late_{single}$, and $Late_{plus}$.
 
 An ordinal 1 -- 9 scale was used to describe the mean powdery mildew plot severity in most trials (Table \@ref(tab:Table2)).
 However, the 2013 NGA trials (Table \@ref(tab:Table1)) reported mean plot severity as the percentage of leaves covered by powdery mildew and the location of the infected leaves in the lower, middle or upper canopy.
 Given the ordinal scale ranked plots on the percent of foliage showing the disease from the lower canopy to the upper canopy, a conversion from percentage of the diseased canopy, to the 1 -- 9 scale was straight-forward.
-The end of season mean plot severity, and date of first sign of disease were used to calculate the area under the disease progress curve (AUDPC) for each treatment.
+The end of season mean plot severity and date of first sign of disease were used to calculate the area under the disease progress curve (AUDPC) for each treatment.
 Additional powdery mildew mean plot severity observations made in-between these two observations were also included in the AUDPC calculation if they were available.
 AUDPC was calculated using the `agricolae` package in R [@agricolae2020].
 A categorical disease pressure factor was created by binning trials into two levels based on the mean AUDPC of the no spray control plot.
 The two levels, "low disease pressure" and "high disease pressure", were separated by the median AUDPC (`r as.double(read.csv(here("cache/median_AUDPC_C.csv")))`) of the no spray control plots.
-
 
 ```{r Table2, echo=FALSE}
 data.frame(
