@@ -545,8 +545,8 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 ```
 
 ```{r Save_meta_data, eval=FALSE}
-save(dat1, efficacy, slimmer_PM_dat, PM_mv, YieldContrasts,contrast_Ssum,file =
-        here("cache/Meta-analysisData.Rdata"))
+save(dat1, efficacy, slimmer_PM_dat, PM_mv, YieldContrasts, contrast_Ssum, 
+     file = here("cache/Meta-analysisData.Rdata"))
 ```
 
 
