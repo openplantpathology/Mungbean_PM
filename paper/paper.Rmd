@@ -242,6 +242,8 @@ PM_Mdat %>%
 
 From the trials which were included in the meta-analysis, `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 12))` were planted in late December, `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 1))` in January and `r as.english(sum(lubridate::month(distinct(slimmer_PM_dat, trial_ref, planting_date)$planting_date) == 2))` were planted in February (Table \@ref(tab:Table1)).
 
+The first sign of powdery mildew was observed as early as the February 28 in the 2013 Premer trial and as late as the April 12 in the 2019 Hermitage trials.
+
 In the meta-analysis, to ensure sufficient replication, we made no distinction between the tebuconazole and propiconazole fungicide treatments.
 The design of all trials included in this analysis were randomised complete block designs and were not previously published in peer-reviewed literature.
 Details of trial data are presented in a research compendium as a supplement to this publication [<!-- DOI to reference to compendium -->].
