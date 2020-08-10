@@ -1,12 +1,4 @@
 # Data wrangling
-This file is not complete and there are a number of things that need checking
-   - Mean squares are only calculated for the triazoles and controls
-   - If the years for each trial are input correctly
-   - If the disease and yield errors are calculated and that they are shuffled correctly into the data frame
-   - AUDPC needs to be checked for starting dates and if trials have been omitted
-   - Check that what is generated from this file matches the main file and update
-   - write.csv should have row.names = FALSE
-
 ## Non-wrangled trials
 
 Data from the three follow trials were input manually from either PDF or word files.  
@@ -741,7 +733,6 @@ write.csv(
    King_11_m,
    here("cache/2011 PMmung Kingaroy means.csv"),row.names = FALSE
 )
-
 
 ```
 
