@@ -113,9 +113,6 @@ theme_set(theme_usq())
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))
 load(file = here("cache/Meta-analysisData.Rdata"))
 load(file = here("cache/PreliminaryData.Rdata"))
-T3 <-
-  read.csv(here("cache/Table3_contrasts.csv"), stringsAsFactors = FALSE)
-T3[, 2:5] <- round(T3[, 2:5], 4)
 source(here("R/reportP.R"))
 ```
 
@@ -386,6 +383,14 @@ PM_Mdat %>%
       mean(yday(harvest_date) - plant_day, na.rm = TRUE),
     TRUE ~ yday(harvest_date) - plant_day
   )) %>%
+  mutate(season_length = case_when(
+    # add a day for leap years
+    leap_year(year(first_sign_disease)) &
+      (is.na(planting_date) | is.na(harvest_date)) ~
+      season_length + 1,
+    TRUE ~ season_length
+  ))%>%
+  mutate(season_length = round(season_length, digits = 0))%>%
   mutate(plant_day = case_when(
     # estimate planting day  from mean season length
     is.na(plant_day) ~ yday(harvest_date) - season_length,
@@ -426,6 +431,8 @@ PM_Mdat %>%
   scale_color_manual(values = c("black", "grey70"), name = "Cropping Season") +
   xlab("Trial reference code") +
   ylab(NULL)
+
+cbind(x1,x2)
 ```
 
 ```{r Table3, echo = FALSE}
@@ -463,7 +470,7 @@ These issues, and perhaps other on farm duties, might delay a timely application
 Knowing a delay of up to two weeks may not lead to yield losses, can allow growers to incorporate other integrated pest management options, such as insecticide, with the fungicide spray saving on spray application costs. 
 However attention should be made to the label requirements when first planning a spray schedule.
 Second applications, if they are needed, should be applied at least 10 - 14 days after the first application and not within 21 days of harvest [@APVMAcustodia].
-If time permitted a second spray after the first "late" application, on average the meta-analysis shows this would be optimal, as the $LatePlus$ treatment significantly limited yield loss by `r round(T3$estimates[10], 4)*1000` kg ha^-1^, when compared to the $Late$, single spray treatment `r reportP(T3$pval[10])`.
+If time permitted a second spray after the first "late" application, on average the meta-analysis shows this would be optimal, as the $LatePlus$ treatment significantly limited yield loss by `r round(contrast_Ssum$coefficients[15], 4)*1000` kg ha^-1^, when compared to the $Late$, single spray treatment `r reportP(contrast_Ssum$pvals[15])` <!--This needs checking and correcting, T3 says late and latePlus were significantly different however the contrasts.Rdata says it is not-->.
 
 It is important to note, the studies included in this meta-analysis may not reflect a "normal" mungbean season. 
 All the included experiments were intentionally sown late in the season, from January through to as late as early March, to ensure powdery mildew infection (Figure \@ref(fig:Figure2)). 
