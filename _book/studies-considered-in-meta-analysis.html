@@ -31,8 +31,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="preliminary-analysis.html"/>
-<script src="libs/header-attrs-2.3/header-attrs.js"></script>
+<link rel="next" href="import-and-format-data.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,6 +49,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
@@ -63,6 +63,70 @@
 <script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
 
 
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 </head>
 
@@ -76,93 +140,74 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Home</a>
-<ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Home</a><ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contents"><i class="fa fa-check"></i><b>1.1</b> Contents</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#other-research-questions-which-are-not-the-focus-of-this-study"><i class="fa fa-check"></i><b>1.2</b> Other research questions, which are not the focus of this study</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#possible-sources-of-variation-in-this-analysis."><i class="fa fa-check"></i><b>1.3</b> Possible sources of variation in this analysis.</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a>
-<ul>
+<li class="chapter" data-level="2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Studies considered in meta-analysis</a><ul>
 <li class="chapter" data-level="2.1" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#summary-of-trials"><i class="fa fa-check"></i><b>2.1</b> Summary of trials</a></li>
-<li class="chapter" data-level="2.2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#powdery-mildew-rating-scales"><i class="fa fa-check"></i><b>2.2</b> Powdery mildew rating scales</a>
-<ul>
+<li class="chapter" data-level="2.2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#powdery-mildew-rating-scales"><i class="fa fa-check"></i><b>2.2</b> Powdery mildew rating scales</a><ul>
 <li class="chapter" data-level="2.2.1" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#powdery-mildew-rating-scale"><i class="fa fa-check"></i><b>2.2.1</b> 1 - 5 powdery mildew rating scale</a></li>
 <li class="chapter" data-level="2.2.2" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#powdery-mildew-rating-scale-1"><i class="fa fa-check"></i><b>2.2.2</b> 1 - 9 powdery mildew rating scale</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="studies-considered-in-meta-analysis.html"><a href="studies-considered-in-meta-analysis.html#experiment-locations"><i class="fa fa-check"></i><b>2.3</b> Experiment locations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>3</b> Preliminary Analysis</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>3.1</b> Explore and Visualise Data</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#fungicides"><i class="fa fa-check"></i><b>3.1.1</b> Fungicides</a></li>
-<li class="chapter" data-level="3.1.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#mungbean-cultivars"><i class="fa fa-check"></i><b>3.1.2</b> Mungbean cultivars</a></li>
-<li class="chapter" data-level="3.1.3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>3.1.3</b> Row spacing</a></li>
-<li class="chapter" data-level="3.1.4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#yield-vs-in-season-rain"><i class="fa fa-check"></i><b>3.1.4</b> Yield vs in-season rain</a></li>
-<li class="chapter" data-level="3.1.5" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#season-range-and-first-incidence"><i class="fa fa-check"></i><b>3.1.5</b> Season range and first incidence</a></li>
-<li class="chapter" data-level="3.1.6" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>3.1.6</b> AUDPC visualise raw data</a></li>
+<li class="chapter" data-level="3" data-path="import-and-format-data.html"><a href="import-and-format-data.html"><i class="fa fa-check"></i><b>3</b> Import and Format Data</a><ul>
+<li class="chapter" data-level="3.1" data-path="import-and-format-data.html"><a href="import-and-format-data.html#non-wrangled-trials"><i class="fa fa-check"></i><b>3.1</b> Non-wrangled trials</a></li>
+<li class="chapter" data-level="3.2" data-path="import-and-format-data.html"><a href="import-and-format-data.html#import-libraries"><i class="fa fa-check"></i><b>3.2</b> Import Libraries</a></li>
+<li class="chapter" data-level="3.3" data-path="import-and-format-data.html"><a href="import-and-format-data.html#functions"><i class="fa fa-check"></i><b>3.3</b> Functions</a></li>
+<li class="chapter" data-level="3.4" data-path="import-and-format-data.html"><a href="import-and-format-data.html#data-wrangling-for-each-trial"><i class="fa fa-check"></i><b>3.4</b> Data wrangling for each trial</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2010"><i class="fa fa-check"></i><b>3.4.1</b> Hermitage 2010</a></li>
+<li class="chapter" data-level="3.4.2" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2011"><i class="fa fa-check"></i><b>3.4.2</b> Hermitage 2011</a></li>
+<li class="chapter" data-level="3.4.3" data-path="import-and-format-data.html"><a href="import-and-format-data.html#kingaroy-2011"><i class="fa fa-check"></i><b>3.4.3</b> Kingaroy 2011</a></li>
+<li class="chapter" data-level="3.4.4" data-path="import-and-format-data.html"><a href="import-and-format-data.html#goolhi-2013"><i class="fa fa-check"></i><b>3.4.4</b> Goolhi 2013</a></li>
+<li class="chapter" data-level="3.4.5" data-path="import-and-format-data.html"><a href="import-and-format-data.html#marys-mount-2013"><i class="fa fa-check"></i><b>3.4.5</b> Mary’s Mount 2013</a></li>
+<li class="chapter" data-level="3.4.6" data-path="import-and-format-data.html"><a href="import-and-format-data.html#premer-2013"><i class="fa fa-check"></i><b>3.4.6</b> Premer 2013</a></li>
+<li class="chapter" data-level="3.4.7" data-path="import-and-format-data.html"><a href="import-and-format-data.html#millmerran-2013"><i class="fa fa-check"></i><b>3.4.7</b> Millmerran 2013</a></li>
+<li class="chapter" data-level="3.4.8" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2015"><i class="fa fa-check"></i><b>3.4.8</b> Hermitage 2015</a></li>
+<li class="chapter" data-level="3.4.9" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2016"><i class="fa fa-check"></i><b>3.4.9</b> Hermitage 2016</a></li>
+<li class="chapter" data-level="3.4.10" data-path="import-and-format-data.html"><a href="import-and-format-data.html#kingaroy-2016"><i class="fa fa-check"></i><b>3.4.10</b> Kingaroy 2016</a></li>
+<li class="chapter" data-level="3.4.11" data-path="import-and-format-data.html"><a href="import-and-format-data.html#missen-flats-2017"><i class="fa fa-check"></i><b>3.4.11</b> Missen Flats 2017</a></li>
+<li class="chapter" data-level="3.4.12" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2017"><i class="fa fa-check"></i><b>3.4.12</b> Hermitage 2017</a></li>
+<li class="chapter" data-level="3.4.13" data-path="import-and-format-data.html"><a href="import-and-format-data.html#wellcamp-2018"><i class="fa fa-check"></i><b>3.4.13</b> Wellcamp 2018</a></li>
+<li class="chapter" data-level="3.4.14" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2019"><i class="fa fa-check"></i><b>3.4.14</b> Hermitage 2019</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html"><i class="fa fa-check"></i><b>4</b> Prepare data for meta-analysis</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>4.1</b> Set environment and import data</a></li>
-<li class="chapter" data-level="4.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>4.2</b> Standardising sample variance</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>4.2.1</b> Converting least-squares to sample variance</a></li>
-<li class="chapter" data-level="4.2.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>4.2.2</b> Converting standard deviation to sample variance</a></li>
-<li class="chapter" data-level="4.2.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#check-variance-of-data-set"><i class="fa fa-check"></i><b>4.2.3</b> Check variance of data-set</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>4.3</b> Reduce data set to required variables</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>4.3.1</b> Cluster fungicide applications</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#test-dose-effect"><i class="fa fa-check"></i><b>4.4</b> Test dose effect</a></li>
-<li class="chapter" data-level="4.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#disease-pressure-factor"><i class="fa fa-check"></i><b>4.5</b> Disease pressure factor</a></li>
-<li class="chapter" data-level="4.6" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.6</b> Row spacing</a>
-<ul>
-<li class="chapter" data-level="4.6.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#mungbeans-age-and-yield-saved"><i class="fa fa-check"></i><b>4.6.1</b> Mungbeans age and yield saved</a></li>
+<li class="chapter" data-level="4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>4</b> Preliminary Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#explore-and-visualise-data"><i class="fa fa-check"></i><b>4.1</b> Explore and Visualise Data</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#fungicides"><i class="fa fa-check"></i><b>4.1.1</b> Fungicides</a></li>
+<li class="chapter" data-level="4.1.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#mungbean-cultivars"><i class="fa fa-check"></i><b>4.1.2</b> Mungbean cultivars</a></li>
+<li class="chapter" data-level="4.1.3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.1.3</b> Row spacing</a></li>
+<li class="chapter" data-level="4.1.4" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#yield-vs-in-season-rain"><i class="fa fa-check"></i><b>4.1.4</b> Yield vs in-season rain</a></li>
+<li class="chapter" data-level="4.1.5" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#season-range-and-first-incidence"><i class="fa fa-check"></i><b>4.1.5</b> Season range and first incidence</a></li>
+<li class="chapter" data-level="4.1.6" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#audpc-visualise-raw-data"><i class="fa fa-check"></i><b>4.1.6</b> AUDPC visualise raw data</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Grain yield meta-analysis</a>
-<ul>
-<li class="chapter" data-level="5.0.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#formating-the-response-variable"><i class="fa fa-check"></i><b>5.0.1</b> Formating the response variable</a></li>
-<li class="chapter" data-level="5.0.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#formatting-variance"><i class="fa fa-check"></i><b>5.0.2</b> Formatting Variance</a></li>
-<li class="chapter" data-level="5.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#metafor-analysis"><i class="fa fa-check"></i><b>5.1</b> metafor analysis</a>
-<ul>
-<li class="chapter" data-level="5.1.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#profile-plots"><i class="fa fa-check"></i><b>5.1.1</b> Profile plots</a></li>
-<li class="chapter" data-level="5.1.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#forest-plot-of-trial-treatment-effect-per-trial"><i class="fa fa-check"></i><b>5.1.2</b> Forest plot of trial treatment effect per trial</a></li>
+<li class="chapter" data-level="5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Prepare data for meta-analysis</a><ul>
+<li class="chapter" data-level="5.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>5.1</b> Set environment and import data</a></li>
+<li class="chapter" data-level="5.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>5.2</b> Standardising sample variance</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>5.2.1</b> Converting least-squares to sample variance</a></li>
+<li class="chapter" data-level="5.2.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>5.2.2</b> Converting standard deviation to sample variance</a></li>
+<li class="chapter" data-level="5.2.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#check-variance-of-data-set"><i class="fa fa-check"></i><b>5.2.3</b> Check variance of data-set</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#netmeta-analysis"><i class="fa fa-check"></i><b>5.2</b> netmeta analysis</a></li>
+<li class="chapter" data-level="5.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#reduce-data-set-to-required-variables"><i class="fa fa-check"></i><b>5.3</b> Reduce data set to required variables</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#cluster-fungicide-applications"><i class="fa fa-check"></i><b>5.3.1</b> Cluster fungicide applications</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html"><i class="fa fa-check"></i><b>6</b> AUPDC meta-analysis</a>
-<ul>
-<li class="chapter" data-level="6.0.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#spray-management-and-audpc"><i class="fa fa-check"></i><b>6.0.1</b> Spray management and AUDPC</a></li>
-<li class="chapter" data-level="6.1" data-path="aupdc-meta-analysis.html"><a href="aupdc-meta-analysis.html#aupdc-effect-on-grain-yield-meta-analysis"><i class="fa fa-check"></i><b>6.1</b> AUPDC effect on grain yield meta-analysis</a></li>
+<li class="chapter" data-level="5.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#test-dose-effect"><i class="fa fa-check"></i><b>5.4</b> Test dose effect</a></li>
+<li class="chapter" data-level="5.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#disease-pressure-factor"><i class="fa fa-check"></i><b>5.5</b> Disease pressure factor</a></li>
+<li class="chapter" data-level="5.6" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>5.6</b> Row spacing</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#mungbeans-age-and-yield-saved"><i class="fa fa-check"></i><b>5.6.1</b> Mungbeans age and yield saved</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html"><i class="fa fa-check"></i><b>7</b> Manuscript wire frame</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#who-are-the-intended-readers---list-3-to-5-of-them-by-name"><i class="fa fa-check"></i><b>7.1</b> Who are the intended readers? - list 3 to 5 of them by name</a></li>
-<li class="chapter" data-level="7.2" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-did-you-do-limit---50-words"><i class="fa fa-check"></i><b>7.2</b> what did you do? (limit - 50 words)</a></li>
-<li class="chapter" data-level="7.3" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#why-did-you-do-it-limit---50-words"><i class="fa fa-check"></i><b>7.3</b> Why did you do it? (limit - 50 words)</a></li>
-<li class="chapter" data-level="7.4" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-happened-limit---50-words"><i class="fa fa-check"></i><b>7.4</b> what happened? (limit - 50 words)</a></li>
-<li class="chapter" data-level="7.5" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-do-the-results-mean-in-theory-limit---50-words"><i class="fa fa-check"></i><b>7.5</b> What do the results mean in theory? (limit - 50 words)</a></li>
-<li class="chapter" data-level="7.6" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-do-the-results-mean-in-practice-limit---50-words"><i class="fa fa-check"></i><b>7.6</b> What do the results mean in practice? (limit - 50 words)</a></li>
-<li class="chapter" data-level="7.7" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-is-the-key-benefit-for-your-readers-limit---25-words."><i class="fa fa-check"></i><b>7.7</b> what is the key benefit for your readers? (limit - 25 words).</a></li>
-<li class="chapter" data-level="7.8" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#what-remains-unresolved-no-word-limit."><i class="fa fa-check"></i><b>7.8</b> What remains unresolved? (no word limit).</a></li>
-<li class="chapter" data-level="7.9" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#introduction"><i class="fa fa-check"></i><b>7.9</b> Introduction</a></li>
-<li class="chapter" data-level="7.10" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#materials-and-methods"><i class="fa fa-check"></i><b>7.10</b> Materials and Methods</a></li>
-<li class="chapter" data-level="7.11" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#results"><i class="fa fa-check"></i><b>7.11</b> Results</a></li>
-<li class="chapter" data-level="7.12" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#discussion"><i class="fa fa-check"></i><b>7.12</b> Discussion</a>
-<ul>
-<li class="chapter" data-level="7.12.1" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#future-work"><i class="fa fa-check"></i><b>7.12.1</b> Future work</a></li>
 </ul></li>
-<li class="chapter" data-level="7.13" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#conclusion"><i class="fa fa-check"></i><b>7.13</b> Conclusion</a></li>
-<li class="chapter" data-level="7.14" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#supplemental-material"><i class="fa fa-check"></i><b>7.14</b> Supplemental Material</a></li>
-<li class="chapter" data-level="7.15" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#data-availability"><i class="fa fa-check"></i><b>7.15</b> Data Availability</a></li>
-<li class="chapter" data-level="7.16" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#conflict-of-interest-statement"><i class="fa fa-check"></i><b>7.16</b> Conflict of Interest Statement</a></li>
-<li class="chapter" data-level="7.17" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#acknowledgments"><i class="fa fa-check"></i><b>7.17</b> Acknowledgments</a></li>
-<li class="chapter" data-level="7.18" data-path="manuscript-wire-frame.html"><a href="manuscript-wire-frame.html#references"><i class="fa fa-check"></i><b>7.18</b> References</a></li>
+<li class="chapter" data-level="6" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html"><i class="fa fa-check"></i><b>6</b> Grain yield meta-analysis</a><ul>
+<li class="chapter" data-level="6.0.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#formating-the-response-variable"><i class="fa fa-check"></i><b>6.0.1</b> Formating the response variable</a></li>
+<li class="chapter" data-level="6.0.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#formatting-variance"><i class="fa fa-check"></i><b>6.0.2</b> Formatting Variance</a></li>
+<li class="chapter" data-level="6.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#metafor-analysis"><i class="fa fa-check"></i><b>6.1</b> metafor analysis</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#profile-plots"><i class="fa fa-check"></i><b>6.1.1</b> Profile plots</a></li>
+<li class="chapter" data-level="6.1.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#forest-plot-of-trial-treatment-effect-per-trial"><i class="fa fa-check"></i><b>6.1.2</b> Forest plot of trial treatment effect per trial</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#netmeta-analysis"><i class="fa fa-check"></i><b>6.2</b> netmeta analysis</a></li>
 </ul></li>
 </ul>
 
@@ -181,7 +226,7 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="studies-considered-in-meta-analysis" class="section level1" number="2">
+<div id="studies-considered-in-meta-analysis" class="section level1">
 <h1><span class="header-section-number">2</span> Studies considered in meta-analysis</h1>
 <p>This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland.
 It is worth noting in particular Professor Malcolm Riley’s and Dr. Sue Thompson’s effort in establishing and coordinating early field trials between 2010 and 2016.</p>
@@ -264,7 +309,7 @@ It is worth noting in particular Professor Malcolm Riley’s and Dr. Sue Thomps
 <li>Hermitage</li>
 </ul></li>
 </ul>
-<div id="summary-of-trials" class="section level2" number="2.1">
+<div id="summary-of-trials" class="section level2">
 <h2><span class="header-section-number">2.1</span> Summary of trials</h2>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; ">
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -821,11 +866,11 @@ Hermitage
 </table>
 </div>
 </div>
-<div id="powdery-mildew-rating-scales" class="section level2" number="2.2">
+<div id="powdery-mildew-rating-scales" class="section level2">
 <h2><span class="header-section-number">2.2</span> Powdery mildew rating scales</h2>
 <p><strong>2001 - 2004 trials</strong></p>
 <p>Trial data were obtained from a non-published manuscript.</p>
-<div id="powdery-mildew-rating-scale" class="section level3" number="2.2.1">
+<div id="powdery-mildew-rating-scale" class="section level3">
 <h3><span class="header-section-number">2.2.1</span> 1 - 5 powdery mildew rating scale</h3>
 <p>Ratings for powdery mildew were on a 1 - 5 rating scale where</p>
 <p>1 - No sign of disease</p>
@@ -840,7 +885,7 @@ The raw data were obtained from Lawrie Price.
 NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments.
 Detailed code for the conversion can be found in the following vignette <a href="./vignette/191115_PMMB_DataWrangling_PM.html">191115_PMMB_DataWrangling_PM.Rmd</a>.</p>
 </div>
-<div id="powdery-mildew-rating-scale-1" class="section level3" number="2.2.2">
+<div id="powdery-mildew-rating-scale-1" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> 1 - 9 powdery mildew rating scale</h3>
 <p>1 - No powdery mildew colonies observed on any plant</p>
 <p>2 - Small colonies in lower 1/3 of canopy, up to 75 % of plants affected</p>
@@ -853,11 +898,11 @@ Detailed code for the conversion can be found in the following vignette <a href=
 <p>9 - Colonies to top of plant with 100 % of plants affected and heavy leaf drop</p>
 </div>
 </div>
-<div id="experiment-locations" class="section level2" number="2.3">
+<div id="experiment-locations" class="section level2">
 <h2><span class="header-section-number">2.3</span> Experiment locations</h2>
 <p>The following map displays experiment locations which were considered for inclusion in this meta-analysis.</p>
-<div id="htmlwidget-658ac14a9bc586593bff" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-658ac14a9bc586593bff">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[-28.215,-26.58,-27.56,-23.54,-27.51666,-31.43449,-27.923674,-31.0142,-31.00246,-27.905313,-27.564277],[152.1003,151.83,152.32,148.19,151.45,150.0052,151.242706,150.05018,149.82507,151.9772,151.867879],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Hermitage Research Station","Red Vale &amp; Kingaroy Research Station","Gatton","Emerald Agricultural College","Bongeen 1 &amp; 2","NGA - Premer","NGA - Millmerran","NGA - Marys Mount","NGA - Goolhi","Missen Flats","Wellcamp"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[-27.31,150.456],5,[]],"limits":{"lat":[-31.43449,-23.54],"lng":[148.19,152.32]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ebb5b9dc7f9e8fa00066" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ebb5b9dc7f9e8fa00066">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[-28.215,-26.58,-27.56,-23.54,-27.51666,-31.43449,-27.923674,-31.0142,-31.00246,-27.905313,-27.564277],[152.1003,151.83,152.32,148.19,151.45,150.0052,151.242706,150.05018,149.82507,151.9772,151.867879],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Hermitage Research Station","Red Vale &amp; Kingaroy Research Station","Gatton","Emerald Agricultural College","Bongeen 1 &amp; 2","NGA - Premer","NGA - Millmerran","NGA - Marys Mount","NGA - Goolhi","Missen Flats","Wellcamp"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[-27.31,150.456],5,[]],"limits":{"lat":[-31.43449,-23.54],"lng":[148.19,152.32]}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>
@@ -867,7 +912,7 @@ Detailed code for the conversion can be found in the following vignette <a href=
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="preliminary-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="import-and-format-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -917,6 +962,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
