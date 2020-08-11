@@ -59,7 +59,7 @@ slimmer_PM_dat$spray_management <-
    ))
 
 ggplot(slimmer_PM_dat, aes(x = as.factor(year), fill = spray_management)) +
-   geom_bar(position = "dodge2") +
+   geom_bar(position = position_dodge2(width = 0.9, preserve = "single")) +
    scale_fill_usq(name = "Spray Management") +
    xlab("Year")
 
@@ -76,7 +76,7 @@ kable(
    )
 
 ```
-<!-- I don't like this graph, it is hard to read given that different widths don't translate to anything meaningful -->
+
 
 
 Treatments `Late_plus` and `Early` don't have very good comparison to other treatments.
@@ -521,7 +521,7 @@ netgraph(
    bg.number.of.studies = usq_cols("support orange"),
    multiarm = FALSE,
    col.multiarm = usq_cols("support turquiose"),
-   pos.number.of.studies = 0.5
+   pos.number.of.studies = 0.4
 )
 ```
 
@@ -548,44 +548,5 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 save(dat1, efficacy, slimmer_PM_dat, PM_mv, YieldContrasts, contrast_Ssum, 
      file = here("cache/Meta-analysisData.Rdata"))
 ```
-
-
-
-#### Powdery mildewMBM comparison -- Delete
-One aspect we would like to consider is how the results of this meta-analysis compares to how the PowderyMildewMBM estimates the effect of fungicide applications on grain yields.
-Below we create a data frame of the mitigation factors for each spray scenario so we can compare them to the outcomes of the meta-analysis.
-```{r compare2PowderyMildewMDM}
-
-PMBM <- 
-   data.frame(Sprays = c(rep(1,20), rep(2,20)),
-              Disease = rep(c(rep("NotPresent", 5),
-                          rep("LowerCanopy", 5),
-                          rep("MidCanopy", 5),
-                          rep("UpperCanopy", 5)),2),
-              CropMaturity = rep(c("Vegetative", "Budding", "Flowering",
-                                   "EarlyPod", "LatePod"), 8),
-              mitigation = c(0.57, 0.855, 0.95,0.95,0.95,
-                             0.45995, 0.52919,0.5530,0.390,0.1642,
-                             0.291258,0.351051, 0.2454,0.1409,0.4717,
-                             0,0.059597,0.093034,0.0682476,0.0215584,
-                             0.95,0.95,0.95,0.95,0.95,
-                             0.766588,0.6991,0.55042,0.390056,0.1642,
-                             0.485429,0.390,0.2454,0.140904,0.0471684,
-                             0.0791,0.086068,0.093034,0.0682476,0.0215584))
-
-# what is the mean age of the plant in our data when disease first occurs and we apply the first spray?
-source("R/import_data.R")
-PM_MB_dat <- import_data()
-mean(PM_MB_dat$first_sign_disease - PM_MB_dat$planting_date, na.rm =TRUE) # 46.3 days (which is when the plant is flowering)
-
-#What proportion of the yield was saved?
-1 - (coef(PM_mv)[1] /(coef(PM_mv)[1] + coef(PM_mv)[3]))
-1- (coef(PM_mv)[1] /(coef(PM_mv)[1] + coef(PM_mv)[4]))
-
-PMBM %>%
-   filter(CropMaturity == "Flowering")
-
-```
-To to a better comparison I need to know how the mitigation factor is calculated with the estimated yields.
 
 

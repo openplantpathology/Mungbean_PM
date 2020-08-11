@@ -775,7 +775,7 @@ SeasonPlot <- season_dates %>%
    ),
    labels = axis_labels_date,
    breaks = first_day_month) +
-   geom_point(aes(x = trial_ref, y = Disease_day)) +
+   geom_point(aes(x = trial_ref, y = Disease_day), size =2.5) +
    coord_flip() +
    scale_color_manual(values=c("black","grey70"))+
    ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
@@ -937,8 +937,12 @@ The plots from the AUPDS is similar to the AUDPC, however according to the linea
 A mixed effect model would be more suitable to investigate the interactive effects of location, season, and trial. 
 The mixed effect model will help us decide on the best approach and structure for our meta-analysis model.
 
+### FAO mungbean data
 
-```{r}
+An important consideration for why to carry out work on mungbean diseases is the value the crop provides. 
+Lets pull in data from the FAOSTAT website for the area of mungbean crops harvested.
+
+```{r FAO_data_inquiry}
 beans <- read.csv(here("data/FAOSTAT_data_7-6-2020.csv"))
 
 glimpse(beans)
@@ -950,21 +954,6 @@ beans %>%
    ggplot(aes(y = Value, x = Year))+
    geom_point()+
    geom_smooth()
-
-beans %>%
-   filter(Item == "Beans, dry",
-          Element == "Yield")%>%
-   ggplot(aes(y = Value *0.1, x = Year))+
-   geom_point()+
-   geom_smooth()
-
-
-beans %>%
-   filter(Item == "Beans, dry",
-          Element == "Production")%>%
-   ggplot(aes(y = Value, x = Year))+
-   geom_point()+
-   geom_smooth(method = "lm")
 
 ```
 
