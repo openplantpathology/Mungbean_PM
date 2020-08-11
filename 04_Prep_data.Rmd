@@ -437,8 +437,8 @@ write.csv(slimmer_PM_dat, file = here("cache/slimmer_PM_clusterdat.csv"), row.na
 ### Mungbeans age and yield saved
 
 The time at which powdery mildew infects in the seasons and the age of the plant might affect the AUDPC and the loss in yield.
-Let's have a look at the age of each trial when each powdery mildew infected it.
-We will use the difference between `planting_date` and `first_sign_disease` as a proxy for crop maturity.
+Let's have a look at the age of each trial when powdery mildew infected it.
+We will use the difference between `planting_date` and `first_sign_disease` as a proxy for crop maturity when it became infected.
 
 ```{r age_andYield}
 dat1 <- slimmer_PM_dat %>%
@@ -461,7 +461,7 @@ dat1
 ```
 
 From these trials I am most interested in the experiments that directly compare `Recommended` with `Recommended_P_plus` and/or `Late` with `Late_plus`. 
-Therefore I will not inspect, `AM1304` (Marys Mount).  
+Therefore I will not inspect, `AM1304` (Marys Mount), which only trialled an early, prophylactic spray.  
 
 We can see that the crops which were likely the most mature, did not show large yield gains, in particular:
 
@@ -471,7 +471,7 @@ We can see that the crops which were likely the most mature, did not show large 
    * Millmerran  
 
 Let's look at this in a quick box plot. 
-We will only look at trials where powdery mildew set in at flowering which is approximately 60 days after planting.
+We will only look at trials where powdery mildew set in 60 days after planting, when the physiological maturity was likely flowering.
 
 ```{r ageBoxPlot}
 dat1 %>%
@@ -479,13 +479,13 @@ dat1 %>%
    filter(spray_management != "control" &
              trial_ref != "AM1304") %>%
    group_by(trial_ref, spray_management) %>%
-   ggplot(aes(x = spray_management, y = yield_gain, fill = trial_ref)) +
+   ggplot(aes(x = spray_management, y = yield_gain, colour = trial_ref)) +
    geom_boxplot() +
    scale_fill_usq() +
    geom_hline(yintercept = 0)
 ```
 
-We can see in these experiments five experiments there is clearly no benefit to applying a second fungicide application. 
+We can see in these experiments five experiments there is clearly no benefit to applying a second fungicide application given the values of the recommended _plus treatment were predominantly lower than zero. 
 
 For completeness let's test this with powdery mildew infection commencing 40 - 60 days after planting, instead of greater than 60.  
 
@@ -495,7 +495,7 @@ dat1 %>%
              days2PM >= 40) %>%
    filter(spray_management != "control") %>%
    group_by(trial_ref, spray_management) %>%
-   ggplot(aes(x = spray_management, y = yield_gain, fill = trial_ref)) +
+   ggplot(aes(x = spray_management, y = yield_gain, colour = trial_ref)) +
    geom_boxplot() +
    scale_fill_usq() +
    geom_hline(yintercept = 0)
