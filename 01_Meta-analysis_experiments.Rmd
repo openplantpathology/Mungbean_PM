@@ -7,11 +7,12 @@ pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, schoolmath, here)
 source(here("R/import_data.R")
 )
 ```
+Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Research and Development Corporation (GRDC) northern grains region were sourced for a meta-analysis.
 
-This meta-analysis uses data collected by a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland.
-It is worth noting in particular Professor Malcolm Riley's and Dr. Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2016.
+Data was collected from a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland and the National Growers Association.
+We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2014.
 
-Studies were conducted in the following locations and years and were considered for inclusion in this analysis.
+Studies were collated from the following locations and years and were considered for inclusion in this analysis.
 
 * 2001  
    + Bongeen #1  
@@ -63,89 +64,9 @@ Studies were conducted in the following locations and years and were considered 
 * 2019  
    + Hermitage  
 
-## Summary of trials  
-
-```{r data_summary, echo=FALSE, message=FALSE, warning=FALSE}
-PM.dat <- import_data()
-
-kable(
-   PM.dat %>%
-      group_by(trial_ref, ) %>%
-      summarise(
-         Year = unique(year),
-         Location = unique(location),
-         `Replicates per treatment` = if(is.whole(mean(replicates))){
-            as.character(mean(replicates))}else{
-               as.character(paste(min(replicates),"-",max(replicates)))},
-         `Planting date` = unique(planting_date),
-         `First sign of disease` = unique(first_sign_disease),
-         `Fungicide treatments` = length(n_treatment),
-      ) %>%
-      arrange(Year)%>%
-      select(-trial_ref),
-   caption = "Description of Experiments",
-   align = "c",
-   col.names = c("Year", "Location", "Replicates\nper treatments",
-                 "Planting date", "First sign\nof disease", "Fungicide\n treatments")
-)  %>%
-   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
-   column_spec(c(3,5:6), width = "3cm") %>% 
-   scroll_box(height = "500px") 
-
-```
-
-## Powdery mildew rating scales
-
-**2001 - 2004 trials**
-
-Trial data were obtained from a non-published manuscript.
-
-### 1 - 5 powdery mildew rating scale
-
-Ratings for powdery mildew were on a 1 - 5 rating scale where
-
-   1 - No sign of disease
-
-   2 - 1 - 30&nbsp;% diseased leaf area
-
-   3 - 31 - 65&nbsp;% diseased leaf area
-
-   4 - 66 - 99&nbsp;% diseased leaf area and
-
-   5 - Complete defoliation
-      
-Comparing these trials which have not used the 1 - 9 rating scale will be converted using a percentage change.
-
-**2013 Field trials**
-
-Trials from 2013 were all conducted by the [Northern Growers Alliance (NGA)](https://www.nga.org.au/).
-The raw data were obtained from Lawrie Price.
-NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments.
-Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.html).
-
-### 1 - 9 powdery mildew rating scale
-
-   1 - No powdery mildew colonies observed on any plant
-   
-   2 - Small colonies in lower 1/3 of canopy, up to 75&nbsp;% of plants affected
-   
-   3 - Colonies in lower 1/2 of canopy, >75&nbsp;% of plants affected
-   
-   4 - Colonies in lower 2/3 of canopy, up to 7&nbsp;5% of plants affected
-   
-   5 - Colonies in lower 2/3 of canopy, >75&nbsp;% of plants affected
-   
-   6 - Colonies in lower 2/3 of canopy, 100&nbsp;% of plants affected
-   
-   7 - Colonies in lower 2/3 of canopy of 10&nbsp;0% of plants, some plants with colonies also in top 1/3 of canopy
-   
-   8 - Colonies to top of plant with >75&nbsp;% of plants affected
-   
-   9 - Colonies to top of plant with 100&nbsp;% of plants affected and heavy leaf drop
-
 ## Experiment locations  
 
-The following map displays experiment locations which were considered for inclusion in this meta-analysis.
+The following map displays experiment locations in the GRDC northern grain growing region which were considered for inclusion in this meta-analysis.  
 
 ```{r Experiment_locations, echo=FALSE}
 experiment_sites <- data.frame(
@@ -205,3 +126,133 @@ leaflet(experiment_sites) %>%
       popup = ~ htmlEscape(location)
    )
 ```
+
+
+## Criteria for inclusion in meta-analysis  
+
+   1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants.  
+   2. Trial data needed to include:  
+      i) fungicide active ingredients.  
+      ii) A Demethylase inhibitor (DMI) fungicide.  
+      iii) The data at which powdery mildew first appeared in the trial.  
+      iv) Disease severity at the end of the growing seasons.  
+      v) Fungicide application dates.  
+      vi) fungicide dose.  
+      vii) Crop yield.  
+      viii) Treatment means and accompanying variance
+
+
+## Import data and apply selection criteria  
+
+### Import data from trials we have the raw data  
+```{r import_dataRAW}
+PM_MB_raw <- 
+   rbind(
+      read.csv(here("cache/2010 PMmung Hermitage means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/2011 PMmung Herm means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/2011 PMmung Kingaroy means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/AM1305_Goolhi_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/AM1304-MarysMount_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/AM1303-Premer-Disease_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/BB1305_Millmerran_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Herm_16_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/King_16_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Fogerty_17_mean.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_17_mean.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Wellcamp_18_mean.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_19_mean.csv"),stringsAsFactors = FALSE)
+      )
+write.csv(PM_MB_raw, file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData"), row.names = FALSE)
+```
+### Import dataset of manual entries  
+Import dataset which were manually entered from trial reports
+```{r import_dataMan}
+source(here("R/import_ManData.R"))
+PM_MB_man <- import_ManData()
+```
+
+Bind datasets, data set compiled from raw trial data and data manually compiled from trial reports.
+```{r bind_data}
+PM_MB_dat <- 
+   rbind(
+      PM_MB_raw,
+      PM_MB_man
+      )
+```
+
+## Summary of all trials  
+```{r data_summary, echo=FALSE, message=FALSE, warning=FALSE}
+PM_MB_dat %>%
+   arrange(year, location) %>%
+   group_by(trial_ref) %>%
+   summarise(
+         Year = unique(year),
+         Location = unique(location),
+         `Replicates per treatment` = if(all(replicates[1] == replicates)){
+            as.character(replicates[1])}else{
+               as.character(paste(min(replicates),"-",max(replicates)))},
+         `Planting date` = unique(planting_date),
+         `First sign of disease` = unique(first_sign_disease),
+         `Fungicide treatments` = length(n_treatment),
+      ) %>%
+      arrange(Year)%>%
+   kable(caption = "Description of Experiments",
+         align = "c",
+         col.names = c("Unique Trial\nReference","Year", "Location", "Replicates\nper treatments",
+                       "Planting date", "First sign\nof disease", "Fungicide\n treatments")
+         )  %>%
+   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
+   column_spec(c(3,5:6), width = "3cm") %>% 
+   scroll_box(height = "500px") 
+
+```
+
+## Powdery mildew rating scales
+
+**2001 - 2004 trials**
+
+Trial data were obtained from a non-published manuscript.
+
+### 1 - 5 powdery mildew rating scale
+
+Ratings for powdery mildew were on a 1 - 5 rating scale where
+
+   1 - No sign of disease
+
+   2 - 1 - 30&nbsp;% diseased leaf area
+
+   3 - 31 - 65&nbsp;% diseased leaf area
+
+   4 - 66 - 99&nbsp;% diseased leaf area and
+
+   5 - Complete defoliation
+      
+Comparing these trials which have not used the 1 - 9 rating scale will be converted using a percentage change.
+
+**2013 Field trials**
+
+Trials from 2013 were all conducted by the [Northern Growers Alliance (NGA)](https://www.nga.org.au/).
+The raw data were obtained from Lawrie Price.
+NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments.
+Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.html).
+
+### 1 - 9 powdery mildew rating scale
+
+   1 - No powdery mildew colonies observed on any plant
+   
+   2 - Small colonies in lower 1/3 of canopy, up to 75&nbsp;% of plants affected
+   
+   3 - Colonies in lower 1/2 of canopy, >75&nbsp;% of plants affected
+   
+   4 - Colonies in lower 2/3 of canopy, up to 7&nbsp;5% of plants affected
+   
+   5 - Colonies in lower 2/3 of canopy, >75&nbsp;% of plants affected
+   
+   6 - Colonies in lower 2/3 of canopy, 100&nbsp;% of plants affected
+   
+   7 - Colonies in lower 2/3 of canopy of 10&nbsp;0% of plants, some plants with colonies also in top 1/3 of canopy
+   
+   8 - Colonies to top of plant with >75&nbsp;% of plants affected
+   
+   9 - Colonies to top of plant with 100&nbsp;% of plants affected and heavy leaf drop
+
