@@ -3,9 +3,12 @@
 ```{r MEsummary_Libraries, message=FALSE, echo=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
-pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, schoolmath, here)
-source(here("R/import_data.R")
-)
+pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, lubridate, here)
+
+if (!require("theme.usq"))
+   devtools::install_github("adamhsparks/theme.usq")
+library(theme.usq)
+theme_set(theme_usq())
 ```
 Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Research and Development Corporation (GRDC) northern grains region were sourced for a meta-analysis.
 
@@ -134,7 +137,7 @@ leaflet(experiment_sites) %>%
    2. Trial data needed to include:  
       i) fungicide active ingredients.  
       ii) A Demethylase inhibitor (DMI) fungicide.  
-      iii) The data at which powdery mildew first appeared in the trial.  
+      iii) The date at which powdery mildew first appeared in the trial.  
       iv) Disease severity at the end of the growing seasons.  
       v) Fungicide application dates.  
       vi) fungicide dose.  
@@ -164,14 +167,14 @@ PM_MB_raw <-
       )
 write.csv(PM_MB_raw, file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData"), row.names = FALSE)
 ```
+
 ### Import dataset of manual entries  
-Import dataset which were manually entered from trial reports
+Import dataset which were manually entered from trial reports  
 ```{r import_dataMan}
-source(here("R/import_ManData.R"))
-PM_MB_man <- import_ManData()
+PM_MB_man <- read.csv(here("cache/PM_Mungbean_DataManuallyEntered.csv"), stringsAsFactors = FALSE)
 ```
 
-Bind datasets, data set compiled from raw trial data and data manually compiled from trial reports.
+Bind datasets, data set compiled from raw trial data and data manually compiled from trial reports.  
 ```{r bind_data}
 PM_MB_dat <- 
    rbind(
@@ -180,7 +183,7 @@ PM_MB_dat <-
       )
 ```
 
-## Summary of all trials  
+### Summary of all trials  
 ```{r data_summary, echo=FALSE, message=FALSE, warning=FALSE}
 PM_MB_dat %>%
    arrange(year, location) %>%
@@ -207,52 +210,146 @@ PM_MB_dat %>%
 
 ```
 
-## Powdery mildew rating scales
 
-**2001 - 2004 trials**
+Lets apply the selection criteria our dataset.  
+All trials identified for this meta-analysis reported: fungicide active ingredient, dose, first sign of disease. 
+Therefore no trials need to be removed to satisfy this criteria.  
 
-Trial data were obtained from a non-published manuscript.
+Three trials omitted due to not reporting yields  
+```{r TrialWithoutYield}
+PM_MB_dat %>%
+   filter(is.na(grain_yield.t.ha.)) %>%
+   distinct(trial_ref, year, location)
 
-### 1 - 5 powdery mildew rating scale
+PM_MB_dat <- PM_MB_dat %>%
+   filter(!is.na(grain_yield.t.ha.))
+```
+One more trial removed as it did not report disease severity.  
+```{r TrialsWithotDisease}
+PM_MB_dat %>%
+   filter(is.na(PM_final_severity)) %>%
+   distinct(trial_ref, year, location)
 
-Ratings for powdery mildew were on a 1 - 5 rating scale where
+PM_MB_dat <- PM_MB_dat %>%
+   filter(!is.na(PM_final_severity))
+```
 
-   1 - No sign of disease
+No trials from our subset need to be removed for not reporting fungicide application dates.  
+```{r FungicideApplicationDates}
+PM_MB_dat %>%
+   group_by(trial_ref) %>%
+   summarise(No_Record_Of_Fungicide_Application_Dates = all(is.na(fungicide_application_1)),
+             .groups = 'drop')%>%
+   filter(No_Record_Of_Fungicide_Application_Dates)
+```
+No trials from our subset need to be removed for not reporting fungicide dose.  
+```{r FungicideDoseTrials}
+PM_MB_dat %>%
+   group_by(trial_ref) %>%
+   summarise(No_Record_Of_Fungicide_Dose = all(is.na(dose_ai.ha)),
+             .groups = 'drop')%>%
+   filter(No_Record_Of_Fungicide_Dose)
+```
 
-   2 - 1 - 30&nbsp;% diseased leaf area
+Four trials from our subset need to be removed for not reporting yield variance.  
+```{r TrialsWithVariance}
+NoVar <- PM_MB_dat %>%
+   group_by(trial_ref) %>%
+   summarise(location = location,
+             year = year,
+             No_Var = all(is.na(yield_error)),
+             .groups = 'drop')%>%
+   filter(No_Var)%>%
+   distinct(trial_ref, year, location)
+NoVar
 
-   3 - 31 - 65&nbsp;% diseased leaf area
+PM_MB_dat <- PM_MB_dat %>%
+   filter(!(trial_ref %in% NoVar$trial_ref))
+```
 
-   4 - 66 - 99&nbsp;% diseased leaf area and
+We need to focus the meta-analysis on fungicides with the same mode of action.
+Let's look at all the fungicides and retain the best represented fungicide group in the data.
+```{r Fungicides}
+PM_MB_dat %>%
+   group_by(fungicide_ai, trial_ref) %>%
+   summarise(groups = 'drop') %>%
+   count(sort = TRUE) %>%
+   rename(Trials = n) %>%
+   ggplot(aes(x = reorder(fungicide_ai, Trials), y = Trials)) +
+   xlab("Fungicide active ingredient") +
+   ylab("N Trials") +
+   geom_col() +
+   scale_fill_usq() +
+   ggtitle(label = "Number of trials in which the\nspecified fungicide was used") +
+   scale_colour_usq() +
+   coord_flip()
+```
 
-   5 - Complete defoliation
-      
-Comparing these trials which have not used the 1 - 9 rating scale will be converted using a percentage change.
+Tebuconazole and propiconazole are both classed as demethylase inhibitors. 
+We will retain the trials trials which only contain DMI fungicides.  
+```{r}
+PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   distinct(trial_ref, location, year)%>%
+   arrange(year)
+```
+We will retain all fungicides for now and remove them before the analysis. 
 
-**2013 Field trials**
+Finally we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis.
+```{r classifyData}
+PM_MB_dat <- 
+   PM_MB_dat %>%
+   mutate(trial_ref = as.character(trial_ref)) %>%
+   mutate(year = as.character(year)) %>%
+   mutate(location = as.character(location)) %>%
+   mutate(host_genotype = as.character(host_genotype)) %>%
+   mutate(row_spacing = as.double(round(row_spacing, digits = 2))) %>%
+   mutate(replicates = as.integer(replicates)) %>%
+   mutate(planting_date = ymd(planting_date)) %>%
+   mutate(flowering_date = ymd(flowering_date)) %>%
+   mutate(pod_fill_date = ymd(pod_fill_date)) %>%
+   mutate(mid_late_pod_fill = ymd(mid_late_pod_fill)) %>%
+   mutate(first_sign_disease = ymd(first_sign_disease)) %>%
+   mutate(fungicide_ai = as.character(fungicide_ai))%>%
+   mutate(dose_ai.ha = round(as.double(dose_ai.ha), digits = 2))%>%
+   mutate(fungicide_application_1 = ymd(fungicide_application_1)) %>%
+   mutate(fungicide_application_2 = ymd(fungicide_application_2)) %>%
+   mutate(fungicide_application_3 = ymd(fungicide_application_3)) %>%
+   mutate(fungicide_application_4 = ymd(fungicide_application_4)) %>%
+   mutate(fungicide_application_5 = ymd(fungicide_application_5)) %>%
+   mutate(fungicide_application_6 = ymd(fungicide_application_6)) %>%
+   mutate(total_fungicide = as.integer(total_fungicide)) %>%
+   mutate(harvest_date = ymd(harvest_date)) %>%
+   mutate(final_assessment = ymd(final_assessment)) %>%
+   mutate(PM_final_severity = round(as.double(PM_final_severity), digits = 4))%>%
+   mutate(disease_error = round(as.double(disease_error), digits = 6))%>%
+   mutate(D_error_type = as.character(D_error_type))%>%
+   mutate(grain_yield.t.ha. = round(as.double(grain_yield.t.ha.), digits = 4))%>%
+   mutate(yield_error = round(as.double(yield_error), digits = 6))%>%
+   mutate(Y_error_type = as.character(Y_error_type))%>%
+   mutate(Y_Msquare = round(as.double(Y_Msquare), digits = 6))%>%
+   mutate(yield_gain = round(as.double(yield_gain), digits = 4))%>%
+   mutate(prop_YG = round(as.double(prop_YG), digits = 4))%>%
+   select(-c(trial_design, # remove the following columns
+             plot_length.m.,
+             plot_width.m.,
+             plant_density,
+             trade_name,
+             n_treatment,
+             emergence_date,
+             rating_scale,
+             raw_graded,
+             raw_data_avail,
+             comments,
+             days_harvest.planting,
+             AUDPS_m,
+             AUDPC_sd,
+             Inc_Ms))
+```
 
-Trials from 2013 were all conducted by the [Northern Growers Alliance (NGA)](https://www.nga.org.au/).
-The raw data were obtained from Lawrie Price.
-NGA data were formatted to be compliant with the 1 - 9 rating scale used in all other experiments.
-Detailed code for the conversion can be found in the following vignette [191115_PMMB_DataWrangling_PM.Rmd](./vignette/191115_PMMB_DataWrangling_PM.html).
 
-### 1 - 9 powdery mildew rating scale
-
-   1 - No powdery mildew colonies observed on any plant
-   
-   2 - Small colonies in lower 1/3 of canopy, up to 75&nbsp;% of plants affected
-   
-   3 - Colonies in lower 1/2 of canopy, >75&nbsp;% of plants affected
-   
-   4 - Colonies in lower 2/3 of canopy, up to 7&nbsp;5% of plants affected
-   
-   5 - Colonies in lower 2/3 of canopy, >75&nbsp;% of plants affected
-   
-   6 - Colonies in lower 2/3 of canopy, 100&nbsp;% of plants affected
-   
-   7 - Colonies in lower 2/3 of canopy of 10&nbsp;0% of plants, some plants with colonies also in top 1/3 of canopy
-   
-   8 - Colonies to top of plant with >75&nbsp;% of plants affected
-   
-   9 - Colonies to top of plant with 100&nbsp;% of plants affected and heavy leaf drop
+```{r saveData01}
+save(PM_MB_dat, file = here("cache/ImportDataAndSelectTrials01.Rdata"))
+```
 
