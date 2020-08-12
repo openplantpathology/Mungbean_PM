@@ -12,29 +12,24 @@ pacman::p_load(tidyverse,
                lme4,
                kableExtra,
                here)
-source(here("R/import_data.R"))
+
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
 theme_set(theme_usq()
 )
+load("cache/ImportDataAndSelectTrials01.Rdata")
 ```
 
 ## Explore and Visualise Data
-First let's import the data.
 Each row provides the mean yield for each experimental treatment.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-PM_MB_means <- import_data() 
-```
-
-The data explored in the `PM_MB_means` data frame is a list of mean values from each treatment in each respective experiment.
+The data explored in the `PM_MB_dat` data frame is a list of mean values from each treatment in each respective experiment.
 These preliminary analyses will focus on the change in mungbean yields, which is attributable to the fungicide treatment. 
 Later in this document we will also consider the impact of fungicide treatments on disease incidence/severity.
 Mean powdery mildew incidence was recorded at the end of each growing season.
 Some experiments recorded disease incidence throughout the season and these were summarised with AUDPC.
 AUDPC for trials which only provided final powdery mildew incidence was calculated using the record of 'first sign of disease' and final assessment.
-More details on how the `PM_MB_means` data was compiled can be found in the ['Data wrangle vingette'](./vignette/191115_PMMB_DataWrangling_PM.html)
 
 Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
 On this page, unless stated, the following plots and analyses were made disregarding other effects.
@@ -54,62 +49,14 @@ The following factors are postulated to influence mungbean grain yield and/or po
    
    7 Row spacing
    
-   8 In-crop rainfall
+   8 Final disease rating
    
-   9 Irrigated versus non-irrigated trials
-   
-   10 Mean daily temperature in the weeks following spray application
-   
-   11 Final disease rating
-   
-   12 Two pathogen species cause PM (new discovery in 2018)
-
-The data plotted below are from `r length(unique(PM_MB_means$trial_ref))` field trials between (`r first(levels(PM_MB_means$year))` - `r last(levels(PM_MB_means$year))`) of which the details are described in the [studies considered in meta-analysis section](#studies-considered-in-meta-analysis).
+The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r first(levels(PM_MB_dat$year))` - `r last(levels(PM_MB_dat$year))`) of which the details are described in the [Trials considered for inclusion in meta-analysis section](#Trials-considered-for-inclusion-in-meta-analysis). 
 
 
 ### Fungicides
 
 #### Fungicide type
-
-First let's standardise the sulphur treatments.
-Some early experiments tested different formulations.
-There was no difference in the sulphur formulations so we will refer to all of them as "sulphur".
-
-```{r sulphur_simplify}
-# Remove the variation in different sulphur formulations
-unique(PM_MB_means[grep("sulphur", PM_MB_means$fungicide_ai),
-                   "fungicide_ai"])
-PM_MB_means[grep("sulphur", PM_MB_means$fungicide_ai), "fungicide_ai"] <-
-   "sulphur"
-```
-
-Let's explore how many different types of fungicide were used and at what frequency.
-
-```{r Fungicides}
-PM_MB_means %>%
-   group_by(fungicide_ai, trial_ref) %>%
-   summarise() %>%
-   count(sort = TRUE) %>%
-   rename(Trials = n) %>%
-   ggplot(aes(x = reorder(fungicide_ai, Trials), y = Trials)) +
-   xlab("Fungicide active ingredient") +
-   ylab("N Trials") +
-   geom_col() +
-   scale_fill_usq() +
-   ggtitle(label = "Number of trials in which the\nspecified fungicide was used") +
-   scale_colour_usq() +
-   coord_flip()
-```
-
-The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in the highest frequencies, along with sulphur.
-The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.
-
-Amistar Xtra and Custodia both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.
-
-Perhaps best way forward is to focus the meta-analysis on only the DMIs.
-This can then be compared to an additional meta-analysis including azoxystrobin as a comparison.
-   
-*****
 
 Before we exclude non-DMI fungicides let's have a look at the efficacy of the other fungicides in comparison to the DMIs.
 For this comparison we will focus on the proportional yield saved, relative to the no spray control.
@@ -119,12 +66,9 @@ We are using proportional yield, relative to the no spray control, to reduce the
 Let's investigate the difference in the effect of the type of fungicide on proportion of yield saved, but first we need to calculate yield saved relative to the no spray control.
 
 ```{r Calculate_yield-savings}
-PM_MB_means$grain_yield.t.ha. <-
-   as.numeric(PM_MB_means$grain_yield.t.ha.) # NAs produced due to some cells having text description to why there is no specific data
-
-for (i in unique(PM_MB_means$trial_ref)) {
+for (i in unique(PM_MB_dat$trial_ref)) {
    # Loop code over each trial reference
-   dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
+   dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == i, ]
    
    if (any(is.na(unique(dat1$row_spacing)))) {
       # If there is no recorded row.spacing don't calculate proportional yield, skip to the next trial
@@ -157,12 +101,12 @@ for (i in unique(PM_MB_means$trial_ref)) {
       dat1[dat1$row_spacing == j, ] <- dat2
    }
    # Reassign values to trial_ref subset
-   PM_MB_means[PM_MB_means$trial_ref == i, ] <- dat1
+   PM_MB_dat[PM_MB_dat$trial_ref == i, ] <- dat1
 }
 
 # ____________________________________________
 # calculate yield gain and prop_yield gain for experiments with no row spacing data
-dat1 <- PM_MB_means[PM_MB_means$trial_ref == "AM1303", ]
+dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == "AM1303", ]
 
 controlY <-
    mean(dat1[dat1$fungicide_ai == "control", "grain_yield.t.ha."])
@@ -171,17 +115,15 @@ dat1$yield_gain <- dat1$grain_yield.t.ha. - controlY
 dat1$prop_YG <- dat1$yield_gain / controlY
 dat1[dat1$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
    c(NA, NA)
-PM_MB_means[PM_MB_means$trial_ref == "AM1303", ] <- dat1
 
-write.csv(PM_MB_means,
-          "cache/1911_PM_MB_means&Ygains.csv")
+PM_MB_dat[PM_MB_dat$trial_ref == "AM1303", ] <- dat1
 ```
 
 
 Now we have calculated proportional yield savings we can inspect the difference between the fungicide active ingredients
 
 ```{r Fungicide_x_nSprays_tble2, message=FALSE}
-PM_MB_means %>%
+PM_MB_dat %>%
    group_by(fungicide_ai, total_fungicide) %>%
    summarise(
       n = length(prop_YG),
@@ -210,13 +152,13 @@ PM_MB_means %>%
    footnote(general = "Fungicides with less than five observations were omitted from this table")
 ```
 
-**  **  *
+*****
 
 Let's visualise this in a plot for one and two sprays only.
 
 ```{r Fungicide_x_nSprays_tble1, message=FALSE, warning=FALSE}
-PM_MB_means %>%
-   mutate(fungicide_ai = as.factor(PM_MB_means$fungicide_ai)) %>%
+PM_MB_dat %>%
+   mutate(fungicide_ai = as.factor(PM_MB_dat$fungicide_ai)) %>%
    filter(total_fungicide == 1 | total_fungicide == 2) %>%
    filter(
       fungicide_ai != "pyrazophos" &
@@ -241,7 +183,7 @@ PM_MB_means %>%
    geom_boxplot(aes(fill = fungicide_ai)) +
    geom_hline(aes(yintercept = 0), size = 0.5) +
    labs(y = "Proportion of grain yield saved",
-        title = "Grain yield proportion saved\ngrouped by fungicide type") +
+        title = "Grain yield proportion saved\nfaceted by number of sprays") +
    theme(legend.position = "none") +
    scale_fill_usq() +
    coord_flip()
@@ -251,7 +193,6 @@ There is a small yield effect among the strobilurin fungicide mixes and the DMI 
 While there is some differences in the variation between tebuconazole and propiconazole, the medians are very similar. 
 I think it is safe to combine these fungicides, with the same mode of action in the meta-analysis.
 The follow-up spray seems to show an increase in yield protection.
-Interestingly sulphur sprays show good protection when sprayed twice.
 
 *****
 
@@ -261,7 +202,7 @@ From this point on we will investigate only the DMI fungicides, tebuconazole and
 We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.
 
 ```{r tebuAndPropi_dose}
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole") %>%
    select(
@@ -275,7 +216,7 @@ PM_MB_means %>%
    ) %>%
    ggplot(aes(x = as.factor(dose_ai.ha), fill = fungicide_ai)) +
    xlab("Dose (g ai/ha)") +
-   ggtitle(label = "Total number of treatments for each respective tebuconazole dose") +
+   ggtitle(label = "Total number of treatments for each respective tebuconazole\nor propiconazole dose") +
    geom_bar() +
    scale_fill_usq() +
    scale_colour_usq()
@@ -288,12 +229,13 @@ Doses for propiconazole range from 62.5 to 125, a large variation.
 Let's inspect the difference in yields for each dose.
 
 ```{r PropiDoseEffect}
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(fungicide_ai == "propiconazole") %>%
    ggplot(aes(x = relevel(as.factor(dose_ai.ha), "62.5"), y = prop_YG)) +
    xlab("Dose (g ai/ha)") +
    ggtitle(label = "Yield for each respective propiconazole dose,\nfaceted by number of applications") +
    geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
+   ylab("Yield gain proportially\nto the no spray control") +
    facet_grid(cols = vars(total_fungicide))
 ```
 
@@ -301,27 +243,11 @@ This dose effect should be acknowledged in the meta-analysis.
 How many treatments of each dose have been investigated per trial?
 
 ```{r table_PropiDoses}
-table(as.character(PM_MB_means[PM_MB_means$fungicide_ai == "propiconazole",]$trial_ref),
-      PM_MB_means[PM_MB_means$fungicide_ai == "propiconazole",]$dose_ai.ha)
+table(as.character(PM_MB_dat[PM_MB_dat$fungicide_ai == "propiconazole",]$trial_ref),
+      PM_MB_dat[PM_MB_dat$fungicide_ai == "propiconazole",]$dose_ai.ha)
 ```
 
-Two trials show both doses were applied in the same trial, mung1112/01 and mung1112/02.
-Let's look at the difference in proportion of yield saved in these trials.
-
-```{r PropiDoses_TrialCompare}
-PM_MB_means[(PM_MB_means$trial_ref == "mung1112/01" |
-                PM_MB_means$trial_ref == "mung1112/02") &
-                PM_MB_means$fungicide_ai == "propiconazole",] %>%
-   mutate(dose_ai.ha = as.factor(dose_ai.ha)) %>%
-               ggplot(aes(y = prop_YG, x = dose_ai.ha))+
-   geom_boxplot()+
-   facet_grid(cols = vars(total_fungicide)) +
-   xlab("Dose (g ai/ha)") +
-   ggtitle(label = "Yield for each respective propiconazole dose, faceted by number of applications") +
-   geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5)
-```
-
-This plot is similar to the previous plot, indicating dose needs to be considered in the analysis. Especially as there is a interaction between dose and number of sprays.
+One trial show both doses were applied in the same trial, and mung1112/02.
 
 *****
 
@@ -329,7 +255,7 @@ This plot is similar to the previous plot, indicating dose needs to be considere
 
 Let's look at the frequency of sprays per fungicide.  
 ```{r Fungicide_x_nSprays}
-table(PM_MB_means$fungicide_ai, PM_MB_means$total_fungicide)
+table(PM_MB_dat$fungicide_ai, PM_MB_dat$total_fungicide)
 ```
 
 This table shows that the majority of treatments inspected one and two spray management practices.
@@ -346,7 +272,7 @@ First let's make a plot to visualise when one or more spray management regimes w
 The plot is faceted by number of spray applications.
 
 ```{r spray_relative2FS}
-PM_MB_means %>%
+PM_MB_dat %>%
    mutate(
       s1_DfromFS = fungicide_application_1 - first_sign_disease,
       s2_DfromFS = fungicide_application_2 - first_sign_disease,
@@ -373,12 +299,12 @@ PM_MB_means %>%
       "Fourth spray",
       "Fifth spray"
    )) +
-   ylab("Days to First Sign of Disease") +
+   ylab("Fungicide application timing relative to First Sign of Disease") +
    facet_grid(cols = vars(total_fungicide)) +
    coord_flip()
 ```
 
-The plot shows single fungicide applications are mostly made at zero, first sign of disease in the crop.
+The plot shows single fungicide applications are mostly made at zero, first sign of disease in the crop. Some were made earlier and some around 10 days later.  
 Experiments that tested two spray treatments also tend to make the first application at first sign of disease, and the second spray between 10 and 25 days later.
 Three spray treatments seemed to be mostly used in experiments where preventative sprays as the first fungicide application were made.
 
@@ -397,7 +323,7 @@ Australian mungbean varieties have the following resistance to powdery mildew.
 Let's view a stacked bar plot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.
 
 ```{r Host_genotype}
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole") %>%
    group_by(host_genotype, fungicide_ai, trial_ref) %>%
@@ -433,7 +359,7 @@ YV1[[3]]
 ```
 
 This plot shows a large amount of yield volatility in all cultivars except Green Diamond.
-Green Diamond shows little volatility probably because this cultivar was only used in `r length(unique(PM_MB_means[PM_MB_means$host_genotype == "Green Diamond","trial_ref"]))` trial. 
+Green Diamond shows little volatility probably because this cultivar was only used in `r length(unique(PM_MB_dat[PM_MB_dat$host_genotype == "Green Diamond","trial_ref"]))` trial. 
 
 Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray control treatments.
 
@@ -527,7 +453,7 @@ This finding has also been shown by several other researchers' work in Queenslan
 Eight trials used a row spacing of 0.75&nbsp;meters and tebuconazole as an active ingredient (AI).
 
 ```{r row_spacing.m}
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole") %>%
    group_by(fungicide_ai, row_spacing, trial_ref) %>%
@@ -552,7 +478,7 @@ The main questions are:
 
 ```{r RS_severity}
 # Which row spacing leads to the higher disease severity
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(year == 2017 |
              year == 2018) %>%
    filter(fungicide_ai == "control") %>%
@@ -565,7 +491,7 @@ PM_MB_means %>%
 
 ```{r RS_severity_x_trial}
 # Which row spacing leads to the higher disease severity
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(year == 2017 |
              year == 2018) %>%
    filter(fungicide_ai == "control") %>%
@@ -581,7 +507,7 @@ In the Wellcamp site, wider row spacing reduces PM severity, the other sites it 
 
 ```{r RS_yield}
 # Which row spacing leads to the higher yield potential
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(year == 2017 |
              year == 2018) %>%
    ggplot(aes(
@@ -691,7 +617,7 @@ I'll build a plot of horizontal lines indicating the season length and use a dot
 
 ```{r first_incidence}
 # Create the data frame for the plot
-season_dates <- PM_MB_means %>%
+season_dates <- PM_MB_dat %>%
    group_by(trial_ref) %>%
    summarise(
       Planting_date = unique(planting_date),
@@ -791,19 +717,19 @@ The disease is driven by weather conditions and the plant is vulnerable at any g
 First let's check we have all the AUDPC observations.
 
 ```{r AUDPC_check}
-PM_MB_means %>%
+PM_MB_dat %>%
    filter(is.na(AUDPC_m)) %>%
    distinct(trial_ref, location, year,AUDPC_m, first_sign_disease, final_assessment)%>%
    kable(align = "c")
 ```
 
-The trials `r unique(PM_MB_means[is.na(PM_MB_means$AUDPC_m),"trial_ref"]) ` don't have an estimate of AUDPC and need to be filled in. 
+The trials `r unique(PM_MB_dat[is.na(PM_MB_dat$AUDPC_m),"trial_ref"]) ` don't have an estimate of AUDPC and need to be filled in. 
 The following script estimates AUDPC from the final disease severity rating and the first sign of disease information.
 
 ```{r SingleObsAUDPC}
 source(here("R/AUDPC_for_single_obs.R"))
-write.csv(PM_MB_means,
-          "cache/1911_PM_MB_means&Ygains.csv", row.names = FALSE)
+write.csv(PM_MB_dat,
+          "cache/1911_PM_MB_dat&Ygains.csv", row.names = FALSE)
 ```
 
       _How well does 'area under the disease progress curve' (AUDPC) predict grain yield?_
@@ -817,8 +743,8 @@ Let's just plot yield vs AUDPC.
 
 ```{r Yield_vs_AUDPC}
 
-plot(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means)
-abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
+plot(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_dat)
+abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_dat))
 
 ```
 
@@ -826,23 +752,23 @@ There appears to be a weak positive relationship between the two continuous vari
 Does a linear model confirm this?
 
 ```{r AUDPClm}
-summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))
+summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_dat))
 ```
 
-This is not what we would expect and the low R squared value of `r round(summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_means))$adj.r.squared,3)` perhaps there are additional factors influencing this relationship.
+This is not what we would expect and the low R squared value of `r round(summary(lm(grain_yield.t.ha. ~ AUDPC_m, data = PM_MB_dat))$adj.r.squared,3)` perhaps there are additional factors influencing this relationship.
 
 Let's tease out variation due to trial location, season, row spacing, and other seasonal variables are preventing us from seeing the expected relationship.
 Let's do the plot again for each trial where there are no missing values.
 Note: The plots are ordered by mean yield of the trial.
 
 ```{r AUDPCxTrial}
-sm2lg <- PM_MB_means %>%
+sm2lg <- PM_MB_dat %>%
    group_by(trial_ref) %>%
    summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
    arrange(TY)
 
 for (i in sm2lg$trial_ref) {
-   dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
+   dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == i, ]
    if (any(is.na(dat1$grain_yield.t.ha.))) {
       next
    }
@@ -854,8 +780,8 @@ for (i in sm2lg$trial_ref) {
       grain_yield.t.ha. ~ AUDPC_m,
       data = dat1,
       main = paste(dat1$location[1], (dat1$year[1])),
-      ylim = c(0, max(PM_MB_means$grain_yield.t.ha., na.rm = TRUE)),
-      xlim = c(0, max(PM_MB_means$AUDPC_m, na.rm = TRUE))
+      ylim = c(0, max(PM_MB_dat$grain_yield.t.ha., na.rm = TRUE)),
+      xlim = c(0, max(PM_MB_dat$AUDPC_m, na.rm = TRUE))
    )
    abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = dat1))
    points(grain_yield.t.ha. ~ AUDPC_m,
@@ -867,14 +793,14 @@ for (i in sm2lg$trial_ref) {
 
 Based on a GRDC report by Sue Thompson [-@SueThompson2016] we want to know what the yield loss was in on cultivar Jade in the 2016 Trials.
 ```{r}
-dat3 <- PM_MB_means %>%
+dat3 <- PM_MB_dat %>%
    filter(year == "2016",
           host_genotype == "Jade",
           fungicide_ai == "control")%>%
    group_by(location)%>%
    summarise(C_Yield = mean(grain_yield.t.ha., na.rm = TRUE))
    
-dat3$F_Yield <- PM_MB_means %>%
+dat3$F_Yield <- PM_MB_dat %>%
    filter(year == "2016",
           host_genotype == "Jade",
           fungicide_ai != "control")%>%
@@ -896,18 +822,18 @@ The higher the yield, the greater greater the influence on the disease on the yi
 Let's have a look again at the same sequence of graphs and analyses for area under the disease progress _stairs_.
 
 ```{r Yield_vs_AUDPS}
-plot(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means)
-abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means))
+plot(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_dat)
+abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_dat))
 
-summary(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_means))
+summary(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_dat))
 
-sm2lg <- PM_MB_means %>%
+sm2lg <- PM_MB_dat %>%
    group_by(trial_ref) %>%
    summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
    arrange(TY)
 
 for (i in sm2lg$trial_ref) {
-   dat1 <- PM_MB_means[PM_MB_means$trial_ref == i, ]
+   dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == i, ]
    if (any(is.na(dat1$grain_yield.t.ha.))) {
       next
    }
@@ -920,9 +846,9 @@ for (i in sm2lg$trial_ref) {
       data = dat1,
       main = paste(dat1$location[1], (dat1$year[1])),
       ylim = c(0, max(
-         PM_MB_means$grain_yield.t.ha., na.rm = TRUE
+         PM_MB_dat$grain_yield.t.ha., na.rm = TRUE
       )),
-      xlim = c(0, max(PM_MB_means$AUDPS_m, na.rm = TRUE))
+      xlim = c(0, max(PM_MB_dat$AUDPS_m, na.rm = TRUE))
    )
    abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = dat1))
    points(grain_yield.t.ha. ~ AUDPS_m,
