@@ -15,59 +15,107 @@ Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Re
 Data was collected from a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland and the National Growers Association.
 We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2014.
 
-Studies were collated from the following locations and years and were considered for inclusion in this analysis.
 
-* 2001  
-   + Bongeen #1  
-   + Bongeen #2  
-   
-* 2002  
-   + Hermitage #1  
-   + Hermitage #2  
-   + Kingaroy  
-   
-* 2004  
-   + Redvale  
+<br>
+<br>
+<br>
 
-* 2010  
-   + Hermitage  
-   + Kingaroy  
-   
-* 2011  
-   + Hermitage  
-   + Kingaroy  
-   
-* 2012  
-   + Gatton  
-   + Kingaroy  
-   
-* 2013  
-   + Premer  
-   + Millmerran   
-   + Marys Mount  
-   + Goolhi  
 
-* 2015  
-   + Hermitage  
-   + Dalby - Site abandoned due to insufficient/late disease infection  
-   + Emerald  
-   
-* 2016  
-   + Hermitage  
-   + Kingaroy  
-   + Emerald  
-   
-* 2017  
-   + Missen Flats (Fogerty's farm)  
-   + Hermitage  
+## Criteria for inclusion in meta-analysis  
 
-* 2018  
-   + Wellcamp  
-   
-* 2019  
-   + Hermitage  
+   1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants.  
+   2. Trial data needed to include:  
+      i) fungicide active ingredients.  
+      ii) A Demethylase inhibitor (DMI) fungicide.  
+      iii) The date at which powdery mildew first appeared in the trial.  
+      iv) Disease severity at the end of the growing seasons.  
+      v) Fungicide application dates.  
+      vi) fungicide dose.  
+      vii) Crop yield.  
+      viii) Treatment means and accompanying variance
 
-## Experiment locations  
+
+
+<br>
+<br>
+<br>
+
+## Import data and apply selection criteria  
+### Import data from trials we have the raw data  
+```{r import_dataRAW}
+PM_MB_raw <- 
+   rbind(
+      read.csv(here("cache/2010 PMmung Hermitage means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/2011 PMmung Herm means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/2011 PMmung Kingaroy means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/AM1305_Goolhi_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/AM1304-MarysMount_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/AM1303-Premer-Disease_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/BB1305_Millmerran_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Herm_16_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/King_16_means.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Fogerty_17_mean.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_17_mean.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Wellcamp_18_mean.csv"),stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_19_mean.csv"),stringsAsFactors = FALSE)
+      )
+write.csv(PM_MB_raw, file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData"), row.names = FALSE)
+```
+
+<br>
+<br>
+<br>
+
+
+### Import dataset of manual entries  
+Import dataset which were manually entered from trial reports  
+```{r import_dataMan}
+PM_MB_man <- read.csv(here("cache/PM_Mungbean_DataManuallyEntered.csv"), stringsAsFactors = FALSE)
+```
+
+Bind datasets, data set compiled from raw trial data and data manually compiled from trial reports.  
+```{r bind_data}
+PM_MB_dat <- 
+   rbind(
+      PM_MB_raw,
+      PM_MB_man
+      )
+```
+
+<br>
+<br>
+<br>
+
+### Summary of all trials  
+```{r data_summary, echo=FALSE, message=FALSE, warning=FALSE}
+PM_MB_dat %>%
+   arrange(year, location) %>%
+   group_by(trial_ref) %>%
+   summarise(
+         Year = unique(year),
+         Location = unique(location),
+         `Replicates per treatment` = if(all(replicates[1] == replicates)){
+            as.character(replicates[1])}else{
+               as.character(paste(min(replicates),"-",max(replicates)))},
+         `Planting date` = unique(planting_date),
+         `First sign of disease` = unique(first_sign_disease),
+         `Fungicide treatments` = length(n_treatment),
+      ) %>%
+      arrange(Year)%>%
+   kable(caption = "Description of Experiments",
+         align = "c",
+         col.names = c("Unique Trial\nReference","Year", "Location", "Replicates\nper treatments",
+                       "Planting date", "First sign\nof disease", "Fungicide\n treatments")
+         )  %>%
+   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
+   column_spec(c(3,5:6), width = "3cm") %>% 
+   scroll_box(height = "500px") 
+
+```
+
+<br>
+
+### Experiment locations  
 
 The following map displays experiment locations in the GRDC northern grain growing region which were considered for inclusion in this meta-analysis.  
 
@@ -130,90 +178,17 @@ leaflet(experiment_sites) %>%
    )
 ```
 
-
-## Criteria for inclusion in meta-analysis  
-
-   1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants.  
-   2. Trial data needed to include:  
-      i) fungicide active ingredients.  
-      ii) A Demethylase inhibitor (DMI) fungicide.  
-      iii) The date at which powdery mildew first appeared in the trial.  
-      iv) Disease severity at the end of the growing seasons.  
-      v) Fungicide application dates.  
-      vi) fungicide dose.  
-      vii) Crop yield.  
-      viii) Treatment means and accompanying variance
+<br>
+<br>
+<br>
 
 
-## Import data and apply selection criteria  
-
-### Import data from trials we have the raw data  
-```{r import_dataRAW}
-PM_MB_raw <- 
-   rbind(
-      read.csv(here("cache/2010 PMmung Hermitage means.csv"), stringsAsFactors = FALSE),
-      read.csv(here("cache/2011 PMmung Herm means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/2011 PMmung Kingaroy means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/AM1305_Goolhi_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/AM1304-MarysMount_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/AM1303-Premer-Disease_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/BB1305_Millmerran_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Herm_16_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/King_16_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Fogerty_17_mean.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Hermitage_17_mean.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Wellcamp_18_mean.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Hermitage_19_mean.csv"),stringsAsFactors = FALSE)
-      )
-write.csv(PM_MB_raw, file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData"), row.names = FALSE)
-```
-
-### Import dataset of manual entries  
-Import dataset which were manually entered from trial reports  
-```{r import_dataMan}
-PM_MB_man <- read.csv(here("cache/PM_Mungbean_DataManuallyEntered.csv"), stringsAsFactors = FALSE)
-```
-
-Bind datasets, data set compiled from raw trial data and data manually compiled from trial reports.  
-```{r bind_data}
-PM_MB_dat <- 
-   rbind(
-      PM_MB_raw,
-      PM_MB_man
-      )
-```
-
-### Summary of all trials  
-```{r data_summary, echo=FALSE, message=FALSE, warning=FALSE}
-PM_MB_dat %>%
-   arrange(year, location) %>%
-   group_by(trial_ref) %>%
-   summarise(
-         Year = unique(year),
-         Location = unique(location),
-         `Replicates per treatment` = if(all(replicates[1] == replicates)){
-            as.character(replicates[1])}else{
-               as.character(paste(min(replicates),"-",max(replicates)))},
-         `Planting date` = unique(planting_date),
-         `First sign of disease` = unique(first_sign_disease),
-         `Fungicide treatments` = length(n_treatment),
-      ) %>%
-      arrange(Year)%>%
-   kable(caption = "Description of Experiments",
-         align = "c",
-         col.names = c("Unique Trial\nReference","Year", "Location", "Replicates\nper treatments",
-                       "Planting date", "First sign\nof disease", "Fungicide\n treatments")
-         )  %>%
-   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
-   column_spec(c(3,5:6), width = "3cm") %>% 
-   scroll_box(height = "500px") 
-
-```
-
+## Subset data to selection criteria  
 
 Lets apply the selection criteria our dataset.  
 All trials identified for this meta-analysis reported: fungicide active ingredient, dose, first sign of disease. 
 Therefore no trials need to be removed to satisfy this criteria.  
+
 
 Three trials omitted due to not reporting yields  
 ```{r TrialWithoutYield}
@@ -224,6 +199,11 @@ PM_MB_dat %>%
 PM_MB_dat <- PM_MB_dat %>%
    filter(!is.na(grain_yield.t.ha.))
 ```
+
+<br>
+<br>
+<br>
+
 One more trial removed as it did not report disease severity.  
 ```{r TrialsWithotDisease}
 PM_MB_dat %>%
@@ -234,6 +214,10 @@ PM_MB_dat <- PM_MB_dat %>%
    filter(!is.na(PM_final_severity))
 ```
 
+<br>
+<br>
+<br>
+
 No trials from our subset need to be removed for not reporting fungicide application dates.  
 ```{r FungicideApplicationDates}
 PM_MB_dat %>%
@@ -242,6 +226,11 @@ PM_MB_dat %>%
              .groups = 'drop')%>%
    filter(No_Record_Of_Fungicide_Application_Dates)
 ```
+
+<br>
+<br>
+<br>
+
 No trials from our subset need to be removed for not reporting fungicide dose.  
 ```{r FungicideDoseTrials}
 PM_MB_dat %>%
@@ -250,6 +239,10 @@ PM_MB_dat %>%
              .groups = 'drop')%>%
    filter(No_Record_Of_Fungicide_Dose)
 ```
+
+<br>
+<br>
+<br>
 
 Four trials from our subset need to be removed for not reporting yield variance.  
 ```{r TrialsWithVariance}
@@ -266,6 +259,10 @@ NoVar
 PM_MB_dat <- PM_MB_dat %>%
    filter(!(trial_ref %in% NoVar$trial_ref))
 ```
+
+<br>
+<br>
+<br>
 
 We need to focus the meta-analysis on fungicides with the same mode of action.
 Let's look at all the fungicides and retain the best represented fungicide group in the data.
@@ -284,15 +281,22 @@ PM_MB_dat %>%
    scale_colour_usq() +
    coord_flip()
 ```
+
 The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in the highest frequencies.
-The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.
+Thee DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.
 
 Amistar Xtra and Custodia both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.
 
 Perhaps best way forward is to focus the meta-analysis on only the DMIs.
 This can then be compared to an additional meta-analysis including azoxystrobin as a comparison.  
 
-We will retain the trials trials which only contain DMI fungicides.  
+<br>
+<br>
+<br>
+
+
+We will retain the follow trials which only contain DMI fungicides. 
+However we won't remove non-DMI fungicides just yet, we will do this before the analysis. 
 ```{r}
 PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
@@ -300,9 +304,15 @@ PM_MB_dat %>%
    distinct(trial_ref, location, year)%>%
    arrange(year)
 ```
-We will retain all fungicides for now and remove them before the analysis. 
 
-Finally we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis.
+<br>
+<br>
+<br>
+<br>
+
+### Classify dataset variables  
+
+Finally we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis. 
 ```{r classifyData}
 PM_MB_dat <- 
    PM_MB_dat %>%
