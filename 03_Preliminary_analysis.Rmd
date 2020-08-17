@@ -27,9 +27,9 @@ Each row provides the mean yield for each experimental treatment.
 The data explored in the `PM_MB_dat` data frame is a list of mean values from each treatment in each respective experiment.
 These preliminary analyses will focus on the change in mungbean yields, which is attributable to the fungicide treatment. 
 Later in this document we will also consider the impact of fungicide treatments on disease incidence/severity.
-Mean powdery mildew incidence was recorded at the end of each growing season.
-Some experiments recorded disease incidence throughout the season and these were summarised with AUDPC.
-AUDPC for trials which only provided final powdery mildew incidence was calculated using the record of 'first sign of disease' and final assessment.
+Mean powdery mildew severity was recorded at the end of each growing season.
+Some experiments recorded disease severity throughout the season and these were summarised with AUDPC.
+AUDPC for trials which only provided final powdery mildew severity were calculated using the record of 'first sign of disease' and final assessment.
 
 Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
 On this page, unless stated, the following plots and analyses were made disregarding other effects.
@@ -49,7 +49,7 @@ The following factors are postulated to influence mungbean grain yield and/or po
    
    7 Row spacing
    
-   8 Final disease rating
+   8 Final disease rating / disease pressure
    
 The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r first(levels(PM_MB_dat$year))` - `r last(levels(PM_MB_dat$year))`) of which the details are described in the [Trials considered for inclusion in meta-analysis section](#Trials-considered-for-inclusion-in-meta-analysis). 
 
@@ -74,11 +74,11 @@ for (i in unique(PM_MB_dat$trial_ref)) {
       # If there is no recorded row.spacing don't calculate proportional yield, skip to the next trial
       warning(
          unique(dat1$trial_ref),
-         "at",
+         " at ",
          unique(dat1$location),
-         "in year",
+         " in year ",
          unique(dat1$year),
-         "has unknown row.spacing (NA)\n 'yield_gain' and 'proportional yield gain' not calculated\n"
+         " has unknown row.spacing (NA)\n 'yield_gain' and 'proportional yield gain' not calculated\n"
       )
       next()
    }
@@ -119,6 +119,10 @@ dat1[dat1$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
 PM_MB_dat[PM_MB_dat$trial_ref == "AM1303", ] <- dat1
 ```
 
+<br>
+<br>
+<br>
+
 
 Now we have calculated proportional yield savings we can inspect the difference between the fungicide active ingredients
 
@@ -152,7 +156,10 @@ PM_MB_dat %>%
    footnote(general = "Fungicides with less than five observations were omitted from this table")
 ```
 
-*****
+<br>
+<br>
+<br>
+
 
 Let's visualise this in a plot for one and two sprays only.
 
@@ -299,7 +306,8 @@ PM_MB_dat %>%
       "Fourth spray",
       "Fifth spray"
    )) +
-   ylab("Fungicide application timing relative to First Sign of Disease") +
+   ylab("Number of days after or before first sign of powdery mildew") +
+   ggtitle("Fungicide application timing relative to First Sign of Disease.\n - Faceted by number of applications")+
    facet_grid(cols = vars(total_fungicide)) +
    coord_flip()
 ```
@@ -338,112 +346,6 @@ PM_MB_dat %>%
    scale_fill_usq(name = "Fungicide AI")
 ```
 
-#### Genotype yield variability
-
-Does host cultivar significantly impact the yield?
-Let's look at the volatility in yields to see if any cultivar yields better or has greater tolerance to powdery mildew.
-Below we plot distributions of mean trial yields for each cultivar.
-The following plots use data that includes all fungicide types.
-
-First let's look at overall yields for each cultivar, where trial is not a factor, for all treatments (spray and no spray).
-
-```{r yield_vol}
-# Outputs the table and graph
-source("R/yield_volatility.r") # function to investigate the volatility in yields
-# Volatility is the range between the upper and lower 97.5 and 2.5 % quartiles
-YV1 <-
-   yield_volatility(genotype_by_trial = FALSE, control_only = FALSE)
-YV1[[2]] + 
-   scale_fill_usq()
-YV1[[3]]
-```
-
-This plot shows a large amount of yield volatility in all cultivars except Green Diamond.
-Green Diamond shows little volatility probably because this cultivar was only used in `r length(unique(PM_MB_dat[PM_MB_dat$host_genotype == "Green Diamond","trial_ref"]))` trial. 
-
-Now let's look at overall yields for each cultivar, where trial is not a factor, in only the no spray control treatments.
-
-```{r yieldVol_control}
-YV2 <-
-   yield_volatility(genotype_by_trial = FALSE, control_only = TRUE)
-YV2[[2]] +
-   scale_fill_usq()
-YV2[[3]]
-```
-
-Volatility of the cultivars are less, albeit fairly similar, in control plots when trial is not considered as a factor.
-
-*****
-
-Let's examine the same plots as above but only for the most commonly used trial site, Hermitage.
-
-```{r yieldVol_Herm}
-YV1_herm <-
-   yield_volatility(
-      genotype_by_trial = FALSE,
-      control_only = FALSE,
-      location = "Hermitage"
-   )
-YV1_herm[[2]] +
-   scale_fill_usq()
-
-YV1_herm[[3]]
-```  
-
-Jade shows a large amount of volatility, excluding Green Diamond, Crystal shows the next least volatility.
-
-*****
-
-Let's take a closer look at Crystal with spray management treatments and without.
-
-```{r YieldVol_Crystal}
-YV1_crystal <-
-   yield_volatility(genotype = "Crystal", control_only = FALSE)
-YV1_crystal[[2]] +
-   scale_fill_usq()
-
-YV1_crystal[[3]]
-
-
-YV2_crystal <-
-   yield_volatility(genotype = "Crystal", control_only = TRUE)
-YV2_crystal[[2]] +
-   scale_fill_usq()
-
-YV2_crystal[[3]]
-```
-
-There is a lot of variation between field trials for Crystal, but little variation within field trials. This indicates that trial should be fit as a random effect when we fit a model to this data.
-
-Let's look at Jade, to see if it differs.
-
-```{r YieldVol_Jade}
-YV1_jade <- yield_volatility("Jade",control_only = FALSE)
-YV1_jade[[2]] +
-   scale_fill_usq()
-
-YV1_jade[[3]]
-```
-
-For Jade there is high variation between trials and with-in.
-Perhaps indicating lower tolerance. 
-Let's look at the same plot with data only from no spray controls to see if the variation is the same.
-
-```{r YieldVol_JadeControl}
-YV2_jade <- yield_volatility("Jade", control_only = TRUE)
-YV2_jade[[2]] +
-   scale_fill_usq()
-
-YV2_jade[[3]]
-```
-
-There still remains a higher volatility in Jade and perhaps a greater shift in the probability curve including fungicide treatments versus probability curves including only no spray controls.
-Indicating that there might be a difference in powdery mildew tolerance between Jade and Crystal.
-
-Overall there seems to be an influence of cultivar.
-However this variation is not as distinct as the variation between trials.
-
-*****
 
 ### Row spacing  
 
@@ -469,12 +371,15 @@ PM_MB_dat %>%
    scale_fill_usq(name = "Fungicide AI")
 ```
 
-Let's plot the row spacing treatments for the response variables yield and disease severity.
-The main questions are:
+Let's plot the row spacing treatments for the response variables yield and disease severity.  
+The main questions are:  
 
-   * Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?
+   * Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?  
    
-   * If not, can we pool certain row spacing that have no significant difference?
+   * If not, can we pool certain row spacing that have no significant difference?  
+
+Lets plot disease severity in boxplots grouped by row spacing treatment.
+We are asking here, which row spacing leads to the higher disease severity? 
 
 ```{r RS_severity}
 # Which row spacing leads to the higher disease severity
@@ -488,6 +393,8 @@ PM_MB_dat %>%
    xlab("Row spacing (m)") +
    ggtitle("Powdery mildew variation between different row spacing")
 ```
+
+There is little difference here between the row spacing treatments, lets look if there is a trial location effect as disease pressure lead to varying results.  
 
 ```{r RS_severity_x_trial}
 # Which row spacing leads to the higher disease severity
@@ -529,192 +436,14 @@ Overall row spacing may influence both powdery mildew severity and yield.
 However, in the studies that were conducted, no interaction was found between row spacing, powdery mildew severity and yield.
 That is, the row spacing appeared to increase yield even if the amount of powdery mildew increased and no relationship could be detected between an interaction of the three.
 
-*****
-
-### Yield vs in-season rain
-
-In0-crop rain could be a significant factor which contributes to the end of season grain yield.
-To investigate this effect I will use a linear model (GY ~ SR) where seasonal rainfall represents a specific time frame with respect to planting time.
-Multiple time frames were tested from 20 days prior to planting, to 100 days after planting.  
-
-The multiple time frames were tested by a loop over the dates at the start of the season (to 90 days after planting) to find which date fits the best linear model for grain weight and in-crop rainfall.
-The code for this process was moved to be contained within it's own script and can be run as a job as it can take a long time.
-To speed up the computation I split the script into four, ran the jobs and bound the data into one frame.
-The output of the script is saved with the prefix `lmInSeasonRainfall` followed by the time windows the model is run.
-For example `lmInSeasonRainfall_20.40_50.80.csv` holds the model results for start days between 20 and 40 days after planting to end window dates between 50 and 80 days after planting.
-
-This tests when rainfall during the cropping season could be best associated with yield
-
-```{r rainfall_sum_Sstart}
-# The four data files were created from four scripts run as four jobs in RStudio
-# when the four jobs are finished they can be imported and combined into one data.frame
-# source(Rainfall_x_cropYield_s-10.09_e30.65.R)
-# source(Rainfall_x_cropYield_s-10.09_e65.100.R)
-# source(Rainfall_x_cropYield_s10.30_e30.65.R)
-# source(Rainfall_x_cropYield_s10.30_e65.10.R)
-
-lm_rain1 <-
-   read.csv("cache/lmInSeasonRainfall_-10.09_30.64.csv",
-            stringsAsFactors = FALSE)
-lm_rain2 <-
-   read.csv("cache/lmInSeasonRainfall_-10.09_65.100.csv",
-            stringsAsFactors = FALSE)
-lm_rain3 <-
-   read.csv("cache/lmInSeasonRainfall_10.30_30.64.csv",
-            stringsAsFactors = FALSE)
-lm_rain4 <-
-   read.csv("cache/lmInSeasonRainfall_10.30_65.100.csv",
-            stringsAsFactors = FALSE)
-
-lm_rain <- rbind(lm_rain1, lm_rain2, lm_rain3, lm_rain4)
-```
-
-Now we have read in the data from the previously computed models let's find the linear model which has:  
-   - The lowest P value  
-   - the highest adjusted r squared value  
-   
-```{r WhichLModel}
-lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)), ]
-lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)), ]
-lm_rain[which(lm_rain$lm_adj_rsquared == max(lm_rain$lm_adj_rsquared)), ]
-```
-
-
-To visualise the model fits we will use a heat map to describe how the models faired in relation to the rainfall windows.
-log of the p value was used to improve the resolution of small very small p values.  
-
-```{r rainLMpvalue}
-ggplot(lm_rain, aes(x = start_day, y = end_day, z = log(lm_pval))) +
-   geom_raster(aes(fill = log(lm_pval)), interpolate = TRUE) +
-   geom_contour(bins = 15, colour = "white") +
-   geom_point(data = lm_rain[which(lm_rain$lm_pval == min(lm_rain$lm_pval)), ],
-              aes(x = start_day, y = end_day),
-              colour = " red") +
-   scale_fill_distiller(palette = "RdBu", direction = -1) 
-```
-
-```{r rainLMadjrsquared}
-ggplot(lm_rain, aes(x = start_day, y = end_day, z = lm_adj_rsquared)) +
-   geom_raster(aes(fill = lm_adj_rsquared), interpolate = TRUE) +
-   geom_contour(bins = 15, colour = "white") +
-   geom_point(data = lm_rain[which(lm_rain$lm_rsquared == max(lm_rain$lm_rsquared)), ],
-              aes(x = start_day, y = end_day),
-              colour = " red") +
-   scale_fill_distiller(palette = "RdBu") 
-```
-
-The approximate period when in-crop rainfall affects the most on the mean harvest is between 14 - 67 days after planting.
-
-*****
-
-### Season range and first incidence
-
-Mungbean is a summer crop and powdery mildew requires cool conditions to establish.
-Therefore the disease can be avoided by planting early in summer or spring, avoiding cooler temperatures at the end of some seasons.
-Can we visualise when PM is most likely to establish over the calendar year?
-
-I'll build a plot of horizontal lines indicating the season length and use a dot on the line to indicating the day of the year first sign was observed for that trial.
-
-```{r first_incidence}
-# Create the data frame for the plot
-season_dates <- PM_MB_dat %>%
-   group_by(trial_ref) %>%
-   summarise(
-      Planting_date = unique(planting_date),
-      Harvest_date = unique(harvest_date),
-      First_sign_PM = unique(first_sign_disease),
-      season_length = as.Date(unique(harvest_date)) - as.Date(unique(planting_date)),
-      cropping_season = "Actual"
-   )
-
-
-# For some trials where planting date and Harvest date is missing let's estimate 
-#     the season length by using the mean of all season lengths
-season_dates[is.na(season_dates$season_length),"cropping_season"] <- "Estimated"
-
-season_dates[is.na(season_dates$Planting_date),"Planting_date"] <- 
-   season_dates[is.na(season_dates$Planting_date),"Harvest_date"] - 
-   as.numeric(mean(season_dates$season_length, na.rm = TRUE))
-
-season_dates[is.na(season_dates$Harvest_date),"Harvest_date"] <- 
-   season_dates[is.na(season_dates$Harvest_date),"Planting_date"] + 
-   as.numeric(mean(season_dates$season_length, na.rm = TRUE))
-
-season_dates[is.na(season_dates$season_length),"season_length"] <- 
-   mean(season_dates$season_length, na.rm = TRUE)
-
-season_dates$Planting_day <- yday(season_dates$Planting_date)
-season_dates$Disease_day <- yday(season_dates$First_sign_PM)
-
-season_dates[c(1:2,6), "Planting_day"] <- 1
-
-season_dates$Harvest_day <-
-   season_dates$Planting_day + season_dates$season_length
-
-first_day_month <- c(0, 31, 60, 91, 121, 152, 182, 212, 244, 274) + 1
-axis_labels_date <-
-   c(
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[1], "%b-%d"),
-      # Jan
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[2], "%b-%d"),
-      # Feb
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[3], "%b-%d"),
-      # March
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[4], "%b-%d"),
-      # April
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[5], "%b-%d"),
-      # May
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[6], "%b-%d"),
-      # June
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[7], "%b-%d"),
-      # July
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[8], "%b-%d"),
-      # August
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[9], "%b-%d"),
-      # Sept
-      format(Sys.Date() - yday(Sys.Date()) + first_day_month[10], "%b-%d") # October
-   )
-
-# reorder the factors so they will appear in chronological order
-# I used First sign because all trials have recorded this
-season_dates$trial_ref <-
-   factor(season_dates$trial_ref,
-          levels = levels(season_dates$trial_ref)[rev(order(season_dates$First_sign_PM))])
-
-# Plot
-SeasonPlot <- season_dates %>%
-   ggplot() +
-   geom_pointrange(aes(
-      x = trial_ref,
-      y = Disease_day,
-      ymin = Planting_day,
-      ymax = Harvest_day,
-      colour = cropping_season
-   )) +
-   scale_y_continuous(limits = c(
-      0,
-      max(
-         season_dates$Planting_day +
-            season_dates$season_length,
-         na.rm = TRUE
-      )
-   ),
-   labels = axis_labels_date,
-   breaks = first_day_month) +
-   geom_point(aes(x = trial_ref, y = Disease_day), size =2.5) +
-   coord_flip() +
-   scale_color_manual(values=c("black","grey70"))+
-   ggtitle("Season length and when powdery mildew was first spotted\nin each respective trial")
-
-SeasonPlot
-```
-
-In most years, regardless of the age of the crop, powdery mildew establishes in March, which is to be expected.
-The disease is driven by weather conditions and the plant is vulnerable at any growth stage.
+<br>
+<br>
+<br>
+<br>
 
 ### AUDPC visualise raw data  
 
-First let's check we have all the AUDPC observations.
+First let's check if we have all the AUDPC observations by searching for trials with mission AUDPC.
 
 ```{r AUDPC_check}
 PM_MB_dat %>%
@@ -728,8 +457,6 @@ The following script estimates AUDPC from the final disease severity rating and 
 
 ```{r SingleObsAUDPC}
 source(here("R/AUDPC_for_single_obs.R"))
-write.csv(PM_MB_dat,
-          "cache/1911_PM_MB_dat&Ygains.csv", row.names = FALSE)
 ```
 
       _How well does 'area under the disease progress curve' (AUDPC) predict grain yield?_
@@ -761,107 +488,58 @@ Let's tease out variation due to trial location, season, row spacing, and other 
 Let's do the plot again for each trial where there are no missing values.
 Note: The plots are ordered by mean yield of the trial.
 
-```{r AUDPCxTrial}
-sm2lg <- PM_MB_dat %>%
+```{r AUDPCxTrial, fig.height= 10, fig.width=10}
+mTrialYield <- PM_MB_dat %>%
    group_by(trial_ref) %>%
-   summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
-   arrange(TY)
+   mutate(TY = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
+   pull(TY)
 
-for (i in sm2lg$trial_ref) {
-   dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == i, ]
-   if (any(is.na(dat1$grain_yield.t.ha.))) {
-      next
-   }
-   if (any(is.na(dat1$AUDPC_m))) {
-      next
-   }
-   
-   plot(
-      grain_yield.t.ha. ~ AUDPC_m,
-      data = dat1,
-      main = paste(dat1$location[1], (dat1$year[1])),
-      ylim = c(0, max(PM_MB_dat$grain_yield.t.ha., na.rm = TRUE)),
-      xlim = c(0, max(PM_MB_dat$AUDPC_m, na.rm = TRUE))
-   )
-   abline(lm(grain_yield.t.ha. ~ AUDPC_m, data = dat1))
-   points(grain_yield.t.ha. ~ AUDPC_m,
-          data = dat1[dat1$fungicide_ai == "control",],
-          col = "red")
-   
-}
+PM_MB_dat$trial_ref <- reorder(PM_MB_dat$trial_ref, mTrialYield)
+
+PM_MB_dat %>%
+   filter(!is.na(grain_yield.t.ha.)) %>%
+   mutate(Treatment = case_when(
+      fungicide_ai == "control" ~ "control",
+      TRUE ~ "FungicideTreated"))%>%
+   ggplot(aes(y = grain_yield.t.ha., x = AUDPC_m))+
+   geom_point(aes(color = Treatment))+
+   facet_wrap(vars(trial_ref))+
+   scale_y_continuous(limits = c(0,3))+
+   geom_smooth(method = "lm", se = FALSE, linetype = 1, colour = "grey", size =1)+
+   scale_colour_usq()
+
+
 ```
 
-Based on a GRDC report by Sue Thompson [-@SueThompson2016] we want to know what the yield loss was in on cultivar Jade in the 2016 Trials.
-```{r}
-dat3 <- PM_MB_dat %>%
-   filter(year == "2016",
-          host_genotype == "Jade",
-          fungicide_ai == "control")%>%
-   group_by(location)%>%
-   summarise(C_Yield = mean(grain_yield.t.ha., na.rm = TRUE))
-   
-dat3$F_Yield <- PM_MB_dat %>%
-   filter(year == "2016",
-          host_genotype == "Jade",
-          fungicide_ai != "control")%>%
-   group_by(location)%>%
-   summarise(F_Yield = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
-   pull(F_Yield)
 
-dat3 %>% 
-   mutate(diff = F_Yield - C_Yield) %>%
-   mutate(percent = (diff/F_Yield)*100)
-   
-   
+### Yield loss in cultivar Jade  
+
+Mungbean Jade shows the best quantitative resistance to powdery mildew.
+Based on a GRDC report by Sue Thompson [-@SueThompson2016] we want to know what the yield loss was in on cultivar Jade in the 2016 Trials.
+```{r JadeYieldLoss}
+PM_MB_dat %>%
+   filter(year == "2016",
+          host_genotype == "Jade")%>%
+   mutate(Treatment = case_when(
+      fungicide_ai == "control" ~ "control",
+      TRUE ~ "FungicideTreated"))%>%
+   group_by(location, Treatment)%>%
+   summarise(trial_ref = trial_ref,
+             location = location, 
+             year = year,
+             Yield = mean(grain_yield.t.ha., na.rm = TRUE),
+             .groups = "drop")%>%
+   distinct()%>%
+   pivot_wider(names_from = Treatment, values_from = Yield)%>%
+   mutate(Diff = FungicideTreated - control) %>%
+   mutate(percent = (Diff/FungicideTreated)*100)%>%
+   select(trial_ref, location, year, control, FungicideTreated,percent, Diff)
 
 ```
 
 This sequence of graphs show that AUDPC and disease incidence tends not affect yields if the season is a low yielding season, _i.e._ lower than 1 tonne per hectare.
 The higher the yield, the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.
 
-Let's have a look again at the same sequence of graphs and analyses for area under the disease progress _stairs_.
-
-```{r Yield_vs_AUDPS}
-plot(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_dat)
-abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_dat))
-
-summary(lm(grain_yield.t.ha. ~ AUDPS_m, data = PM_MB_dat))
-
-sm2lg <- PM_MB_dat %>%
-   group_by(trial_ref) %>%
-   summarise(TY = mean(grain_yield.t.ha., na.rm = TRUE)) %>%
-   arrange(TY)
-
-for (i in sm2lg$trial_ref) {
-   dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == i, ]
-   if (any(is.na(dat1$grain_yield.t.ha.))) {
-      next
-   }
-   if (any(is.na(dat1$AUDPS_m))) {
-      next
-   }
-   
-   plot(
-      grain_yield.t.ha. ~ AUDPS_m,
-      data = dat1,
-      main = paste(dat1$location[1], (dat1$year[1])),
-      ylim = c(0, max(
-         PM_MB_dat$grain_yield.t.ha., na.rm = TRUE
-      )),
-      xlim = c(0, max(PM_MB_dat$AUDPS_m, na.rm = TRUE))
-   )
-   abline(lm(grain_yield.t.ha. ~ AUDPS_m, data = dat1))
-   points(grain_yield.t.ha. ~ AUDPS_m,
-          data = dat1[dat1$fungicide_ai == "control",],
-          col = "red")
-   
-}
-```
-
-The plots from the AUPDS is similar to the AUDPC, however according to the linear model the AUDPC is a better, significant fit.
-
-A mixed effect model would be more suitable to investigate the interactive effects of location, season, and trial. 
-The mixed effect model will help us decide on the best approach and structure for our meta-analysis model.
 
 ### FAO mungbean data
 
@@ -884,6 +562,6 @@ beans %>%
 ```
 
 ```{r}
-save(SeasonPlot, file = here("cache/PreliminaryData.Rdata"))
+save(PM_MB_dat, file = here("cache/PreliminaryData.Rdata"))
 ```
 
