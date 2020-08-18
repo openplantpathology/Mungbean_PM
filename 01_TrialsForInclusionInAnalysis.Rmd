@@ -26,7 +26,7 @@ We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue
    1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants.  
    2. Trial data needed to include:  
       i) fungicide active ingredients.  
-      ii) A Demethylase inhibitor (DMI) fungicide.  
+      ii) A demethylase inhibitor (DMI) fungicide.  
       iii) The date at which powdery mildew first appeared in the trial.  
       iv) Disease severity at the end of the growing seasons.  
       v) Fungicide application dates.  
@@ -295,8 +295,9 @@ This can then be compared to an additional meta-analysis including azoxystrobin 
 <br>
 
 
-We will retain the follow trials which only contain DMI fungicides. 
-However we won't remove non-DMI fungicides just yet, we will do this before the analysis. 
+We will retain the following trials, which only contain DMI fungicides. 
+However, we won't remove non-DMI fungicides just yet, we will do this before the analysis.
+
 ```{r}
 PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
@@ -313,6 +314,7 @@ PM_MB_dat %>%
 ### Classify dataset variables  
 
 Finally we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis. 
+
 ```{r classifyData}
 PM_MB_dat <- 
    PM_MB_dat %>%
