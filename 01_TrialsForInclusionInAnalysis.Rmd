@@ -298,12 +298,12 @@ This can then be compared to an additional meta-analysis including azoxystrobin 
 We will retain the following trials, which only contain DMI fungicides. 
 However, we won't remove non-DMI fungicides just yet, we will do this before the analysis.
 
-```{r}
+```{r FinalTrialsForInclusion}
 PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole")%>%
    distinct(trial_ref, location, year)%>%
-   arrange(year)
+   arrange(year) 
 ```
 
 <br>
