@@ -25,7 +25,180 @@ load("cache/ImportDataAndSelectTrials01.Rdata")
 Each row provides the mean yield for each experimental treatment.
 
 The data explored in the `PM_MB_dat` data frame is a list of mean values from each treatment in each respective experiment.
-These preliminary analyses will focus on the change in mungbean yields, which is attributable to the fungicide treatment. 
+These preliminary analyses will describe the data and then investigate any change in mungbean yields which is attributable to the fungicide treatment. 
+### Descriptive statistics
+#### Spatio-temporal variation  
+
+Lets look at how many trials were undertaken each season  
+
+```{r FinalTrialsForInclusion}
+tmp1 <- PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   distinct(trial_ref, location, year)%>%
+   arrange(year)
+   table(tmp1$year)
+```
+
+Also the location of the trials  
+
+```{r FinalTrialsForInclusion}
+tmp2 <- PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   distinct(trial_ref, location, year)%>%
+   arrange(year)
+   table(tmp1$location)
+```
+
+#### Mean yield  
+
+What is the variation in yield over all the trials (including non-DMI fungicide trials) in the no spray control and fungicide treated plots.  
+```{r ControlYield_AllTrials}
+PM_MB_dat %>%
+   filter(fungicide_ai == "control")%>%
+   summarise(mean_yield = mean(grain_yield.t.ha.),
+             minimum_yield = min(grain_yield.t.ha.),
+             maximum_yield = max(grain_yield.t.ha.),
+             yield_stdev = sd(grain_yield.t.ha.))
+   
+```
+
+
+What is the yield variation in no spray control trials yield over only the DMI fungicide trials.  
+```{r ControlYield_DMITrials}
+DMITrials <- PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   distinct(trial_ref)%>%
+   pull()
+
+PM_MB_dat %>%
+   filter(trial_ref %in% DMITrials)%>%
+   filter(fungicide_ai == "control" )%>%
+   summarise(mean_yield = mean(grain_yield.t.ha.*1000),
+             minimum_yield = min(grain_yield.t.ha.*1000),
+             maximum_yield = max(grain_yield.t.ha.*1000),
+             yield_sterr = sd(grain_yield.t.ha.*1000)/(sqrt(length(grain_yield.t.ha.))))
+   
+```
+
+Mean yields in DMI fungicide treated plots
+```{r Yield_DMITrials}
+PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   summarise(mean_yield = mean(grain_yield.t.ha.*1000),
+             minimum_yield = min(grain_yield.t.ha.*1000),
+             maximum_yield = max(grain_yield.t.ha.*1000),
+             yield_sterr = sd(grain_yield.t.ha.*1000)/(sqrt(length(grain_yield.t.ha.))))
+   
+```
+
+
+Lets look at the yield gains in each trial compared to the no spray control, we will also calculate the proportional grain yield gains.
+
+```{r Calculate_yield-savings}
+for (i in unique(PM_MB_dat$trial_ref)) {
+   # Loop code over each trial reference
+   dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == i, ]
+   
+   if (any(is.na(unique(dat1$row_spacing)))) {
+      # If there is no recorded row.spacing don't calculate proportional yield, skip to the next trial
+      warning(
+         unique(dat1$trial_ref),
+         " at ",
+         unique(dat1$location),
+         " in year ",
+         unique(dat1$year),
+         " has unknown row.spacing (NA)\n 'yield_gain' and 'proportional yield gain' not calculated\n"
+      )
+      next()
+   }
+   
+   for (j in unique(dat1$row_spacing)) {
+      # Loop within trial row_spacing
+      dat2 <- dat1[dat1$row_spacing == j, ]
+      controlY <-
+         mean(dat2[dat2$fungicide_ai == "control", "grain_yield.t.ha."]) #Mean taken as some trials had multiple control reps
+      
+      # Calculate the yield gain relative to the no spray control (controlY)
+      dat2$yield_gain <- dat2$grain_yield.t.ha. - controlY
+      dat2$prop_YG <- dat2$yield_gain  /  controlY
+      
+      # insert NA as yeild_gain and proportional yield gain for the controls
+      dat2[dat2$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
+         NA
+      
+      # Reassign values to row_spacing subset
+      dat1[dat1$row_spacing == j, ] <- dat2
+   }
+   # Reassign values to trial_ref subset
+   PM_MB_dat[PM_MB_dat$trial_ref == i, ] <- dat1
+}
+
+# ____________________________________________
+# calculate yield gain and prop_yield gain for experiments with no row spacing data
+dat1 <- PM_MB_dat[PM_MB_dat$trial_ref == "AM1303", ]
+
+controlY <-
+   mean(dat1[dat1$fungicide_ai == "control", "grain_yield.t.ha."])
+
+dat1$yield_gain <- dat1$grain_yield.t.ha. - controlY
+dat1$prop_YG <- dat1$yield_gain / controlY
+dat1[dat1$fungicide_ai == "control", c("yield_gain", "prop_YG")] <-
+   c(NA, NA)
+
+PM_MB_dat[PM_MB_dat$trial_ref == "AM1303", ] <- dat1
+```
+
+Lets show the yield gains in each trial as a table and plot
+```{r YieldGain_table}
+PM_MB_dat %>%
+   filter(trial_ref %in% DMITrials)%>%  # selects only the trials with DMI fungicide treatments
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   group_by(trial_ref, location, year)%>%
+   summarise(yield_gain_m = mean(yield_gain),
+             yield_gain_se = sd(yield_gain, na.rm = T)/sqrt(n()),
+             yg_n = n(),
+             .groups = "drop")%>%
+   arrange(yield_gain_m)
+```
+
+```{r YieldGain_plot}
+PM_MB_dat %>%
+   filter(trial_ref %in% DMITrials)%>%  
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   group_by(trial_ref, location, year)%>%
+   summarise(yield_gain_m = mean(yield_gain),
+             yield_gain_se = sd(yield_gain, na.rm = T)/sqrt(n()),
+             .groups = "drop")%>%
+   mutate(trial = paste(location,year,sep = "\n"))%>%
+   ggplot(aes(reorder(trial, yield_gain_m), yield_gain_m))+
+   geom_bar(stat = "identity")+
+   geom_errorbar(width = 0.3 ,aes(ymax = yield_gain_m + yield_gain_se, 
+                     ymin = yield_gain_m - yield_gain_se))+
+   theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+```{r}
+mpg %>%
+   group_by(manufacturer,drv,cyl)%>%
+   filter(n() >= 2)%>%
+   summarise(mean_Sp = mean(cty),
+             stdev_h = sd(cty),
+             n_group = n())
+
+data()
+
+mpg
+
+```
+
+
 Later in this document we will also consider the impact of fungicide treatments on disease incidence/severity.
 Mean powdery mildew severity was recorded at the end of each growing season.
 Some experiments recorded disease severity throughout the season and these were summarised with AUDPC.
