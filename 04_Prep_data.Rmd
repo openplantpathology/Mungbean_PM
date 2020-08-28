@@ -18,6 +18,21 @@ load("cache/PreliminaryData.Rdata")
 source(here("R/same.R")) # matches each element of a vector and does not return NAs
 ```
 
+## Subset to Trials containing DMI fungicides
+
+```{r filterDMI_trials}
+DMI_Trials <- 
+   PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole")%>%
+   distinct(trial_ref) %>%
+   pull()
+
+PM_MB_dat <- 
+   PM_MB_dat[PM_MB_dat$trial_ref %in% DMI_Trials,]
+```
+
+
 ## Standardising sample variance  
 Meta-analyses use variance from the data to calculate the effect sizes.
 The type of variance needs to be the same across all the data incorporated in the meta-analysis.
@@ -110,33 +125,14 @@ Now to estimate the variance from the standard deviation.
 Trials <- PM_MB_dat %>%
    filter(Y_error_type == "stdev") %>%
    select(trial_ref) %>%
-   distinct()
+   pull()
 
+PM_MB_dat[PM_MB_dat$trial_ref %in% Trials,"yield_error"] <- 
+   PM_MB_dat[PM_MB_dat$trial_ref %in% Trials,"yield_error"]^2
 
-# calculate the Sampling variance from the standard deviation
-# standard error of the mean equals the standard deviation divided by the square
-#  root of the number of samples
-# Sv <- sem^2 <- stdev/sqrt(n)
-# Sampling variance equals the square of the standard error.
-# Sv <- (stdev/sqrt(n))^2
-
-# Therefore
-
-for (j in seq_along(PM_MB_dat[PM_MB_dat$trial_ref %in% Trials$trial_ref,]$yield_error)) {
-   if (j == 1) {
-      Sv <-
-         vector(length = length(PM_MB_dat[PM_MB_dat$trial_ref %in% Trials$trial_ref,]$yield_error))
-   }# create empty vector at first iteration with length of j
-   
-   Sv[j] = (PM_MB_dat[PM_MB_dat$trial_ref %in% Trials$trial_ref,]$yield_error[j]) ^ 2
-}
-
-
-# and replacing the values in the dataset
-PM_MB_dat[PM_MB_dat$trial_ref %in% Trials$trial_ref,]$yield_error <-
-   Sv
-PM_MB_dat[PM_MB_dat$trial_ref %in% Trials$trial_ref,]$Y_error_type <-
+PM_MB_dat[PM_MB_dat$trial_ref %in% Trials,]$Y_error_type <-
    "SamplingVariance"
+
 ```
 
 
@@ -146,23 +142,20 @@ We should expect that when yield increases so does the variance.
 Let's quickly plot this to check.
 
 ```{r Var_mean_sqaures}
-# redefine sample variance calculated from mean square
-PM_MB_dat$vi <-
-   PM_MB_dat$Y_Msquare /
-   (PM_MB_dat$replicates)
-
 PM_MB_dat %>%
-   ggplot(aes(x = grain_yield.t.ha., y = vi)) +
+   ggplot(aes(x = grain_yield.t.ha., y = yield_error)) +
    geom_point()
 ```
+No association between yield and sample variance, this might be due to the unpredictable nature of mungbeans.
 
-We see here that the sample variance generally decreases or has no association with the grain yield.
-This might be due to the unpredictable nature of mungbeans, however going forward we will use mean squares, which defines between trial variation and is the more generic error term.
+Lets look at the association between mean squares and yield to see if there is a more typical association between yield and variance.
 
 ```{r Var_MeanSquarePlot}
 PM_MB_dat %>%
-   ggplot(aes(x = grain_yield.t.ha., y = Y_Msquare)) +
+   ggplot(aes(x = grain_yield.t.ha., y = Y_Msquare/replicates)) +
    geom_point()
+PM_MB_dat[is.na(PM_MB_dat$Y_Msquare),]
+
 ```
 
 ## Reduce data set to required variables
