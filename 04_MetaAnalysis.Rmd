@@ -39,49 +39,8 @@ To do this, in our model:
 
    - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
 
-   - We will test spray management (our treatment) as a fixed effect and random interactive term to trial
+   - We will test spray management (our treatment)
 
-
-```{r metafor_organisation}
-dat1 <-
-   PM_MB_dat %>%
-   mutate(vi = vi/n) %>% 
-   mutate(spray_management =
-             factor(
-                spray_management,
-                c(
-                   "control",
-                   "Early",
-                   "Recommended",
-                   "Recommended_plus",
-                   "Late",
-                   "Late_plus"
-                )
-             ),
-          D_pres = 
-             factor(D_pres,
-                    c("lowD",
-                      "highD")),
-          id = row_number()) %>%
-   dplyr::select(
-      trial,
-      trial_ref,
-      location,
-      year,
-      row_spacing,
-      host_genotype,
-      spray_management,
-      fungicide_ai,
-      D_pres,
-      grain_yield.t.ha,
-      yield_gain,
-      dose,
-      vi,
-      yield_error,
-      vi2,
-      n,
-      id)
-```
 
 ## metafor analysis
 
@@ -92,14 +51,14 @@ We are using the `spray_management` variable as a moderator and an interactive t
 
 ```{r Metafor-analysis}
 PM_mv <- rma.mv(
-   yi = grain_yield.t.ha,
+   yi = grain_yield.t.ha.,
    vi,
    mods = ~ spray_management,
    method = "ML",
    random = list(~ spray_management | trial, ~1 | id), 
    struct = "UN",
    control=list(optimizer="optim"),
-   data = dat1
+   data = PM_MB_dat
 )
 
 summary(PM_mv)
@@ -134,34 +93,6 @@ These contrasts can be viewed in a plot
 par(mar = c(5, 13, 4, 2) + 0.1)
 plot(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), yaxt='n')
 axis(2, at = seq_along(contrast_Ssum$contrast), labels = rev(contrast_Ssum$contrast), las=2, cex.axis = 0.8)
-```
-
-Does disease pressure on the crop affect the optimum spray scenario? 
-Above we can see spraying at the first sign of powdery mildew or with in `r min(as.numeric(PM_MB_dat[PM_MB_dat$spray_management == "Late"| PM_MB_dat$spray_management == "Late_plus","fungicide_timing_1"]))` - `r max(as.numeric(PM_MB_dat[PM_MB_dat$spray_management == "Late"|                   PM_MB_dat$spray_management == "Late_plus","fungicide_timing_1"]))` days after first sign is effective at mitigating yield loss.
-Lets test this hypothesis by adding it as a moderator and comparing the new model with the original model above.
-
-```{r DisPressComparison}
-PM_mv2 <- rma.mv(
-   yi = grain_yield.t.ha,
-   vi,
-   mods = ~ spray_management*D_pres,
-   method = "ML",
-   random = list(~ spray_management | trial, ~1 | id), 
-   struct = "UN",
-   control=list(optimizer="optim"),
-   data = dat1
-)
-
-anova(PM_mv, PM_mv2)
-```
-We can see that the lower $QE$ indicates that disease pressure moderator helped explain some of the residual heterogeneity in differences in grain yield between treatments. 
-However according to the Wald-test the models were not significantly different and we should use the original "Reduced" model. 
-
-The P value was close to the 0.05 cut-off so we will present the model output for the interest of the readers.
-```{r DissPressMetMod}
-summary(PM_mv2)
-summary(glht(PM_mv2, linfct=cbind(contrMat(rep(7,12), type="Tukey"))), test=adjusted("none"))
-# plot(glht(PM_mv2, linfct=cbind(contrMat(rep(7,12), type="Tukey")))) # I think this plot is too busy to be incorporated
 ```
 
 
@@ -238,26 +169,26 @@ YieldContrasts
 
 ### Forest plot of trial treatment effect per trial
 Lets look at the trial variability in this model with a forest plot
-```{r forestP, fig.height= 40, fig.width=17}
+```{r forestP, eval=FALSE, fig.height=40, fig.width=17, include=FALSE}
 # THIS NEEDS TO BE FIXED
 source(here("R/change_labels.R"))
 source(here("R/forest_rows.R"))
 
 ### Sort and arrange data-frame accordingly and produce a index vector to inform the order of each "Trial" on the plot
-index1 <- dat1 %>%
+index1 <- PM_MB_dat %>%
    mutate(ID = seq_along(trial_ref)) %>%
    mutate(spray_management = 
              factor(spray_management, 
                     levels = c("Early","Late","Recommended",
                     "Recommended_plus","Late_plus"))) %>%
-   arrange(desc(spray_management), location, desc(grain_yield.t.ha)) %>%
+   arrange(desc(spray_management), location, desc(grain_yield.t.ha.)) %>%
    mutate(ID2 = order(ID))%>%
    pull(ID2)
 
 ### Use forest rows function to return a list of where to place on the plot: sub-titles, each trial row, and summary prediction for each treatment.
 ### this list can be used below to reference where to plot each variable
 rows1 <- forest_rows(head_row = 186, 
-                     ord_var = dat1$spray_management, 
+                     ord_var = PM_MB_dat$spray_management, 
                      index = index1, 
                      gap = 5, 
                      row_offset = -2)
@@ -272,8 +203,8 @@ polys$rows <- rows1$pred_row - 1.5
 forest1  <- metafor::forest(PM_mv, cex = 1.15 , width = 5,
                 #order = "fit",
                 rows = rows1$trows-1.5,
-                ilab = cbind(dat1$year, 
-                             dat1$row_spacing, dat1$host_genotype, dat1$dose),
+                ilab = cbind(PM_MB_dat$year, 
+                             PM_MB_dat$row_spacing, PM_MB_dat$host_genotype, PM_MB_dat$dose),
                 ilab.xpos = c(-2.35,-2.1,-1.8,-1.4)+1,
                 slab = NA, 
                 xlim = c(-2, 4),
@@ -302,8 +233,8 @@ The `netmeta` package uses a frequentist approach to the analysis and focuses on
 ```{r netmeta-analysis}
 datPM3 <- PM_MB_dat %>%
    group_by(trial, spray_management, n) %>%
-   summarize(yi_mean = mean(grain_yield.t.ha),
-             vi_mean = mean(yield_error)) %>%
+   summarize(yi_mean = mean(grain_yield.t.ha.),
+             vi_mean = mean(vi)) %>%
    ungroup()
 
 PM_con <- pairwise(
@@ -382,7 +313,7 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 ```
 
 ```{r Save_meta_data, eval=FALSE}
-save(dat1, efficacy, PM_MB_dat, PM_mv, YieldContrasts, contrast_Ssum, 
+save(efficacy, PM_MB_dat, PM_mv, YieldContrasts, contrast_Ssum, 
      file = here("cache/Meta-analysisData.Rdata"))
 ```
 
