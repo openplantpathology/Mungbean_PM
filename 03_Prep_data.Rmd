@@ -162,7 +162,7 @@ PM_MB_dat %>%
 ```
 
 There is a somewhat better trend here, if sampling variance from standard deviation proves unsuitable for the analysis we may compare models using variance from stdev and mean square for the best fit. 
-However, seven treatments are missing Mean square error.  
+However, seven treatments are missing mean square error.  
 
 ### Inspect variance and response for analysis  
 
@@ -170,11 +170,12 @@ Let's inspect the response variance `grain_yield.t.ha` to see if it is normally 
 In many cases a log transformation of the response variable improves the fit, due to the prevalence of log distributed data in nature. 
 
 ```{r}
-hist_usq(PM_MB_dat$grain_yield.t.ha, main = "Grain yield (t / ha)")
-hist_usq(log(PM_MB_dat$grain_yield.t.ha), main = "log(Grain yield (t / ha))")
-hist_usq(sqrt(PM_MB_dat$grain_yield.t.ha), main = "sqrt(Grain yield (t / ha))")
+hist_usq(PM_MB_dat$grain_yield.t.ha., main = "Grain yield (t / ha)")
+hist_usq(log(PM_MB_dat$grain_yield.t.ha.), main = "log(Grain yield (t / ha))")
+hist_usq(sqrt(PM_MB_dat$grain_yield.t.ha.), main = "sqrt(Grain yield (t / ha))")
 hist_usq(PM_MB_dat$yield_gain, main = "Mean difference to control (t / ha)")
 ```
+
 The distribution of data does not seem to be improved by transformation of the data.
 We will retain the continuous variable grain_yield.t.ha as the response.
 Mean differences won't be used as we are following the methodology of a ARM-based model, where mean differences are calculated following the meta-analysis.
@@ -231,7 +232,7 @@ Now to calculate the sample variance from MSE for all treatments.
 ```{r MSE_2_SVar}
 #calculation when using log of response
 # PM_MB_dat$vi <-
-#    PM_MB_dat$Y_Msquare / (PM_MB_dat$n * PM_MB_dat$grain_yield.t.ha ^
+#    PM_MB_dat$Y_Msquare / (PM_MB_dat$n * PM_MB_dat$grain_yield.t.ha. ^
 #                                   2)
 
 PM_MB_dat$vi2 <- 
@@ -257,10 +258,9 @@ PM_MB_dat %<>%
 To ensure sufficient number of replicates, we will bin the continuous variable into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.  
 
 These categorical variables are named:
-
    - **Early**: First fungicide application was prior to first sign of disease. 
    - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign. 
-   - **Late**: First fungicide application was four or more days after first sign of disease being observed.  
+   - **Late**: First fungicide application was four or more days after first sign of disease being observed. 
    
 The number of sprays need also be defined.
 
@@ -314,110 +314,14 @@ Now to view the number break-down of the `spray_management` treatments
 table(PM_MB_dat$spray_management)
 ```
 
-There are few 'Early_plus' treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
+'Early_plus' treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
 
 ```{r simpler_clusters_remove}
 PM_MB_dat <-
    PM_MB_dat %>%
    filter(spray_management != "Early_plus")
 ```
-
-Now we have defined our treatments lets inspect plots to visualise how well the data compares across the trial years and locations?
-
-```{r table_of_nTreatments}
-# class spray_management as a factor and reorder them for the plot
-PM_MB_dat$spray_management <-
-   factor(PM_MB_dat$spray_management, rev(
-      c(
-         "control",
-         "Early",
-         "Recommended",
-         "Recommended_plus",
-         "Late",
-         "Late_plus"
-      )
-   ))
-
-ggplot(PM_MB_dat, aes(x = as.factor(year), fill = spray_management)) +
-   geom_bar(position = position_dodge2(width = 0.9, preserve = "single")) +
-   scale_fill_usq(name = "Spray Management") +
-   xlab("Year")
-
-kable(
-   table(PM_MB_dat$spray_management, PM_MB_dat$year),
-   align = rep('c', 8),
-   caption = "Which treatments and how many treatments are represented in each year"
-) %>%
-   kable_styling(
-      "striped",
-      fixed_thead = TRUE,
-      full_width = FALSE,
-      position = "center"
-   )
-
-```
-
-Treatments `Late_plus` and `Early` don't have very good comparison to other treatments.
-
-Let's visualise the spread of data in each treatments with box-plots.
-
-```{r treatment_means_plot}
-PM_MB_dat %>%
-   ggplot(
-      aes(
-         y = grain_yield.t.ha.,
-         x = spray_management,
-         fill = spray_management,
-         colour = spray_management
-      )
-   ) +
-   geom_boxplot(alpha = 0.25) +
-   geom_jitter(width = 0.1, alpha = 0.5) +
-   labs(x = "Spray management variable",
-        y = "Grain yield (t/Ha)",
-        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
-   theme(plot.title = element_text(hjust = 0.5)) +
-   geom_hline(yintercept = 0, linetype = 2) +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   coord_flip() +
-   guides(fill = FALSE, color = FALSE)
-```
-
-There seems like little difference between the treatments, with exception of `Late_plus`.
-Let's do this plot again, but let's look at the proportional mean difference between each treatment and the no spray control for each study, this should reduce variation in yield due between trials.
-
-```{r plot_yieldProportion}
-PM_MB_dat %>%
-   filter(spray_management != "control") %>% 
-   ggplot(
-      aes(
-         y = prop_YG,
-         x = spray_management,
-         fill = spray_management,
-         colour = spray_management
-      )
-   ) +
-   geom_boxplot(alpha = 0.25) +
-   geom_jitter(width = 0.1, alpha = 0.5) +
-   labs(x = "Spray management variable",
-        y = "Grain yield (t/Ha)",
-        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
-   theme(plot.title = element_text(hjust = 0.5)) +
-   geom_hline(yintercept = 0, linetype = 2) +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   coord_flip() +
-   guides(fill = FALSE, color = FALSE)
-```
-
-
-Using the mean difference in the treatment effect seems to show the effect of each treatment better than just raw yield and reduces the variability in the treatments.
-We know there is a good deal of variability in our studies and between them.
-Mungbean produces variable yields between seasons so ordinarily we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
-However for an arm-based analysis, which we intend to do, we calculate the differences between control and treatment after the meta-analysis.  
-
-****
+*****
 
 ## Trial factor
 We have a number of variable which could introduce variation in our analysis. 
@@ -524,6 +428,102 @@ PM_MB_dat <-
              fungicide_application_7)) 
 ```
 
+## Final data check  
+Now we have defined our treatments lets inspect plots to visualise how well the data compares across the trial years and locations?
+
+```{r table_of_nTreatments}
+# class spray_management as a factor and reorder them for the plot
+PM_MB_dat$spray_management <-
+   factor(PM_MB_dat$spray_management, rev(
+      c(
+         "control",
+         "Early",
+         "Recommended",
+         "Recommended_plus",
+         "Late",
+         "Late_plus"
+      )
+   ))
+
+ggplot(PM_MB_dat, aes(x = as.factor(year), fill = spray_management)) +
+   geom_bar(position = position_dodge2(width = 0.9, preserve = "single")) +
+   scale_fill_usq(name = "Spray Management") +
+   xlab("Year")
+
+kable(
+   table(PM_MB_dat$spray_management, PM_MB_dat$year),
+   align = rep('c', 8),
+   caption = "Which treatments and how many treatments are represented in each year"
+) %>%
+   kable_styling(
+      "striped",
+      fixed_thead = TRUE,
+      full_width = FALSE,
+      position = "center"
+   )
+
+```
+
+Treatments `Late_plus` and `Early` don't have very good comparison to other treatments.
+
+Let's visualise the spread of data in each treatments with box-plots.
+
+```{r treatment_means_plot}
+PM_MB_dat %>%
+   ggplot(
+      aes(
+         y = grain_yield.t.ha.,
+         x = spray_management,
+         fill = spray_management,
+         colour = spray_management
+      )
+   ) +
+   geom_boxplot(alpha = 0.25) +
+   geom_jitter(width = 0.1, alpha = 0.5) +
+   labs(x = "Spray management variable",
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
+   theme(plot.title = element_text(hjust = 0.5)) +
+   geom_hline(yintercept = 0, linetype = 2) +
+   scale_fill_usq() +
+   scale_colour_usq() +
+   coord_flip() +
+   guides(fill = FALSE, color = FALSE)
+```
+
+There seems like little difference between the treatments, with exception of `Late_plus`.
+Let's do this plot again, but let's look at the proportional mean difference between each treatment and the no spray control for each study, this should reduce variation in yield due between trials.
+
+```{r plot_yieldProportion}
+PM_MB_dat %>%
+   filter(spray_management != "control") %>% 
+   ggplot(
+      aes(
+         y = prop_YG,
+         x = spray_management,
+         fill = spray_management,
+         colour = spray_management
+      )
+   ) +
+   geom_boxplot(alpha = 0.25) +
+   geom_jitter(width = 0.1, alpha = 0.5) +
+   labs(x = "Spray management variable",
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
+   theme(plot.title = element_text(hjust = 0.5)) +
+   geom_hline(yintercept = 0, linetype = 2) +
+   scale_fill_usq() +
+   scale_colour_usq() +
+   coord_flip() +
+   guides(fill = FALSE, color = FALSE)
+```
+
+Using the mean difference in the treatment effect seems to show the effect of each treatment better than just raw yield and reduces the variability in the treatments.
+We know there is a good deal of variability in our studies and between them.
+Mungbean produces variable yields between seasons so ordinarily we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
+However for an arm-based analysis, which we intend to do, we calculate the differences between control and treatment after the meta-analysis.  
+
+### Simplify and save data  
 
 ```{r simplifyData}
 PM_MB_dat <- 
@@ -559,6 +559,7 @@ PM_MB_dat <-
       n,
       id)
 ```
+
 
 
 ```{r saveData_PrepD}
