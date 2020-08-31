@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6 Prepare data for meta-analysis | A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean</title>
+  <title>4 Prepare data for meta-analysis | A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean</title>
   <meta name="description" content="A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="6 Prepare data for meta-analysis | A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean" />
+  <meta property="og:title" content="4 Prepare data for meta-analysis | A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="OpenPlantPathology/Mungbean_PM" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6 Prepare data for meta-analysis | A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean" />
+  <meta name="twitter:title" content="4 Prepare data for meta-analysis | A meta-analysis of powdery mildew yield loss mitigation strategies in Australian mungbean" />
   
   <meta name="twitter:description" content="A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="grain-yield-meta-analysis.html"/>
-<link rel="next" href="post-hoc-analysis-and-ploting.html"/>
+<link rel="prev" href="preliminary-analysis.html"/>
+<link rel="next" href="grain-yield-meta-analysis.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -159,69 +159,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html"><i class="fa fa-check"></i><b>4</b> Prepare data for meta-analysis</a><ul>
 <li class="chapter" data-level="4.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>4.1</b> Set environment and import data</a></li>
-<li class="chapter" data-level="4.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#subset-to-trials-containing-dmi-fungicides"><i class="fa fa-check"></i><b>4.2</b> Subset to Trials containing DMI fungicides</a></li>
+<li class="chapter" data-level="4.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#subset-to-trials-containing-dmi-fungicides"><i class="fa fa-check"></i><b>4.2</b> Subset to trials containing DMI fungicides</a></li>
 <li class="chapter" data-level="4.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>4.3</b> Standardising sample variance</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>4.3.1</b> Converting least-squares to sample variance</a></li>
 <li class="chapter" data-level="4.3.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>4.3.2</b> Converting standard deviation to sample variance</a></li>
 <li class="chapter" data-level="4.3.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#check-variance-of-data-set"><i class="fa fa-check"></i><b>4.3.3</b> Check variance of data-set</a></li>
+<li class="chapter" data-level="4.3.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#inspect-variance-and-response-for-analysis"><i class="fa fa-check"></i><b>4.3.4</b> Inspect variance and response for analysis</a></li>
+<li class="chapter" data-level="4.3.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#formatting-variance"><i class="fa fa-check"></i><b>4.3.5</b> Formatting Variance</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#classifying-fungicide-treatment"><i class="fa fa-check"></i><b>4.4</b> Classifying fungicide treatment</a></li>
 <li class="chapter" data-level="4.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#trial-factor"><i class="fa fa-check"></i><b>4.5</b> Trial factor</a></li>
 <li class="chapter" data-level="4.6" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#test-dose-effect"><i class="fa fa-check"></i><b>4.6</b> Test dose effect</a></li>
-<li class="chapter" data-level="4.7" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.7</b> Row spacing</a><ul>
-<li class="chapter" data-level="4.7.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#mungbeans-age-and-yield-saved"><i class="fa fa-check"></i><b>4.7.1</b> Mungbeans age and yield saved</a></li>
+<li class="chapter" data-level="4.7" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>4.7</b> Row spacing</a></li>
+<li class="chapter" data-level="4.8" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#remove-unnecersary-variables"><i class="fa fa-check"></i><b>4.8</b> Remove unnecersary variables</a></li>
+<li class="chapter" data-level="4.9" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#final-data-check"><i class="fa fa-check"></i><b>4.9</b> Final data check</a><ul>
+<li class="chapter" data-level="4.9.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#simplify-and-save-data"><i class="fa fa-check"></i><b>4.9.1</b> Simplify and save data</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Grain yield meta-analysis</a><ul>
 <li class="chapter" data-level="5.0.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#formating-the-response-variable"><i class="fa fa-check"></i><b>5.0.1</b> Formating the response variable</a></li>
-<li class="chapter" data-level="5.0.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#formatting-variance"><i class="fa fa-check"></i><b>5.0.2</b> Formatting Variance</a></li>
+<li class="chapter" data-level="5.0.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#formatting-variance"><i class="fa fa-check"></i><b>5.0.2</b> Formatting Variance</a></li>
 <li class="chapter" data-level="5.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#metafor-analysis"><i class="fa fa-check"></i><b>5.1</b> metafor analysis</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#profile-plots"><i class="fa fa-check"></i><b>5.1.1</b> Profile plots</a></li>
 <li class="chapter" data-level="5.1.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#forest-plot-of-trial-treatment-effect-per-trial"><i class="fa fa-check"></i><b>5.1.2</b> Forest plot of trial treatment effect per trial</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#netmeta-analysis"><i class="fa fa-check"></i><b>5.2</b> netmeta analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#prepare-data-for-meta-analysis"><i class="fa fa-check"></i><b>6</b> Prepare data for meta-analysis</a><ul>
-<li class="chapter" data-level="6.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#set-environment-and-import-data"><i class="fa fa-check"></i><b>6.1</b> Set environment and import data</a></li>
-<li class="chapter" data-level="6.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#subset-to-trials-containing-dmi-fungicides"><i class="fa fa-check"></i><b>6.2</b> Subset to trials containing DMI fungicides</a></li>
-<li class="chapter" data-level="6.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#standardising-sample-variance"><i class="fa fa-check"></i><b>6.3</b> Standardising sample variance</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-least-squares-to-sample-variance"><i class="fa fa-check"></i><b>6.3.1</b> Converting least-squares to sample variance</a></li>
-<li class="chapter" data-level="6.3.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#converting-standard-deviation-to-sample-variance"><i class="fa fa-check"></i><b>6.3.2</b> Converting standard deviation to sample variance</a></li>
-<li class="chapter" data-level="6.3.3" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#check-variance-of-data-set"><i class="fa fa-check"></i><b>6.3.3</b> Check variance of data-set</a></li>
+<li class="chapter" data-level="6" data-path="post-hoc-analysis-and-ploting.html"><a href="post-hoc-analysis-and-ploting.html"><i class="fa fa-check"></i><b>6</b> Post-hoc analysis and ploting</a><ul>
+<li class="chapter" data-level="6.0.1" data-path="post-hoc-analysis-and-ploting.html"><a href="post-hoc-analysis-and-ploting.html#mungbeans-age-and-yield-saved"><i class="fa fa-check"></i><b>6.0.1</b> Mungbeans age and yield saved</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#classifying-fungicide-treatment"><i class="fa fa-check"></i><b>6.4</b> Classifying fungicide treatment</a></li>
-<li class="chapter" data-level="6.5" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#trial-factor"><i class="fa fa-check"></i><b>6.5</b> Trial factor</a></li>
-<li class="chapter" data-level="6.6" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#test-dose-effect"><i class="fa fa-check"></i><b>6.6</b> Test dose effect</a></li>
-<li class="chapter" data-level="6.7" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#row-spacing"><i class="fa fa-check"></i><b>6.7</b> Row spacing</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="post-hoc-analysis-and-ploting.html"><a href="post-hoc-analysis-and-ploting.html"><i class="fa fa-check"></i><b>7</b> Post-hoc analysis and ploting</a><ul>
-<li class="chapter" data-level="7.0.1" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#mungbeans-age-and-yield-saved"><i class="fa fa-check"></i><b>7.0.1</b> Mungbeans age and yield saved</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="import-and-format-data.html"><a href="import-and-format-data.html"><i class="fa fa-check"></i><b>8</b> Import and Format Data</a><ul>
-<li class="chapter" data-level="8.1" data-path="import-and-format-data.html"><a href="import-and-format-data.html#non-wrangled-trials"><i class="fa fa-check"></i><b>8.1</b> Non-wrangled trials</a></li>
-<li class="chapter" data-level="8.2" data-path="import-and-format-data.html"><a href="import-and-format-data.html#import-libraries"><i class="fa fa-check"></i><b>8.2</b> Import Libraries</a></li>
-<li class="chapter" data-level="8.3" data-path="import-and-format-data.html"><a href="import-and-format-data.html#functions"><i class="fa fa-check"></i><b>8.3</b> Functions</a></li>
-<li class="chapter" data-level="8.4" data-path="import-and-format-data.html"><a href="import-and-format-data.html#data-wrangling-for-each-trial"><i class="fa fa-check"></i><b>8.4</b> Data wrangling for each trial</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2010"><i class="fa fa-check"></i><b>8.4.1</b> Hermitage 2010</a></li>
-<li class="chapter" data-level="8.4.2" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2011"><i class="fa fa-check"></i><b>8.4.2</b> Hermitage 2011</a></li>
-<li class="chapter" data-level="8.4.3" data-path="import-and-format-data.html"><a href="import-and-format-data.html#kingaroy-2011"><i class="fa fa-check"></i><b>8.4.3</b> Kingaroy 2011</a></li>
-<li class="chapter" data-level="8.4.4" data-path="import-and-format-data.html"><a href="import-and-format-data.html#goolhi-2013"><i class="fa fa-check"></i><b>8.4.4</b> Goolhi 2013</a></li>
-<li class="chapter" data-level="8.4.5" data-path="import-and-format-data.html"><a href="import-and-format-data.html#marys-mount-2013"><i class="fa fa-check"></i><b>8.4.5</b> Mary’s Mount 2013</a></li>
-<li class="chapter" data-level="8.4.6" data-path="import-and-format-data.html"><a href="import-and-format-data.html#premer-2013"><i class="fa fa-check"></i><b>8.4.6</b> Premer 2013</a></li>
-<li class="chapter" data-level="8.4.7" data-path="import-and-format-data.html"><a href="import-and-format-data.html#millmerran-2013"><i class="fa fa-check"></i><b>8.4.7</b> Millmerran 2013</a></li>
-<li class="chapter" data-level="8.4.8" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2015"><i class="fa fa-check"></i><b>8.4.8</b> Hermitage 2015</a></li>
-<li class="chapter" data-level="8.4.9" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2016"><i class="fa fa-check"></i><b>8.4.9</b> Hermitage 2016</a></li>
-<li class="chapter" data-level="8.4.10" data-path="import-and-format-data.html"><a href="import-and-format-data.html#kingaroy-2016"><i class="fa fa-check"></i><b>8.4.10</b> Kingaroy 2016</a></li>
-<li class="chapter" data-level="8.4.11" data-path="import-and-format-data.html"><a href="import-and-format-data.html#missen-flats-2017"><i class="fa fa-check"></i><b>8.4.11</b> Missen Flats 2017</a></li>
-<li class="chapter" data-level="8.4.12" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2017"><i class="fa fa-check"></i><b>8.4.12</b> Hermitage 2017</a></li>
-<li class="chapter" data-level="8.4.13" data-path="import-and-format-data.html"><a href="import-and-format-data.html#wellcamp-2018"><i class="fa fa-check"></i><b>8.4.13</b> Wellcamp 2018</a></li>
-<li class="chapter" data-level="8.4.14" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2019"><i class="fa fa-check"></i><b>8.4.14</b> Hermitage 2019</a></li>
+<li class="chapter" data-level="7" data-path="import-and-format-data.html"><a href="import-and-format-data.html"><i class="fa fa-check"></i><b>7</b> Import and Format Data</a><ul>
+<li class="chapter" data-level="7.1" data-path="import-and-format-data.html"><a href="import-and-format-data.html#non-wrangled-trials"><i class="fa fa-check"></i><b>7.1</b> Non-wrangled trials</a></li>
+<li class="chapter" data-level="7.2" data-path="import-and-format-data.html"><a href="import-and-format-data.html#import-libraries"><i class="fa fa-check"></i><b>7.2</b> Import Libraries</a></li>
+<li class="chapter" data-level="7.3" data-path="import-and-format-data.html"><a href="import-and-format-data.html#functions"><i class="fa fa-check"></i><b>7.3</b> Functions</a></li>
+<li class="chapter" data-level="7.4" data-path="import-and-format-data.html"><a href="import-and-format-data.html#data-wrangling-for-each-trial"><i class="fa fa-check"></i><b>7.4</b> Data wrangling for each trial</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2010"><i class="fa fa-check"></i><b>7.4.1</b> Hermitage 2010</a></li>
+<li class="chapter" data-level="7.4.2" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2011"><i class="fa fa-check"></i><b>7.4.2</b> Hermitage 2011</a></li>
+<li class="chapter" data-level="7.4.3" data-path="import-and-format-data.html"><a href="import-and-format-data.html#kingaroy-2011"><i class="fa fa-check"></i><b>7.4.3</b> Kingaroy 2011</a></li>
+<li class="chapter" data-level="7.4.4" data-path="import-and-format-data.html"><a href="import-and-format-data.html#goolhi-2013"><i class="fa fa-check"></i><b>7.4.4</b> Goolhi 2013</a></li>
+<li class="chapter" data-level="7.4.5" data-path="import-and-format-data.html"><a href="import-and-format-data.html#marys-mount-2013"><i class="fa fa-check"></i><b>7.4.5</b> Mary’s Mount 2013</a></li>
+<li class="chapter" data-level="7.4.6" data-path="import-and-format-data.html"><a href="import-and-format-data.html#premer-2013"><i class="fa fa-check"></i><b>7.4.6</b> Premer 2013</a></li>
+<li class="chapter" data-level="7.4.7" data-path="import-and-format-data.html"><a href="import-and-format-data.html#millmerran-2013"><i class="fa fa-check"></i><b>7.4.7</b> Millmerran 2013</a></li>
+<li class="chapter" data-level="7.4.8" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2015"><i class="fa fa-check"></i><b>7.4.8</b> Hermitage 2015</a></li>
+<li class="chapter" data-level="7.4.9" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2016"><i class="fa fa-check"></i><b>7.4.9</b> Hermitage 2016</a></li>
+<li class="chapter" data-level="7.4.10" data-path="import-and-format-data.html"><a href="import-and-format-data.html#kingaroy-2016"><i class="fa fa-check"></i><b>7.4.10</b> Kingaroy 2016</a></li>
+<li class="chapter" data-level="7.4.11" data-path="import-and-format-data.html"><a href="import-and-format-data.html#missen-flats-2017"><i class="fa fa-check"></i><b>7.4.11</b> Missen Flats 2017</a></li>
+<li class="chapter" data-level="7.4.12" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2017"><i class="fa fa-check"></i><b>7.4.12</b> Hermitage 2017</a></li>
+<li class="chapter" data-level="7.4.13" data-path="import-and-format-data.html"><a href="import-and-format-data.html#wellcamp-2018"><i class="fa fa-check"></i><b>7.4.13</b> Wellcamp 2018</a></li>
+<li class="chapter" data-level="7.4.14" data-path="import-and-format-data.html"><a href="import-and-format-data.html#hermitage-2019"><i class="fa fa-check"></i><b>7.4.14</b> Hermitage 2019</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>9</b> Introduction</a><ul>
-<li class="chapter" data-level="9.1" data-path="introduction.html"><a href="introduction.html#criteria-for-trial-data-inclusion"><i class="fa fa-check"></i><b>9.1</b> Criteria for Trial Data Inclusion</a></li>
-<li class="chapter" data-level="9.2" data-path="introduction.html"><a href="introduction.html#response-variable"><i class="fa fa-check"></i><b>9.2</b> Response Variable</a></li>
-<li class="chapter" data-level="9.3" data-path="introduction.html"><a href="introduction.html#trial-variables-and-moderators"><i class="fa fa-check"></i><b>9.3</b> Trial Variables and Moderators</a></li>
+<li class="chapter" data-level="8" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>8</b> Introduction</a><ul>
+<li class="chapter" data-level="8.1" data-path="introduction.html"><a href="introduction.html#criteria-for-trial-data-inclusion"><i class="fa fa-check"></i><b>8.1</b> Criteria for Trial Data Inclusion</a></li>
+<li class="chapter" data-level="8.2" data-path="introduction.html"><a href="introduction.html#response-variable"><i class="fa fa-check"></i><b>8.2</b> Response Variable</a></li>
+<li class="chapter" data-level="8.3" data-path="introduction.html"><a href="introduction.html#trial-variables-and-moderators"><i class="fa fa-check"></i><b>8.3</b> Trial Variables and Moderators</a></li>
 </ul></li>
 </ul>
 
@@ -241,14 +232,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="prepare-data-for-meta-analysis" class="section level1">
-<h1><span class="header-section-number">6</span> Prepare data for meta-analysis</h1>
+<h1><span class="header-section-number">4</span> Prepare data for meta-analysis</h1>
 <div id="set-environment-and-import-data" class="section level2">
-<h2><span class="header-section-number">6.1</span> Set environment and import data</h2>
+<h2><span class="header-section-number">4.1</span> Set environment and import data</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="prepare-data-for-meta-analysis.html#cb1-1"></a><span class="kw">load</span>(<span class="st">&quot;cache/PreliminaryData.Rdata&quot;</span>)</span>
 <span id="cb1-2"><a href="prepare-data-for-meta-analysis.html#cb1-2"></a><span class="kw">source</span>(<span class="kw">here</span>(<span class="st">&quot;R/same.R&quot;</span>)) <span class="co"># matches each element of a vector and does not return NAs</span></span></code></pre></div>
 </div>
 <div id="subset-to-trials-containing-dmi-fungicides" class="section level2">
-<h2><span class="header-section-number">6.2</span> Subset to trials containing DMI fungicides</h2>
+<h2><span class="header-section-number">4.2</span> Subset to trials containing DMI fungicides</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="prepare-data-for-meta-analysis.html#cb2-1"></a>DMI_Trials &lt;-<span class="st"> </span></span>
 <span id="cb2-2"><a href="prepare-data-for-meta-analysis.html#cb2-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
 <span id="cb2-3"><a href="prepare-data-for-meta-analysis.html#cb2-3"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
@@ -267,7 +258,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr />
 </div>
 <div id="standardising-sample-variance" class="section level2">
-<h2><span class="header-section-number">6.3</span> Standardising sample variance</h2>
+<h2><span class="header-section-number">4.3</span> Standardising sample variance</h2>
 <p>Meta-analyses use variance from the data to calculate the effect sizes.
 The type of variance needs to be the same across all the data incorporated in the meta-analysis.</p>
 <p>We are narrowing the meta-analysis to only include treatments using demethylation inhibitors, tebuconazole and propiconazole.
@@ -574,10 +565,10 @@ stdev
 </tr>
 </tfoot>
 </table>
-<p>The experiment summaries report either standard deviation, least square differences.
-First we will convert LSD and standard deviation to sample variance.</p>
+<p>The experiment summaries report either standard deviation or least square differences.
+First we will convert LSD and standard deviation, then square the stdev to get sample variance.</p>
 <div id="converting-least-squares-to-sample-variance" class="section level3">
-<h3><span class="header-section-number">6.3.1</span> Converting least-squares to sample variance</h3>
+<h3><span class="header-section-number">4.3.1</span> Converting least-squares to sample variance</h3>
 <p>First let’s get a list the of trials that reported LSD.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="prepare-data-for-meta-analysis.html#cb5-1"></a>Trials &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
 <span id="cb5-2"><a href="prepare-data-for-meta-analysis.html#cb5-2"></a><span class="st">   </span><span class="kw">filter</span>(Y_error_type <span class="op">==</span><span class="st"> &quot;lsd (P=0.05)&quot;</span>) <span class="op">%&gt;%</span></span>
@@ -624,7 +615,7 @@ First we will convert LSD and standard deviation to sample variance.</p>
 <span id="cb7-34"><a href="prepare-data-for-meta-analysis.html#cb7-34"></a>}</span></code></pre></div>
 </div>
 <div id="converting-standard-deviation-to-sample-variance" class="section level3">
-<h3><span class="header-section-number">6.3.2</span> Converting standard deviation to sample variance</h3>
+<h3><span class="header-section-number">4.3.2</span> Converting standard deviation to sample variance</h3>
 <p>Now to estimate the variance from the standard deviation.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="prepare-data-for-meta-analysis.html#cb8-1"></a><span class="co"># subset data by those which describe the Yield error with standard deviation</span></span>
 <span id="cb8-2"><a href="prepare-data-for-meta-analysis.html#cb8-2"></a>Trials &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
@@ -639,7 +630,7 @@ First we will convert LSD and standard deviation to sample variance.</p>
 <span id="cb8-11"><a href="prepare-data-for-meta-analysis.html#cb8-11"></a><span class="st">   &quot;SamplingVariance&quot;</span></span></code></pre></div>
 </div>
 <div id="check-variance-of-data-set" class="section level3">
-<h3><span class="header-section-number">6.3.3</span> Check variance of data-set</h3>
+<h3><span class="header-section-number">4.3.3</span> Check variance of data-set</h3>
 <p>Our data currently uses sample variance to define the yield error.
 We should expect that when yield increases so does the variance.
 Let’s quickly plot this to check.</p>
@@ -647,40 +638,96 @@ Let’s quickly plot this to check.</p>
 <span id="cb9-2"><a href="prepare-data-for-meta-analysis.html#cb9-2"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> grain_yield.t.ha., <span class="dt">y =</span> yield_error)) <span class="op">+</span></span>
 <span id="cb9-3"><a href="prepare-data-for-meta-analysis.html#cb9-3"></a><span class="st">   </span><span class="kw">geom_point</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/Var_mean_sqaures-1.png" width="672" /></p>
-<p>No association between yield and sample variance, this might be due to the unpredictable nature of mungbeans.</p>
+<p>There seems to be no association between yield and sample variance, this might be due to the variability of mungbeans yields.</p>
 <p>Lets look at the association between mean squares and yield to see if there is a more typical association between yield and variance.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="prepare-data-for-meta-analysis.html#cb10-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
 <span id="cb10-2"><a href="prepare-data-for-meta-analysis.html#cb10-2"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> grain_yield.t.ha., <span class="dt">y =</span> Y_Msquare<span class="op">/</span>replicates)) <span class="op">+</span></span>
 <span id="cb10-3"><a href="prepare-data-for-meta-analysis.html#cb10-3"></a><span class="st">   </span><span class="kw">geom_point</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 7 rows containing missing values (geom_point).</code></pre>
 <p><img src="_main_files/figure-html/Var_MeanSquarePlot-1.png" width="672" /></p>
-<p>There is a somewhat better trend here, if sampling variance from standard deviation proves unsuitable for the analysis we may compare models using variance from stdev and mean square for the best fit.</p>
+<p>There is a somewhat better trend here, if sampling variance from standard deviation proves unsuitable for the analysis we may compare models using variance from stdev and mean square for the best fit.
+However, seven treatments are missing mean square error.</p>
+</div>
+<div id="inspect-variance-and-response-for-analysis" class="section level3">
+<h3><span class="header-section-number">4.3.4</span> Inspect variance and response for analysis</h3>
+<p>Let’s inspect the response variance <code>grain_yield.t.ha</code> to see if it is normally distributed.
+In many cases a log transformation of the response variable improves the fit, due to the prevalence of log distributed data in nature.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="prepare-data-for-meta-analysis.html#cb12-1"></a><span class="kw">hist_usq</span>(PM_MB_dat<span class="op">$</span>grain_yield.t.ha., <span class="dt">main =</span> <span class="st">&quot;Grain yield (t / ha)&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="prepare-data-for-meta-analysis.html#cb13-1"></a><span class="kw">hist_usq</span>(<span class="kw">log</span>(PM_MB_dat<span class="op">$</span>grain_yield.t.ha.), <span class="dt">main =</span> <span class="st">&quot;log(Grain yield (t / ha))&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="prepare-data-for-meta-analysis.html#cb14-1"></a><span class="kw">hist_usq</span>(<span class="kw">sqrt</span>(PM_MB_dat<span class="op">$</span>grain_yield.t.ha.), <span class="dt">main =</span> <span class="st">&quot;sqrt(Grain yield (t / ha))&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="prepare-data-for-meta-analysis.html#cb15-1"></a><span class="kw">hist_usq</span>(PM_MB_dat<span class="op">$</span>yield_gain, <span class="dt">main =</span> <span class="st">&quot;Mean difference to control (t / ha)&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+<p>The distribution of data does not seem to be improved by transformation of the data.
+We will retain the continuous variable grain_yield.t.ha as the response.
+Mean differences won’t be used as we are following the methodology of a ARM-based model, where mean differences are calculated following the meta-analysis.</p>
+</div>
+<div id="formatting-variance" class="section level3">
+<h3><span class="header-section-number">4.3.5</span> Formatting Variance</h3>
+<p>First let’s check for any entries missing variance and remove them.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="prepare-data-for-meta-analysis.html#cb16-1"></a><span class="kw">any</span>(<span class="kw">is.na</span>(PM_MB_dat<span class="op">$</span>yield_error))</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="prepare-data-for-meta-analysis.html#cb18-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb18-2"><a href="prepare-data-for-meta-analysis.html#cb18-2"></a><span class="st">   </span>PM_MB_dat[<span class="op">!</span><span class="kw">is.na</span>(PM_MB_dat<span class="op">$</span>yield_error), ]</span>
+<span id="cb18-3"><a href="prepare-data-for-meta-analysis.html#cb18-3"></a></span>
+<span id="cb18-4"><a href="prepare-data-for-meta-analysis.html#cb18-4"></a>PM_MB_dat<span class="op">$</span>vi &lt;-<span class="st"> </span>PM_MB_dat<span class="op">$</span>yield_error</span></code></pre></div>
+<div id="calculate-sample-variance-from-mean-square-errors" class="section level4">
+<h4><span class="header-section-number">4.3.5.1</span> Calculate sample variance from mean square errors</h4>
+<p>Currently our data frame has the sample variance calculated earlier, however we can approximate it using the mean squared error.
+Let’s show the rational for our calculation and then add a secondary variance column (<code>vi2</code>).</p>
+<p><span class="math inline">\(MSE = Var + bias\)</span></p>
+<p>However if our MSE was calculated from an unbiased sample we can assume <span class="math inline">\(bias = 0\)</span> and therefore:</p>
+<p><span class="math inline">\(MSE = Var\)</span></p>
+<p>To calculate the sample variance (for each treatment in the trial) from the mean square error (Trial variance) all we need to do is divide by the number of samples in each treatment.
+We can show this because:
+<span class="math inline">\(MSE = \frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n - 1}\)</span>
+Where the sum of squares for the fungicide treatment estimator (<span class="math inline">\(y\)</span>) is divided by the number of fungicide treatments (<span class="math inline">\(n\)</span>).</p>
+<p>The sample variance is a similar formula except we use <span class="math inline">\(x\)</span> instead of <span class="math inline">\(y\)</span>.
+<span class="math inline">\(S_{Var} = \frac{\sum_{x_1}^{x_n}(x_i - \overline{x})^2}{n - 1}\)</span><br />
+<span class="math inline">\(x\)</span> being each observation within the experiment and <span class="math inline">\(n\)</span> being the number of samples in the whole trial.
+Therefore:
+<span class="math inline">\(S_{Var}\approx\frac{1}{n_{x}}\frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n_y - 1}\)</span><br />
+Where <span class="math inline">\(n_x\)</span> is the number of samples within each treatment.</p>
+<p>As mentioned before there are a few treatments with no MSE (NAs), we can calculate it from the sample variance using this logic above.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="prepare-data-for-meta-analysis.html#cb19-1"></a>PM_MB_dat[<span class="kw">is.na</span>(PM_MB_dat<span class="op">$</span>Y_Msquare),<span class="st">&quot;Y_Msquare&quot;</span>] &lt;-<span class="st"> </span></span>
+<span id="cb19-2"><a href="prepare-data-for-meta-analysis.html#cb19-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb19-3"><a href="prepare-data-for-meta-analysis.html#cb19-3"></a><span class="st">   </span><span class="kw">filter</span>(<span class="kw">is.na</span>(Y_Msquare))<span class="op">%&gt;%</span></span>
+<span id="cb19-4"><a href="prepare-data-for-meta-analysis.html#cb19-4"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">Y_Msquare =</span> yield_error <span class="op">*</span><span class="st"> </span>replicates)<span class="op">%&gt;%</span></span>
+<span id="cb19-5"><a href="prepare-data-for-meta-analysis.html#cb19-5"></a><span class="st">   </span><span class="kw">pull</span>(Y_Msquare)</span></code></pre></div>
+<p>Now to calculate the sample variance from MSE for all treatments.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="prepare-data-for-meta-analysis.html#cb20-1"></a><span class="co">#calculation when using log of response</span></span>
+<span id="cb20-2"><a href="prepare-data-for-meta-analysis.html#cb20-2"></a><span class="co"># PM_MB_dat$vi &lt;-</span></span>
+<span id="cb20-3"><a href="prepare-data-for-meta-analysis.html#cb20-3"></a><span class="co">#    PM_MB_dat$Y_Msquare / (PM_MB_dat$n * PM_MB_dat$grain_yield.t.ha. ^</span></span>
+<span id="cb20-4"><a href="prepare-data-for-meta-analysis.html#cb20-4"></a><span class="co">#                                   2)</span></span>
+<span id="cb20-5"><a href="prepare-data-for-meta-analysis.html#cb20-5"></a></span>
+<span id="cb20-6"><a href="prepare-data-for-meta-analysis.html#cb20-6"></a>PM_MB_dat<span class="op">$</span>vi2 &lt;-<span class="st"> </span></span>
+<span id="cb20-7"><a href="prepare-data-for-meta-analysis.html#cb20-7"></a><span class="st">   </span>PM_MB_dat<span class="op">$</span>Y_Msquare <span class="op">/</span><span class="st"> </span></span>
+<span id="cb20-8"><a href="prepare-data-for-meta-analysis.html#cb20-8"></a><span class="st">   </span>PM_MB_dat<span class="op">$</span>replicates</span></code></pre></div>
 <hr />
 </div>
 </div>
+</div>
 <div id="classifying-fungicide-treatment" class="section level2">
-<h2><span class="header-section-number">6.4</span> Classifying fungicide treatment</h2>
+<h2><span class="header-section-number">4.4</span> Classifying fungicide treatment</h2>
 <p>First are going to calculate the time between the first sign of disease and the fungicide applications.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="prepare-data-for-meta-analysis.html#cb12-1"></a>PM_MB_dat <span class="op">%&lt;&gt;%</span></span>
-<span id="cb12-2"><a href="prepare-data-for-meta-analysis.html#cb12-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_1 =</span> fungicide_application_<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>first_sign_disease) <span class="op">%&gt;%</span></span>
-<span id="cb12-3"><a href="prepare-data-for-meta-analysis.html#cb12-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_2 =</span> fungicide_application_<span class="dv">2</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb12-4"><a href="prepare-data-for-meta-analysis.html#cb12-4"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_3 =</span> fungicide_application_<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="prepare-data-for-meta-analysis.html#cb21-1"></a>PM_MB_dat <span class="op">%&lt;&gt;%</span></span>
+<span id="cb21-2"><a href="prepare-data-for-meta-analysis.html#cb21-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_1 =</span> fungicide_application_<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>first_sign_disease) <span class="op">%&gt;%</span></span>
+<span id="cb21-3"><a href="prepare-data-for-meta-analysis.html#cb21-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_2 =</span> fungicide_application_<span class="dv">2</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb21-4"><a href="prepare-data-for-meta-analysis.html#cb21-4"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_3 =</span> fungicide_application_<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">2</span>)</span></code></pre></div>
 <p>To ensure sufficient number of replicates, we will bin the continuous variable into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.</p>
-<p>These categorical variables are named:</p>
-<ul>
-<li><strong>Early</strong>: First fungicide application was prior to first sign of disease.
-<ul>
-<li><strong>Recommended</strong>: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.</li>
-<li><strong>Late</strong>: First fungicide application was four or more days after first sign of disease being observed.</li>
-</ul></li>
-</ul>
+<p>These categorical variables are named:
+- <strong>Early</strong>: First fungicide application was prior to first sign of disease.
+- <strong>Recommended</strong>: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.
+- <strong>Late</strong>: First fungicide application was four or more days after first sign of disease being observed.</p>
 <p>The number of sprays need also be defined.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="prepare-data-for-meta-analysis.html#cb13-1"></a><span class="kw">data.frame</span>(<span class="dt">TreatmentName =</span> <span class="kw">c</span>(<span class="st">&quot;Early&quot;</span>, <span class="st">&quot;Recommended&quot;</span>, <span class="st">&quot;Late&quot;</span>, <span class="st">&quot;EarlyPlus&quot;</span>, <span class="st">&quot;RecommendedPlus&quot;</span>, <span class="st">&quot;LatePlus&quot;</span>),</span>
-<span id="cb13-2"><a href="prepare-data-for-meta-analysis.html#cb13-2"></a>           <span class="dt">n_sprays =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Single&quot;</span>, <span class="st">&quot;Two - Three&quot;</span>), <span class="dt">each =</span> <span class="dv">3</span>),</span>
-<span id="cb13-3"><a href="prepare-data-for-meta-analysis.html#cb13-3"></a>           <span class="dt">DaysRelativeToFirstSign =</span> <span class="kw">c</span>(<span class="st">&quot;Prior to first sign of Powdery Mildew&quot;</span>,</span>
-<span id="cb13-4"><a href="prepare-data-for-meta-analysis.html#cb13-4"></a>                                       <span class="st">&quot;1 - 3 days after first sign of Powdery Mildew&quot;</span>,</span>
-<span id="cb13-5"><a href="prepare-data-for-meta-analysis.html#cb13-5"></a>                                       <span class="st">&quot;7 - 8 days after first sign of Powdery Mildew&quot;</span>))<span class="op">%&gt;%</span></span>
-<span id="cb13-6"><a href="prepare-data-for-meta-analysis.html#cb13-6"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="prepare-data-for-meta-analysis.html#cb22-1"></a><span class="kw">data.frame</span>(<span class="dt">TreatmentName =</span> <span class="kw">c</span>(<span class="st">&quot;Early&quot;</span>, <span class="st">&quot;Recommended&quot;</span>, <span class="st">&quot;Late&quot;</span>, <span class="st">&quot;EarlyPlus&quot;</span>, <span class="st">&quot;RecommendedPlus&quot;</span>, <span class="st">&quot;LatePlus&quot;</span>),</span>
+<span id="cb22-2"><a href="prepare-data-for-meta-analysis.html#cb22-2"></a>           <span class="dt">n_sprays =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Single&quot;</span>, <span class="st">&quot;Two - Three&quot;</span>), <span class="dt">each =</span> <span class="dv">3</span>),</span>
+<span id="cb22-3"><a href="prepare-data-for-meta-analysis.html#cb22-3"></a>           <span class="dt">DaysRelativeToFirstSign =</span> <span class="kw">c</span>(<span class="st">&quot;Prior to first sign of Powdery Mildew&quot;</span>,</span>
+<span id="cb22-4"><a href="prepare-data-for-meta-analysis.html#cb22-4"></a>                                       <span class="st">&quot;1 - 3 days after first sign of Powdery Mildew&quot;</span>,</span>
+<span id="cb22-5"><a href="prepare-data-for-meta-analysis.html#cb22-5"></a>                                       <span class="st">&quot;7 - 8 days after first sign of Powdery Mildew&quot;</span>))<span class="op">%&gt;%</span></span>
+<span id="cb22-6"><a href="prepare-data-for-meta-analysis.html#cb22-6"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -764,87 +811,92 @@ Two - Three
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="prepare-data-for-meta-analysis.html#cb14-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb14-2"><a href="prepare-data-for-meta-analysis.html#cb14-2"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
-<span id="cb14-3"><a href="prepare-data-for-meta-analysis.html#cb14-3"></a>      <span class="dt">spray_management =</span> <span class="kw">case_when</span>(</span>
-<span id="cb14-4"><a href="prepare-data-for-meta-analysis.html#cb14-4"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb14-5"><a href="prepare-data-for-meta-analysis.html#cb14-5"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
-<span id="cb14-6"><a href="prepare-data-for-meta-analysis.html#cb14-6"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Early&quot;</span>,</span>
-<span id="cb14-7"><a href="prepare-data-for-meta-analysis.html#cb14-7"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb14-8"><a href="prepare-data-for-meta-analysis.html#cb14-8"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb14-9"><a href="prepare-data-for-meta-analysis.html#cb14-9"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
-<span id="cb14-10"><a href="prepare-data-for-meta-analysis.html#cb14-10"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Recommended&quot;</span>,</span>
-<span id="cb14-11"><a href="prepare-data-for-meta-analysis.html#cb14-11"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb14-12"><a href="prepare-data-for-meta-analysis.html#cb14-12"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
-<span id="cb14-13"><a href="prepare-data-for-meta-analysis.html#cb14-13"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Late&quot;</span>,</span>
-<span id="cb14-14"><a href="prepare-data-for-meta-analysis.html#cb14-14"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb14-15"><a href="prepare-data-for-meta-analysis.html#cb14-15"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Early_plus&quot;</span>,</span>
-<span id="cb14-16"><a href="prepare-data-for-meta-analysis.html#cb14-16"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb14-17"><a href="prepare-data-for-meta-analysis.html#cb14-17"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb14-18"><a href="prepare-data-for-meta-analysis.html#cb14-18"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Recommended_plus&quot;</span>,</span>
-<span id="cb14-19"><a href="prepare-data-for-meta-analysis.html#cb14-19"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb14-20"><a href="prepare-data-for-meta-analysis.html#cb14-20"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Late_plus&quot;</span>,</span>
-<span id="cb14-21"><a href="prepare-data-for-meta-analysis.html#cb14-21"></a>         <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;Other&quot;</span></span>
-<span id="cb14-22"><a href="prepare-data-for-meta-analysis.html#cb14-22"></a>      )</span>
-<span id="cb14-23"><a href="prepare-data-for-meta-analysis.html#cb14-23"></a>   )</span>
-<span id="cb14-24"><a href="prepare-data-for-meta-analysis.html#cb14-24"></a></span>
-<span id="cb14-25"><a href="prepare-data-for-meta-analysis.html#cb14-25"></a>PM_MB_dat[PM_MB_dat<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>,</span>
-<span id="cb14-26"><a href="prepare-data-for-meta-analysis.html#cb14-26"></a>            <span class="kw">c</span>(</span>
-<span id="cb14-27"><a href="prepare-data-for-meta-analysis.html#cb14-27"></a>               <span class="st">&quot;fungicide_timing_1&quot;</span>,</span>
-<span id="cb14-28"><a href="prepare-data-for-meta-analysis.html#cb14-28"></a>               <span class="st">&quot;fungicide_timing_2&quot;</span>,</span>
-<span id="cb14-29"><a href="prepare-data-for-meta-analysis.html#cb14-29"></a>               <span class="st">&quot;fungicide_timing_3&quot;</span>,</span>
-<span id="cb14-30"><a href="prepare-data-for-meta-analysis.html#cb14-30"></a>               <span class="st">&quot;spray_management&quot;</span></span>
-<span id="cb14-31"><a href="prepare-data-for-meta-analysis.html#cb14-31"></a>            )] &lt;-<span class="st"> &quot;control&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="prepare-data-for-meta-analysis.html#cb23-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb23-2"><a href="prepare-data-for-meta-analysis.html#cb23-2"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
+<span id="cb23-3"><a href="prepare-data-for-meta-analysis.html#cb23-3"></a>      <span class="dt">spray_management =</span> <span class="kw">case_when</span>(</span>
+<span id="cb23-4"><a href="prepare-data-for-meta-analysis.html#cb23-4"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb23-5"><a href="prepare-data-for-meta-analysis.html#cb23-5"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb23-6"><a href="prepare-data-for-meta-analysis.html#cb23-6"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Early&quot;</span>,</span>
+<span id="cb23-7"><a href="prepare-data-for-meta-analysis.html#cb23-7"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb23-8"><a href="prepare-data-for-meta-analysis.html#cb23-8"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb23-9"><a href="prepare-data-for-meta-analysis.html#cb23-9"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb23-10"><a href="prepare-data-for-meta-analysis.html#cb23-10"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Recommended&quot;</span>,</span>
+<span id="cb23-11"><a href="prepare-data-for-meta-analysis.html#cb23-11"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb23-12"><a href="prepare-data-for-meta-analysis.html#cb23-12"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb23-13"><a href="prepare-data-for-meta-analysis.html#cb23-13"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Late&quot;</span>,</span>
+<span id="cb23-14"><a href="prepare-data-for-meta-analysis.html#cb23-14"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb23-15"><a href="prepare-data-for-meta-analysis.html#cb23-15"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Early_plus&quot;</span>,</span>
+<span id="cb23-16"><a href="prepare-data-for-meta-analysis.html#cb23-16"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb23-17"><a href="prepare-data-for-meta-analysis.html#cb23-17"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb23-18"><a href="prepare-data-for-meta-analysis.html#cb23-18"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Recommended_plus&quot;</span>,</span>
+<span id="cb23-19"><a href="prepare-data-for-meta-analysis.html#cb23-19"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb23-20"><a href="prepare-data-for-meta-analysis.html#cb23-20"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Late_plus&quot;</span>,</span>
+<span id="cb23-21"><a href="prepare-data-for-meta-analysis.html#cb23-21"></a>         <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;Other&quot;</span></span>
+<span id="cb23-22"><a href="prepare-data-for-meta-analysis.html#cb23-22"></a>      )</span>
+<span id="cb23-23"><a href="prepare-data-for-meta-analysis.html#cb23-23"></a>   )</span>
+<span id="cb23-24"><a href="prepare-data-for-meta-analysis.html#cb23-24"></a></span>
+<span id="cb23-25"><a href="prepare-data-for-meta-analysis.html#cb23-25"></a>PM_MB_dat[PM_MB_dat<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>,</span>
+<span id="cb23-26"><a href="prepare-data-for-meta-analysis.html#cb23-26"></a>            <span class="kw">c</span>(</span>
+<span id="cb23-27"><a href="prepare-data-for-meta-analysis.html#cb23-27"></a>               <span class="st">&quot;fungicide_timing_1&quot;</span>,</span>
+<span id="cb23-28"><a href="prepare-data-for-meta-analysis.html#cb23-28"></a>               <span class="st">&quot;fungicide_timing_2&quot;</span>,</span>
+<span id="cb23-29"><a href="prepare-data-for-meta-analysis.html#cb23-29"></a>               <span class="st">&quot;fungicide_timing_3&quot;</span>,</span>
+<span id="cb23-30"><a href="prepare-data-for-meta-analysis.html#cb23-30"></a>               <span class="st">&quot;spray_management&quot;</span></span>
+<span id="cb23-31"><a href="prepare-data-for-meta-analysis.html#cb23-31"></a>            )] &lt;-<span class="st"> &quot;control&quot;</span></span></code></pre></div>
 <p>Now to view the number break-down of the <code>spray_management</code> treatments</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="prepare-data-for-meta-analysis.html#cb15-1"></a><span class="kw">table</span>(PM_MB_dat<span class="op">$</span>spray_management)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="prepare-data-for-meta-analysis.html#cb24-1"></a><span class="kw">table</span>(PM_MB_dat<span class="op">$</span>spray_management)</span></code></pre></div>
 <pre><code>## 
 ##          control            Early       Early_plus             Late 
 ##               38               13                5               17 
 ##        Late_plus      Recommended Recommended_plus 
 ##               19               27               40</code></pre>
-<p>There are few ‘Early_plus’ treatments, these treatments therefore will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove ‘Early_plus’ from the analysis.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="prepare-data-for-meta-analysis.html#cb17-1"></a>PM_MB_dat &lt;-</span>
-<span id="cb17-2"><a href="prepare-data-for-meta-analysis.html#cb17-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb17-3"><a href="prepare-data-for-meta-analysis.html#cb17-3"></a><span class="st">   </span><span class="kw">filter</span>(spray_management <span class="op">!=</span><span class="st"> &quot;Early_plus&quot;</span>)</span></code></pre></div>
+<p>‘Early_plus’ treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove ‘Early_plus’ from the analysis.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="prepare-data-for-meta-analysis.html#cb26-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb26-2"><a href="prepare-data-for-meta-analysis.html#cb26-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb26-3"><a href="prepare-data-for-meta-analysis.html#cb26-3"></a><span class="st">   </span><span class="kw">filter</span>(spray_management <span class="op">!=</span><span class="st"> &quot;Early_plus&quot;</span>)</span></code></pre></div>
 <hr />
 </div>
 <div id="trial-factor" class="section level2">
-<h2><span class="header-section-number">6.5</span> Trial factor</h2>
+<h2><span class="header-section-number">4.5</span> Trial factor</h2>
 <p>We have a number of variable which could introduce variation in our analysis.
 We will combine these variables into a single variable called <code>trial</code> which will help us define the between trial variation.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="prepare-data-for-meta-analysis.html#cb18-1"></a>PM_MB_dat &lt;-</span>
-<span id="cb18-2"><a href="prepare-data-for-meta-analysis.html#cb18-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb18-3"><a href="prepare-data-for-meta-analysis.html#cb18-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">trial =</span> <span class="kw">paste</span>(trial_ref, year, location, host_genotype,</span>
-<span id="cb18-4"><a href="prepare-data-for-meta-analysis.html#cb18-4"></a>                        row_spacing, <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb18-5"><a href="prepare-data-for-meta-analysis.html#cb18-5"></a><span class="st">   </span><span class="kw">select</span>(trial_ref, trial, <span class="kw">everything</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="prepare-data-for-meta-analysis.html#cb27-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb27-2"><a href="prepare-data-for-meta-analysis.html#cb27-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb27-3"><a href="prepare-data-for-meta-analysis.html#cb27-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">trial =</span> <span class="kw">paste</span>(</span>
+<span id="cb27-4"><a href="prepare-data-for-meta-analysis.html#cb27-4"></a>      trial_ref, </span>
+<span id="cb27-5"><a href="prepare-data-for-meta-analysis.html#cb27-5"></a>      year, </span>
+<span id="cb27-6"><a href="prepare-data-for-meta-analysis.html#cb27-6"></a>      location, </span>
+<span id="cb27-7"><a href="prepare-data-for-meta-analysis.html#cb27-7"></a>      host_genotype,</span>
+<span id="cb27-8"><a href="prepare-data-for-meta-analysis.html#cb27-8"></a>      row_spacing, </span>
+<span id="cb27-9"><a href="prepare-data-for-meta-analysis.html#cb27-9"></a>      <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb27-10"><a href="prepare-data-for-meta-analysis.html#cb27-10"></a><span class="st">   </span><span class="kw">select</span>(trial_ref, trial, <span class="kw">everything</span>())</span></code></pre></div>
 <hr />
 </div>
 <div id="test-dose-effect" class="section level2">
-<h2><span class="header-section-number">6.6</span> Test dose effect</h2>
+<h2><span class="header-section-number">4.6</span> Test dose effect</h2>
 <p>Earlier we noted there were different doses of propiconazole, which might influence our analysis.
 Let’s add the dose variable to the <code>trial</code> variable then compare linear mixed effect models including and excluding dose in the trial variable.
 We already have a factor breaking down the dose in the <code>trial</code> variable.
 Let’s make a new one without dose.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="prepare-data-for-meta-analysis.html#cb19-1"></a><span class="kw">table</span>(PM_MB_dat<span class="op">$</span>dose_ai.ha)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="prepare-data-for-meta-analysis.html#cb28-1"></a><span class="kw">table</span>(PM_MB_dat<span class="op">$</span>dose_ai.ha)</span></code></pre></div>
 <pre><code>## 
 ##     0    60    62 62.35  62.5   125 
 ##    38     6    36    24    12    38</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="prepare-data-for-meta-analysis.html#cb21-1"></a>PM_MB_dat &lt;-<span class="st"> </span></span>
-<span id="cb21-2"><a href="prepare-data-for-meta-analysis.html#cb21-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb21-3"><a href="prepare-data-for-meta-analysis.html#cb21-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">dose =</span> <span class="kw">case_when</span>(</span>
-<span id="cb21-4"><a href="prepare-data-for-meta-analysis.html#cb21-4"></a>      dose_ai.ha <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;control&quot;</span>,</span>
-<span id="cb21-5"><a href="prepare-data-for-meta-analysis.html#cb21-5"></a>      dose_ai.ha <span class="op">&lt;=</span><span class="st"> </span><span class="dv">70</span> <span class="op">~</span><span class="st"> &quot;lowDose&quot;</span>,</span>
-<span id="cb21-6"><a href="prepare-data-for-meta-analysis.html#cb21-6"></a>      dose_ai.ha <span class="op">&gt;</span><span class="st"> </span><span class="dv">70</span> <span class="op">~</span><span class="st"> &quot;highDose&quot;</span>,</span>
-<span id="cb21-7"><a href="prepare-data-for-meta-analysis.html#cb21-7"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span></span>
-<span id="cb21-8"><a href="prepare-data-for-meta-analysis.html#cb21-8"></a>   ))</span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="prepare-data-for-meta-analysis.html#cb22-1"></a>PM_MB_dat &lt;-</span>
-<span id="cb22-2"><a href="prepare-data-for-meta-analysis.html#cb22-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb22-3"><a href="prepare-data-for-meta-analysis.html#cb22-3"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">trial_dose =</span> <span class="kw">paste</span>(trial_ref, year, location, host_genotype,</span>
-<span id="cb22-4"><a href="prepare-data-for-meta-analysis.html#cb22-4"></a>                        row_spacing,dose , <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>))</span>
-<span id="cb22-5"><a href="prepare-data-for-meta-analysis.html#cb22-5"></a>   </span>
-<span id="cb22-6"><a href="prepare-data-for-meta-analysis.html#cb22-6"></a><span class="kw">cbind</span>(<span class="dt">NoDose =</span> <span class="kw">head</span>(PM_MB_dat<span class="op">$</span>trial),</span>
-<span id="cb22-7"><a href="prepare-data-for-meta-analysis.html#cb22-7"></a>      <span class="dt">Dose =</span> <span class="kw">head</span>(PM_MB_dat<span class="op">$</span>trial_dose)) <span class="op">%&gt;%</span></span>
-<span id="cb22-8"><a href="prepare-data-for-meta-analysis.html#cb22-8"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="prepare-data-for-meta-analysis.html#cb30-1"></a>PM_MB_dat &lt;-<span class="st"> </span></span>
+<span id="cb30-2"><a href="prepare-data-for-meta-analysis.html#cb30-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb30-3"><a href="prepare-data-for-meta-analysis.html#cb30-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">dose =</span> <span class="kw">case_when</span>(</span>
+<span id="cb30-4"><a href="prepare-data-for-meta-analysis.html#cb30-4"></a>      dose_ai.ha <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;control&quot;</span>,</span>
+<span id="cb30-5"><a href="prepare-data-for-meta-analysis.html#cb30-5"></a>      dose_ai.ha <span class="op">&lt;=</span><span class="st"> </span><span class="dv">70</span> <span class="op">~</span><span class="st"> &quot;lowDose&quot;</span>,</span>
+<span id="cb30-6"><a href="prepare-data-for-meta-analysis.html#cb30-6"></a>      dose_ai.ha <span class="op">&gt;</span><span class="st"> </span><span class="dv">70</span> <span class="op">~</span><span class="st"> &quot;highDose&quot;</span>,</span>
+<span id="cb30-7"><a href="prepare-data-for-meta-analysis.html#cb30-7"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span></span>
+<span id="cb30-8"><a href="prepare-data-for-meta-analysis.html#cb30-8"></a>   ))</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="prepare-data-for-meta-analysis.html#cb31-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb31-2"><a href="prepare-data-for-meta-analysis.html#cb31-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb31-3"><a href="prepare-data-for-meta-analysis.html#cb31-3"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">trial_dose =</span> <span class="kw">paste</span>(trial_ref, year, location, host_genotype,</span>
+<span id="cb31-4"><a href="prepare-data-for-meta-analysis.html#cb31-4"></a>                        row_spacing,dose , <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>))</span>
+<span id="cb31-5"><a href="prepare-data-for-meta-analysis.html#cb31-5"></a>   </span>
+<span id="cb31-6"><a href="prepare-data-for-meta-analysis.html#cb31-6"></a><span class="kw">cbind</span>(<span class="dt">NoDose =</span> <span class="kw">head</span>(PM_MB_dat<span class="op">$</span>trial),</span>
+<span id="cb31-7"><a href="prepare-data-for-meta-analysis.html#cb31-7"></a>      <span class="dt">Dose =</span> <span class="kw">head</span>(PM_MB_dat<span class="op">$</span>trial_dose)) <span class="op">%&gt;%</span></span>
+<span id="cb31-8"><a href="prepare-data-for-meta-analysis.html#cb31-8"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -907,18 +959,18 @@ mung1011/02_2011_Kingaroy_Berken_0.75_lowDose
 </tr>
 </tbody>
 </table>
-<p>Let’s test the dose effect in a basic linear mixed effect model.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="prepare-data-for-meta-analysis.html#cb23-1"></a>m_noDose &lt;-</span>
-<span id="cb23-2"><a href="prepare-data-for-meta-analysis.html#cb23-2"></a><span class="st">   </span><span class="kw">lmer</span>(<span class="kw">log</span>(grain_yield.t.ha. <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>) <span class="op">~</span><span class="st"> </span><span class="kw">factor</span>(spray_management) <span class="op">+</span></span>
-<span id="cb23-3"><a href="prepare-data-for-meta-analysis.html#cb23-3"></a><span class="st">           </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>trial),</span>
-<span id="cb23-4"><a href="prepare-data-for-meta-analysis.html#cb23-4"></a>        <span class="dt">data =</span> PM_MB_dat)</span>
-<span id="cb23-5"><a href="prepare-data-for-meta-analysis.html#cb23-5"></a></span>
-<span id="cb23-6"><a href="prepare-data-for-meta-analysis.html#cb23-6"></a>m_dose &lt;-</span>
-<span id="cb23-7"><a href="prepare-data-for-meta-analysis.html#cb23-7"></a><span class="st">   </span><span class="kw">lmer</span>(<span class="kw">log</span>(grain_yield.t.ha. <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>) <span class="op">~</span><span class="st"> </span><span class="kw">factor</span>(spray_management) <span class="op">+</span></span>
-<span id="cb23-8"><a href="prepare-data-for-meta-analysis.html#cb23-8"></a><span class="st">           </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>trial_dose),</span>
-<span id="cb23-9"><a href="prepare-data-for-meta-analysis.html#cb23-9"></a>        <span class="dt">data =</span> PM_MB_dat)</span>
-<span id="cb23-10"><a href="prepare-data-for-meta-analysis.html#cb23-10"></a></span>
-<span id="cb23-11"><a href="prepare-data-for-meta-analysis.html#cb23-11"></a><span class="kw">anova</span>(m_noDose, m_dose)</span></code></pre></div>
+<p>Let’s test the dose effect in a linear mixed effect model.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="prepare-data-for-meta-analysis.html#cb32-1"></a>m_noDose &lt;-</span>
+<span id="cb32-2"><a href="prepare-data-for-meta-analysis.html#cb32-2"></a><span class="st">   </span><span class="kw">lmer</span>(<span class="kw">log</span>(grain_yield.t.ha. <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>) <span class="op">~</span><span class="st"> </span><span class="kw">factor</span>(spray_management) <span class="op">+</span></span>
+<span id="cb32-3"><a href="prepare-data-for-meta-analysis.html#cb32-3"></a><span class="st">           </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>trial),</span>
+<span id="cb32-4"><a href="prepare-data-for-meta-analysis.html#cb32-4"></a>        <span class="dt">data =</span> PM_MB_dat)</span>
+<span id="cb32-5"><a href="prepare-data-for-meta-analysis.html#cb32-5"></a></span>
+<span id="cb32-6"><a href="prepare-data-for-meta-analysis.html#cb32-6"></a>m_dose &lt;-</span>
+<span id="cb32-7"><a href="prepare-data-for-meta-analysis.html#cb32-7"></a><span class="st">   </span><span class="kw">lmer</span>(<span class="kw">log</span>(grain_yield.t.ha. <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>) <span class="op">~</span><span class="st"> </span><span class="kw">factor</span>(spray_management) <span class="op">+</span></span>
+<span id="cb32-8"><a href="prepare-data-for-meta-analysis.html#cb32-8"></a><span class="st">           </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>trial_dose),</span>
+<span id="cb32-9"><a href="prepare-data-for-meta-analysis.html#cb32-9"></a>        <span class="dt">data =</span> PM_MB_dat)</span>
+<span id="cb32-10"><a href="prepare-data-for-meta-analysis.html#cb32-10"></a></span>
+<span id="cb32-11"><a href="prepare-data-for-meta-analysis.html#cb32-11"></a><span class="kw">anova</span>(m_noDose, m_dose)</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: PM_MB_dat
 ## Models:
@@ -931,21 +983,15 @@ mung1011/02_2011_Kingaroy_Berken_0.75_lowDose
 ## m_dose      8  55.856  80.151 -19.928   39.856     0  0          1</code></pre>
 <p>Using the model without dose produces a lower AIC and we find no significant difference between models.
 We will not use dose as a defining variable in <code>trial</code>.</p>
-<p>Remove columns which are not needed</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="prepare-data-for-meta-analysis.html#cb26-1"></a>PM_MB_dat &lt;-</span>
-<span id="cb26-2"><a href="prepare-data-for-meta-analysis.html#cb26-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb26-3"><a href="prepare-data-for-meta-analysis.html#cb26-3"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(trial_dose,fungicide_timing_<span class="dv">1</span>,fungicide_timing_<span class="dv">2</span>, fungicide_timing_<span class="dv">3</span>, </span>
-<span id="cb26-4"><a href="prepare-data-for-meta-analysis.html#cb26-4"></a>             dose, fungicide_application_<span class="dv">4</span>, fungicide_application_<span class="dv">5</span>, fungicide_application_<span class="dv">6</span>,</span>
-<span id="cb26-5"><a href="prepare-data-for-meta-analysis.html#cb26-5"></a>             fungicide_application_<span class="dv">7</span>)) </span></code></pre></div>
 <hr />
 </div>
 <div id="row-spacing" class="section level2">
-<h2><span class="header-section-number">6.7</span> Row spacing</h2>
+<h2><span class="header-section-number">4.7</span> Row spacing</h2>
 <p>We may want to consider row spacing in the trials.
 However one of the locations has <code>NA</code> as the row spacing.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="prepare-data-for-meta-analysis.html#cb27-1"></a>PM_MB_dat<span class="op">%&gt;%</span></span>
-<span id="cb27-2"><a href="prepare-data-for-meta-analysis.html#cb27-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="kw">is.na</span>(row_spacing))<span class="op">%&gt;%</span></span>
-<span id="cb27-3"><a href="prepare-data-for-meta-analysis.html#cb27-3"></a><span class="st">   </span><span class="kw">select</span>(trial_ref,year, location, row_spacing,spray_management,host_genotype, fungicide_ai)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="prepare-data-for-meta-analysis.html#cb35-1"></a>PM_MB_dat<span class="op">%&gt;%</span></span>
+<span id="cb35-2"><a href="prepare-data-for-meta-analysis.html#cb35-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="kw">is.na</span>(row_spacing))<span class="op">%&gt;%</span></span>
+<span id="cb35-3"><a href="prepare-data-for-meta-analysis.html#cb35-3"></a><span class="st">   </span><span class="kw">select</span>(trial_ref,year, location, row_spacing,spray_management,host_genotype, fungicide_ai)</span></code></pre></div>
 <pre><code>##   trial_ref year location row_spacing spray_management host_genotype
 ## 1    AM1303 2013   Premer          NA          control       Crystal
 ## 2    AM1303 2013   Premer          NA Recommended_plus       Crystal
@@ -958,9 +1004,348 @@ However one of the locations has <code>NA</code> as the row spacing.</p>
 ## 4 propiconazole</code></pre>
 <p>For now let’s assign the most used row spacing of 0.33 m as an approximation so the model can analyse this as a continuous variable.
 If we decide to use the row_spacing column as a factor in the final model we will need to remove this approximation.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="prepare-data-for-meta-analysis.html#cb29-1"></a>PM_MB_dat[<span class="kw">is.na</span>(PM_MB_dat<span class="op">$</span>row_spacing),<span class="st">&quot;row_spacing&quot;</span>] &lt;-<span class="st"> </span><span class="fl">0.33</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="prepare-data-for-meta-analysis.html#cb30-1"></a><span class="kw">save</span>(PM_MB_dat, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;cache/PrepData.Rdata&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="prepare-data-for-meta-analysis.html#cb37-1"></a>PM_MB_dat[<span class="kw">is.na</span>(PM_MB_dat<span class="op">$</span>row_spacing),<span class="st">&quot;row_spacing&quot;</span>] &lt;-<span class="st"> </span><span class="fl">0.33</span></span></code></pre></div>
+<hr />
+</div>
+<div id="remove-unnecersary-variables" class="section level2">
+<h2><span class="header-section-number">4.8</span> Remove unnecersary variables</h2>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="prepare-data-for-meta-analysis.html#cb38-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb38-2"><a href="prepare-data-for-meta-analysis.html#cb38-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb38-3"><a href="prepare-data-for-meta-analysis.html#cb38-3"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(trial_dose,fungicide_timing_<span class="dv">1</span>,fungicide_timing_<span class="dv">2</span>, fungicide_timing_<span class="dv">3</span>, </span>
+<span id="cb38-4"><a href="prepare-data-for-meta-analysis.html#cb38-4"></a>             dose, fungicide_application_<span class="dv">4</span>, fungicide_application_<span class="dv">5</span>, fungicide_application_<span class="dv">6</span>,</span>
+<span id="cb38-5"><a href="prepare-data-for-meta-analysis.html#cb38-5"></a>             fungicide_application_<span class="dv">7</span>)) </span></code></pre></div>
+</div>
+<div id="final-data-check" class="section level2">
+<h2><span class="header-section-number">4.9</span> Final data check</h2>
+<p>Now we have defined our treatments lets inspect plots to visualise how well the data compares across the trial years and locations?</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="prepare-data-for-meta-analysis.html#cb39-1"></a><span class="co"># class spray_management as a factor and reorder them for the plot</span></span>
+<span id="cb39-2"><a href="prepare-data-for-meta-analysis.html#cb39-2"></a>PM_MB_dat<span class="op">$</span>spray_management &lt;-</span>
+<span id="cb39-3"><a href="prepare-data-for-meta-analysis.html#cb39-3"></a><span class="st">   </span><span class="kw">factor</span>(PM_MB_dat<span class="op">$</span>spray_management, <span class="kw">rev</span>(</span>
+<span id="cb39-4"><a href="prepare-data-for-meta-analysis.html#cb39-4"></a>      <span class="kw">c</span>(</span>
+<span id="cb39-5"><a href="prepare-data-for-meta-analysis.html#cb39-5"></a>         <span class="st">&quot;control&quot;</span>,</span>
+<span id="cb39-6"><a href="prepare-data-for-meta-analysis.html#cb39-6"></a>         <span class="st">&quot;Early&quot;</span>,</span>
+<span id="cb39-7"><a href="prepare-data-for-meta-analysis.html#cb39-7"></a>         <span class="st">&quot;Recommended&quot;</span>,</span>
+<span id="cb39-8"><a href="prepare-data-for-meta-analysis.html#cb39-8"></a>         <span class="st">&quot;Recommended_plus&quot;</span>,</span>
+<span id="cb39-9"><a href="prepare-data-for-meta-analysis.html#cb39-9"></a>         <span class="st">&quot;Late&quot;</span>,</span>
+<span id="cb39-10"><a href="prepare-data-for-meta-analysis.html#cb39-10"></a>         <span class="st">&quot;Late_plus&quot;</span></span>
+<span id="cb39-11"><a href="prepare-data-for-meta-analysis.html#cb39-11"></a>      )</span>
+<span id="cb39-12"><a href="prepare-data-for-meta-analysis.html#cb39-12"></a>   ))</span>
+<span id="cb39-13"><a href="prepare-data-for-meta-analysis.html#cb39-13"></a></span>
+<span id="cb39-14"><a href="prepare-data-for-meta-analysis.html#cb39-14"></a><span class="kw">ggplot</span>(PM_MB_dat, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.factor</span>(year), <span class="dt">fill =</span> spray_management)) <span class="op">+</span></span>
+<span id="cb39-15"><a href="prepare-data-for-meta-analysis.html#cb39-15"></a><span class="st">   </span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="kw">position_dodge2</span>(<span class="dt">width =</span> <span class="fl">0.9</span>, <span class="dt">preserve =</span> <span class="st">&quot;single&quot;</span>)) <span class="op">+</span></span>
+<span id="cb39-16"><a href="prepare-data-for-meta-analysis.html#cb39-16"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>(<span class="dt">name =</span> <span class="st">&quot;Spray Management&quot;</span>) <span class="op">+</span></span>
+<span id="cb39-17"><a href="prepare-data-for-meta-analysis.html#cb39-17"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/table_of_nTreatments-1.png" width="672" /></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="prepare-data-for-meta-analysis.html#cb40-1"></a><span class="kw">kable</span>(</span>
+<span id="cb40-2"><a href="prepare-data-for-meta-analysis.html#cb40-2"></a>   <span class="kw">table</span>(PM_MB_dat<span class="op">$</span>spray_management, PM_MB_dat<span class="op">$</span>year),</span>
+<span id="cb40-3"><a href="prepare-data-for-meta-analysis.html#cb40-3"></a>   <span class="dt">align =</span> <span class="kw">rep</span>(<span class="st">&#39;c&#39;</span>, <span class="dv">8</span>),</span>
+<span id="cb40-4"><a href="prepare-data-for-meta-analysis.html#cb40-4"></a>   <span class="dt">caption =</span> <span class="st">&quot;Which treatments and how many treatments are represented in each year&quot;</span></span>
+<span id="cb40-5"><a href="prepare-data-for-meta-analysis.html#cb40-5"></a>) <span class="op">%&gt;%</span></span>
+<span id="cb40-6"><a href="prepare-data-for-meta-analysis.html#cb40-6"></a><span class="st">   </span><span class="kw">kable_styling</span>(</span>
+<span id="cb40-7"><a href="prepare-data-for-meta-analysis.html#cb40-7"></a>      <span class="st">&quot;striped&quot;</span>,</span>
+<span id="cb40-8"><a href="prepare-data-for-meta-analysis.html#cb40-8"></a>      <span class="dt">fixed_thead =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb40-9"><a href="prepare-data-for-meta-analysis.html#cb40-9"></a>      <span class="dt">full_width =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb40-10"><a href="prepare-data-for-meta-analysis.html#cb40-10"></a>      <span class="dt">position =</span> <span class="st">&quot;center&quot;</span></span>
+<span id="cb40-11"><a href="prepare-data-for-meta-analysis.html#cb40-11"></a>   )</span></code></pre></div>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+(#tab:table_of_nTreatments)Which treatments and how many treatments are represented in each year
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2011
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2012
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2013
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2015
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2016
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2017
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2018
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;">
+2019
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Late_plus
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Late
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Recommended_plus
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+24
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Recommended
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Early
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+control
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+<p>Treatments <code>Late_plus</code> and <code>Early</code> don’t have very good comparison to other treatments.</p>
+<p>Let’s visualise the spread of data in each treatments with box-plots.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="prepare-data-for-meta-analysis.html#cb41-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb41-2"><a href="prepare-data-for-meta-analysis.html#cb41-2"></a><span class="st">   </span><span class="kw">ggplot</span>(</span>
+<span id="cb41-3"><a href="prepare-data-for-meta-analysis.html#cb41-3"></a>      <span class="kw">aes</span>(</span>
+<span id="cb41-4"><a href="prepare-data-for-meta-analysis.html#cb41-4"></a>         <span class="dt">y =</span> grain_yield.t.ha.,</span>
+<span id="cb41-5"><a href="prepare-data-for-meta-analysis.html#cb41-5"></a>         <span class="dt">x =</span> spray_management,</span>
+<span id="cb41-6"><a href="prepare-data-for-meta-analysis.html#cb41-6"></a>         <span class="dt">fill =</span> spray_management,</span>
+<span id="cb41-7"><a href="prepare-data-for-meta-analysis.html#cb41-7"></a>         <span class="dt">colour =</span> spray_management</span>
+<span id="cb41-8"><a href="prepare-data-for-meta-analysis.html#cb41-8"></a>      )</span>
+<span id="cb41-9"><a href="prepare-data-for-meta-analysis.html#cb41-9"></a>   ) <span class="op">+</span></span>
+<span id="cb41-10"><a href="prepare-data-for-meta-analysis.html#cb41-10"></a><span class="st">   </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha =</span> <span class="fl">0.25</span>) <span class="op">+</span></span>
+<span id="cb41-11"><a href="prepare-data-for-meta-analysis.html#cb41-11"></a><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb41-12"><a href="prepare-data-for-meta-analysis.html#cb41-12"></a><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Spray management variable&quot;</span>,</span>
+<span id="cb41-13"><a href="prepare-data-for-meta-analysis.html#cb41-13"></a>        <span class="dt">y =</span> <span class="st">&quot;Grain yield (t/Ha)&quot;</span>,</span>
+<span id="cb41-14"><a href="prepare-data-for-meta-analysis.html#cb41-14"></a>        <span class="dt">title =</span> <span class="st">&quot;Mean grain yield from each treatment </span><span class="ch">\n</span><span class="st"> categorised by spray management scenario&quot;</span>) <span class="op">+</span></span>
+<span id="cb41-15"><a href="prepare-data-for-meta-analysis.html#cb41-15"></a><span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>)) <span class="op">+</span></span>
+<span id="cb41-16"><a href="prepare-data-for-meta-analysis.html#cb41-16"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb41-17"><a href="prepare-data-for-meta-analysis.html#cb41-17"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb41-18"><a href="prepare-data-for-meta-analysis.html#cb41-18"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
+<span id="cb41-19"><a href="prepare-data-for-meta-analysis.html#cb41-19"></a><span class="st">   </span><span class="kw">coord_flip</span>() <span class="op">+</span></span>
+<span id="cb41-20"><a href="prepare-data-for-meta-analysis.html#cb41-20"></a><span class="st">   </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="ot">FALSE</span>, <span class="dt">color =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/treatment_means_plot-1.png" width="672" /></p>
+<p>There seems like little difference between the treatments, with exception of <code>Late_plus</code>.
+Let’s do this plot again, but let’s look at the proportional mean difference between each treatment and the no spray control for each study, this should reduce variation in yield due between trials.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="prepare-data-for-meta-analysis.html#cb42-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb42-2"><a href="prepare-data-for-meta-analysis.html#cb42-2"></a><span class="st">   </span><span class="kw">filter</span>(spray_management <span class="op">!=</span><span class="st"> &quot;control&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-3"><a href="prepare-data-for-meta-analysis.html#cb42-3"></a><span class="st">   </span><span class="kw">ggplot</span>(</span>
+<span id="cb42-4"><a href="prepare-data-for-meta-analysis.html#cb42-4"></a>      <span class="kw">aes</span>(</span>
+<span id="cb42-5"><a href="prepare-data-for-meta-analysis.html#cb42-5"></a>         <span class="dt">y =</span> prop_YG,</span>
+<span id="cb42-6"><a href="prepare-data-for-meta-analysis.html#cb42-6"></a>         <span class="dt">x =</span> spray_management,</span>
+<span id="cb42-7"><a href="prepare-data-for-meta-analysis.html#cb42-7"></a>         <span class="dt">fill =</span> spray_management,</span>
+<span id="cb42-8"><a href="prepare-data-for-meta-analysis.html#cb42-8"></a>         <span class="dt">colour =</span> spray_management</span>
+<span id="cb42-9"><a href="prepare-data-for-meta-analysis.html#cb42-9"></a>      )</span>
+<span id="cb42-10"><a href="prepare-data-for-meta-analysis.html#cb42-10"></a>   ) <span class="op">+</span></span>
+<span id="cb42-11"><a href="prepare-data-for-meta-analysis.html#cb42-11"></a><span class="st">   </span><span class="kw">geom_boxplot</span>(<span class="dt">alpha =</span> <span class="fl">0.25</span>) <span class="op">+</span></span>
+<span id="cb42-12"><a href="prepare-data-for-meta-analysis.html#cb42-12"></a><span class="st">   </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb42-13"><a href="prepare-data-for-meta-analysis.html#cb42-13"></a><span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Spray management variable&quot;</span>,</span>
+<span id="cb42-14"><a href="prepare-data-for-meta-analysis.html#cb42-14"></a>        <span class="dt">y =</span> <span class="st">&quot;Grain yield (t/Ha)&quot;</span>,</span>
+<span id="cb42-15"><a href="prepare-data-for-meta-analysis.html#cb42-15"></a>        <span class="dt">title =</span> <span class="st">&quot;Mean grain yield from each treatment </span><span class="ch">\n</span><span class="st"> categorised by spray management scenario&quot;</span>) <span class="op">+</span></span>
+<span id="cb42-16"><a href="prepare-data-for-meta-analysis.html#cb42-16"></a><span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>)) <span class="op">+</span></span>
+<span id="cb42-17"><a href="prepare-data-for-meta-analysis.html#cb42-17"></a><span class="st">   </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb42-18"><a href="prepare-data-for-meta-analysis.html#cb42-18"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb42-19"><a href="prepare-data-for-meta-analysis.html#cb42-19"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
+<span id="cb42-20"><a href="prepare-data-for-meta-analysis.html#cb42-20"></a><span class="st">   </span><span class="kw">coord_flip</span>() <span class="op">+</span></span>
+<span id="cb42-21"><a href="prepare-data-for-meta-analysis.html#cb42-21"></a><span class="st">   </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="ot">FALSE</span>, <span class="dt">color =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/plot_yieldProportion-1.png" width="672" /></p>
+<p>Using the mean difference in the treatment effect seems to show the effect of each treatment better than just raw yield and reduces the variability in the treatments.
+We know there is a good deal of variability in our studies and between them.
+Mungbean produces variable yields between seasons so ordinarily we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
+However for an arm-based analysis, which we intend to do, we calculate the differences between control and treatment after the meta-analysis.</p>
+<div id="simplify-and-save-data" class="section level3">
+<h3><span class="header-section-number">4.9.1</span> Simplify and save data</h3>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="prepare-data-for-meta-analysis.html#cb43-1"></a>PM_MB_dat &lt;-<span class="st"> </span></span>
+<span id="cb43-2"><a href="prepare-data-for-meta-analysis.html#cb43-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb43-3"><a href="prepare-data-for-meta-analysis.html#cb43-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">spray_management =</span></span>
+<span id="cb43-4"><a href="prepare-data-for-meta-analysis.html#cb43-4"></a>             <span class="kw">factor</span>(</span>
+<span id="cb43-5"><a href="prepare-data-for-meta-analysis.html#cb43-5"></a>                spray_management,</span>
+<span id="cb43-6"><a href="prepare-data-for-meta-analysis.html#cb43-6"></a>                <span class="kw">c</span>(</span>
+<span id="cb43-7"><a href="prepare-data-for-meta-analysis.html#cb43-7"></a>                   <span class="st">&quot;control&quot;</span>,</span>
+<span id="cb43-8"><a href="prepare-data-for-meta-analysis.html#cb43-8"></a>                   <span class="st">&quot;Early&quot;</span>,</span>
+<span id="cb43-9"><a href="prepare-data-for-meta-analysis.html#cb43-9"></a>                   <span class="st">&quot;Recommended&quot;</span>,</span>
+<span id="cb43-10"><a href="prepare-data-for-meta-analysis.html#cb43-10"></a>                   <span class="st">&quot;Recommended_plus&quot;</span>,</span>
+<span id="cb43-11"><a href="prepare-data-for-meta-analysis.html#cb43-11"></a>                   <span class="st">&quot;Late&quot;</span>,</span>
+<span id="cb43-12"><a href="prepare-data-for-meta-analysis.html#cb43-12"></a>                   <span class="st">&quot;Late_plus&quot;</span></span>
+<span id="cb43-13"><a href="prepare-data-for-meta-analysis.html#cb43-13"></a>                )</span>
+<span id="cb43-14"><a href="prepare-data-for-meta-analysis.html#cb43-14"></a>             ),</span>
+<span id="cb43-15"><a href="prepare-data-for-meta-analysis.html#cb43-15"></a>          <span class="dt">id =</span> <span class="kw">row_number</span>(),</span>
+<span id="cb43-16"><a href="prepare-data-for-meta-analysis.html#cb43-16"></a>          <span class="dt">vi =</span> yield_error,</span>
+<span id="cb43-17"><a href="prepare-data-for-meta-analysis.html#cb43-17"></a>          <span class="dt">n =</span> replicates) <span class="op">%&gt;%</span></span>
+<span id="cb43-18"><a href="prepare-data-for-meta-analysis.html#cb43-18"></a><span class="st">   </span><span class="kw">select</span>(</span>
+<span id="cb43-19"><a href="prepare-data-for-meta-analysis.html#cb43-19"></a>      trial,</span>
+<span id="cb43-20"><a href="prepare-data-for-meta-analysis.html#cb43-20"></a>      trial_ref,</span>
+<span id="cb43-21"><a href="prepare-data-for-meta-analysis.html#cb43-21"></a>      location,</span>
+<span id="cb43-22"><a href="prepare-data-for-meta-analysis.html#cb43-22"></a>      year,</span>
+<span id="cb43-23"><a href="prepare-data-for-meta-analysis.html#cb43-23"></a>      row_spacing,</span>
+<span id="cb43-24"><a href="prepare-data-for-meta-analysis.html#cb43-24"></a>      host_genotype,</span>
+<span id="cb43-25"><a href="prepare-data-for-meta-analysis.html#cb43-25"></a>      spray_management,</span>
+<span id="cb43-26"><a href="prepare-data-for-meta-analysis.html#cb43-26"></a>      fungicide_ai,</span>
+<span id="cb43-27"><a href="prepare-data-for-meta-analysis.html#cb43-27"></a>      grain_yield.t.ha.,</span>
+<span id="cb43-28"><a href="prepare-data-for-meta-analysis.html#cb43-28"></a>      yield_gain,</span>
+<span id="cb43-29"><a href="prepare-data-for-meta-analysis.html#cb43-29"></a>      vi,</span>
+<span id="cb43-30"><a href="prepare-data-for-meta-analysis.html#cb43-30"></a>      vi2,</span>
+<span id="cb43-31"><a href="prepare-data-for-meta-analysis.html#cb43-31"></a>      n,</span>
+<span id="cb43-32"><a href="prepare-data-for-meta-analysis.html#cb43-32"></a>      id)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="prepare-data-for-meta-analysis.html#cb44-1"></a><span class="kw">save</span>(PM_MB_dat, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;cache/PrepData.Rdata&quot;</span>))</span></code></pre></div>
 
+</div>
 </div>
 </div>
             </section>
@@ -968,8 +1353,8 @@ If we decide to use the row_spacing column as a factor in the final model we wil
           </div>
         </div>
       </div>
-<a href="grain-yield-meta-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="post-hoc-analysis-and-ploting.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="preliminary-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="grain-yield-meta-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -1019,6 +1404,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
