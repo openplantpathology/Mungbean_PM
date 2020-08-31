@@ -41,172 +41,10 @@ To do this, in our model:
 
    - We will test spray management (our treatment) as a fixed effect and random interactive term to trial
 
-First, how well does the data compare across the trial years and trials?
-
-```{r table_of_nTreatments}
-# class spray_management as a factor and reorder them for the plot
-slimmer_PM_dat$spray_management <-
-   factor(slimmer_PM_dat$spray_management, rev(
-      c(
-         "control",
-         "Early",
-         "Recommended",
-         "Recommended_plus",
-         "Late",
-         "Late_plus"
-      )
-   ))
-
-ggplot(slimmer_PM_dat, aes(x = as.factor(year), fill = spray_management)) +
-   geom_bar(position = position_dodge2(width = 0.9, preserve = "single")) +
-   scale_fill_usq(name = "Spray Management") +
-   xlab("Year")
-
-kable(
-   table(slimmer_PM_dat$spray_management, slimmer_PM_dat$year),
-   align = rep('c', 8),
-   caption = "Which treatments and how many treatments are represented in each year"
-) %>%
-   kable_styling(
-      "striped",
-      fixed_thead = TRUE,
-      full_width = FALSE,
-      position = "center"
-   )
-
-```
-
-
-
-Treatments `Late_plus` and `Early` don't have very good comparison to other treatments.
-
-Let's visualise the spread of data in each treatments with box-plots.
-
-```{r treatment_means_plot}
-slimmer_PM_dat %>%
-   ggplot(
-      aes(
-         y = grain_yield.t.ha,
-         x = spray_management,
-         fill = spray_management,
-         colour = spray_management
-      )
-   ) +
-   geom_boxplot(alpha = 0.25) +
-   geom_jitter(width = 0.1, alpha = 0.5) +
-   labs(x = "Spray management variable",
-        y = "Grain yield (t/Ha)",
-        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
-   theme(plot.title = element_text(hjust = 0.5)) +
-   geom_hline(yintercept = 0, linetype = 2) +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   coord_flip() +
-   guides(fill = FALSE, color = FALSE)
-```
-
-There seems like little difference between the treatments, with exception of `Late_plus`.
-Let's do this plot again, but let's look at the proportional mean difference between each treatment and the no spray control for each study, this should reduce variation in yield due between trials.
-
-```{r plot_yieldProportion}
-slimmer_PM_dat %>%
-   filter(spray_management != "control") %>% 
-   ggplot(
-      aes(
-         y = prop_yield_gain,
-         x = spray_management,
-         fill = spray_management,
-         colour = spray_management
-      )
-   ) +
-   geom_boxplot(alpha = 0.25) +
-   geom_jitter(width = 0.1, alpha = 0.5) +
-   labs(x = "Spray management variable",
-        y = "Grain yield (t/Ha)",
-        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
-   theme(plot.title = element_text(hjust = 0.5)) +
-   geom_hline(yintercept = 0, linetype = 2) +
-   scale_fill_usq() +
-   scale_colour_usq() +
-   coord_flip() +
-   guides(fill = FALSE, color = FALSE)
-```
-
-Using the mean difference in the treatment effect seems to show the effect of each treatment better than just raw yield and reduces the variability in the treatments.
-We know there is a good deal of variability in our studies and between them.
-Mungbean produces variable yields between seasons so ordinarily we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
-However for an arm-based analysis we calculate the differences between control and treatment after the meta-analysis.  
-
-### Formating the response variable
-
-Let's inspect the response variance `grain_yield.t.ha` to see if it is normally distributed. 
-In many cases a log transformation of the response variable improves the fit, due to the prevalence of log distributed data in nature. 
-
-```{r}
-hist_usq(slimmer_PM_dat$grain_yield.t.ha, main = "Grain yield (t / ha)")
-hist_usq(log(slimmer_PM_dat$grain_yield.t.ha), main = "log(Grain yield (t / ha))")
-hist_usq(sqrt(slimmer_PM_dat$grain_yield.t.ha), main = "sqrt(Grain yield (t / ha))")
-hist_usq(slimmer_PM_dat$yield_gain, main = "Mean difference to control (t / ha)")
-```
-The distribution of data does not seem to be improved by transformation of the data.
-We will retain the continuous variable grain_yield.t.ha as the response.
-Mean differences won't be used as we are following the methodology of a ARM-based model, where mean differences are calculated following the meta-analysis.
-
-
-### Formatting Variance 
-
-First let's remove any entries missing variance.
-
-```{r remove_studies}
-any(is.na(slimmer_PM_dat$yield_error))
-
-slimmer_PM_dat <-
-   slimmer_PM_dat[!is.na(slimmer_PM_dat$yield_error), ]
-
-slimmer_PM_dat$vi <- slimmer_PM_dat$yield_error
-```
-
-#### Calculate sample variance from mean square errors
-
-Currently our data frame has the sample variance calculated earlier, however we can approximate it using the mean squared error.
-Let's show the rational for our calculation and then add a secondary variance column (`vi2`).
-
-$MSE = Var + bias$
-
-However if our MSE was calculated from an unbiased sample we can assume $bias = 0$ and therefore:
-
-$MSE = Var$
-
-To calculate the sample variance (for each treatment in the trial) from the mean square error (Trial variance) all we need to do is divide by the number of samples in each treatment.
-We can show this because:
-$MSE = \frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n - 1}$
-Where the sum of squares for the fungicide treatment estimator ($y$) is divided by the number of fungicide treatments ($n$).
-
-The sample variance is a similar formula except we use $x$ instead of $y$.
-$S_{Var} = \frac{\sum_{x_1}^{x_n}(x_i - \overline{x})^2}{n - 1}$  
-$x$ being each observation within the experiment and $n$ being the number of samples in the whole trial.
-Therefore: 
-$S_{Var}\approx\frac{1}{n_{x}}\frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n_y - 1}$  
-Where $n_x$ is the number of samples within each treatment.
-
-```{r MSE_2_SVar}
-#calculation when using log of response
-# slimmer_PM_dat$vi <-
-#    slimmer_PM_dat$Y_Msquare / (slimmer_PM_dat$n * slimmer_PM_dat$grain_yield.t.ha ^
-#                                   2)
-
-slimmer_PM_dat$vi2 <- 
-   slimmer_PM_dat$Y_Msquare / 
-   slimmer_PM_dat$n
-```
-
-
-Now Let's simplify our data by removing the control data, converting disease pressure (`D_pres`) to a factor and selecting only the columns of data necessary for analysis.
-We will also include the mean difference or response ratio `grain_MD`, between the treatment and control as a comparison of responses.
 
 ```{r metafor_organisation}
 dat1 <-
-   slimmer_PM_dat %>%
+   PM_MB_dat %>%
    mutate(vi = vi/n) %>% 
    mutate(spray_management =
              factor(
@@ -299,7 +137,7 @@ axis(2, at = seq_along(contrast_Ssum$contrast), labels = rev(contrast_Ssum$contr
 ```
 
 Does disease pressure on the crop affect the optimum spray scenario? 
-Above we can see spraying at the first sign of powdery mildew or with in `r min(as.numeric(slimmer_PM_dat[slimmer_PM_dat$spray_management == "Late"| slimmer_PM_dat$spray_management == "Late_plus","fungicide_timing_1"]))` - `r max(as.numeric(slimmer_PM_dat[slimmer_PM_dat$spray_management == "Late"|                   slimmer_PM_dat$spray_management == "Late_plus","fungicide_timing_1"]))` days after first sign is effective at mitigating yield loss.
+Above we can see spraying at the first sign of powdery mildew or with in `r min(as.numeric(PM_MB_dat[PM_MB_dat$spray_management == "Late"| PM_MB_dat$spray_management == "Late_plus","fungicide_timing_1"]))` - `r max(as.numeric(PM_MB_dat[PM_MB_dat$spray_management == "Late"|                   PM_MB_dat$spray_management == "Late_plus","fungicide_timing_1"]))` days after first sign is effective at mitigating yield loss.
 Lets test this hypothesis by adding it as a moderator and comparing the new model with the original model above.
 
 ```{r DisPressComparison}
@@ -462,7 +300,7 @@ Let's analyse the data again using a different statistical approach to see if ou
 The `netmeta` package uses a frequentist approach to the analysis and focuses on the pairwise comparisons between treatments.
 
 ```{r netmeta-analysis}
-datPM3 <- slimmer_PM_dat %>%
+datPM3 <- PM_MB_dat %>%
    group_by(trial, spray_management, n) %>%
    summarize(yi_mean = mean(grain_yield.t.ha),
              vi_mean = mean(yield_error)) %>%
@@ -544,7 +382,7 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 ```
 
 ```{r Save_meta_data, eval=FALSE}
-save(dat1, efficacy, slimmer_PM_dat, PM_mv, YieldContrasts, contrast_Ssum, 
+save(dat1, efficacy, PM_MB_dat, PM_mv, YieldContrasts, contrast_Ssum, 
      file = here("cache/Meta-analysisData.Rdata"))
 ```
 
