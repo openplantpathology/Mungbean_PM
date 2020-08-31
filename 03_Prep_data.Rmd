@@ -62,8 +62,8 @@ PM_MB_dat %>%
    footnote(general = "DMI - demethylation inhibitors (tebuconazole and propiconazole).")
 ```
 
-The experiment summaries report either standard deviation, least square differences. 
-First we will convert LSD and standard deviation to sample variance.  
+The experiment summaries report either standard deviation or least square differences. 
+First we will convert LSD and standard deviation, then square the stdev to get sample variance.  
 
 
 ### Converting least-squares to sample variance  
@@ -150,7 +150,7 @@ PM_MB_dat %>%
    geom_point()
 ```
 
-No association between yield and sample variance, this might be due to the unpredictable nature of mungbeans.
+There seems to be no association between yield and sample variance, this might be due to the variability of mungbeans yields.
 
 Lets look at the association between mean squares and yield to see if there is a more typical association between yield and variance.
 
@@ -161,7 +161,84 @@ PM_MB_dat %>%
 
 ```
 
-There is a somewhat better trend here, if sampling variance from standard deviation proves unsuitable for the analysis we may compare models using variance from stdev and mean square for the best fit.  
+There is a somewhat better trend here, if sampling variance from standard deviation proves unsuitable for the analysis we may compare models using variance from stdev and mean square for the best fit. 
+However, seven treatments are missing Mean square error.  
+
+### Inspect variance and response for analysis  
+
+Let's inspect the response variance `grain_yield.t.ha` to see if it is normally distributed. 
+In many cases a log transformation of the response variable improves the fit, due to the prevalence of log distributed data in nature. 
+
+```{r}
+hist_usq(PM_MB_dat$grain_yield.t.ha, main = "Grain yield (t / ha)")
+hist_usq(log(PM_MB_dat$grain_yield.t.ha), main = "log(Grain yield (t / ha))")
+hist_usq(sqrt(PM_MB_dat$grain_yield.t.ha), main = "sqrt(Grain yield (t / ha))")
+hist_usq(PM_MB_dat$yield_gain, main = "Mean difference to control (t / ha)")
+```
+The distribution of data does not seem to be improved by transformation of the data.
+We will retain the continuous variable grain_yield.t.ha as the response.
+Mean differences won't be used as we are following the methodology of a ARM-based model, where mean differences are calculated following the meta-analysis.
+
+
+### Formatting Variance 
+
+First let's check for any entries missing variance and remove them.
+
+```{r remove_studies}
+any(is.na(PM_MB_dat$yield_error))
+
+PM_MB_dat <-
+   PM_MB_dat[!is.na(PM_MB_dat$yield_error), ]
+
+PM_MB_dat$vi <- PM_MB_dat$yield_error
+```
+
+#### Calculate sample variance from mean square errors
+
+Currently our data frame has the sample variance calculated earlier, however we can approximate it using the mean squared error.
+Let's show the rational for our calculation and then add a secondary variance column (`vi2`).
+
+$MSE = Var + bias$
+
+However if our MSE was calculated from an unbiased sample we can assume $bias = 0$ and therefore:
+
+$MSE = Var$
+
+To calculate the sample variance (for each treatment in the trial) from the mean square error (Trial variance) all we need to do is divide by the number of samples in each treatment.
+We can show this because:
+$MSE = \frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n - 1}$
+Where the sum of squares for the fungicide treatment estimator ($y$) is divided by the number of fungicide treatments ($n$).
+
+The sample variance is a similar formula except we use $x$ instead of $y$.
+$S_{Var} = \frac{\sum_{x_1}^{x_n}(x_i - \overline{x})^2}{n - 1}$  
+$x$ being each observation within the experiment and $n$ being the number of samples in the whole trial.
+Therefore: 
+$S_{Var}\approx\frac{1}{n_{x}}\frac{\sum_{y_1}^{y_n}(y_i - \overline{y})^2}{n_y - 1}$  
+Where $n_x$ is the number of samples within each treatment.
+
+As mentioned before there are a few treatments with no MSE (NAs), we can calculate it from the sample variance using this logic above. 
+
+```{r EstMSE}
+PM_MB_dat[is.na(PM_MB_dat$Y_Msquare),"Y_Msquare"] <- 
+   PM_MB_dat %>%
+   filter(is.na(Y_Msquare))%>%
+   mutate(Y_Msquare = yield_error * replicates)%>%
+   pull(Y_Msquare)
+```
+
+Now to calculate the sample variance from MSE for all treatments.
+
+```{r MSE_2_SVar}
+#calculation when using log of response
+# PM_MB_dat$vi <-
+#    PM_MB_dat$Y_Msquare / (PM_MB_dat$n * PM_MB_dat$grain_yield.t.ha ^
+#                                   2)
+
+PM_MB_dat$vi2 <- 
+   PM_MB_dat$Y_Msquare / 
+   PM_MB_dat$replicates
+```
+
 
 *******
 
@@ -245,6 +322,101 @@ PM_MB_dat <-
    filter(spray_management != "Early_plus")
 ```
 
+Now we have defined our treatments lets inspect plots to visualise how well the data compares across the trial years and locations?
+
+```{r table_of_nTreatments}
+# class spray_management as a factor and reorder them for the plot
+PM_MB_dat$spray_management <-
+   factor(PM_MB_dat$spray_management, rev(
+      c(
+         "control",
+         "Early",
+         "Recommended",
+         "Recommended_plus",
+         "Late",
+         "Late_plus"
+      )
+   ))
+
+ggplot(PM_MB_dat, aes(x = as.factor(year), fill = spray_management)) +
+   geom_bar(position = position_dodge2(width = 0.9, preserve = "single")) +
+   scale_fill_usq(name = "Spray Management") +
+   xlab("Year")
+
+kable(
+   table(PM_MB_dat$spray_management, PM_MB_dat$year),
+   align = rep('c', 8),
+   caption = "Which treatments and how many treatments are represented in each year"
+) %>%
+   kable_styling(
+      "striped",
+      fixed_thead = TRUE,
+      full_width = FALSE,
+      position = "center"
+   )
+
+```
+
+Treatments `Late_plus` and `Early` don't have very good comparison to other treatments.
+
+Let's visualise the spread of data in each treatments with box-plots.
+
+```{r treatment_means_plot}
+PM_MB_dat %>%
+   ggplot(
+      aes(
+         y = grain_yield.t.ha.,
+         x = spray_management,
+         fill = spray_management,
+         colour = spray_management
+      )
+   ) +
+   geom_boxplot(alpha = 0.25) +
+   geom_jitter(width = 0.1, alpha = 0.5) +
+   labs(x = "Spray management variable",
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
+   theme(plot.title = element_text(hjust = 0.5)) +
+   geom_hline(yintercept = 0, linetype = 2) +
+   scale_fill_usq() +
+   scale_colour_usq() +
+   coord_flip() +
+   guides(fill = FALSE, color = FALSE)
+```
+
+There seems like little difference between the treatments, with exception of `Late_plus`.
+Let's do this plot again, but let's look at the proportional mean difference between each treatment and the no spray control for each study, this should reduce variation in yield due between trials.
+
+```{r plot_yieldProportion}
+PM_MB_dat %>%
+   filter(spray_management != "control") %>% 
+   ggplot(
+      aes(
+         y = prop_YG,
+         x = spray_management,
+         fill = spray_management,
+         colour = spray_management
+      )
+   ) +
+   geom_boxplot(alpha = 0.25) +
+   geom_jitter(width = 0.1, alpha = 0.5) +
+   labs(x = "Spray management variable",
+        y = "Grain yield (t/Ha)",
+        title = "Mean grain yield from each treatment \n categorised by spray management scenario") +
+   theme(plot.title = element_text(hjust = 0.5)) +
+   geom_hline(yintercept = 0, linetype = 2) +
+   scale_fill_usq() +
+   scale_colour_usq() +
+   coord_flip() +
+   guides(fill = FALSE, color = FALSE)
+```
+
+
+Using the mean difference in the treatment effect seems to show the effect of each treatment better than just raw yield and reduces the variability in the treatments.
+We know there is a good deal of variability in our studies and between them.
+Mungbean produces variable yields between seasons so ordinarily we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
+However for an arm-based analysis, which we intend to do, we calculate the differences between control and treatment after the meta-analysis.  
+
 ****
 
 ## Trial factor
@@ -254,8 +426,13 @@ We will combine these variables into a single variable called `trial` which will
 ```{r define_trial}
 PM_MB_dat <-
    PM_MB_dat %>%
-   mutate(trial = paste(trial_ref, year, location, host_genotype,
-                        row_spacing, sep = "_")) %>%
+   mutate(trial = paste(
+      trial_ref, 
+      year, 
+      location, 
+      host_genotype,
+      row_spacing, 
+      sep = "_")) %>%
    select(trial_ref, trial, everything())
 ```
 
@@ -295,7 +472,7 @@ cbind(NoDose = head(PM_MB_dat$trial),
    kable()
 ```
 
-Let's test the dose effect in a basic linear mixed effect model.
+Let's test the dose effect in a linear mixed effect model.
 
 ```{r dose_lmer}
 m_noDose <-
@@ -314,14 +491,6 @@ anova(m_noDose, m_dose)
 Using the model without dose produces a lower AIC and we find no significant difference between models.
 We will not use dose as a defining variable in `trial`.  
 
-Remove columns which are not needed
-```{r saveDat}
-PM_MB_dat <-
-   PM_MB_dat %>%
-   select(-c(trial_dose,fungicide_timing_1,fungicide_timing_2, fungicide_timing_3, 
-             dose, fungicide_application_4, fungicide_application_5, fungicide_application_6,
-             fungicide_application_7)) 
-```
 
 
 ******
@@ -342,6 +511,55 @@ If we decide to use the row_spacing column as a factor in the final model we wil
 ```{r assign_row_spacing_missing}
 PM_MB_dat[is.na(PM_MB_dat$row_spacing),"row_spacing"] <- 0.33
 ```
+
+
+********
+## Remove unnecersary variables
+
+```{r saveDat}
+PM_MB_dat <-
+   PM_MB_dat %>%
+   select(-c(trial_dose,fungicide_timing_1,fungicide_timing_2, fungicide_timing_3, 
+             dose, fungicide_application_4, fungicide_application_5, fungicide_application_6,
+             fungicide_application_7)) 
+```
+
+
+```{r simplifyData}
+PM_MB_dat <- 
+   PM_MB_dat %>%
+   mutate(spray_management =
+             factor(
+                spray_management,
+                c(
+                   "control",
+                   "Early",
+                   "Recommended",
+                   "Recommended_plus",
+                   "Late",
+                   "Late_plus"
+                )
+             ),
+          id = row_number(),
+          vi = yield_error,
+          n = replicates) %>%
+   select(
+      trial,
+      trial_ref,
+      location,
+      year,
+      row_spacing,
+      host_genotype,
+      spray_management,
+      fungicide_ai,
+      grain_yield.t.ha.,
+      yield_gain,
+      vi,
+      vi2,
+      n,
+      id)
+```
+
 
 ```{r saveData_PrepD}
 save(PM_MB_dat, file = here("cache/PrepData.Rdata"))

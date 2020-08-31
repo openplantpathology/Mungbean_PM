@@ -24,8 +24,7 @@ theme_set(theme_usq())
 source(here("R/reportP.R"))
 
 # Data
-slimmer_PM_dat <- read.csv("cache/slimmer_PM_clusterdat.csv"
-)
+load("cache/PrepData.Rdata")
 ```
 
 # Grain yield meta-analysis
