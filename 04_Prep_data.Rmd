@@ -18,7 +18,7 @@ load("cache/PreliminaryData.Rdata")
 source(here("R/same.R")) # matches each element of a vector and does not return NAs
 ```
 
-## Subset to Trials containing DMI fungicides
+## Subset to trials containing DMI fungicides
 
 ```{r filterDMI_trials}
 DMI_Trials <- 
@@ -41,6 +41,7 @@ PM_MB_dat <-
              fungicide_ai == "propiconazole")
 ```
 
+*****
 
 ## Standardising sample variance  
 Meta-analyses use variance from the data to calculate the effect sizes.
@@ -148,6 +149,7 @@ PM_MB_dat %>%
    ggplot(aes(x = grain_yield.t.ha., y = yield_error)) +
    geom_point()
 ```
+
 No association between yield and sample variance, this might be due to the unpredictable nature of mungbeans.
 
 Lets look at the association between mean squares and yield to see if there is a more typical association between yield and variance.
@@ -156,13 +158,16 @@ Lets look at the association between mean squares and yield to see if there is a
 PM_MB_dat %>%
    ggplot(aes(x = grain_yield.t.ha., y = Y_Msquare/replicates)) +
    geom_point()
-PM_MB_dat[is.na(PM_MB_dat$Y_Msquare),]
 
 ```
 
+There is a somewhat better trend here, if sampling variance from standard deviation proves unsuitable for the analysis we may compare models using variance from stdev and mean square for the best fit.  
+
+*******
+
 ## Classifying fungicide treatment  
 
-First we need to calculate the time between the first sign of disease and the fungicide treatments.  
+First are going to calculate the time between the first sign of disease and the fungicide applications.  
 
 ```{r clustered_fungicide_applications}
 PM_MB_dat %<>%
@@ -172,19 +177,17 @@ PM_MB_dat %<>%
    
 ```
 
-To ensure sufficient number of replicates, we will bin the continuous variable into three categorical variables relating to when the first fungicide application was made.  
+To ensure sufficient number of replicates, we will bin the continuous variable into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.  
 
 These categorical variables are named:
 
-   - **Early**: First fungicide application was prior to first sign of disease.  
-
-   - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.  
-
+   - **Early**: First fungicide application was prior to first sign of disease. 
+   - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign. 
    - **Late**: First fungicide application was four or more days after first sign of disease being observed.  
    
 The number of sprays need also be defined.
 
-```{r}
+```{r TreatmentTable}
 data.frame(TreatmentName = c("Early", "Recommended", "Late", "EarlyPlus", "RecommendedPlus", "LatePlus"),
            n_sprays = rep(c("Single", "Two - Three"), each = 3),
            DaysRelativeToFirstSign = c("Prior to first sign of Powdery Mildew",
@@ -257,6 +260,8 @@ PM_MB_dat <-
 ```
 
 
+*****
+
 ## Test dose effect
 
 Earlier we noted there were different doses of propiconazole, which might influence our analysis.
@@ -319,6 +324,8 @@ PM_MB_dat <-
 ```
 
 
+******
+
 ## Row spacing
 
 We may want to consider row spacing in the trials.
@@ -344,8 +351,4 @@ save(PM_MB_dat, file = here("cache/PrepData.Rdata"))
 
 
 
-
-
-
-# Perhaps move below to post analysis, analysis
 
