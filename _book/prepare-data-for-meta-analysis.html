@@ -177,8 +177,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html"><i class="fa fa-check"></i><b>5</b> Grain yield meta-analysis</a><ul>
-<li class="chapter" data-level="5.0.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#formating-the-response-variable"><i class="fa fa-check"></i><b>5.0.1</b> Formating the response variable</a></li>
-<li class="chapter" data-level="5.0.2" data-path="prepare-data-for-meta-analysis.html"><a href="prepare-data-for-meta-analysis.html#formatting-variance"><i class="fa fa-check"></i><b>5.0.2</b> Formatting Variance</a></li>
 <li class="chapter" data-level="5.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#metafor-analysis"><i class="fa fa-check"></i><b>5.1</b> metafor analysis</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#profile-plots"><i class="fa fa-check"></i><b>5.1.1</b> Profile plots</a></li>
 <li class="chapter" data-level="5.1.2" data-path="grain-yield-meta-analysis.html"><a href="grain-yield-meta-analysis.html#forest-plot-of-trial-treatment-effect-per-trial"><i class="fa fa-check"></i><b>5.1.2</b> Forest plot of trial treatment effect per trial</a></li>
@@ -873,8 +871,11 @@ We will combine these variables into a single variable called <code>trial</code>
 </div>
 <div id="test-dose-effect" class="section level2">
 <h2><span class="header-section-number">4.6</span> Test dose effect</h2>
-<p>Earlier we noted there were different doses of propiconazole, which might influence our analysis.
-Let’s add the dose variable to the <code>trial</code> variable then compare linear mixed effect models including and excluding dose in the trial variable.
+<p>Earlier, in section <a href="preliminary-analysis.html#fungicide-doses">Fungicide Doses</a> we noted there were different doses of propiconazole, which might influence our analysis.
+The current label for custodia <a href="http://permits.apvma.gov.au/PER82104.PDF">PER82104</a>, Containing: 120 g/L azoxystrobin and 200 g/L tebuconazole, recommends between 300 ml - 600 ml of the tebuconazole fraction per hectare, equivalent to 60 - 120 grams per hectare.
+These label rates are assumed to be the same for propiconazole infering these concentrations might be within the recommended rates.
+It is also worth noting the APVMA permit <a href="http://permits.apvma.gov.au/PER13979.PDF">PER13979</a> which allows the use of Tebuconazole between 62.35 g / ha and 83 g / ha depending on the product formulation.</p>
+<p>Let’s add the dose variable to the <code>trial</code> variable then compare linear mixed effect models including and excluding dose in the trial variable.
 We already have a factor breaking down the dose in the <code>trial</code> variable.
 Let’s make a new one without dose.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="prepare-data-for-meta-analysis.html#cb28-1"></a><span class="kw">table</span>(PM_MB_dat<span class="op">$</span>dose_ai.ha)</span></code></pre></div>
@@ -1011,9 +1012,10 @@ If we decide to use the row_spacing column as a factor in the final model we wil
 <h2><span class="header-section-number">4.8</span> Remove unnecersary variables</h2>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="prepare-data-for-meta-analysis.html#cb38-1"></a>PM_MB_dat &lt;-</span>
 <span id="cb38-2"><a href="prepare-data-for-meta-analysis.html#cb38-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb38-3"><a href="prepare-data-for-meta-analysis.html#cb38-3"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(trial_dose,fungicide_timing_<span class="dv">1</span>,fungicide_timing_<span class="dv">2</span>, fungicide_timing_<span class="dv">3</span>, </span>
-<span id="cb38-4"><a href="prepare-data-for-meta-analysis.html#cb38-4"></a>             dose, fungicide_application_<span class="dv">4</span>, fungicide_application_<span class="dv">5</span>, fungicide_application_<span class="dv">6</span>,</span>
-<span id="cb38-5"><a href="prepare-data-for-meta-analysis.html#cb38-5"></a>             fungicide_application_<span class="dv">7</span>)) </span></code></pre></div>
+<span id="cb38-3"><a href="prepare-data-for-meta-analysis.html#cb38-3"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(trial_dose,</span>
+<span id="cb38-4"><a href="prepare-data-for-meta-analysis.html#cb38-4"></a>             fungicide_timing_<span class="dv">1</span>,fungicide_timing_<span class="dv">2</span>, fungicide_timing_<span class="dv">3</span>, </span>
+<span id="cb38-5"><a href="prepare-data-for-meta-analysis.html#cb38-5"></a>             dose, fungicide_application_<span class="dv">4</span>, fungicide_application_<span class="dv">5</span>,</span>
+<span id="cb38-6"><a href="prepare-data-for-meta-analysis.html#cb38-6"></a>             fungicide_application_<span class="dv">6</span>, fungicide_application_<span class="dv">7</span>)) </span></code></pre></div>
 </div>
 <div id="final-data-check" class="section level2">
 <h2><span class="header-section-number">4.9</span> Final data check</h2>
