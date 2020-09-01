@@ -345,7 +345,11 @@ PM_MB_dat <-
 
 ## Test dose effect
 
-Earlier we noted there were different doses of propiconazole, which might influence our analysis.
+Earlier, in section [Fungicide Doses](#fungicide-doses) we noted there were different doses of propiconazole, which might influence our analysis. 
+The current label for custodia [PER82104](http://permits.apvma.gov.au/PER82104.PDF), Containing: 120 g/L azoxystrobin and 200 g/L tebuconazole, recommends between 300 ml - 600 ml of the tebuconazole fraction per hectare, equivalent to 60 - 120 grams per hectare. 
+These label rates are assumed to be the same for propiconazole infering these concentrations might be within the recommended rates. 
+It is also worth noting the APVMA permit [PER13979](http://permits.apvma.gov.au/PER13979.PDF) which allows the use of Tebuconazole between 62.35 g / ha and 83 g / ha depending on the product formulation.  
+
 Let's add the dose variable to the `trial` variable then compare linear mixed effect models including and excluding dose in the trial variable.
 We already have a factor breaking down the dose in the `trial` variable.
 Let's make a new one without dose.
@@ -423,9 +427,10 @@ PM_MB_dat[is.na(PM_MB_dat$row_spacing),"row_spacing"] <- 0.33
 ```{r saveDat}
 PM_MB_dat <-
    PM_MB_dat %>%
-   select(-c(trial_dose,fungicide_timing_1,fungicide_timing_2, fungicide_timing_3, 
-             dose, fungicide_application_4, fungicide_application_5, fungicide_application_6,
-             fungicide_application_7)) 
+   select(-c(trial_dose,
+             fungicide_timing_1,fungicide_timing_2, fungicide_timing_3, 
+             dose, fungicide_application_4, fungicide_application_5,
+             fungicide_application_6, fungicide_application_7)) 
 ```
 
 ## Final data check  
