@@ -31,7 +31,7 @@ These preliminary analyses will describe the data and then investigate any chang
 
 Lets look at how many trials were undertaken each season  
 
-```{r FinalTrialsForInclusion}
+```{r FinalTrialsForInclusion1}
 tmp1 <- PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole")%>%
@@ -299,7 +299,7 @@ The follow-up spray seems to show an increase in yield protection.
 
 *****
 
-#### Fungicide Doses  
+#### Fungicide Doses{#fungicide-doses}  
 From this point on we will investigate only the DMI fungicides, tebuconazole and propiconazole, and disregard all other fungicide modes-of-action.
 
 We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.
