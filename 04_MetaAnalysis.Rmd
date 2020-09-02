@@ -10,7 +10,6 @@ if (!require("pacman"))
 pacman::p_load(tidyverse,
                kableExtra,
                bomrang,
-               lme4,
                RColorBrewer,
                metafor,
                here,
@@ -31,7 +30,9 @@ load("cache/PrepData.Rdata")
 
 Let's get started with the analysis by first finding the best model fit that answers our research question.
 
-> Which spray management scenario provides the greatest yield protection from powdery mildew.
+> When, in relation to PM establishes in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing,  immediately after first sign of PM establishing, or after PM has become established in the crop. 
+
+A secondary question to this aim is: given the time at which the first spray occurred is a second spray provide worthwhile yield protection.
 
 To do this, in our model:
 
@@ -39,14 +40,13 @@ To do this, in our model:
 
    - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
 
-   - We will test spray management (our treatment)
+   - We will investigate the effect size of our treatment - spray management,
 
 
 ## metafor analysis
 
-For the first grain yield meta-analysis, we'll use the `metafor` package [@Viechtbauer2010].
+For the first grain yield meta-analysis will be an ARM based model using the `metafor` package [@Viechtbauer2010].
 
-To do a ARM based model we will use the package `metafor`.
 We are using the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
 
 ```{r Metafor-analysis}
@@ -80,9 +80,74 @@ However the other treatments are significantly different from the no-spray contr
 The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M =$ `r PM_mv$QM` $,df =$ `r PM_mv$m`, `r reportP(PM_mv$QMp)`) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
 The analysis shows there is still a significant amount of residual heterogeneity ($Q_E =$ `r PM_mv$QE` $,df=$ `r PM_mv$k - PM_mv$m`, `r reportP(PM_mv$QEp)` ) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.  
 
+Lets present the meta-analysis results for the moderator variables in a forest style plot.
+First lets create a table of the results.
+
+```{r metafor_results}
+
+k5 <- as.data.frame(table(PM_MB_dat$trial, PM_MB_dat$spray_management)) %>%
+   filter(Freq !=0)%>%
+   group_by(Var2)%>%
+   summarise(n())%>%
+   pull()
+
+results_mv <- data.frame(N = PM_mv$g.levels.k,
+                         k = k5,
+                         Effect = round(PM_mv$b,4),
+                         se = round(PM_mv$se,4),
+                         CI_lower = round(PM_mv$ci.lb,4),
+                         CI_upper = round(PM_mv$ci.ub,4),
+                         z_val = round(PM_mv$zval,4),
+                         p_val = reportP(PM_mv$pval,AsNumeric = TRUE),
+                         row.names = c("Intercept",
+                                       "$Early_{single}$",
+                                       "$Recommended_{single}$",
+                                       "$Recommended_{plus}$",
+                                       "$Late_{single}$",
+                                       "$Late_{plus}$"))
+
+colnames(results_mv)[c(1:4,6:9)] <- c("Treatment","$N$", "$k$","$\\mu$","$CI_{L}$","$CI_{U}$", "$Z$","$P$")
+
+kable(results_mv[,2:9],
+      align = "lcccccccc",
+      booktabs = TRUE,
+      caption = "Table ##: Mean effect size of five spray schedule treatments on mitigating yield losses to powdery mildew in mungbean crops grown in eastern Australia. Effect sizes were estimated from the network meta-analysis of data obtained from grey literature reports. Intercept indicates the mean of the no spray control and the treatments show the mean difference to the intercept")
+
+```
+
+Let's view these comparisons in a plot.
+
+```{r metafor_plot}
+results_mv %>%
+   filter(Treatment != "control") %>% 
+   mutate(Treatment = factor(Treatment, levels = rev(
+      c(
+         
+         "Early",
+         "Recommended",
+         "Recommended_plus",
+         "Late",
+         "Late_plus"
+      )
+   ))) %>%
+   ggplot(aes(Treatment, `$\\mu$`)) +
+   geom_hline(
+      yintercept = seq(-0.05, 0.3, by = 0.05),
+      color = usq_cols("usq charcoal"),
+      linetype = 3
+   ) +
+   geom_hline(yintercept = 0) +
+   geom_point(aes(size = 1 / se), shape = 15) +
+   geom_linerange(aes(ymin = `$CI_{L}$`, ymax = `$CI_{U}$`)) +
+   coord_flip()+
+   ggtitle("Mean spray schedule effect sizes\nand 95% confidence intervals")
+
+```
+
+Lets investigate the treatment contrasts
 
 ```{r PM_Mv_Contrast}
-source("R/simple_summary.R")
+source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
 summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none"))
 contrast_Ssum <- simple_summary(summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none")))
 contrast_Ssum
@@ -112,60 +177,7 @@ profile(PM_mv, tau2 = 4)
 profile(PM_mv, tau2 = 5)
 ```
 
-Lets present the meta-analysis results for the moderator variables in a forest style plot.
-First lets create a table of the results.
 
-```{r metafor_results}
-results_AI <- data.frame(cbind(PM_mv$b,
-                               PM_mv$ci.lb,
-                               PM_mv$ci.ub))
-
-efficacy <- as_tibble(results_AI)
-efficacy$Treatment <-
-   factor(c(
-      
-       "control",
-      "Early",
-      "Recommended",
-      "Recommended_plus",
-      "Late",
-      "Late_plus"
-   ))
-
-efficacy$se <- PM_mv$se
-colnames(efficacy) <-
-   c("Mean", "CIs_lower", "CI_upper", "Treatment", "SE")
-efficacy
-```
-
-Let's view these comparisons in a plot.
-
-```{r metafor_plot}
-YieldContrasts <- efficacy %>%
-   filter(Treatment != "control") %>% 
-   mutate(Treatment = factor(Treatment, levels = rev(
-      c(
-         
-         "Early",
-         "Recommended",
-         "Recommended_plus",
-         "Late",
-         "Late_plus"
-      )
-   ))) %>%
-   ggplot(aes(Treatment, Mean)) +
-   geom_hline(
-      yintercept = seq(-0.05, 0.3, by = 0.05),
-      color = usq_cols("usq charcoal"),
-      linetype = 3
-   ) +
-   geom_hline(yintercept = 0) +
-   geom_point(aes(size = 1 / SE), shape = 15) +
-   geom_linerange(aes(ymin = CIs_lower, ymax = CI_upper)) +
-   coord_flip()
-
-YieldContrasts
-```
 
 ### Forest plot of trial treatment effect per trial
 Lets look at the trial variability in this model with a forest plot
@@ -312,8 +324,10 @@ plot(
 text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 ```
 
+
+
 ```{r Save_meta_data, eval=FALSE}
-save(efficacy, PM_MB_dat, PM_mv, YieldContrasts, contrast_Ssum, 
+save(efficacy, PM_MB_dat, PM_mv, contrast_Ssum, 
      file = here("cache/Meta-analysisData.Rdata"))
 ```
 
