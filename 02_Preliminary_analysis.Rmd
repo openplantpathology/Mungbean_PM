@@ -56,7 +56,9 @@ PM_MB_dat %>%
    summarise(mean_yield = mean(grain_yield.t.ha.),
              minimum_yield = min(grain_yield.t.ha.),
              maximum_yield = max(grain_yield.t.ha.),
-             yield_stdev = sd(grain_yield.t.ha.)) %>%
+             yield_stdev = sd(grain_yield.t.ha.),
+             yield_SE = sd(grain_yield.t.ha.)/
+                              sqrt(n())) %>%
    kable(align = 'c',
    caption = "Average yield statistics for no spray contol plots"
 )
