@@ -175,17 +175,24 @@ PM_MB_dat %>%
 PM_MB_dat %>%
    filter(trial_ref %in% DMITrials)%>%  
    filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole")%>%
-   group_by(trial_ref, location, year)%>%
-   summarise(yield_gain_m = mean(yield_gain),
+             fungicide_ai == "propiconazole"|
+             fungicide_ai == "control")%>%
+   mutate(spray_NoSpray = factor(ifelse(fungicide_ai == "control","control","Fungicide treated"))) %>%
+   mutate(control_yield = ifelse(fungicide_ai == "control",grain_yield.t.ha.,NA))%>%
+   group_by(trial_ref, location, year,spray_NoSpray)%>%
+   summarise(yield_c = mean(control_yield),
+             yield_gain_m = mean(yield_gain, na.rm = TRUE),
              yield_gain_se = sd(yield_gain, na.rm = T)/sqrt(n()),
              .groups = "drop")%>%
    mutate(trial = paste(location,year,sep = "\n"))%>%
-   ggplot(aes(reorder(trial, yield_gain_m), yield_gain_m))+
-   geom_bar(stat = "identity")+
-   geom_errorbar(width = 0.3 ,aes(ymax = yield_gain_m + yield_gain_se, 
-                     ymin = yield_gain_m - yield_gain_se))+
-   theme(axis.text.x = element_text(angle = 90, hjust = 1))
+   mutate(yield = ifelse(spray_NoSpray == "control", yield_c, yield_gain_m))%>%
+   ggplot(aes(reorder(trial_ref, yield), yield, fill = (spray_NoSpray)))+
+   geom_col()+
+   # geom_errorbar(width = 0.3 ,aes(ymax = yield_gain_m + yield_gain_se, 
+   #                   ymin = yield_gain_m - yield_gain_se))+
+   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+   scale_fill_usq() +
+   scale_colour_usq()
 
 ```
 
@@ -310,15 +317,6 @@ We should check that all fungicide doses that were used were roughly the same, i
 PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole") %>%
-   select(
-      trial_ref,
-      year,
-      location,
-      first_sign_disease,
-      fungicide_ai,
-      dose_ai.ha,
-      total_fungicide
-   ) %>%
    ggplot(aes(x = as.factor(dose_ai.ha), fill = fungicide_ai)) +
    xlab("Dose (g ai/ha)") +
    ggtitle(label = "Total number of treatments for each respective tebuconazole\nor propiconazole dose") +
