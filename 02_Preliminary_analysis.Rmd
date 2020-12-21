@@ -53,11 +53,11 @@ What is the variation in yield over all the trials (including non-DMI fungicide 
 ```{r ControlYield_AllTrials}
 PM_MB_dat %>%
    filter(fungicide_ai == "control")%>%
-   summarise(mean_yield = mean(grain_yield.t.ha.),
-             minimum_yield = min(grain_yield.t.ha.),
-             maximum_yield = max(grain_yield.t.ha.),
-             yield_stdev = sd(grain_yield.t.ha.),
-             yield_SE = sd(grain_yield.t.ha.)/
+   summarise(mean_yield = mean(grain_yield.t.ha. * 1000),
+             minimum_yield = min(grain_yield.t.ha. * 1000),
+             maximum_yield = max(grain_yield.t.ha. * 1000),
+             yield_stdev = sd(grain_yield.t.ha. * 1000),
+             yield_SE = sd(grain_yield.t.ha. * 1000)/
                               sqrt(n())) %>%
    kable(align = 'c',
    caption = "Average yield statistics for no spray contol plots"
@@ -95,6 +95,20 @@ PM_MB_dat %>%
              minimum_yield = min(grain_yield.t.ha.*1000),
              maximum_yield = max(grain_yield.t.ha.*1000),
              yield_sterr = sd(grain_yield.t.ha.*1000)/(sqrt(length(grain_yield.t.ha.))))%>%
+   kable(align = 'c',
+   caption = "Average yield statistics for DMI fungicide treated plots")
+   
+```
+
+Trial mean yields in DMI fungicide treated plots
+```{r Yield_DMITrials}
+PM_MB_dat %>%
+   group_by(trial_ref, location, year)%>%
+   summarise(mean_yield = mean(grain_yield.t.ha.*1000),
+             minimum_yield = min(grain_yield.t.ha.*1000),
+             maximum_yield = max(grain_yield.t.ha.*1000),
+             yield_sterr = sd(grain_yield.t.ha.*1000)/(sqrt(length(grain_yield.t.ha.))))%>%
+   arrange(yield_sterr) %>%
    kable(align = 'c',
    caption = "Average yield statistics for DMI fungicide treated plots")
    
@@ -171,28 +185,35 @@ PM_MB_dat %>%
    arrange(yield_gain_m)
 ```
 
-```{r YieldGain_plot}
-PM_MB_dat %>%
+```{r Yield_plot}
+
+bw_labels <- 
+   PM_MB_dat %>%
+   filter(trial_ref %in% DMITrials)%>% 
+   group_by(trial_ref, location, year)%>%
+   summarise(m_gy = mean(grain_yield.t.ha.)) %>%
+   mutate(trial = paste(location,year,sep = "\n")) %>%
+   arrange(m_gy) %>%
+   pull(trial)
+
+bw_labels[1] <- paste0(bw_labels[1],"(b)")
+bw_labels[3] <- paste0(bw_labels[3],"(a)")
+
+fungicide_spray_plot <- 
+   PM_MB_dat %>%
    filter(trial_ref %in% DMITrials)%>%  
-   filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole"|
-             fungicide_ai == "control")%>%
-   mutate(spray_NoSpray = factor(ifelse(fungicide_ai == "control","control","Fungicide treated"))) %>%
-   mutate(control_yield = ifelse(fungicide_ai == "control",grain_yield.t.ha.,NA))%>%
-   group_by(trial_ref, location, year,spray_NoSpray)%>%
-   summarise(yield_c = mean(control_yield),
-             yield_gain_m = mean(yield_gain, na.rm = TRUE),
-             yield_gain_se = sd(yield_gain, na.rm = T)/sqrt(n()),
-             .groups = "drop")%>%
-   mutate(trial = paste(location,year,sep = "\n"))%>%
-   mutate(yield = ifelse(spray_NoSpray == "control", yield_c, yield_gain_m))%>%
-   ggplot(aes(reorder(trial_ref, yield), yield, fill = (spray_NoSpray)))+
-   geom_col()+
-   # geom_errorbar(width = 0.3 ,aes(ymax = yield_gain_m + yield_gain_se, 
-   #                   ymin = yield_gain_m - yield_gain_se))+
-   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
-   scale_fill_usq() +
-   scale_colour_usq()
+   mutate(spray_treat = ifelse(fungicide_ai == "control","control", "DMI spray"))%>%
+   group_by(trial_ref, location, year)%>%
+   ggplot(aes(reorder(trial_ref, grain_yield.t.ha.), grain_yield.t.ha., colour = spray_treat))+
+   geom_boxplot()+
+   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))+
+   xlab("Trial location and year")+
+   ylab(bquote('Mungbean yeild  '*t~ha^-1*''))+
+   scale_x_discrete(labels = bw_labels)+
+   ylim(0,2.5)+
+   scale_colour_usq()+
+   labs(colour = "Fungicide treatment")
+
 
 ```
 
