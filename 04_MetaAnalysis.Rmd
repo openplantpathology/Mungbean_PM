@@ -64,7 +64,25 @@ PM_mv <- rma.mv(
 summary(PM_mv)
 ```
 
-The first table in this output shows the tau^2 (variance) of each random effects and the number of occurrences for each treatment in the analysis.
+Lets try the model with an implied simpler variance-covariance matrix "compound symetry" ("CS") to examine if unstructured matrix is suitable.
+```{r}
+PM_mv_cs <- rma.mv(
+   yi = grain_yield.t.ha.,
+   vi,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list(~ spray_management | trial, ~1 | id), 
+   struct = "CS",
+   control=list(optimizer="optim"),
+   data = PM_MB_dat
+)
+
+anova(PM_mv, PM_mv_cs)
+```
+
+The test shows that the 'Full', more complicated model `PM_mv`, is a better fit and therefore we should keep the unstructured variance-covariance matrix.
+
+The first table in the `PM_mv` output shows tau^2 (between trial variance) of each moderator random effects and the number of occurrences for each treatment in the analysis.
 This effectively shows the heterogeneity between experiments for these particular treatments.
 
 
@@ -119,10 +137,9 @@ Let's view these comparisons in a plot.
 
 ```{r metafor_plot}
 results_mv %>%
-   filter(Treatment != "control") %>% 
+   filter(Treatment != "control") %>%
    mutate(Treatment = factor(Treatment, levels = rev(
       c(
-         
          "Early",
          "Recommended",
          "Recommended_plus",
@@ -139,9 +156,20 @@ results_mv %>%
    geom_hline(yintercept = 0) +
    geom_point(aes(size = 1 / se), shape = 15) +
    geom_linerange(aes(ymin = `$CI_{L}$`, ymax = `$CI_{U}$`)) +
-   coord_flip()+
-   ggtitle("Mean spray schedule effect sizes\nand 95% confidence intervals")
-
+   coord_flip() +
+   #ggtitle("Mean spray schedule effect sizes\nand 95% confidence intervals")+
+   ylab(expression(paste("Mean yield difference to control (t ha" ^ -1,")",sep = ""))) +
+   scale_x_discrete(
+      "Moderator variable",
+      labels = c(
+         expression("Late"["plus"]),
+         expression("Late"["single"]),
+         expression("Recommended"["plus"]),
+         expression("Recommended"["single"]),
+         expression("Early"["single"])
+      )
+   )
+ggsave("paper/figures/Fig2_means_difference.png")
 ```
 
 Lets investigate the treatment contrasts
@@ -175,6 +203,7 @@ profile(PM_mv, tau2 = 2)
 profile(PM_mv, tau2 = 3)
 profile(PM_mv, tau2 = 4)
 profile(PM_mv, tau2 = 5)
+profile(PM_mv, tau2 = 6)
 ```
 
 
