@@ -11,6 +11,7 @@ pacman::p_load(tidyverse,
                reshape2,
                lme4,
                kableExtra,
+               flextable,
                here)
 
 if (!require("theme.usq"))
@@ -262,15 +263,6 @@ PM_MB_dat %>%
                                      TRUE ~ NA_real_)) %>%
    mutate(PM_y_treat = case_when(fungicide_ai != "control" ~ grain_yield.t.ha.,
                                      TRUE ~ NA_real_)) %>%
-   
-   # filter(location == "Bongeen_1")%>%
-   # select(PM_sev_treat,
-   #        trial_ref,
-   #          location,
-   #          year,
-   #          planting_date,
-   #          first_sign_disease)
-   
    group_by(trial_ref,
             location,
             year,
@@ -282,7 +274,7 @@ PM_MB_dat %>%
              max_PM_sev = max(PM_sev_treat, na.rm = TRUE),
              m_PM_yeild_control = mean(PM_y_control, na.rm = TRUE),
              min_PM_yeild = min(PM_y_treat, na.rm = TRUE),
-             max_PM_yeild = max(PM_y_treat, na.rm = TRUE)
+             max_PM_yeild = max(PM_y_treat, na.rm = TRUE),
              )%>%
    filter(min_PM_sev < 10) # anything exceeding 9 is off the scale and should be removed due to it being the result of min(NA, na.rm = T) ie. Inf
 
