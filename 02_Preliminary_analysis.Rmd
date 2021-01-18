@@ -202,19 +202,21 @@ bw_labels[3] <- paste0(bw_labels[3],"(a)")
 fungicide_spray_plot <- 
    PM_MB_dat %>%
    filter(trial_ref %in% DMITrials)%>%  
-   mutate(spray_treat = ifelse(fungicide_ai == "control","control", "DMI spray"))%>%
+   mutate(spray_treat = ifelse(fungicide_ai == "control","control", "Fungicide treated"))%>%
    group_by(trial_ref, location, year)%>%
-   ggplot(aes(reorder(trial_ref, grain_yield.t.ha.), grain_yield.t.ha., colour = spray_treat))+
+   ggplot(aes(reorder(trial_ref, grain_yield.t.ha.), grain_yield.t.ha., fill = spray_treat))+
    geom_boxplot()+
    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3))+
    xlab("Trial location and year")+
-   ylab(bquote('Mungbean yeild  '*t~ha^-1*''))+
+   ylab(bquote('Mungbean yield  '*t~ha^-1*''))+
    scale_x_discrete(labels = bw_labels)+
    ylim(0,2.5)+
-   scale_colour_usq()+
-   labs(colour = "Fungicide treatment")
+   scale_fill_grey(start = 1, end = 0.7)+
+   labs(colour = "Fungicide treatment")+
+   guides(fill = guide_legend(title = "Treatment"))
 
-
+fungicide_spray_plot
+#ggsave("paper/figures/Fig1_trial_yield_bw.png")
 ```
 
 Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
@@ -242,6 +244,50 @@ The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field tr
 <br>
 <br>
 <br>
+
+#### Full trial summary
+
+```{r Full_Trial_Summary_table}
+PM_MB_dat %>%
+   filter(
+      fungicide_ai == "control" |
+         fungicide_ai == "tebuconazole" |
+         fungicide_ai == "propiconazole"
+   ) %>%
+   mutate(PM_sev_control = case_when(fungicide_ai == "control" ~ PM_final_severity,
+                                     TRUE ~ NA_real_)) %>%
+   mutate(PM_sev_treat = case_when(fungicide_ai != "control" ~ PM_final_severity,
+                                     TRUE ~ NA_real_)) %>%
+   mutate(PM_y_control = case_when(fungicide_ai == "control" ~ grain_yield.t.ha.,
+                                     TRUE ~ NA_real_)) %>%
+   mutate(PM_y_treat = case_when(fungicide_ai != "control" ~ grain_yield.t.ha.,
+                                     TRUE ~ NA_real_)) %>%
+   
+   # filter(location == "Bongeen_1")%>%
+   # select(PM_sev_treat,
+   #        trial_ref,
+   #          location,
+   #          year,
+   #          planting_date,
+   #          first_sign_disease)
+   
+   group_by(trial_ref,
+            location,
+            year,
+            planting_date,
+            first_sign_disease) %>%
+   summarise(n = n(),
+             m_PM_sev_control = mean(PM_sev_control, na.rm = TRUE),
+             min_PM_sev = min(PM_sev_treat, na.rm = TRUE),
+             max_PM_sev = max(PM_sev_treat, na.rm = TRUE),
+             m_PM_yeild_control = mean(PM_y_control, na.rm = TRUE),
+             min_PM_yeild = min(PM_y_treat, na.rm = TRUE),
+             max_PM_yeild = max(PM_y_treat, na.rm = TRUE)
+             )%>%
+   filter(min_PM_sev < 10) # anything exceeding 9 is off the scale and should be removed due to it being the result of min(NA, na.rm = T) ie. Inf
+
+```
+
 
 ### Fungicides
 
