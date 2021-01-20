@@ -84,10 +84,10 @@ dat1 %>%
 
 We can see here all four experiments benefited, on average, from more than one spray.  
 
-Let's estimate the age of the crop based on crop maturity observations, we will use the `PM_MB_dat` which include some observations of crop maturity.
+Let's estimate the age of the crop based on crop maturity observations, we will use the `PM_MB_dat_full` which include some observations of crop maturity.
 
 ```{r whatAreTheAges}
-dat2 <- PM_MB_dat %>%
+dat2 <- PM_MB_dat_full %>%
    mutate(
       flower = lubridate::ymd(flowering_date) - lubridate::ymd(planting_date),
       pod = lubridate::ymd(pod_fill_date) - lubridate::ymd(planting_date),
