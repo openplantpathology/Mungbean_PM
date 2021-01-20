@@ -314,6 +314,8 @@ PM_MB_dat %>%
 ### Classify dataset variables  
 
 Finally we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis. 
+It should be noted that the data-set below has still retained all fungicide active ingredients. 
+Before dropping the non-DMI fungicides from the final meta-analysis we will inspect their influence on grain yield.
 
 ```{r classifyData}
 PM_MB_dat <- 
