@@ -280,8 +280,11 @@ PM_MB_dat %>%
    width(j = 3, width = 0.5)%>%
    set_caption("Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset, number of treatments per trial (n), PM mean plot severity of the non-fungicide treated plots and the severity range in fungicide treatments; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare")
 Sev_yield_table
+```
 
 
+```{r eval=FALSE, include=FALSE}
+# Save table as a word document
 doc <- officer::read_docx()
 doc <- body_add_flextable(doc, value = Sev_yield_table)
 doc <- officer::body_end_section_landscape(doc)
@@ -316,8 +319,6 @@ The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field tr
 <br>
 <br>
 <br>
-
-
 
 
 ### Fungicides
