@@ -27,10 +27,12 @@ load("cache/ImportDataAndSelectTrials01.Rdata")
 The data explored in the `PM_MB_dat` data frame is a list of mean values from each treatment in each respective experiment.
 These preliminary analyses will describe the data and then investigate any change in mungbean yields which is attributable to the fungicide treatment.  
 
+All fungicide ai treatments are still contained in the `PM_MB_dat` data, so filtering the data might be necessary to only inspect DMI treatments.
+
 ### Descriptive statistics  
 #### Spatio-temporal variation  
 
-Lets look at how many trials were undertaken each season  
+Lets look at how many trials were undertaken each season in trials including DMI fungicides.  
 
 ```{r FinalTrialsForInclusion1}
 tmp1 <- PM_MB_dat %>%
@@ -41,7 +43,7 @@ tmp1 <- PM_MB_dat %>%
    table(tmp1$year)
 ```
 
-Also the location of the trials  
+Also the location of the trials including DMI fungicides.  
 
 ```{r FinalTrialsForInclusion}
    table(tmp1$location)
@@ -220,33 +222,9 @@ fungicide_spray_plot
 #ggsave("paper/figures/Fig1_trial_yield_bw.png")
 ```
 
-Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
-On this page, unless stated, the following plots and analyses were made disregarding other effects.
-The following factors are postulated to influence mungbean grain yield and/or powdery mildew mean plot severity.
-
-   1 Fungicide type
-   
-   2 Fungicide dose (varies only slightly within some fungicide types)
-   
-   3 Number of fungicide sprays
-   
-   4 Timing of fungicide spray/s relative to first sign of disease
-   
-   5 Host cultivar (probably is a co-variate with season due to changing cultivars over time)
-   
-   6 Experiment location
-   
-   7 Row spacing
-   
-   8 Final disease rating / disease pressure
-   
-The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r first(levels(PM_MB_dat$year))` - `r last(levels(PM_MB_dat$year))`) of which the details are described in the [Trials considered for inclusion in meta-analysis section](#Trials-considered-for-inclusion-in-meta-analysis). 
-
-<br>
-<br>
-<br>
-
 #### Full trial summary
+
+Lets inspect a summary of both powdery mildew severity and grain yield for trials including DMI funcgicides.  
 
 ```{r Full_Trial_Summary_table, warning= FALSE}
 Sev_yield_table <-
@@ -310,6 +288,36 @@ doc <- officer::body_end_section_landscape(doc)
 print(doc, target = "paper/figures/Table1_severity&yield.docx")
 
 ```
+
+
+
+Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
+On this page, unless stated, the following plots and analyses were made disregarding other effects.
+The following factors are postulated to influence mungbean grain yield and/or powdery mildew mean plot severity.
+
+   1 Fungicide type
+   
+   2 Fungicide dose (varies only slightly within some fungicide types)
+   
+   3 Number of fungicide sprays
+   
+   4 Timing of fungicide spray/s relative to first sign of disease
+   
+   5 Host cultivar (probably is a co-variate with season due to changing cultivars over time)
+   
+   6 Experiment location
+   
+   7 Row spacing
+   
+   8 Final disease rating / disease pressure
+   
+The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r first(levels(PM_MB_dat$year))` - `r last(levels(PM_MB_dat$year))`) of which the details are described in the [Trials considered for inclusion in meta-analysis section](#Trials-considered-for-inclusion-in-meta-analysis). 
+
+<br>
+<br>
+<br>
+
+
 
 
 ### Fungicides
