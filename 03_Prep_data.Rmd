@@ -59,7 +59,7 @@ PM_MB_dat %>%
    arrange(Y_error_type) %>%
    kable(caption = "Number of treatments for each trial and the error type reported",
          align = "c") %>%
-   footnote(general = "DMI - demethylation inhibitors (tebuconazole and propiconazole).")
+   kableExtra::add_footnote(label = "DMI - demethylation inhibitors (tebuconazole and propiconazole).", notation = "none")
 ```
 
 The experiment summaries report either standard deviation or least square differences. 
@@ -181,18 +181,6 @@ We will retain the continuous variable grain_yield.t.ha as the response.
 Mean differences won't be used as we are following the methodology of a ARM-based model, where mean differences are calculated following the meta-analysis.
 
 
-### Formatting Variance 
-
-First let's check for any entries missing variance and remove them.
-
-```{r remove_studies}
-any(is.na(PM_MB_dat$yield_error))
-
-PM_MB_dat <-
-   PM_MB_dat[!is.na(PM_MB_dat$yield_error), ]
-
-PM_MB_dat$vi <- PM_MB_dat$yield_error
-```
 
 #### Calculate sample variance from mean square errors
 
