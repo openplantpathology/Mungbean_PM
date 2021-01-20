@@ -103,8 +103,8 @@ PM_MB_dat %>%
    
 ```
 
-Trial mean yields in DMI fungicide treated plots
-```{r Yield_DMITrials}
+Trial mean yields in all fungicide treated plots
+```{r Yield_AllTrials}
 PM_MB_dat %>%
    group_by(trial_ref, location, year)%>%
    summarise(mean_yield = mean(grain_yield.t.ha.*1000),
