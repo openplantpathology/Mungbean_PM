@@ -23,7 +23,8 @@ theme_set(theme_usq())
 source(here("R/reportP.R"))
 
 # Data
-load("cache/PrepData.Rdata")
+load("cache/PrepData.Rdata"
+)
 ```
 
 # Grain yield meta-analysis
@@ -55,9 +56,9 @@ PM_mv <- rma.mv(
    vi,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~1 | id), 
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
-   control=list(optimizer="optim"),
+   control = list(optimizer = "optim"),
    data = PM_MB_dat
 )
 
@@ -71,9 +72,9 @@ PM_mv_cs <- rma.mv(
    vi,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~1 | id), 
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "CS",
-   control=list(optimizer="optim"),
+   control = list(optimizer = "optim"),
    data = PM_MB_dat
 )
 
@@ -102,34 +103,61 @@ Lets present the meta-analysis results for the moderator variables in a forest s
 First lets create a table of the results.
 
 ```{r metafor_results}
-
-k5 <- as.data.frame(table(PM_MB_dat$trial, PM_MB_dat$spray_management)) %>%
-   filter(Freq !=0)%>%
-   group_by(Var2)%>%
-   summarise(n())%>%
+# obtain number of treatments included in each moderator variable
+k5 <-
+   as.data.frame(table(PM_MB_dat$trial, PM_MB_dat$spray_management)) %>%
+   filter(Freq != 0) %>%
+   group_by(Var2) %>%
+   summarise(n()) %>%
    pull()
 
-results_mv <- data.frame(N = PM_mv$g.levels.k,
-                         k = k5,
-                         Effect = round(PM_mv$b,4),
-                         se = round(PM_mv$se,4),
-                         CI_lower = round(PM_mv$ci.lb,4),
-                         CI_upper = round(PM_mv$ci.ub,4),
-                         z_val = round(PM_mv$zval,4),
-                         p_val = reportP(PM_mv$pval,AsNumeric = TRUE),
-                         row.names = c("Intercept",
-                                       "$Early_{single}$",
-                                       "$Recommended_{single}$",
-                                       "$Recommended_{plus}$",
-                                       "$Late_{single}$",
-                                       "$Late_{plus}$"))
+# create data.frame
+results_mv <- data.frame(
+   N = PM_mv$g.levels.k,
+   k = k5,
+   Effect = round(PM_mv$b, 4),
+   se = round(PM_mv$se, 4),
+   CI_lower = round(PM_mv$ci.lb, 4),
+   CI_upper = round(PM_mv$ci.ub, 4),
+   z_val = round(PM_mv$zval, 4),
+   p_val = reportP(PM_mv$pval, AsNumeric = TRUE)
+)
 
-colnames(results_mv)[c(1:4,6:9)] <- c("Treatment","$N$", "$k$","$\\mu$","$CI_{L}$","$CI_{U}$", "$Z$","$P$")
+# adjust estimates to show absolute means
+results_mv <-
+   results_mv[2:6, ] %>%
+   mutate(Effect = Effect + results_mv$Effect[1]) %>%
+   mutate(CI_lower = CI_lower + results_mv$CI_lower[1]) %>%
+   mutate(CI_upper = CI_upper + results_mv$CI_upper[1]) %>%
+   bind_rows(results_mv[1, ]) %>%
+   mutate(index = c(2:6, 1)) %>%
+   arrange(index)
 
-kable(results_mv[,2:9],
+# rename colnames to give table headings
+colnames(results_mv)[c(1:4, 6:9)] <-
+   c("Treatment",
+     "$N$",
+     "$k$",
+     "$\\mu$",
+     "$CI_{L}$",
+     "$CI_{U}$",
+     "$Z$",
+     "$P$")
+
+# provide rownames for each moderator variable
+row.names(results_mv) <- c(
+   "Intercept / No Spray control",
+   "$Early_{single}$",
+   "$Recommended_{single}$",
+   "$Recommended_{plus}$",
+   "$Late_{single}$",
+   "$Late_{plus}$"
+)
+
+kable(results_mv[, 2:9],
       align = "lcccccccc",
       booktabs = TRUE,
-      caption = "Table ##: Mean effect size of five spray schedule treatments on mitigating yield losses to powdery mildew in mungbean crops grown in eastern Australia. Effect sizes were estimated from the network meta-analysis of data obtained from grey literature reports. Intercept indicates the mean of the no spray control and the treatments show the mean difference to the intercept")
+      caption = "Table ##: Estimated mean mungbean yields for each spray schedule treatment used for mitigating yield losses to powdery mildew in mungbean crops grown in eastern Australia. Yield estimates were calculated from the network meta-analysis of data obtained from grey literature reports. Z and P values indicate statistical significance in comparison to the intercept.")
 
 ```
 
@@ -158,7 +186,9 @@ results_mv %>%
    geom_linerange(aes(ymin = `$CI_{L}$`, ymax = `$CI_{U}$`)) +
    coord_flip() +
    #ggtitle("Mean spray schedule effect sizes\nand 95% confidence intervals")+
-   ylab(expression(paste("Mean yield difference to control (t ha" ^ -1,")",sep = ""))) +
+   ylab(expression(paste(
+      "Mean yield difference to control (t ha" ^ -1, ")", sep = ""
+   ))) +
    scale_x_discrete(
       "Moderator variable",
       labels = c(
@@ -169,23 +199,38 @@ results_mv %>%
          expression("Early"["single"])
       )
    )
-ggsave("paper/figures/Fig2_means_difference.png")
+ggsave("paper/figures/Fig2_means_difference.png",
+       height = 3,
+       dpi = 500)
 ```
 
 Lets investigate the treatment contrasts
 
 ```{r PM_Mv_Contrast}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
-summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none"))
-contrast_Ssum <- simple_summary(summary(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), test=adjusted("none")))
+summary(glht(PM_mv, linfct = cbind(contrMat(rep(
+   1, 6
+), type = "Tukey"))), test = adjusted("none"))
+contrast_Ssum <-
+   simple_summary(summary(glht(PM_mv, linfct = cbind(
+      contrMat(rep(1, 6), type = "Tukey")
+   )), test = adjusted("none")))
 contrast_Ssum
 ```
 
 These contrasts can be viewed in a plot
 ```{r plotContrasts}
 par(mar = c(5, 13, 4, 2) + 0.1)
-plot(glht(PM_mv, linfct=cbind(contrMat(rep(1,6), type="Tukey"))), yaxt='n')
-axis(2, at = seq_along(contrast_Ssum$contrast), labels = rev(contrast_Ssum$contrast), las=2, cex.axis = 0.8)
+plot(glht(PM_mv, linfct = cbind(contrMat(rep(
+   1, 6
+), type = "Tukey"))), yaxt = 'n')
+axis(
+   2,
+   at = seq_along(contrast_Ssum$contrast),
+   labels = rev(contrast_Ssum$contrast),
+   las = 2,
+   cex.axis = 0.8
+)
 ```
 
 
@@ -218,42 +263,61 @@ source(here("R/forest_rows.R"))
 ### Sort and arrange data-frame accordingly and produce a index vector to inform the order of each "Trial" on the plot
 index1 <- PM_MB_dat %>%
    mutate(ID = seq_along(trial_ref)) %>%
-   mutate(spray_management = 
-             factor(spray_management, 
-                    levels = c("Early","Late","Recommended",
-                    "Recommended_plus","Late_plus"))) %>%
+   mutate(spray_management =
+             factor(
+                spray_management,
+                levels = c(
+                   "Early",
+                   "Late",
+                   "Recommended",
+                   "Recommended_plus",
+                   "Late_plus"
+                )
+             )) %>%
    arrange(desc(spray_management), location, desc(grain_yield.t.ha.)) %>%
-   mutate(ID2 = order(ID))%>%
+   mutate(ID2 = order(ID)) %>%
    pull(ID2)
 
 ### Use forest rows function to return a list of where to place on the plot: sub-titles, each trial row, and summary prediction for each treatment.
 ### this list can be used below to reference where to plot each variable
-rows1 <- forest_rows(head_row = 186, 
-                     ord_var = PM_MB_dat$spray_management, 
-                     index = index1, 
-                     gap = 5, 
-                     row_offset = -2)
+rows1 <- forest_rows(
+   head_row = 186,
+   ord_var = PM_MB_dat$spray_management,
+   index = index1,
+   gap = 5,
+   row_offset = -2
+)
 
 ### A data-frame of meta-model coefficients used to produce the summary polygons for each treatment
-polys <- data.frame(ref = change_labels(names(coef(PM_mv))),
-                    x = c(coef(PM_mv)[1],coef(PM_mv)[1] + coef(PM_mv)[2:6]),
-                    ci.lb = c(PM_mv$ci.lb[1],PM_mv$ci.lb[1] +PM_mv$ci.lb[2:6]),
-                    ci.ub = c(PM_mv$ci.ub[1],PM_mv$ci.ub[1] +PM_mv$ci.ub[2:6]))[c(2,5,3,4,6,1),]
+polys <- data.frame(
+   ref = change_labels(names(coef(PM_mv))),
+   x = c(coef(PM_mv)[1], coef(PM_mv)[1] + coef(PM_mv)[2:6]),
+   ci.lb = c(PM_mv$ci.lb[1], PM_mv$ci.lb[1] + PM_mv$ci.lb[2:6]),
+   ci.ub = c(PM_mv$ci.ub[1], PM_mv$ci.ub[1] + PM_mv$ci.ub[2:6])
+)[c(2, 5, 3, 4, 6, 1), ]
 polys$rows <- rows1$pred_row - 1.5
 
-forest1  <- metafor::forest(PM_mv, cex = 1.15 , width = 5,
-                #order = "fit",
-                rows = rows1$trows-1.5,
-                ilab = cbind(PM_MB_dat$year, 
-                             PM_MB_dat$row_spacing, PM_MB_dat$host_genotype, PM_MB_dat$dose),
-                ilab.xpos = c(-2.35,-2.1,-1.8,-1.4)+1,
-                slab = NA, 
-                xlim = c(-2, 4),
-                ylim = c(5,190),
-                xlab = "Grain yield mean difference",
-                addfit = FALSE,
-                efac = c(0.2,0.15,0.2),
-                at = seq(-0.5,3, 0.5))
+forest1  <- metafor::forest(
+   PM_mv,
+   cex = 1.15 ,
+   width = 5,
+   #order = "fit",
+   rows = rows1$trows - 1.5,
+   ilab = cbind(
+      PM_MB_dat$year,
+      PM_MB_dat$row_spacing,
+      PM_MB_dat$host_genotype,
+      PM_MB_dat$dose
+   ),
+   ilab.xpos = c(-2.35, -2.1, -1.8, -1.4) + 1,
+   slab = NA,
+   xlim = c(-2, 4),
+   ylim = c(5, 190),
+   xlab = "Grain yield mean difference",
+   addfit = FALSE,
+   efac = c(0.2, 0.15, 0.2),
+   at = seq(-0.5, 3, 0.5)
+)
 
 ### code which puts lines and annotations on the plot, its a bit long...
 source(here("R/add_annotations.R"))
@@ -356,7 +420,10 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 
 
 ```{r Save_meta_data, eval=FALSE}
-save(efficacy, PM_MB_dat, PM_mv, contrast_Ssum, 
+save(efficacy,
+     PM_MB_dat,
+     PM_mv,
+     contrast_Ssum,
      file = here("cache/Meta-analysisData.Rdata"))
 ```
 
