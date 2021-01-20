@@ -17,7 +17,6 @@ load("cache/PrepData.Rdata")
 ```
 
 
-
 ### Mungbeans age and yield saved
 
 The time at which powdery mildew infects in the seasons and the age of the plant might affect the AUDPC and the loss in yield.
@@ -25,7 +24,7 @@ Let's have a look at the age of each trial when powdery mildew infected it.
 We will use the difference between `planting_date` and `first_sign_disease` as a proxy for crop maturity when it became infected.
 
 ```{r age_andYield}
-dat1 <- PM_MB_dat %>%
+dat1 <- PM_MB_dat_full %>%
    mutate(days2PM = first_sign_disease - planting_date) %>%
    arrange(desc(days2PM)) %>%
    select(
@@ -34,11 +33,9 @@ dat1 <- PM_MB_dat %>%
       location,
       spray_management,
       days2PM,
-      grain_yield.t.ha,
+      grain_yield.t.ha.,
       yield_gain,
-      prop_yield_gain,
       AUDPC_m,
-      D_pres,
       PM_final_severity
    )
 dat1
