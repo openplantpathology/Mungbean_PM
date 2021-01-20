@@ -519,6 +519,8 @@ However for an arm-based analysis, which we intend to do, we calculate the diffe
 ### Simplify and save data  
 
 ```{r simplifyData}
+PM_MB_dat_full <- PM_MB_dat
+
 PM_MB_dat <- 
    PM_MB_dat %>%
    mutate(spray_management =
@@ -556,7 +558,7 @@ PM_MB_dat <-
 
 
 ```{r saveData_PrepD}
-save(PM_MB_dat, file = here("cache/PrepData.Rdata"))
+save(PM_MB_dat, PM_MB_dat_full, file = here("cache/PrepData.Rdata"))
 ```
 
 
