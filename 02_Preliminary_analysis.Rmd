@@ -357,7 +357,7 @@ PM_MB_dat %>%
    ) %>%
    kable_styling(fixed_thead = T, full_width = T) %>%
    column_spec(c(2, 3), width = "1cm") %>%
-   footnote(general = "Fungicides with less than five observations were omitted from this table")
+   kableExtra::add_footnote(label = "Fungicides with less than five observations were omitted from this table")
 ```
 
 <br>
