@@ -268,8 +268,8 @@ We need to focus the meta-analysis on fungicides with the same mode of action.
 Let's look at all the fungicides and retain the best represented fungicide group in the data.
 ```{r Fungicides}
 PM_MB_dat %>%
-   group_by(fungicide_ai, trial_ref) %>%
-   summarise(groups = 'drop') %>%
+   group_by(fungicide_ai,trial_ref) %>%
+   summarise() %>%
    count(sort = TRUE) %>%
    rename(Trials = n) %>%
    ggplot(aes(x = reorder(fungicide_ai, Trials), y = Trials)) +
