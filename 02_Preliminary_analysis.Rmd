@@ -262,7 +262,8 @@ PM_MB_dat %>%
    mutate(PM_sev_range = paste(min_PM_sev, max_PM_sev, sep = " - ")) %>%
    mutate(yield_range = paste(min_PM_yield, max_PM_yield, sep = " - ")) %>%
    mutate(m_PM_sev_control = paste(m_PM_sev_control, " (", n_controls, ")", sep = "")) %>%
-   select(-c(min_PM_sev, max_PM_sev, min_PM_yield, max_PM_yield)) %>%
+   select(-c(min_PM_sev, max_PM_sev, min_PM_yield, max_PM_yield, n_controls)) %>%
+   select(c(1:7, 9, 8, 10)) %>% # order columns
    flextable() %>%
    set_header_labels(trial_ref = "Trial code",
                      location = "Location",
@@ -271,7 +272,6 @@ PM_MB_dat %>%
                      first_sign_disease = "PM onset",
                      n = "n",
                      m_PM_sev_control = "Control median\nPM severity",
-                     n_controls = "n controls",
                      PM_sev_range = "PM severity\nrange*",
                      m_PM_yield_control = "Control\nmean yield",
                      yield_range = "Yield range\n(t / ha)*"
@@ -280,7 +280,7 @@ PM_MB_dat %>%
    fontsize(size = 10, part = "header")%>%
    align(j = 3:10, align = "center", part = "all") %>%
    autofit() %>%
-   width(j = 7:10, width = 0.9)%>%
+   width(j = 7:10, width = 1)%>%
    width(j = 3, width = 0.5)%>%
    set_caption("Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset, number of treatments per trial (n), PM mean plot severity of the non-fungicide treated plots and the severity range in fungicide treatments; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare")
 Sev_yield_table
