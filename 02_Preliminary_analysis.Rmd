@@ -248,7 +248,7 @@ PM_MB_dat %>%
             planting_date,
             first_sign_disease) %>%
    summarise(n = n(),
-             m_PM_sev_control = round(mean(PM_sev_control, na.rm = TRUE),digits = 2),
+             m_PM_sev_control = round(median(PM_sev_control, na.rm = TRUE),digits = 2),
              min_PM_sev = round(min(PM_sev_treat, na.rm = TRUE),digits = 2),
              max_PM_sev = round(max(PM_sev_treat, na.rm = TRUE),digits = 2),
              m_PM_yield_control = round(mean(PM_y_control, na.rm = TRUE),digits = 3),
@@ -267,7 +267,7 @@ PM_MB_dat %>%
                      planting_date = "Sowing date",
                      first_sign_disease = "PM onset",
                      n = "n",
-                     m_PM_sev_control = "Control mean\nPM severity",
+                     m_PM_sev_control = "Control median\nPM severity",
                      PM_sev_range = "PM severity\nrange*",
                      m_PM_yield_control = "Control\nmean yield",
                      yield_range = "Yield range\n(t / ha)*"
