@@ -273,8 +273,8 @@ PM_MB_dat %>%
                      n = "n",
                      m_PM_sev_control = "Control median\nPM severity",
                      PM_sev_range = "PM severity\nrange*",
-                     m_PM_yield_control = "Control\nmean yield",
-                     yield_range = "Yield range\n(t / ha)*"
+                     m_PM_yield_control = "Control\nmean yield*",
+                     yield_range = "Yield range\n(t / ha)"
                      ) %>%
    fontsize(size = 8,part = "body")%>%
    fontsize(size = 10, part = "header")%>%
@@ -282,7 +282,7 @@ PM_MB_dat %>%
    autofit() %>%
    width(j = 7:10, width = 1)%>%
    width(j = 3, width = 0.5)%>%
-   set_caption("Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset, number of treatments per trial (n), PM mean plot severity of the non-fungicide treated plots and the severity range in fungicide treatments; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare")
+   set_caption("Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset, number of treatments per trial (n), PM median plot severity of the non-fungicide treated plots and the severity range in fungicide treatments, * bracketed numbers refer to the number of pooled control treatments summarised; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare")
 Sev_yield_table
 ```
 
