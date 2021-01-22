@@ -242,6 +242,7 @@ PM_MB_dat %>%
                                      TRUE ~ NA_real_)) %>%
    mutate(PM_y_treat = case_when(fungicide_ai != "control" ~ grain_yield.t.ha.,
                                      TRUE ~ NA_real_)) %>%
+   mutate(trial_ref = str_remove(trial_ref, "mung"))%>%  # remove "mung" prefix from trial_ref
    group_by(trial_ref,
             location,
             year,
@@ -249,6 +250,7 @@ PM_MB_dat %>%
             first_sign_disease) %>%
    summarise(n = n(),
              m_PM_sev_control = round(median(PM_sev_control, na.rm = TRUE),digits = 2),
+             n_controls = sum(is.na(PM_sev_control) == FALSE),
              min_PM_sev = round(min(PM_sev_treat, na.rm = TRUE),digits = 2),
              max_PM_sev = round(max(PM_sev_treat, na.rm = TRUE),digits = 2),
              m_PM_yield_control = round(mean(PM_y_control, na.rm = TRUE),digits = 3),
@@ -257,9 +259,10 @@ PM_MB_dat %>%
              .groups = "drop")%>%
    filter(min_PM_sev < 10) %>% # anything exceeding 9 is off the scale and should be removed due to it being the result of min(NA, na.rm = T) ie. Inf
    arrange(year)%>%
-   mutate(PM_sev_range = paste(min_PM_sev, max_PM_sev, sep = " - "))%>%
-   mutate(yield_range = paste(min_PM_yield, max_PM_yield, sep = " - "))%>%
-   select(-c(min_PM_sev,max_PM_sev,min_PM_yield,max_PM_yield)) %>%
+   mutate(PM_sev_range = paste(min_PM_sev, max_PM_sev, sep = " - ")) %>%
+   mutate(yield_range = paste(min_PM_yield, max_PM_yield, sep = " - ")) %>%
+   mutate(m_PM_sev_control = paste(m_PM_sev_control, " (", n_controls, ")", sep = "")) %>%
+   select(-c(min_PM_sev, max_PM_sev, min_PM_yield, max_PM_yield)) %>%
    flextable() %>%
    set_header_labels(trial_ref = "Trial code",
                      location = "Location",
@@ -268,6 +271,7 @@ PM_MB_dat %>%
                      first_sign_disease = "PM onset",
                      n = "n",
                      m_PM_sev_control = "Control median\nPM severity",
+                     n_controls = "n controls",
                      PM_sev_range = "PM severity\nrange*",
                      m_PM_yield_control = "Control\nmean yield",
                      yield_range = "Yield range\n(t / ha)*"
