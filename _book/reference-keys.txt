@@ -47,5 +47,9 @@ metafor-analysis
 profile-plots
 forest-plot-of-trial-treatment-effect-per-trial
 netmeta-analysis
+<<<<<<< HEAD
 summary-of-disease-incidence-effect-on-yields
 remove-unnecessary-variables
+=======
+meta-analysis-of-powdery-mildew-severity
+>>>>>>> 22e210842c7fbb056826ef6464b5f78fcaa03192

@@ -1,0 +1,147 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Meta-analysis of powdery mildew severity
+
+```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
+if (!require("pacman"))
+   install.packages("pacman")
+pacman::p_load(tidyverse,
+               kableExtra,
+               bomrang,
+               RColorBrewer,
+               metafor,
+               here,
+               netmeta,
+               multcomp,
+               dplyr)
+
+if (!require("theme.usq"))
+   devtools::install_github("adamhsparks/theme.usq")
+library(theme.usq)
+theme_set(theme_usq())
+#source(here("R/reportP.R"))
+
+# Data
+load("cache/PrepData.Rdata")
+```
+
+
+Which trials don't have all the required variance information?
+```{r noDiseaseError}
+unique(PM_MB_dat_full[is.na(PM_MB_dat_full$disease_error),
+                      c("trial_ref", "location", "year")])
+```
+
+Eliminate trials with out disease severity variance.
+```{r rm_SevDiseaseError}
+PM_sev <- 
+   PM_MB_dat_full %>%
+   filter(is.na(disease_error) == FALSE)
+```
+Are all the reported disease variance the same type?
+```{r sev_var_type}
+unique(PM_sev[,"D_error_type"])
+```
+
+Now we have eliminated 2 trials do all spray management categories have sufficient replications
+```{r treatment_n}
+table(PM_sev$spray_management)
+```
+
+
+
+
+Convert variance to the same measure
+```{r calc_sampleVar}
+PM_sev <- 
+   PM_sev %>%
+   mutate(
+      d_vi = 
+         case_when(
+            D_error_type == "stdev" ~ disease_error ^2,
+            D_error_type == "lsd (P=0.05)" ~ 
+               (replicates * ((disease_error / 1.96) ^2) /2)/replicates
+         ),
+      id = row_number(),
+      spray_management = fct_relevel(spray_management,sort)
+   ) 
+
+```
+
+Inspect raw disease severity scores
+
+```{r PMsev_bwplot}
+PM_sev %>%
+   ggplot(aes(x = spray_management, y = PM_final_severity)) +
+   geom_boxplot()
+```
+
+
+
+
+Inspect for a normal distribution of disease severity
+```{r sev_hist}
+hist(PM_sev$PM_final_severity)
+```
+
+
+Let's get started with the analysis by first finding the best model fit that answers our research question.
+
+> When, in relation to PM establishes in the crop, should farmers begin spraying mungbean to obtain the highest fungicide efficacy for lowering disease severity: before PM establishing,  immediately after first sign of PM establishing, or after PM has become established in the crop. 
+
+A secondary question to this aim is: does a second spray increase the efficacy?
+
+To do this, in our model:
+
+   - Powdery mildew severity 1-9 scale
+
+   - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
+
+   - We will investigate the effect size of our treatment - spray management,
+
+
+```{r Metafor-Sev-analysis}
+PMsev_mv <- rma.mv(
+   yi = PM_final_severity,
+   d_vi,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_sev
+)
+
+summary(PMsev_mv)
+```
+
+All spray schedules were effective at lowering the disease severity at the end of the season
+
+```{r sevContrasts}
+source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
+
+contrast_Ssum <-
+   simple_summary(summary(glht(PMsev_mv, linfct = cbind(
+      contrMat(rep(1, 6), type = "Tukey")
+   )), test = adjusted("none")))
+
+contrast_Ssum
+```
+
+```{r plotsevContrasts}
+par(mar = c(5, 13, 4, 2) + 0.1)
+plot(glht(PMsev_mv, linfct = cbind(contrMat(rep(
+   1, 6
+), type = "Tukey"))), yaxt = 'n')
+axis(
+   2,
+   at = seq_along(contrast_Ssum$contrast),
+   labels = rev(contrast_Ssum$contrast),
+   las = 2,
+   cex.axis = 0.8
+)
+```
