@@ -53,6 +53,8 @@ table(PM_sev$spray_management)
 ```
 
 
+
+
 Convert variance to the same measure
 ```{r calc_sampleVar}
 PM_sev <- 
@@ -69,6 +71,16 @@ PM_sev <-
    ) 
 
 ```
+
+Inspect raw disease severity scores
+
+```{r PMsev_bwplot}
+PM_sev %>%
+   ggplot(aes(x = spray_management, y = PM_final_severity)) +
+   geom_boxplot()
+```
+
+
 
 
 Inspect for a normal distribution of disease severity
