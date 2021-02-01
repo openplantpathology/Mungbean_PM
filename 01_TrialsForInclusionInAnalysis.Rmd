@@ -559,9 +559,9 @@ PM_MB_dat <-
    mutate(
       vi =
          case_when(
-            Y_error_type == "stdev" ~ disease_error ^ 2,
+            Y_error_type == "stdev" ~ yield_error ^ 2,
             Y_error_type == "lsd (P=0.05)" ~
-               (replicates * ((disease_error / 1.96) ^ 2) / 2) / replicates
+               (replicates * ((yield_error / 1.96) ^ 2) / 2) / replicates
          ),
       spray_management = fct_relevel(spray_management, sort)
    ) %>%
