@@ -36,8 +36,6 @@ Let's look at how many trials were undertaken each season in trials including DM
 
 ```{r FinalTrialsForInclusion1}
 tmp1 <- PM_MB_dat %>%
-   filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole") %>%
    distinct(trial_ref, location, year) %>%
    arrange(year)
 table(tmp1$year)
@@ -51,13 +49,14 @@ Also the location of the trials including DMI fungicides.
 
 #### Mean yield  
 
-What is the variation in yield over all the trials (including non-DMI fungicide trials) in the no spray control and fungicide treated plots.  
+What is the variation in yield over all the trials in the no spray control.  
 
 ```{r ControlYield_AllTrials}
 PM_MB_dat %>%
    filter(fungicide_ai == "control") %>%
    summarise(
       mean_yield = mean(grain_yield.t.ha. * 1000),
+      median_yield = median(grain_yield.t.ha. * 1000),
       minimum_yield = min(grain_yield.t.ha. * 1000),
       maximum_yield = max(grain_yield.t.ha. * 1000),
       yield_stdev = sd(grain_yield.t.ha. * 1000),
@@ -68,35 +67,13 @@ PM_MB_dat %>%
          caption = "Average yield statistics for no spray control plots")
 ```
 
-
-What is the yield variation in no spray control trials yield over only the DMI fungicide trials.  
-```{r ControlYield_DMITrials}
-DMITrials <- PM_MB_dat %>%
-   filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole") %>%
-   distinct(trial_ref) %>%
-   pull()
-
-PM_MB_dat %>%
-   filter(trial_ref %in% DMITrials) %>%
-   filter(fungicide_ai == "control") %>%
-   summarise(
-      mean_yield = mean(grain_yield.t.ha. * 1000),
-      minimum_yield = min(grain_yield.t.ha. * 1000),
-      maximum_yield = max(grain_yield.t.ha. * 1000),
-      yield_stdev = sd(grain_yield.t.ha. * 1000),
-      yield_sterr = sd(grain_yield.t.ha. * 1000) / (sqrt(length(grain_yield.t.ha.)))
-   ) %>%
-   kable(align = 'c',
-         caption = "Average yield statistics for control plots in trials which used a DMI fungicide")
-```
-
 Mean yields in DMI fungicide treated plots
 ```{r Yield_DMITrials}
 PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
              fungicide_ai == "propiconazole")%>%
    summarise(mean_yield = mean(grain_yield.t.ha.*1000),
+             median_yield = median(grain_yield.t.ha. * 1000),
              minimum_yield = min(grain_yield.t.ha.*1000),
              maximum_yield = max(grain_yield.t.ha.*1000),
              yield_stdev = sd(grain_yield.t.ha. * 1000),
@@ -111,6 +88,7 @@ Trial mean yields in all fungicide treated plots
 PM_MB_dat %>%
    group_by(trial_ref, location, year)%>%
    summarise(mean_yield = mean(grain_yield.t.ha.*1000),
+             median_yield = median(grain_yield.t.ha. * 1000),
              minimum_yield = min(grain_yield.t.ha.*1000),
              maximum_yield = max(grain_yield.t.ha.*1000),
              yield_stdev = sd(grain_yield.t.ha. * 1000),
