@@ -223,7 +223,7 @@ No trials from our subset need to be removed for not reporting fungicide applica
 PM_MB_dat %>%
    group_by(trial_ref) %>%
    summarise(No_Record_Of_Fungicide_Application_Dates = all(is.na(fungicide_application_1)),
-             .groups = 'drop')%>%
+             .groups = 'drop') %>%
    filter(No_Record_Of_Fungicide_Application_Dates)
 ```
 
@@ -236,7 +236,7 @@ No trials from our subset need to be removed for not reporting fungicide dose.
 PM_MB_dat %>%
    group_by(trial_ref) %>%
    summarise(No_Record_Of_Fungicide_Dose = all(is.na(dose_ai.ha)),
-             .groups = 'drop')%>%
+             .groups = 'drop') %>%
    filter(No_Record_Of_Fungicide_Dose)
 ```
 
@@ -248,11 +248,13 @@ Four trials from our subset need to be removed for not reporting yield variance.
 ```{r TrialsWithVariance}
 NoVar <- PM_MB_dat %>%
    group_by(trial_ref) %>%
-   summarise(location = location,
-             year = year,
-             No_Var = all(is.na(yield_error)),
-             .groups = 'drop')%>%
-   filter(No_Var)%>%
+   summarise(
+      location = location,
+      year = year,
+      No_Var = all(is.na(yield_error)),
+      .groups = 'drop'
+   ) %>%
+   filter(No_Var) %>%
    distinct(trial_ref, year, location)
 NoVar
 
@@ -268,7 +270,7 @@ We need to focus the meta-analysis on fungicides with the same mode of action.
 Let's look at all the fungicides and retain the best represented fungicide group in the data.
 ```{r Fungicides}
 PM_MB_dat %>%
-   group_by(fungicide_ai,trial_ref) %>%
+   group_by(fungicide_ai, trial_ref) %>%
    summarise() %>%
    count(sort = TRUE) %>%
    rename(Trials = n) %>%
@@ -301,8 +303,8 @@ However, we won't remove non-DMI fungicides just yet, we will do this before the
 ```{r Final_Trials_For_Inclusion}
 PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole")%>%
-   distinct(trial_ref, location, year)%>%
+             fungicide_ai == "propiconazole") %>%
+   distinct(trial_ref, location, year) %>%
    arrange(year) 
 ```
 
@@ -318,7 +320,7 @@ It should be noted that the data-set below has still retained all fungicide acti
 Before dropping the non-DMI fungicides from the final meta-analysis we will inspect their influence on grain yield.
 
 ```{r classifyData}
-PM_MB_dat <- 
+PM_MB_dat <-
    PM_MB_dat %>%
    mutate(trial_ref = as.character(trial_ref)) %>%
    mutate(year = as.character(year)) %>%
@@ -331,8 +333,8 @@ PM_MB_dat <-
    mutate(pod_fill_date = ymd(pod_fill_date)) %>%
    mutate(mid_late_pod_fill = ymd(mid_late_pod_fill)) %>%
    mutate(first_sign_disease = ymd(first_sign_disease)) %>%
-   mutate(fungicide_ai = as.character(fungicide_ai))%>%
-   mutate(dose_ai.ha = round(as.double(dose_ai.ha), digits = 2))%>%
+   mutate(fungicide_ai = as.character(fungicide_ai)) %>%
+   mutate(dose_ai.ha = round(as.double(dose_ai.ha), digits = 2)) %>%
    mutate(fungicide_application_1 = ymd(fungicide_application_1)) %>%
    mutate(fungicide_application_2 = ymd(fungicide_application_2)) %>%
    mutate(fungicide_application_3 = ymd(fungicide_application_3)) %>%
@@ -342,61 +344,68 @@ PM_MB_dat <-
    mutate(total_fungicide = as.integer(total_fungicide)) %>%
    mutate(harvest_date = ymd(harvest_date)) %>%
    mutate(final_assessment = ymd(final_assessment)) %>%
-   mutate(PM_final_severity = round(as.double(PM_final_severity), digits = 4))%>%
-   mutate(disease_error = round(as.double(disease_error), digits = 6))%>%
-   mutate(D_error_type = as.character(D_error_type))%>%
-   mutate(grain_yield.t.ha. = round(as.double(grain_yield.t.ha.), digits = 4))%>%
-   mutate(yield_error = round(as.double(yield_error), digits = 6))%>%
-   mutate(Y_error_type = as.character(Y_error_type))%>%
-   mutate(Y_Msquare = round(as.double(Y_Msquare), digits = 6))%>%
-   mutate(yield_gain = round(as.double(yield_gain), digits = 4))%>%
-   mutate(prop_YG = round(as.double(prop_YG), digits = 4))%>%
-   select(-c(trial_design, # remove the following columns
-             plot_length.m.,
-             plot_width.m.,
-             plant_density,
-             trade_name,
-             n_treatment,
-             emergence_date,
-             rating_scale,
-             raw_graded,
-             raw_data_avail,
-             comments,
-             days_harvest.planting,
-             AUDPS_m,
-             AUDPC_sd,
-             Inc_Ms,
-             pod_fill_date,
-             mid_late_pod_fill,
-             yield_gain,
-             Y_Msquare,
-             prop_YG,
-             AUDPC_m,
-             AUDPC_sd))
+   mutate(PM_final_severity = round(as.double(PM_final_severity), digits = 4)) %>%
+   mutate(disease_error = round(as.double(disease_error), digits = 6)) %>%
+   mutate(D_error_type = as.character(D_error_type)) %>%
+   mutate(grain_yield.t.ha. = round(as.double(grain_yield.t.ha.), digits = 4)) %>%
+   mutate(yield_error = round(as.double(yield_error), digits = 6)) %>%
+   mutate(Y_error_type = as.character(Y_error_type)) %>%
+   mutate(Y_Msquare = round(as.double(Y_Msquare), digits = 6)) %>%
+   mutate(yield_gain = round(as.double(yield_gain), digits = 4)) %>%
+   mutate(prop_YG = round(as.double(prop_YG), digits = 4)) %>%
+   select(
+      -c(
+         trial_design,
+         # remove the following columns
+         plot_length.m.,
+         plot_width.m.,
+         plant_density,
+         trade_name,
+         n_treatment,
+         emergence_date,
+         rating_scale,
+         raw_graded,
+         raw_data_avail,
+         comments,
+         days_harvest.planting,
+         AUDPS_m,
+         AUDPC_sd,
+         Inc_Ms,
+         pod_fill_date,
+         mid_late_pod_fill,
+         yield_gain,
+         Y_Msquare,
+         prop_YG,
+         AUDPC_m,
+         AUDPC_sd
+      )
+   )
 ```
 
 
 ## Subset to trials containing DMI fungicides
 
 ```{r filterDMI_trials}
-DMI_Trials <- 
+DMI_Trials <-
    PM_MB_dat %>%
    filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole")%>%
+             fungicide_ai == "propiconazole") %>%
    distinct(trial_ref) %>%
    pull()
 
-PM_MB_dat <- 
-   PM_MB_dat[PM_MB_dat$trial_ref %in% DMI_Trials,]
+PM_MB_dat <-
+   PM_MB_dat[PM_MB_dat$trial_ref %in% DMI_Trials, ]
 ```
 
 Now remove any non-DMI treatments or controls
 ```{r KeepOnlyDMI}
-PM_MB_dat <- 
+PM_MB_dat <-
    PM_MB_dat %>%
-   filter(fungicide_ai == "control" |
-             fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole")
+   filter(
+      fungicide_ai == "control" |
+         fungicide_ai == "tebuconazole" |
+         fungicide_ai == "propiconazole"
+   )
 ```
 
 ## Classifying spray schedule  
@@ -408,7 +417,7 @@ PM_MB_dat %<>%
    mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
    mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
    mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2)
-   
+
 ```
 
 To ensure sufficient number of replicates, we will bin the continuous variable into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.  
@@ -421,11 +430,22 @@ These categorical variables are named:
 The number of sprays need also be defined.
 
 ```{r TreatmentTable}
-data.frame(TreatmentName = c("Early", "Recommended", "Late", "EarlyPlus", "RecommendedPlus", "LatePlus"),
-           n_sprays = rep(c("Single", "Two - Three"), each = 3),
-           DaysRelativeToFirstSign = c("Prior to first sign of Powdery Mildew",
-                                       "1 - 3 days after first sign of Powdery Mildew",
-                                       "7 - 8 days after first sign of Powdery Mildew"))%>%
+data.frame(
+   TreatmentName = c(
+      "Early",
+      "Recommended",
+      "Late",
+      "EarlyPlus",
+      "RecommendedPlus",
+      "LatePlus"
+   ),
+   n_sprays = rep(c("Single", "Two - Three"), each = 3),
+   DaysRelativeToFirstSign = c(
+      "Prior to first sign of Powdery Mildew",
+      "1 - 3 days after first sign of Powdery Mildew",
+      "7 - 8 days after first sign of Powdery Mildew"
+   )
+) %>%
    kable()
 ```
 
@@ -453,7 +473,7 @@ PM_MB_dat <- PM_MB_dat %>%
             !is.na(fungicide_application_2) ~ "Late_plus",
          TRUE ~ "Other"
       )
-   ) 
+   )
 
 PM_MB_dat[PM_MB_dat$fungicide_ai == "control",
           c(
@@ -498,16 +518,16 @@ First we will start by standardising yield variance according to the method repo
 
 ### Yield variance standardisation
 ```{r StandardiseYieldVariance}
-PM_MB_dat <- 
+PM_MB_dat <-
    PM_MB_dat %>%
    mutate(
-      vi = 
+      vi =
          case_when(
-            Y_error_type == "stdev" ~ disease_error ^2,
-            Y_error_type == "lsd (P=0.05)" ~ 
-               (replicates * ((disease_error / 1.96) ^2) /2)/replicates
+            Y_error_type == "stdev" ~ disease_error ^ 2,
+            Y_error_type == "lsd (P=0.05)" ~
+               (replicates * ((disease_error / 1.96) ^ 2) / 2) / replicates
          ),
-      spray_management = fct_relevel(spray_management,sort)
+      spray_management = fct_relevel(spray_management, sort)
    ) %>%
    select(-c(yield_error,
              Y_error_type))
@@ -517,17 +537,17 @@ PM_MB_dat <-
 
 ### Disease severity variance standardisation
 ```{r StandardiseSeverityVariance}
-PM_MB_dat <- 
+PM_MB_dat <-
    PM_MB_dat %>%
    mutate(
-      d_vi = 
+      d_vi =
          case_when(
-            D_error_type == "stdev" ~ disease_error ^2,
-            D_error_type == "lsd (P=0.05)" ~ 
-               (replicates * ((disease_error / 1.96) ^2) /2)/replicates
+            D_error_type == "stdev" ~ disease_error ^ 2,
+            D_error_type == "lsd (P=0.05)" ~
+               (replicates * ((disease_error / 1.96) ^ 2) / 2) / replicates
          ),
       id = row_number(),
-      spray_management = fct_relevel(spray_management,sort)
+      spray_management = fct_relevel(spray_management, sort)
    ) %>%
    select(-c(disease_error,
              D_error_type))
@@ -538,7 +558,7 @@ PM_MB_dat <-
 
 
 ```{r saveData01}
-write.csv(PM_MB_dat, file = "cache/PM_MB_clean_data.csv",row.names = FALSE)
+write.csv(PM_MB_dat, file = "cache/PM_MB_clean_data.csv", row.names = FALSE)
 save(PM_MB_dat, file = here("cache/ImportDataAndSelectTrials01.Rdata"))
 ```
 
