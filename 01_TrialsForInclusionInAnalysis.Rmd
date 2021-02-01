@@ -8,7 +8,8 @@ pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, lubridate, here)
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
-theme_set(theme_usq())
+theme_set(theme_usq()
+)
 ```
 Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Research and Development Corporation (GRDC) northern grains region were sourced for a meta-analysis.
 
@@ -25,14 +26,14 @@ We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue
 
    1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants.  
    2. Trial data needed to include:  
-      i) fungicide active ingredients.  
+      i) Fungicide active ingredients.  
       ii) A demethylase inhibitor (DMI) fungicide.  
       iii) The date at which powdery mildew first appeared in the trial.  
       iv) Disease severity at the end of the growing seasons.  
       v) Fungicide application dates.  
-      vi) fungicide dose.  
+      vi) Fungicide dose.  
       vii) Crop yield.  
-      viii) Treatment means and accompanying variance
+      viii) Treatment means and accompanying variance.
 
 
 
@@ -43,23 +44,42 @@ We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue
 ## Import data and apply selection criteria  
 ### Import data from trials we have the raw data  
 ```{r import_dataRAW}
-PM_MB_raw <- 
+PM_MB_raw <-
    rbind(
-      read.csv(here("cache/2010 PMmung Hermitage means.csv"), stringsAsFactors = FALSE),
-      read.csv(here("cache/2011 PMmung Herm means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/2011 PMmung Kingaroy means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/AM1305_Goolhi_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/AM1304-MarysMount_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/AM1303-Premer-Disease_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/BB1305_Millmerran_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Herm_16_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/King_16_means.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Fogerty_17_mean.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Hermitage_17_mean.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Wellcamp_18_mean.csv"),stringsAsFactors = FALSE),
-      read.csv(here("cache/Hermitage_19_mean.csv"),stringsAsFactors = FALSE)
-      )
-write.csv(PM_MB_raw, file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData"), row.names = FALSE)
+      read.csv(
+         here("cache/2010 PMmung Hermitage means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(here("cache/2011 PMmung Herm means.csv"), stringsAsFactors = FALSE),
+      read.csv(
+         here("cache/2011 PMmung Kingaroy means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(here("cache/AM1305_Goolhi_means.csv"), stringsAsFactors = FALSE),
+      read.csv(
+         here("cache/AM1304-MarysMount_means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(
+         here("cache/AM1303-Premer-Disease_means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(
+         here("cache/BB1305_Millmerran_means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(here("cache/Herm_16_means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/King_16_means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Fogerty_17_mean.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_17_mean.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Wellcamp_18_mean.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_19_mean.csv"), stringsAsFactors = FALSE)
+   )
+write.csv(
+   PM_MB_raw,
+   file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData"),
+   row.names = FALSE
+)
 ```
 
 <br>
@@ -70,16 +90,16 @@ write.csv(PM_MB_raw, file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData")
 ### Import dataset of manual entries  
 Import dataset which were manually entered from trial reports  
 ```{r import_dataMan}
-PM_MB_man <- read.csv(here("cache/PM_Mungbean_DataManuallyEntered.csv"), stringsAsFactors = FALSE)
+PM_MB_man <-
+   read.csv(here("cache/PM_Mungbean_DataManuallyEntered.csv"),
+            stringsAsFactors = FALSE)
 ```
 
 Bind datasets, data set compiled from raw trial data and data manually compiled from trial reports.  
 ```{r bind_data}
-PM_MB_dat <- 
-   rbind(
-      PM_MB_raw,
-      PM_MB_man
-      )
+PM_MB_dat <-
+   rbind(PM_MB_raw,
+         PM_MB_man)
 ```
 
 <br>
@@ -92,32 +112,41 @@ PM_MB_dat %>%
    arrange(year, location) %>%
    group_by(trial_ref) %>%
    summarise(
-         Year = unique(year),
-         Location = unique(location),
-         `Replicates per treatment` = if(all(replicates[1] == replicates)){
-            as.character(replicates[1])}else{
-               as.character(paste(min(replicates),"-",max(replicates)))},
-         `Planting date` = unique(planting_date),
-         `First sign of disease` = unique(first_sign_disease),
-         `Fungicide treatments` = length(n_treatment),
-      ) %>%
-      arrange(Year)%>%
-   kable(caption = "Description of Experiments",
-         align = "c",
-         col.names = c("Unique Trial\nReference","Year", "Location", "Replicates\nper treatments",
-                       "Planting date", "First sign\nof disease", "Fungicide\n treatments")
-         )  %>%
+      Year = unique(year),
+      Location = unique(location),
+      `Replicates per treatment` = if (all(replicates[1] == replicates)) {
+         as.character(replicates[1])
+      } else{
+         as.character(paste(min(replicates), "-", max(replicates)))
+      },
+      `Planting date` = unique(planting_date),
+      `First sign of disease` = unique(first_sign_disease),
+      `Fungicide treatments` = length(n_treatment),
+   ) %>%
+   arrange(Year) %>%
+   kable(
+      caption = "Description of Experiments",
+      align = "c",
+      col.names = c(
+         "Unique Trial\nReference",
+         "Year",
+         "Location",
+         "Replicates\nper treatments",
+         "Planting date",
+         "First sign\nof disease",
+         "Fungicide\n treatments"
+      )
+   )  %>%
    kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
-   column_spec(c(3,5:6), width = "3cm") %>% 
+   column_spec(c(3, 5:6), width = "3cm") %>%
    scroll_box(height = "500px") 
-
 ```
 
 <br>
 
 ### Experiment locations  
 
-The following map displays experiment locations in the GRDC northern grain growing region which were considered for inclusion in this meta-analysis.  
+The following map displays experiment locations in the GRDC Northern Grains Region, which were considered for inclusion in this meta-analysis.  
 
 ```{r Experiment_locations, echo=FALSE}
 experiment_sites <- data.frame(
@@ -185,9 +214,14 @@ leaflet(experiment_sites) %>%
 
 ## Subset data to selection criteria  
 
-Lets apply the selection criteria our dataset.  
-All trials identified for this meta-analysis reported: fungicide active ingredient, dose, first sign of disease. 
-Therefore no trials need to be removed to satisfy this criteria.  
+Let's apply the selection criteria our dataset.  
+All trials identified for this meta-analysis reported: 
+
+* fungicide active ingredient,
+* dose,
+* first sign of disease. 
+
+Therefore no trials need to be removed to satisfy these criteria.  
 
 
 Three trials omitted due to not reporting yields  
@@ -204,7 +238,7 @@ PM_MB_dat <- PM_MB_dat %>%
 <br>
 <br>
 
-One more trial removed as it did not report disease severity.  
+One more was trial removed as it did not report disease severity.  
 ```{r TrialsWithotDisease}
 PM_MB_dat %>%
    filter(is.na(PM_final_severity)) %>%
@@ -285,7 +319,7 @@ PM_MB_dat %>%
 ```
 
 The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in the highest frequencies.
-Thee DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.
+The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.
 
 Amistar Xtra and Custodia both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.
 
@@ -315,7 +349,7 @@ PM_MB_dat %>%
 
 ### Classify dataset variables  
 
-Finally we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis. 
+Finally, we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis. 
 It should be noted that the data-set below has still retained all fungicide active ingredients. 
 Before dropping the non-DMI fungicides from the final meta-analysis we will inspect their influence on grain yield.
 

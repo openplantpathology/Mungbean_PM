@@ -13,7 +13,7 @@ any(is.na(estAUDPC$first_sign_disease)) # No
 # are there any entries which don't state when they were assessed for disease at the end of the trial
 any(is.na(estAUDPC$final_assessment)) # No
 
-#Good! Lets begin 
+#Good! Let's begin 
 
 estAUDPC$tInf <- as.Date(estAUDPC$final_assessment, format = "%Y-%m-%d") - 
    as.Date(estAUDPC$first_sign_disease, format = "%Y-%m-%d")
