@@ -233,12 +233,12 @@ Let's inspect the difference in yields for each dose.
 ```{r PropiDoseEffect}
 PM_MB_dat %>%
    filter(fungicide_ai == "propiconazole") %>%
-   ggplot(aes(x = relevel(as.factor(dose_ai.ha), "62.5"), y = prop_YG)) +
+   ggplot(aes(x = relevel(as.factor(dose_ai.ha), "62.5"), y = grain_yield.t.ha.)) +
    xlab("Dose (g ai/ha)") +
    labs(label = "Yield for each respective propiconazole dose",
         caption = "Facets indicate the number of applications") +
    geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
-   ylab("Yield gain proportially\nto the no spray control") +
+   ylab("Grain yield t / ha") +
    facet_grid(cols = vars(total_fungicide))
 ```
 
@@ -398,8 +398,8 @@ Based on a GRDC report by Sue Thompson [-@SueThompson2016] we want to know what 
 PM_MB_dat %>%
    filter(year == "2016",
           host_genotype == "Jade") %>%
-   mutate(Treatment = case_when(fungicide_ai == "control" ~ "control",
-                                TRUE ~ "FungicideTreated")) %>%
+   mutate(Treatment = case_when(fungicide_ai == "control" ~ "control_yield",
+                                TRUE ~ "FungicideTreated_yield")) %>%
    group_by(location, Treatment) %>%
    summarise(
       trial_ref = trial_ref,
@@ -410,21 +410,16 @@ PM_MB_dat %>%
    ) %>%
    distinct() %>%
    pivot_wider(names_from = Treatment, values_from = Yield) %>%
-   mutate(Diff = FungicideTreated - control) %>%
-   mutate(percent = (Diff / FungicideTreated) * 100) %>%
+   mutate(Diff = FungicideTreated_yield - control_yield) %>%
+   mutate(percent = (Diff / FungicideTreated_yield) * 100) %>%
    select(trial_ref,
           location,
           year,
-          control,
-          FungicideTreated,
+          control_yield,
+          FungicideTreated_yield,
           percent,
           Diff)
 ```
-
-## Summary of disease incidence effect on yields
-
-This sequence of graphs show that AUDPC and disease incidence tends not affect yields if the season is a low yielding season, _i.e._ lower than 1 tonne per hectare.
-The higher the yield, the greater greater the influence on the disease on the yield especially if the crop is high yielding with AUDPC also being large enough to reduce yield.
 
 ### FAO mungbean data
 
