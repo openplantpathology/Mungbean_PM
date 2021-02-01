@@ -527,47 +527,6 @@ We know there is a good deal of variability in our studies and between them.
 Mungbean produces variable yields between seasons so ordinarily we should use a response that highlights the difference in the treatment effects that we are interested in and reduce the variability.
 However for an arm-based analysis, which we intend to do, we calculate the differences between control and treatment after the meta-analysis.  
 
-### Simplify and save data  
-
-```{r simplifyData}
-PM_MB_dat_full <- PM_MB_dat
-
-PM_MB_dat <-
-   PM_MB_dat %>%
-   mutate(
-      spray_management =
-         factor(
-            spray_management,
-            c(
-               "control",
-               "Early",
-               "Recommended",
-               "Recommended_plus",
-               "Late",
-               "Late_plus"
-            )
-         ),
-      id = row_number(),
-      vi = yield_error,
-      n = replicates
-   ) %>%
-   select(
-      trial,
-      trial_ref,
-      location,
-      year,
-      row_spacing,
-      host_genotype,
-      spray_management,
-      fungicide_ai,
-      grain_yield.t.ha.,
-      yield_gain,
-      vi,
-      vi2,
-      n,
-      id
-   )
-```
 
 
 
