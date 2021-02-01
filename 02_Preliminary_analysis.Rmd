@@ -24,14 +24,11 @@ load("cache/ImportDataAndSelectTrials01.Rdata")
 
 ## Explore and Visualise Data  
 
-The data explored in the `PM_MB_dat` data frame is a list of mean values from each treatment in each respective experiment.
-These preliminary analyses will describe the data and then investigate any change in mungbean yields which is attributable to the fungicide treatment.  
+The data explored in the `PM_MB_dat` data frame is a clean data frame focusing on trials which met the selection criteria and the treatments testing DMi fungicides (tebuconazole / propiconazole) or no spray controls. 
 
-All fungicide AI treatments are still contained in the `PM_MB_dat` data, so filtering the data might be necessary to only inspect DMI treatments.
 
-### Descriptive statistics  
-#### Spatio-temporal variation  
-
+### Spatio-temporal variation  
+#### Trial seasons
 Let's look at how many trials were undertaken each season in trials including DMI fungicides.  
 
 ```{r FinalTrialsForInclusion1}
@@ -40,68 +37,14 @@ tmp1 <- PM_MB_dat %>%
    arrange(year)
 table(tmp1$year)
 ```
-
-Also the location of the trials including DMI fungicides.  
+#### Trial locations
+The location of the trials including DMI fungicides.  
 
 ```{r FinalTrialsForInclusion}
    table(tmp1$location)
 ```
 
-#### Mean yield  
-
-What is the variation in yield over all the trials in the no spray control.  
-
-```{r ControlYield_AllTrials}
-PM_MB_dat %>%
-   filter(fungicide_ai == "control") %>%
-   summarise(
-      mean_yield = mean(grain_yield.t.ha. * 1000),
-      median_yield = median(grain_yield.t.ha. * 1000),
-      minimum_yield = min(grain_yield.t.ha. * 1000),
-      maximum_yield = max(grain_yield.t.ha. * 1000),
-      yield_stdev = sd(grain_yield.t.ha. * 1000),
-      yield_SE = sd(grain_yield.t.ha. * 1000) /
-         sqrt(n())
-   ) %>%
-   kable(align = 'c',
-         caption = "Average yield statistics for no spray control plots")
-```
-
-Mean yields in DMI fungicide treated plots
-```{r Yield_DMITrials}
-PM_MB_dat %>%
-   filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole")%>%
-   summarise(mean_yield = mean(grain_yield.t.ha.*1000),
-             median_yield = median(grain_yield.t.ha. * 1000),
-             minimum_yield = min(grain_yield.t.ha.*1000),
-             maximum_yield = max(grain_yield.t.ha.*1000),
-             yield_stdev = sd(grain_yield.t.ha. * 1000),
-             yield_sterr = sd(grain_yield.t.ha.*1000)/(sqrt(length(grain_yield.t.ha.))))%>%
-   kable(align = 'c',
-   caption = "Average yield statistics for DMI fungicide treated plots")
-   
-```
-
-Trial mean yields in all fungicide treated plots
-```{r Yield_AllTrials}
-PM_MB_dat %>%
-   group_by(trial_ref, location, year)%>%
-   summarise(mean_yield = mean(grain_yield.t.ha.*1000),
-             median_yield = median(grain_yield.t.ha. * 1000),
-             minimum_yield = min(grain_yield.t.ha.*1000),
-             maximum_yield = max(grain_yield.t.ha.*1000),
-             yield_stdev = sd(grain_yield.t.ha. * 1000),
-             yield_sterr = sd(grain_yield.t.ha.*1000)/(sqrt(length(grain_yield.t.ha.))))%>%
-   arrange(yield_sterr) %>%
-   kable(align = 'c',
-   caption = "Average yield statistics for DMI fungicide treated plots")
-   
-```
-
-
 #### Full trial summary
-
 Let's inspect a summary of both powdery mildew severity and grain yield for trials including DMI fungicides.  
 
 ```{r Full_Trial_Summary_table, warning= FALSE}
