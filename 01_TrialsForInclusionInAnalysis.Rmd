@@ -373,11 +373,13 @@ PM_MB_dat <-
          Inc_Ms,
          pod_fill_date,
          mid_late_pod_fill,
+         flowering_date,
          yield_gain,
          Y_Msquare,
          prop_YG,
          AUDPC_m,
-         AUDPC_sd
+         AUDPC_sd,
+         AUDPS_sd
       )
    )
 ```
