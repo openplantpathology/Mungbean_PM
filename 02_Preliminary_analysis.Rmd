@@ -50,11 +50,6 @@ Let's inspect a summary of both powdery mildew severity and grain yield for tria
 ```{r Full_Trial_Summary_table, warning= FALSE}
 Sev_yield_table <-
    PM_MB_dat %>%
-   filter(
-      fungicide_ai == "control" |
-         fungicide_ai == "tebuconazole" |
-         fungicide_ai == "propiconazole"
-   ) %>%
    mutate(PM_sev_control = case_when(fungicide_ai == "control" ~ PM_final_severity,
                                      TRUE ~ NA_real_)) %>%
    mutate(PM_sev_treat = case_when(fungicide_ai != "control" ~ PM_final_severity,
@@ -80,7 +75,6 @@ Sev_yield_table <-
       max_PM_yield = round(max(PM_y_treat, na.rm = TRUE), digits = 3),
       .groups = "drop"
    ) %>%
-   filter(min_PM_sev < 10) %>% # anything exceeding 9 is off the scale and should be removed due to it being the result of min(NA, na.rm = T) ie. Inf
    arrange(year) %>%
    mutate(PM_sev_range = paste(min_PM_sev, max_PM_sev, sep = " - ")) %>%
    mutate(yield_range = paste(min_PM_yield, max_PM_yield, sep = " - ")) %>%
