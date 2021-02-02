@@ -405,7 +405,4 @@ beans %>%
    geom_smooth()
 ```
 
-```{r}
-save(PM_MB_dat, file = here("cache/PreliminaryData.Rdata"))
-```
 
