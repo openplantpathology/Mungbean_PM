@@ -23,8 +23,11 @@ theme_set(theme_usq())
 source(here("R/reportP.R"))
 
 # Data
-load("cache/PrepData.Rdata"
+load("cache/PreliminaryData.Rdata"
 )
+
+PM_MB_dat <-
+   read.csv("cache/PM_MB_clean_data.csv", stringsAsFactors = FALSE)
 ```
 
 # Grain yield meta-analysis
@@ -40,6 +43,18 @@ To do this, in our model:
    - Grain yield is our response variable (t / ha)
 
    - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
+
+### Define Trial
+```{r define_trial}
+PM_MB_dat <-
+   PM_MB_dat %>%
+   mutate(trial = paste(trial_ref,
+                        year,
+                        location,
+                        host_genotype,
+                        row_spacing,
+                        sep = "_")) 
+```
 
    - We will investigate the effect size of our treatment - spray management,
 
