@@ -22,7 +22,7 @@ theme_set(theme_usq()
 load("cache/ImportDataAndSelectTrials01.Rdata")
 ```
 
-## Explore and Visualise Data  
+## Trial focused summaries  
 
 The data explored in the `PM_MB_dat` data frame is a clean data frame focusing on trials which met the selection criteria and the treatments testing DMi fungicides (tebuconazole / propiconazole) or no spray controls. 
 
@@ -44,7 +44,7 @@ The location of the trials including DMI fungicides.
    table(tmp1$location)
 ```
 
-#### Full trial summary
+### Full trial summary
 Let's inspect a summary of both powdery mildew severity and grain yield for trials including DMI fungicides.  
 
 ```{r Full_Trial_Summary_table, warning= FALSE}
@@ -106,7 +106,7 @@ Sev_yield_table <-
 Sev_yield_table
 ```
 
-
+Save table to a word document to use in manuscript
 ```{r eval=FALSE, include=FALSE}
 # Save table as a word document
 doc <- officer::read_docx()
@@ -116,6 +116,8 @@ print(doc, target = "paper/figures/Table1_severity&yield.docx")
 ```
 
 
+
+## Treatment focuses summaries
 
 Various factors have been studied in the previous experiments which may influence the subsequent meta-analysis.
 On this page, unless stated, the following plots and analyses were made disregarding other effects.
@@ -139,13 +141,39 @@ The following factors are postulated to influence mungbean grain yield and/or po
    
 The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r first(levels(PM_MB_dat$year))` - `r last(levels(PM_MB_dat$year))`) of which the details are described in the [Trials considered for inclusion in meta-analysis section](#Trials-considered-for-inclusion-in-meta-analysis). 
 
-<br>
-<br>
-<br>
+### Fungicide type
+#### Powdery mildew severity
+```{r TebuVPropi_sev}
+n_C <- sum(PM_MB_dat$fungicide_ai == "control")
+n_P <- sum(PM_MB_dat$fungicide_ai == "propiconazole")
+n_T <- sum(PM_MB_dat$fungicide_ai == "tebuconazole")
 
+PM_MB_dat %>%
+   ggplot(aes(y = PM_final_severity, x = as.factor(fungicide_ai))) +
+   xlab("Fungicide treatment") +
+   ggtitle(label = "Powdery mildew severity for each fungicide active ingredient") +
+   labs(caption = paste("Control n:", n_C,
+                        "; Propiconazole n:", n_P,
+                        "; Tebuconazole n:", n_T, sep = "")) +
+   geom_boxplot() +
+   scale_fill_usq() +
+   scale_colour_usq()
+```
+#### Yield effect
+```{r TebuVPropi_Yi}
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = as.factor(fungicide_ai))) +
+   xlab("Fungicide treatment") +
+   ggtitle(label = "Grain yield for each fungicide active ingredient") +
+   labs(caption = paste("Control n:", n_C,
+                        "; Propiconazole n:", n_P,
+                        "; Tebuconazole n:", n_T, sep = "")) +
+   geom_boxplot() +
+   scale_colour_usq()
+```
 
 ### Fungicide Doses{#fungicide-doses}  
-From this point on we will investigate only the DMI fungicides, tebuconazole and propiconazole, and disregard all other fungicide modes-of-action.
+This analysis focuses only the DMI fungicides, tebuconazole and propiconazole, which were trialed the most often.
 
 We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.
 
