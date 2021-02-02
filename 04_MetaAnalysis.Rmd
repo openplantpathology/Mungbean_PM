@@ -23,8 +23,7 @@ theme_set(theme_usq())
 source(here("R/reportP.R"))
 
 # Data
-load("cache/ImportDataAndSelectTrials01.Rdata"
-)
+# load("cache/ImportDataAndSelectTrials01.Rdata")
 
 PM_MB_dat <-
    read.csv("cache/PM_MB_clean_data.csv", stringsAsFactors = FALSE)
