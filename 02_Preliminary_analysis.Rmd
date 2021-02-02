@@ -173,7 +173,7 @@ PM_MB_dat %>%
 ```
 
 ### Fungicide Doses{#fungicide-doses}  
-This analysis focuses only the DMI fungicides, tebuconazole and propiconazole, which were trialed the most often.
+This analysis focuses only the DMI fungicides, tebuconazole and propiconazole, which were trialled the most often.
 
 We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.
 
