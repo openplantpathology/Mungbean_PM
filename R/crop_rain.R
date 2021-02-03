@@ -28,7 +28,7 @@ crop_rain <- function(latitude, longitude, start, end) {
       if (banned_stations %in% site_num) {
          site_num <- stat_sweep[2, site]
       }
-      
+      message("Downloading weather data from BOM servers,\nplease make a cup of coffee this will take some time.")
       station_site <-
          bomrang::get_historical(stationid = site_num, type = "rain")
       station_site$site_num <- as.character(site_num)
