@@ -1,3 +1,5 @@
+library("dplyr")
+library("lubridate")
 # Function to run over each line for sum rainfall
 crop_rain <- function(latitude, longitude, start, end) {
    # locations <- unique(data.frame(lat = latitude,
