@@ -405,4 +405,92 @@ beans %>%
    geom_smooth()
 ```
 
+### In-crop rainfall
+First an inspection of all rainfall within the season
+```{r season_rainfall}
+source("R/add_lat_longs.R") # code adds the latitude- and longitude to PM_MB_dat
+source("R/crop_rain.R")
 
+# Obtain rainfall from bomrang
+PM_MB_dat$sum_rain <-
+   apply(PM_MB_dat, 1, function(x) {
+      crop_rain(
+         latitude = x["lat"],
+         longitude = x["lon"],
+         start = x["planting_date"],
+         end = x["harvest_date"]
+      )
+   })
+
+# plot yield vs rainfall
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = sum_rain)) + 
+   geom_point()
+```
+
+```{r lm_total}
+summary(lm(grain_yield.t.ha. ~ sum_rain, data = PM_MB_dat))
+```
+
+```{r early_season_rain}
+PM_MB_dat$early_rain <-
+   apply(PM_MB_dat, 1, function(x) {
+      crop_rain(
+         latitude = x["lat"],
+         longitude = x["lon"],
+         start = x["planting_date"],
+         end = x["first_sign_disease"]
+      )
+   })
+
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = early_rain)) + 
+   geom_point()
+```
+
+```{r lm_early_rain}
+summary(lm(grain_yield.t.ha. ~ early_rain, data = PM_MB_dat))
+```
+
+
+
+```{r late_rain}
+PM_MB_dat$late_rain <-
+   apply(PM_MB_dat, 1, function(x) {
+      crop_rain(
+         latitude = x["lat"],
+         longitude = x["lon"],
+         start = x["first_sign_disease"],
+         end = x["harvest_date"]
+      )
+   })
+
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = late_rain)) + 
+   geom_point()
+```
+
+```{r lm_late_rain}
+summary(lm(grain_yield.t.ha. ~ late_rain, data = PM_MB_dat))
+```
+
+
+```{r mid_rain}
+PM_MB_dat$mid_rain <-
+   apply(PM_MB_dat, 1, function(x) {
+      crop_rain(
+         latitude = x["lat"],
+         longitude = x["lon"],
+         start = ymd(x["first_sign_disease"]) + days(30),
+         end = ymd(x["first_sign_disease"]) + days(70)
+      )
+   })
+
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = mid_rain)) + 
+   geom_point()
+```
+
+```{r lm_late_rain}
+summary(lm(grain_yield.t.ha. ~ late_rain, data = PM_MB_dat))
+```
