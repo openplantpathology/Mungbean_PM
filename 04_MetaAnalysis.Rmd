@@ -79,6 +79,72 @@ PM_mv <- rma.mv(
 summary(PM_mv)
 ```
 
+
+### Influence of disease onset
+
+To determine if when in the season the disease occurs influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `early` or `late` disease onset.
+
+`early` and `late` will be divided by the median days after sowing when signs of the disease were first observed.
+```{r median onset}
+PM_MB_dat %>%
+   mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
+             lubridate::ymd(planting_date)) %>%
+   pull(first_sign_days)%>%
+   median()
+```
+Now lets define these two new variables, `first_sign_days` and `onset` in the data.
+
+```{r define_onset}
+PM_MB_dat <- PM_MB_dat %>%
+   mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
+             lubridate::ymd(planting_date)) %>%
+   mutate(onset = case_when(first_sign_days <= 39 ~ "early_onset",
+                            first_sign_days > 39 ~ "late_onset"))
+```
+
+Inspect a histogram of when first sign occured in the crop
+```{r hist_onset}
+PM_MB_dat %>%
+   ggplot(aes(x = first_sign_days)) +
+   geom_histogram() +
+   geom_vline(xintercept = 39)
+```
+
+To put this onset number into context for plant maturity, 40 days is approximately when flowering begins in the plant.
+
+
+#### metafor onset analysis
+
+We are adding the `onset` variable as a moderator to test and interaction with the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
+
+```{r osset_Metafor-analysis}
+PM_mv_onset <- rma.mv(
+   yi = grain_yield.t.ha.,
+   vi,
+   mods = ~ spray_management * onset,
+   method = "ML",
+   random = list(~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_MB_dat
+)
+
+```
+
+```{r}
+anova(PM_mv, PM_mv_onset)
+```
+This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value.
+However the higher AIC indicates that the model omitting `onset` is a slightly better fit.
+Also the chi-squared test uncertain that the `onset` model is significantly better as indicated by the `pval` 0.3258.
+The higher log likelihood on the `onset` model does intricate there is some merit to this model and that perhaps with more trials to increase statistical power might provide a useful model.  
+
+```{r}
+summary(PM_mv_onset)
+```
+
+
+
 Let's try the model with an implied simpler variance-covariance matrix "compound symmetry" ("CS") to examine if unstructured matrix is suitable.
 ```{r}
 PM_mv_cs <- rma.mv(
