@@ -481,8 +481,8 @@ PM_MB_dat$mid_rain <-
       crop_rain(
          latitude = x["lat"],
          longitude = x["lon"],
-         start = ymd(x["first_sign_disease"]) + days(30),
-         end = ymd(x["first_sign_disease"]) + days(70)
+         start = ymd(x["planting_date"]) + days(0),
+         end = ymd(x["planting_date"]) + days(63)
       )
    })
 
@@ -491,6 +491,6 @@ PM_MB_dat %>%
    geom_point()
 ```
 
-```{r lm_late_rain}
-summary(lm(grain_yield.t.ha. ~ late_rain, data = PM_MB_dat))
+```{r lm_mid_rain}
+summary(lm(grain_yield.t.ha. ~ mid_rain, data = PM_MB_dat))
 ```
