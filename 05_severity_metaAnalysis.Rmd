@@ -23,7 +23,7 @@ if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
 library(theme.usq)
 theme_set(theme_usq())
-#source(here("R/reportP.R"))
+source(here("R/reportP.R"))
 
 # Data
 PM_dat_D <-
@@ -106,4 +106,53 @@ axis(
    las = 2,
    cex.axis = 0.8
 )
+```
+
+
+```{r metafor_results}
+# obtain number of treatments included in each moderator variable
+k5 <-
+   as.data.frame(table(PM_dat_D$trial, PM_dat_D$spray_management)) %>%
+   filter(Freq != 0) %>%
+   group_by(Var2) %>%
+   summarise(n()) %>%
+   pull()
+
+# create data.frame
+results_mv <- data.frame(
+   N = PMsev_mv$g.levels.k,
+   k = k5,
+   Effect = round(PMsev_mv$b, 4),
+   se = round(PMsev_mv$se, 4),
+   CI_lower = round(PMsev_mv$ci.lb, 4),
+   CI_upper = round(PMsev_mv$ci.ub, 4),
+   z_val = round(PMsev_mv$zval, 4),
+   p_val = reportP(PMsev_mv$pval, AsNumeric = TRUE)
+)
+
+# rename colnames to give table headings
+colnames(results_mv)[c(1:4, 6:9)] <-
+   c("Treatment",
+     "$N$",
+     "$k$",
+     "$\\mu$",
+     "$CI_{L}$",
+     "$CI_{U}$",
+     "$Z$",
+     "$P$")
+
+# provide rownames for each moderator variable
+row.names(results_mv) <- c(
+   "Intercept / No Spray control",
+   "$Early_{single}$",
+   "$Recommended_{single}$",
+   "$Recommended_{plus}$",
+   "$Late_{single}$",
+   "$Late_{plus}$"
+)
+
+kable(results_mv[2:6, 2:9],
+      align = "lcccccccc",
+      booktabs = TRUE,
+      caption = "Table 3: Estimated powdery mildew severity mean difference ($u$) to the no spray control (intercept) for each spray schedule treatment. Estimates were calculated from a network meta-analysis of data obtained from grey literature reports of field trials undertaken in Eastern Australia. Z and P values indicate statistical significance in comparison to the intercept.")
 ```
