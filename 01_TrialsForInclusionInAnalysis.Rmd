@@ -590,6 +590,7 @@ PM_dat_Y <-
             Y_error_type == "lsd (P=0.05)" ~
                (replicates * ((yield_error / 1.96) ^ 2) / 2) / replicates
          ),
+      id = row_number(),
       spray_management = fct_relevel(spray_management, sort)
    ) %>%
    select(-c(yield_error,
