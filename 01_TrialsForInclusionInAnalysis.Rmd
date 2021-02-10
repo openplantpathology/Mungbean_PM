@@ -278,27 +278,6 @@ PM_MB_dat %>%
 <br>
 <br>
 
-Four trials from our subset need to be removed for not reporting yield variance.  
-```{r TrialsWithVariance}
-NoVar <- PM_MB_dat %>%
-   group_by(trial_ref) %>%
-   summarise(
-      location = location,
-      year = year,
-      No_Var = all(is.na(yield_error)),
-      .groups = 'drop'
-   ) %>%
-   filter(No_Var) %>%
-   distinct(trial_ref, year, location)
-NoVar
-
-PM_MB_dat <- PM_MB_dat %>%
-   filter(!(trial_ref %in% NoVar$trial_ref))
-```
-
-<br>
-<br>
-<br>
 
 We need to focus the meta-analysis on fungicides with the same mode of action.
 Let's look at all the fungicides and retain the best represented fungicide group in the data.
@@ -330,95 +309,6 @@ This can then be compared to an additional meta-analysis including azoxystrobin 
 <br>
 <br>
 
-
-We will retain the following trials, which only contain DMI fungicides. 
-However, we won't remove non-DMI fungicides just yet, we will do this before the analysis.
-
-```{r Final_Trials_For_Inclusion}
-PM_MB_dat %>%
-   filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole") %>%
-   distinct(trial_ref, location, year) %>%
-   arrange(year) 
-```
-
-<br>
-<br>
-<br>
-<br>
-
-### Classify dataset variables  
-
-Finally, we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis. 
-It should be noted that the data-set below has still retained all fungicide active ingredients. 
-Before dropping the non-DMI fungicides from the final meta-analysis we will inspect their influence on grain yield.
-
-```{r classifyData}
-PM_MB_dat <-
-   PM_MB_dat %>%
-   mutate(trial_ref = as.character(trial_ref)) %>%
-   mutate(year = as.character(year)) %>%
-   mutate(location = as.character(location)) %>%
-   mutate(host_genotype = as.character(host_genotype)) %>%
-   mutate(row_spacing = as.double(round(row_spacing, digits = 2))) %>%
-   mutate(replicates = as.integer(replicates)) %>%
-   mutate(planting_date = ymd(planting_date)) %>%
-   mutate(flowering_date = ymd(flowering_date)) %>%
-   mutate(pod_fill_date = ymd(pod_fill_date)) %>%
-   mutate(mid_late_pod_fill = ymd(mid_late_pod_fill)) %>%
-   mutate(first_sign_disease = ymd(first_sign_disease)) %>%
-   mutate(fungicide_ai = as.character(fungicide_ai)) %>%
-   mutate(dose_ai.ha = round(as.double(dose_ai.ha), digits = 2)) %>%
-   mutate(fungicide_application_1 = ymd(fungicide_application_1)) %>%
-   mutate(fungicide_application_2 = ymd(fungicide_application_2)) %>%
-   mutate(fungicide_application_3 = ymd(fungicide_application_3)) %>%
-   mutate(fungicide_application_4 = ymd(fungicide_application_4)) %>%
-   mutate(fungicide_application_5 = ymd(fungicide_application_5)) %>%
-   mutate(fungicide_application_6 = ymd(fungicide_application_6)) %>%
-   mutate(total_fungicide = as.integer(total_fungicide)) %>%
-   mutate(harvest_date = ymd(harvest_date)) %>%
-   mutate(final_assessment = ymd(final_assessment)) %>%
-   mutate(PM_final_severity = round(as.double(PM_final_severity), digits = 4)) %>%
-   mutate(disease_error = round(as.double(disease_error), digits = 6)) %>%
-   mutate(D_error_type = as.character(D_error_type)) %>%
-   mutate(grain_yield.t.ha. = round(as.double(grain_yield.t.ha.), digits = 4)) %>%
-   mutate(yield_error = round(as.double(yield_error), digits = 6)) %>%
-   mutate(Y_error_type = as.character(Y_error_type)) %>%
-   mutate(Y_Msquare = round(as.double(Y_Msquare), digits = 6)) %>%
-   mutate(yield_gain = round(as.double(yield_gain), digits = 4)) %>%
-   mutate(prop_YG = round(as.double(prop_YG), digits = 4)) %>%
-   select(
-      -c(
-         trial_design,
-         # remove the following columns
-         plot_length.m.,
-         plot_width.m.,
-         plant_density,
-         trade_name,
-         n_treatment,
-         emergence_date,
-         rating_scale,
-         raw_graded,
-         raw_data_avail,
-         comments,
-         days_harvest.planting,
-         AUDPS_m,
-         AUDPC_sd,
-         Inc_Ms,
-         pod_fill_date,
-         mid_late_pod_fill,
-         flowering_date,
-         yield_gain,
-         Y_Msquare,
-         prop_YG,
-         AUDPC_m,
-         AUDPC_sd,
-         AUDPS_sd
-      )
-   )
-```
-
-
 ## Subset to trials containing DMI fungicides
 
 ```{r filterDMI_trials}
@@ -444,12 +334,102 @@ PM_MB_dat <-
    )
 ```
 
+
+## Excluding variance
+Following an inspection of the yield and disease variance we determined imputation was not suitable and therefore we must exlude trials that did not report variance.
+For each analysis, yield and disease severity a separate data-set will be created, including only trials that report variance for the respective response variable
+
+Four trials will be removed for our yield data set `PM_dat_Y` for not reporting yield variance.  
+```{r TrialsWithVariance}
+NoVar <- PM_MB_dat %>%
+   group_by(trial_ref) %>%
+   summarise(
+      location = location,
+      year = year,
+      No_Var = all(is.na(yield_error)),
+      .groups = 'drop'
+   ) %>%
+   distinct(trial_ref, year, location)
+NoVar
+
+PM_dat_Y <- PM_MB_dat %>%
+   filter(!(trial_ref %in% NoVar$trial_ref))
+```
+
+
+Four trials will be removed for our disease severity data set `PM_dat_S` for not reporting yield variance.  
+```{r TrialsWithVariance}
+NoVar <- PM_MB_dat %>%
+   group_by(trial_ref) %>%
+   summarise(
+      location = location,
+      year = year,
+      No_Var = all(is.na(disease_error)),
+      .groups = 'drop'
+   ) %>%
+   distinct(trial_ref, year, location)
+NoVar
+
+PM_dat_D <- PM_MB_dat %>%
+   filter(!(trial_ref %in% NoVar$trial_ref))
+```
+
+
+We will retain the following trials, which only contain DMI fungicides. 
+However, we won't remove non-DMI fungicides just yet, we will do this before the analysis.
+
+```{r Final_Trials_For_Inclusion}
+PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole") %>%
+   mutate(MA_analysis = case_when(
+      is.na(yield_error & disease_error) == FALSE ~ "Yield and Disease",
+      is.na(yield_error) == FALSE & 
+         is.na(disease_error) ~ "Yield",
+      is.na(disease_error) == FALSE & 
+         is.na(yield_error) ~ "Disease",
+      TRUE ~ "Nil"
+   )) %>%
+   distinct(trial_ref, location, year, MA_analysis) %>%
+   arrange(year) 
+```
+
+<br>
+<br>
+<br>
+<br>
+
+### Classify dataset variables  
+
+Finally, we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis. 
+
+```{r classifyData}
+source("R/classify_PM_data.R")
+
+# classify yield data
+PM_dat_Y <- 
+   classify_PM_data(PM_dat_Y)
+
+#classify disease data
+PM_dat_D <- 
+   classify_PM_data(PM_dat_D)
+```
+
+
+
 ## Classifying spray schedule  
 
 First are going to calculate the time between the first sign of disease and the fungicide applications.  
 
 ```{r clustered_fungicide_applications}
-PM_MB_dat %<>%
+# Yield data
+PM_dat_Y %<>%
+   mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
+   mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
+   mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2)
+
+# Disease data
+PM_dat_D %<>%
    mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
    mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
    mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2)
@@ -485,9 +465,45 @@ data.frame(
    kable()
 ```
 
+Simplify the clusters for the yield data-set
+```{r simple_Y_clusters}
+PM_dat_Y <- PM_dat_Y %>%
+   mutate(
+      spray_management = case_when(
+         fungicide_timing_1 < 0 &
+            is.na(fungicide_application_2) &
+            is.na(fungicide_application_3) ~ "Early",
+         fungicide_timing_1 >= 0 &
+            fungicide_timing_1 < 4 &
+            is.na(fungicide_application_2) &
+            is.na(fungicide_application_3) ~ "Recommended",
+         fungicide_timing_1 >= 4 &
+            is.na(fungicide_application_2) &
+            is.na(fungicide_application_3) ~ "Late",
+         fungicide_timing_1 < 0 &
+            !is.na(fungicide_application_2) ~ "Early_plus",
+         fungicide_timing_1 >= 0 &
+            fungicide_timing_1 < 4 &
+            !is.na(fungicide_application_2) ~ "Recommended_plus",
+         fungicide_timing_1 >= 4 &
+            !is.na(fungicide_application_2) ~ "Late_plus",
+         TRUE ~ "Other"
+      )
+   )
 
-```{r simple_clusters}
-PM_MB_dat <- PM_MB_dat %>%
+PM_dat_Y[PM_dat_Y$fungicide_ai == "control",
+          c(
+             "fungicide_timing_1",
+             "fungicide_timing_2",
+             "fungicide_timing_3",
+             "spray_management"
+          )] <- "control"
+```
+
+
+Simplify the clusters
+```{r simple_D_clusters}
+PM_dat_D <- PM_dat_D %>%
    mutate(
       spray_management = case_when(
          fungicide_timing_1 < 0 &
@@ -520,11 +536,17 @@ PM_MB_dat[PM_MB_dat$fungicide_ai == "control",
           )] <- "control"
 ```
 
-Now to view the number break-down of the `spray_management` treatments
+Now to view the number break-down of the `spray_management` treatments in the yield and disease severity data-sets
 
-```{r tableSprayManagement}
-table(PM_MB_dat$spray_management)
+```{r tableSprayManagement_Y}
+table(PM_dat_Y$spray_management)
 ```
+
+
+```{r tableSprayManagement_Y}
+table(PM_dat_D$spray_management)
+```
+
 
 'Early_plus' treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
 
@@ -554,8 +576,8 @@ First we will start by standardising yield variance according to the method repo
 
 ### Yield variance standardisation
 ```{r StandardiseYieldVariance}
-PM_MB_dat <-
-   PM_MB_dat %>%
+PM_dat_Y <-
+   PM_dat_Y %>%
    mutate(
       vi =
          case_when(
@@ -573,8 +595,8 @@ PM_MB_dat <-
 
 ### Disease severity variance standardisation
 ```{r StandardiseSeverityVariance}
-PM_MB_dat <-
-   PM_MB_dat %>%
+PM_dat_D <-
+   PM_dat_D %>%
    mutate(
       d_vi =
          case_when(
