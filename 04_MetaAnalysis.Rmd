@@ -292,7 +292,7 @@ row.names(results_mv) <- c(
 kable(results_mv[2:6, 2:9],
       align = "lcccccccc",
       booktabs = TRUE,
-      caption = "Table ##: Estimated  mungbean yields mean difference to the no spray control for each spray schedule treatment. Estimates were calculated from the network meta-analysis of data obtained from grey literature reports of field trials undertaken in Eastern Australia. Z and P values indicate statistical significance in comparison to the intercept.")
+      caption = "Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Estimates were calculated from a network meta-analysis of data obtained from grey literature reports of field trials undertaken in Eastern Australia. Z and P values indicate statistical significance in comparison to the intercept.")
 ```
 
 Let's view these comparisons in a plot.
