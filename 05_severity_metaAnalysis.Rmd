@@ -26,21 +26,22 @@ theme_set(theme_usq())
 #source(here("R/reportP.R"))
 
 # Data
-load("cache/PrepData.Rdata")
+PM_dat_D <-
+   read.csv("cache/PM_disease_clean_data.csv", stringsAsFactors = FALSE)
 ```
 
 
 Which trials don't have all the required variance information?
 ```{r noDiseaseError}
-unique(PM_MB_dat_full[is.na(PM_MB_dat_full$disease_error),
+unique(PM_dat_D[is.na(PM_dat_D$d_vi),
                       c("trial_ref", "location", "year")])
 ```
 
 Eliminate trials with out disease severity variance.
 ```{r rm_SevDiseaseError}
 PM_sev <- 
-   PM_MB_dat_full %>%
-   filter(is.na(disease_error) == FALSE)
+   PM_dat_D %>%
+   filter(is.na(d_vi) == FALSE)
 ```
 Are all the reported disease variance the same type?
 ```{r sev_var_type}
