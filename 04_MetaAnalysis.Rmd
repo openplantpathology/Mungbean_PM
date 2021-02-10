@@ -268,16 +268,6 @@ results_mv <- data.frame(
    p_val = reportP(PM_mv$pval, AsNumeric = TRUE)
 )
 
-# adjust estimates to show absolute means
-# results_mv <-
-#    results_mv[2:6,] %>%
-#    mutate(Effect = Effect + results_mv$Effect[1]) %>%
-#    mutate(CI_lower = CI_lower + results_mv$CI_lower[1]) %>%
-#    mutate(CI_upper = CI_upper + results_mv$CI_upper[1]) %>%
-#    bind_rows(results_mv[1,]) %>%
-#    mutate(index = c(2:6, 1)) %>%
-#    arrange(index)
-
 # rename colnames to give table headings
 colnames(results_mv)[c(1:4, 6:9)] <-
    c("Treatment",
@@ -350,11 +340,11 @@ Let's investigate the treatment contrasts
 
 ```{r PM_Mv_Contrast}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
-summary(glht(PM_mv_, linfct = cbind(contrMat(rep(
+summary(glht(PM_mv, linfct = cbind(contrMat(rep(
    1, 6
 ), type = "Tukey"))), test = adjusted("none"))
 contrast_Ssum <-
-   simple_summary(summary(glht(PM_mv_, linfct = cbind(
+   simple_summary(summary(glht(PM_mv, linfct = cbind(
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 contrast_Ssum
