@@ -33,7 +33,7 @@ PM_dat_D <-
 
 Which trials don't have all the required variance information?
 ```{r noDiseaseError}
-unique(PM_dat_D[is.na(PM_dat_D$d_vi),
+unique(PM_dat_D[is.na(PM_dat_D$vi),
                       c("trial_ref", "location", "year")])
 ```
 
@@ -41,7 +41,7 @@ Eliminate trials with out disease severity variance.
 ```{r rm_SevDiseaseError}
 PM_sev <- 
    PM_dat_D %>%
-   filter(is.na(d_vi) == FALSE)
+   filter(is.na(vi) == FALSE)
 ```
 Are all the reported disease variance the same type?
 ```{r sev_var_type}
@@ -61,7 +61,7 @@ Convert variance to the same measure
 PM_sev <- 
    PM_sev %>%
    mutate(
-      d_vi = 
+      vi = 
          case_when(
             D_error_type == "stdev" ~ disease_error ^2,
             D_error_type == "lsd (P=0.05)" ~ 
@@ -108,7 +108,7 @@ To do this, in our model:
 ```{r Metafor-Sev-analysis}
 PMsev_mv <- rma.mv(
    yi = PM_final_severity,
-   d_vi,
+   vi,
    mods = ~ spray_management,
    method = "ML",
    random = list( ~ spray_management | trial, ~ 1 | id),
