@@ -34,7 +34,7 @@ PM_dat_D <-
 
 Inspect for a normal distribution of disease severity
 ```{r sev_hist}
-hist(PM_sev$PM_final_severity)
+hist(PM_dat_D$PM_final_severity)
 ```
 
 
@@ -50,6 +50,19 @@ To do this, in our model:
 
    - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
 
+### Define Trial
+```{r define_trial}
+PM_dat_D <-
+   PM_dat_D %>%
+   mutate(trial = paste(trial_ref,
+                        year,
+                        location,
+                        host_genotype,
+                        row_spacing,
+                        sep = "_")) 
+```
+
+
    - We will investigate the effect size of our treatment - spray management,
 
 
@@ -62,7 +75,7 @@ PMsev_mv <- rma.mv(
    random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
-   data = PM_sev
+   data = PM_dat_D
 )
 
 summary(PMsev_mv)
