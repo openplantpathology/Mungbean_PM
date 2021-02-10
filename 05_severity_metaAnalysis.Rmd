@@ -31,58 +31,6 @@ PM_dat_D <-
 ```
 
 
-Which trials don't have all the required variance information?
-```{r noDiseaseError}
-unique(PM_dat_D[is.na(PM_dat_D$vi),
-                      c("trial_ref", "location", "year")])
-```
-
-Eliminate trials with out disease severity variance.
-```{r rm_SevDiseaseError}
-PM_sev <- 
-   PM_dat_D %>%
-   filter(is.na(vi) == FALSE)
-```
-Are all the reported disease variance the same type?
-```{r sev_var_type}
-unique(PM_sev[,"D_error_type"])
-```
-
-Now we have eliminated 2 trials do all spray management categories have sufficient replications
-```{r treatment_n}
-table(PM_sev$spray_management)
-```
-
-
-
-
-Convert variance to the same measure
-```{r calc_sampleVar}
-PM_sev <- 
-   PM_sev %>%
-   mutate(
-      vi = 
-         case_when(
-            D_error_type == "stdev" ~ disease_error ^2,
-            D_error_type == "lsd (P=0.05)" ~ 
-               (replicates * ((disease_error / 1.96) ^2) /2)/replicates
-         ),
-      id = row_number(),
-      spray_management = fct_relevel(spray_management,sort)
-   ) 
-
-```
-
-Inspect raw disease severity scores
-
-```{r PMsev_bwplot}
-PM_sev %>%
-   ggplot(aes(x = spray_management, y = PM_final_severity)) +
-   geom_boxplot()
-```
-
-
-
 
 Inspect for a normal distribution of disease severity
 ```{r sev_hist}
