@@ -342,13 +342,8 @@ For each analysis, yield and disease severity a separate data-set will be create
 Four trials will be removed for our yield data set `PM_dat_Y` for not reporting yield variance.  
 ```{r TrialsWithVariance}
 NoVar <- PM_MB_dat %>%
-   group_by(trial_ref) %>%
-   summarise(
-      location = location,
-      year = year,
-      No_Var = all(is.na(yield_error)),
-      .groups = 'drop'
-   ) %>%
+   mutate(No_Var = is.na(yield_error)) %>%
+   filter(No_Var == TRUE) %>%
    distinct(trial_ref, year, location)
 NoVar
 
@@ -358,15 +353,10 @@ PM_dat_Y <- PM_MB_dat %>%
 
 
 Four trials will be removed for our disease severity data set `PM_dat_S` for not reporting yield variance.  
-```{r TrialsWithVariance}
+```{r TrialsWithVariance_D}
 NoVar <- PM_MB_dat %>%
-   group_by(trial_ref) %>%
-   summarise(
-      location = location,
-      year = year,
-      No_Var = all(is.na(disease_error)),
-      .groups = 'drop'
-   ) %>%
+   mutate(No_Var = is.na(disease_error)) %>%
+   filter(No_Var == TRUE) %>%
    distinct(trial_ref, year, location)
 NoVar
 
@@ -527,7 +517,7 @@ PM_dat_D <- PM_dat_D %>%
       )
    )
 
-PM_MB_dat[PM_MB_dat$fungicide_ai == "control",
+PM_dat_D[PM_dat_D$fungicide_ai == "control",
           c(
              "fungicide_timing_1",
              "fungicide_timing_2",
@@ -551,8 +541,23 @@ table(PM_dat_D$spray_management)
 'Early_plus' treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
 
 ```{r simpler_clusters_remove}
-PM_MB_dat <-
-   PM_MB_dat %>%
+PM_dat_Y <-
+   PM_dat_Y %>%
+   filter(spray_management != "Early_plus") %>%
+   select(-c(fungicide_timing_1, # remove the following columns which no longer have use
+             fungicide_timing_2,
+             fungicide_timing_3,
+             fungicide_application_1,
+             fungicide_application_2,
+             fungicide_application_3,
+             fungicide_application_4,
+             fungicide_application_5,
+             fungicide_application_6,
+             fungicide_application_7,
+             ))
+
+PM_dat_D <-
+   PM_dat_D %>%
    filter(spray_management != "Early_plus") %>%
    select(-c(fungicide_timing_1, # remove the following columns which no longer have use
              fungicide_timing_2,
@@ -598,7 +603,7 @@ PM_dat_Y <-
 PM_dat_D <-
    PM_dat_D %>%
    mutate(
-      d_vi =
+      vi =
          case_when(
             D_error_type == "stdev" ~ disease_error ^ 2,
             D_error_type == "lsd (P=0.05)" ~
@@ -616,7 +621,8 @@ PM_dat_D <-
 
 
 ```{r saveData01}
-write.csv(PM_MB_dat, file = "cache/PM_MB_clean_data.csv", row.names = FALSE)
-save(PM_MB_dat, file = here("cache/ImportDataAndSelectTrials01.Rdata"))
+write.csv(PM_dat_Y, file = "cache/PM_yield_clean_data.csv", row.names = FALSE)
+write.csv(PM_dat_D, file = "cache/PM_disease_clean_data.csv", row.names = FALSE)
+save(PM_MB_dat, PM_dat_D, PM_dat_Y, file = here("cache/ImportDataAndSelectTrials01.Rdata"))
 ```
 
