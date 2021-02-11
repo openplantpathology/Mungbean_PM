@@ -321,14 +321,14 @@ results_mv %>%
          "Late_plus"
       )
    ))) %>%
-   ggplot(aes(Treatment, `$\\mu$`)) +
+   ggplot(aes(Treatment, mu)) +
    geom_hline(
       yintercept = seq(-0.05, 0.3, by = 0.05),
       color = usq_cols("usq charcoal"),
       linetype = 3
    ) +
    geom_point(aes(size = 1 / se), shape = 15) +
-   geom_linerange(aes(ymin = `$CI_{L}$`, ymax = `$CI_{U}$`)) +
+   geom_linerange(aes(ymin = `CI_{L}`, ymax = `CI_{U}`)) +
    coord_flip() +
    #ggtitle("Mean spray schedule effect sizes\nand 95% confidence intervals")+
    ylab(expression(paste(
