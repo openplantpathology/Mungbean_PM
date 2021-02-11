@@ -334,57 +334,6 @@ PM_MB_dat <-
    )
 ```
 
-
-## Excluding variance
-Following an inspection of the yield and disease variance we determined imputation was not suitable and therefore we must exlude trials that did not report variance.
-For each analysis, yield and disease severity a separate data-set will be created, including only trials that report variance for the respective response variable
-
-Four trials will be removed for our yield data set `PM_dat_Y` for not reporting yield variance.  
-```{r TrialsWithVariance}
-NoVar <- PM_MB_dat %>%
-   mutate(No_Var = is.na(yield_error)) %>%
-   filter(No_Var == TRUE) %>%
-   distinct(trial_ref, year, location)
-NoVar
-
-PM_dat_Y <- PM_MB_dat %>%
-   filter(!(trial_ref %in% NoVar$trial_ref))
-```
-
-
-Four trials will be removed for our disease severity data set `PM_dat_S` for not reporting yield variance.  
-```{r TrialsWithVariance_D}
-NoVar <- PM_MB_dat %>%
-   mutate(No_Var = is.na(disease_error)) %>%
-   filter(No_Var == TRUE) %>%
-   distinct(trial_ref, year, location)
-NoVar
-
-PM_dat_D <- PM_MB_dat %>%
-   filter(!(trial_ref %in% NoVar$trial_ref))
-```
-
-
-We will retain the following trials, which only contain DMI fungicides. 
-However, we won't remove non-DMI fungicides just yet, we will do this before the analysis.
-
-```{r Final_Trials_For_Inclusion}
-PM_MB_dat %>%
-   filter(fungicide_ai == "tebuconazole" |
-             fungicide_ai == "propiconazole") %>%
-   mutate(MA_analysis = case_when(
-      is.na(yield_error & disease_error) == FALSE ~ "Yield and Disease",
-      is.na(yield_error) == FALSE & 
-         is.na(disease_error) ~ "Yield",
-      is.na(disease_error) == FALSE & 
-         is.na(yield_error) ~ "Disease",
-      TRUE ~ "Nil"
-   )) %>%
-   distinct(trial_ref, location, year, MA_analysis) %>%
-   arrange(year) 
-```
-
-<br>
 <br>
 <br>
 <br>
@@ -396,13 +345,10 @@ Finally, we are going to define the class of each variable in the data, retainin
 ```{r classifyData}
 source("R/classify_PM_data.R")
 
-# classify yield data
-PM_dat_Y <- 
-   classify_PM_data(PM_dat_Y)
+# classify dataset with Trials in both 
+PM_MB_dat <-
+   classify_PM_data(PM_MB_dat)
 
-#classify disease data
-PM_dat_D <- 
-   classify_PM_data(PM_dat_D)
 ```
 
 
@@ -412,14 +358,8 @@ PM_dat_D <-
 First are going to calculate the time between the first sign of disease and the fungicide applications.  
 
 ```{r clustered_fungicide_applications}
-# Yield data
-PM_dat_Y %<>%
-   mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
-   mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
-   mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2)
-
-# Disease data
-PM_dat_D %<>%
+# collective data
+PM_MB_dat %<>%
    mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
    mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
    mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2)
@@ -455,9 +395,9 @@ data.frame(
    kable()
 ```
 
-Simplify the clusters for the yield data-set
+Simplify the clusters for the data-set
 ```{r simple_Y_clusters}
-PM_dat_Y <- PM_dat_Y %>%
+PM_MB_dat <- PM_MB_dat %>%
    mutate(
       spray_management = case_when(
          fungicide_timing_1 < 0 &
@@ -481,7 +421,7 @@ PM_dat_Y <- PM_dat_Y %>%
       )
    )
 
-PM_dat_Y[PM_dat_Y$fungicide_ai == "control",
+PM_MB_dat[PM_MB_dat$fungicide_ai == "control",
           c(
              "fungicide_timing_1",
              "fungicide_timing_2",
@@ -490,59 +430,19 @@ PM_dat_Y[PM_dat_Y$fungicide_ai == "control",
           )] <- "control"
 ```
 
-
-Simplify the clusters
-```{r simple_D_clusters}
-PM_dat_D <- PM_dat_D %>%
-   mutate(
-      spray_management = case_when(
-         fungicide_timing_1 < 0 &
-            is.na(fungicide_application_2) &
-            is.na(fungicide_application_3) ~ "Early",
-         fungicide_timing_1 >= 0 &
-            fungicide_timing_1 < 4 &
-            is.na(fungicide_application_2) &
-            is.na(fungicide_application_3) ~ "Recommended",
-         fungicide_timing_1 >= 4 &
-            is.na(fungicide_application_2) &
-            is.na(fungicide_application_3) ~ "Late",
-         fungicide_timing_1 < 0 &
-            !is.na(fungicide_application_2) ~ "Early_plus",
-         fungicide_timing_1 >= 0 &
-            fungicide_timing_1 < 4 &
-            !is.na(fungicide_application_2) ~ "Recommended_plus",
-         fungicide_timing_1 >= 4 &
-            !is.na(fungicide_application_2) ~ "Late_plus",
-         TRUE ~ "Other"
-      )
-   )
-
-PM_dat_D[PM_dat_D$fungicide_ai == "control",
-          c(
-             "fungicide_timing_1",
-             "fungicide_timing_2",
-             "fungicide_timing_3",
-             "spray_management"
-          )] <- "control"
-```
 
 Now to view the number break-down of the `spray_management` treatments in the yield and disease severity data-sets
 
 ```{r tableSprayManagement_Y}
-table(PM_dat_Y$spray_management)
-```
-
-
-```{r tableSprayManagement_Y}
-table(PM_dat_D$spray_management)
+table(PM_MB_dat$spray_management)
 ```
 
 
 'Early_plus' treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
 
 ```{r simpler_clusters_remove}
-PM_dat_Y <-
-   PM_dat_Y %>%
+PM_MB_dat <-
+   PM_MB_dat %>%
    filter(spray_management != "Early_plus") %>%
    select(-c(fungicide_timing_1, # remove the following columns which no longer have use
              fungicide_timing_2,
@@ -556,22 +456,74 @@ PM_dat_Y <-
              fungicide_application_7,
              ))
 
-PM_dat_D <-
-   PM_dat_D %>%
-   filter(spray_management != "Early_plus") %>%
-   select(-c(fungicide_timing_1, # remove the following columns which no longer have use
-             fungicide_timing_2,
-             fungicide_timing_3,
-             fungicide_application_1,
-             fungicide_application_2,
-             fungicide_application_3,
-             fungicide_application_4,
-             fungicide_application_5,
-             fungicide_application_6,
-             fungicide_application_7,
-             ))
 ```
 
+
+## Trial variance
+We need variance for each treatment for the data to be useful in a meta-analysis.
+Lets look at which of the included trials contain variance for both response variables of interest, yield and disease severity.
+
+```{r Trials_For_Inclusion}
+PM_MB_dat %>%
+   mutate(MA_analysis = case_when(
+      is.na(yield_error & disease_error) == FALSE ~ "Yield and Disease",
+      is.na(yield_error) == FALSE & 
+         is.na(disease_error) ~ "Yield",
+      is.na(disease_error) == FALSE & 
+         is.na(yield_error) ~ "Disease",
+      TRUE ~ "Nil"
+   )) %>%
+   distinct(trial_ref, location, year, MA_analysis) %>%
+   arrange(year) 
+
+# Remove trials without variance for both Disease and yield for data_set `PM_MB_dat
+PM_MB_dat <- 
+   PM_MB_dat %>%
+   mutate(contains_var = case_when(
+      is.na(yield_error) &
+         is.na(disease_error) ~ NA_character_,
+      TRUE ~ trial_ref)) %>%
+   filter(trial_ref %in% contains_var) %>%
+   select(-contains_var)
+```
+
+
+## Excluding variance
+Following an inspection of the yield and disease variance we determined imputation was not suitable and therefore we must exclude trials that did not report variance.
+For each analysis, yield and disease severity a separate data-set will be created, including only trials that report variance for the respective response variable
+
+Four trials will be removed for our yield data set `PM_dat_Y` for not reporting yield variance.  
+```{r TrialsWithVariance}
+PM_MB_dat %>%
+   mutate(No_Var = is.na(yield_error)) %>%
+   filter(No_Var == TRUE) %>%
+   distinct(trial_ref, year, location)
+
+PM_dat_Y <- 
+   PM_MB_dat %>%
+   mutate(contains_var = case_when(
+      is.na(yield_error) ~ NA_character_,
+      TRUE ~ trial_ref)) %>%
+   filter(trial_ref %in% contains_var) %>%
+   select(-contains_var)
+```
+
+
+Four trials will be removed for our disease severity data set `PM_dat_D` for not reporting yield variance.  
+```{r TrialsWithVariance_D}
+PM_MB_dat %>%
+   mutate(No_Var = is.na(disease_error)) %>%
+   filter(No_Var == TRUE) %>%
+   distinct(trial_ref, year, location)
+
+PM_dat_D <- 
+   PM_MB_dat %>%
+   mutate(contains_var = case_when(
+      is.na(disease_error) ~ NA_character_,
+      TRUE ~ trial_ref)) %>%
+   filter(trial_ref %in% contains_var) %>%
+   select(-contains_var)
+```
 
 
 ## Standardise Variance
