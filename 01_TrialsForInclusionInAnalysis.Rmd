@@ -576,6 +576,7 @@ PM_dat_D <-
 ```{r saveData01}
 write.csv(PM_dat_Y, file = "cache/PM_yield_clean_data.csv", row.names = FALSE)
 write.csv(PM_dat_D, file = "cache/PM_disease_clean_data.csv", row.names = FALSE)
+write.csv(PM_MB_dat, file = "cache/PM_MB_clean_data.csv", row.names = FALSE)
 save(PM_MB_dat, PM_dat_D, PM_dat_Y, file = here("cache/ImportDataAndSelectTrials01.Rdata"))
 ```
 
