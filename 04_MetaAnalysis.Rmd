@@ -14,7 +14,8 @@ pacman::p_load(tidyverse,
                metafor,
                here,
                netmeta,
-               multcomp)
+               multcomp,
+               flextable)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -258,6 +259,14 @@ k5 <-
 
 # create data.frame
 results_mv <- data.frame(
+   moderator = c(
+   "Intercept / No Spray control",
+   "Early",
+   "Recommended",
+   "Recommended+",
+   "Late",
+   "Late+"
+   ),
    N = PM_mv$g.levels.k,
    k = k5,
    Effect = round(PM_mv$b, 4),
@@ -265,34 +274,38 @@ results_mv <- data.frame(
    CI_lower = round(PM_mv$ci.lb, 4),
    CI_upper = round(PM_mv$ci.ub, 4),
    z_val = round(PM_mv$zval, 4),
-   p_val = reportP(PM_mv$pval, AsNumeric = TRUE)
+   p_val = reportP(PM_mv$pval, AsNumeric = FALSE, P_prefix = FALSE)
 )
 
 # rename colnames to give table headings
-colnames(results_mv)[c(1:4, 6:9)] <-
+colnames(results_mv)[c(2:5, 7:10)] <-
    c("Treatment",
-     "$N$",
-     "$k$",
-     "$\\mu$",
-     "$CI_{L}$",
-     "$CI_{U}$",
-     "$Z$",
-     "$P$")
+     "N",
+     "k",
+     "mu",
+     "CI_{L}",
+     "CI_{U}",
+     "Z",
+     "P")
 
-# provide rownames for each moderator variable
-row.names(results_mv) <- c(
-   "Intercept / No Spray control",
-   "$Early_{single}$",
-   "$Recommended_{single}$",
-   "$Recommended_{plus}$",
-   "$Late_{single}$",
-   "$Late_{plus}$"
-)
+yield_estimates_table <- 
+   flextable(results_mv[c(2:6), c(1,3:8,10)]) %>%
+   align(j = 3:8, align = "center", part = "all") %>%
+   fontsize(size = 8, part = "body") %>%
+   fontsize(size = 10, part = "header") %>%
+   italic(italic = TRUE, part = "header") %>%
+   set_caption("Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Estimates were calculated from a network meta-analysis of data obtained from grey literature reports of 'k' field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept.") %>%
+   autofit()
 
-kable(results_mv[2:6, 2:9],
-      align = "lcccccccc",
-      booktabs = TRUE,
-      caption = "Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Estimates were calculated from a network meta-analysis of data obtained from grey literature reports of field trials undertaken in Eastern Australia. Z and P values indicate statistical significance in comparison to the intercept.")
+yield_estimates_table
+```
+
+Save table to a word document to use in manuscript
+```{r eval=FALSE, include=FALSE}
+# Save table as a word document
+doc <- officer::read_docx()
+doc <- body_add_flextable(doc, value = yield_estimates_table)
+print(doc, target = "paper/figures/Table2_yield_estimates.docx")
 ```
 
 Let's view these comparisons in a plot.
