@@ -12,7 +12,8 @@ pacman::p_load(tidyverse,
                lme4,
                kableExtra,
                flextable,
-               here)
+               here,
+               gridExtra)
 
 if (!require("theme.usq"))
    devtools::install_github("adamhsparks/theme.usq")
@@ -113,6 +114,129 @@ doc <- officer::read_docx()
 doc <- body_add_flextable(doc, value = Sev_yield_table)
 doc <- officer::body_end_section_landscape(doc)
 print(doc, target = "paper/figures/Table1_severity&yield.docx")
+```
+
+## Disease and Yield in a box blot
+
+```{r bwplot}
+sev_control_plot <- 
+   PM_MB_dat %>%
+   filter(fungicide_ai == "control") %>%
+   ggplot(aes(x = year, y = PM_final_severity)) +
+   geom_boxplot(outlier.alpha = 0) +
+   geom_jitter(size = 2, colour = "cadetblue",alpha = 0.4,width = 0.15) +
+   scale_y_continuous(breaks = c(1,3,5,7,9), limits = c(0.9,9.1)) +
+   ylab("PM severity (1 -9)")+
+   # xlab("Crop season")+
+   theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+   ggtitle("A")
+
+sev_control_plot      
+```
+
+```{r bwplot}
+sev_schedule_plot <-
+   PM_MB_dat %>%
+   ggplot(aes(x = spray_management, y = PM_final_severity)) +
+   geom_boxplot(outlier.alpha = 0) +
+   geom_jitter(
+      size = 2,
+      colour = "cadetblue",
+      alpha = 0.4,
+      width = 0.15
+   ) +
+   scale_y_continuous(breaks = c(1, 3, 5, 7, 9), limits = c(0.9, 9.1)) +
+   scale_x_discrete(labels = c(
+      "control",
+      "early",
+      "late",
+      "late+",
+      "recommended",
+      "recomended+"
+   )) +
+   ylab("PM severity (1 -9)") +
+   #xlab("Spray Schedule")+
+   theme(
+      axis.title.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.title.y = element_blank(),
+      #axis.ticks.x = element_blank()
+   )+
+   ggtitle("B")
+   
+
+sev_schedule_plot
+```
+
+```{r}
+Y_control_plot <-
+   PM_MB_dat %>%
+   filter(fungicide_ai == "control") %>%
+   ggplot(aes(x = year, y = grain_yield.t.ha.)) +
+   geom_boxplot() +
+   geom_jitter(
+      size = 2,
+      colour = "coral",
+      alpha = 0.4,
+      width = 0.15
+   ) +
+   scale_y_continuous(breaks = seq(0, 2.5, by = 0.5), limits = c(0, 2.6)) +
+   ylab(bquote('Mungbean grain yield ' *  ~  ~ t ~ ha ^ -1 * "")) +
+   xlab("Crop season") +
+   theme(axis.text.x = element_text(angle = 20, hjust = 0.75),
+         plot.margin = margin(0.2, 0, 0.71, 0, "cm"),
+         axis.title.x = element_text(vjust = -5))
+
+Y_control_plot
+```
+
+```{r bwplot}
+Y_schedule_plot <- 
+   PM_MB_dat %>%
+   ggplot(aes(x = spray_management, y = grain_yield.t.ha.)) +
+   geom_boxplot(outlier.alpha = 0) +
+   geom_jitter(
+      size = 2,
+      colour = "coral",
+      alpha = 0.4,
+      width = 0.15
+   ) +
+   scale_y_continuous(breaks = seq(0, 2.5, by = 0.5), limits = c(0, 2.6)) +
+   scale_x_discrete(labels = c(
+      "control",
+      "early",
+      "late",
+      "late+",
+      "recommended",
+      "recomended+"
+   )) +
+   #ylab(bquote('Mungbean grain yield ' *  ~  ~ t ~ ha ^ -1 * "")) +
+   xlab("Spray Schedule")+
+    theme(
+      axis.title.y = element_blank(),
+      axis.text.x = element_text(angle = 20, hjust = 0.75))
+
+Y_schedule_plot
+```
+
+```{r}
+#library(gridExtra)
+
+
+p4 <- arrangeGrob(sev_control_plot,
+                  sev_schedule_plot,
+                  Y_control_plot,
+                  Y_schedule_plot)
+
+ggsave(
+   filename = "paper/figures/Fig1_boxplots_yield&sev.png",
+   plot = p4,
+   height = 6,
+   width = 8,
+   dpi = 1000
+)
 ```
 
 
