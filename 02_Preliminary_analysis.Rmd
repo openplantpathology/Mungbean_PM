@@ -235,8 +235,9 @@ ggsave(
    plot = p4,
    device = "tiff",
    height = 6,
-   width = 8,
-   dpi = 200,
+   width = 7,
+   dpi = 300,
+   units = "in"
       
 )
 ```
