@@ -231,11 +231,13 @@ p4 <- arrangeGrob(sev_control_plot,
                   Y_schedule_plot)
 
 ggsave(
-   filename = "paper/figures/Fig1_boxplots_yield&sev.png",
+   filename = "paper/figures/Fig1_boxplots_yield&sev.tiff",
    plot = p4,
+   device = "tiff",
    height = 6,
    width = 8,
-   dpi = 1000
+   dpi = 200,
+      
 )
 ```
 
