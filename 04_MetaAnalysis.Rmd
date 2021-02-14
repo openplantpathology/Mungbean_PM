@@ -259,13 +259,13 @@ k5 <-
 
 # create data.frame
 results_mv <- data.frame(
-   moderator = c(
+   Moderator = c(
    "Intercept / No Spray control",
    "Early",
+   "Late",
+   "Late+",
    "Recommended",
    "Recommended+",
-   "Late",
-   "Late+"
    ),
    N = PM_mv$g.levels.k,
    k = k5,
@@ -289,13 +289,26 @@ colnames(results_mv)[c(2:5, 7:10)] <-
      "P")
 
 yield_estimates_table <- 
-   flextable(results_mv[c(2:6), c(1,3:8,10)]) %>%
+   flextable(results_mv[c(2,5,6,3,4), c(1,3:8,10)]) %>%
    align(j = 3:8, align = "center", part = "all") %>%
    fontsize(size = 8, part = "body") %>%
    fontsize(size = 10, part = "header") %>%
    italic(italic = TRUE, part = "header") %>%
-   set_caption("Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Estimates were calculated from a network meta-analysis of data obtained from grey literature reports of 'k' field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept.") %>%
-   autofit()
+   set_caption("Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Yield estimates (u) were calculated from a network meta-analysis of data obtained from grey literature reports of 'k' field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept.") %>%
+   autofit() %>%
+   footnote(i = 1,
+            j = c(2:4,6:8),
+            value = as_paragraph(c(
+               "number of treatment means categorised to each spray schedule",
+               "number of trials with the respective spray schedule",
+               "estimated mean yield determined by the meta-analysis",
+               "Lower range of the 95% confidence interval",
+               "Upper range of the 95% confidence interval",
+               "indicates the significance between each respective spray schedule and the no spray control (intercept)"
+                                   )),
+            ref_symbols = letters[1:6],
+            part = "header", inline = TRUE
+            )
 
 yield_estimates_table
 ```
