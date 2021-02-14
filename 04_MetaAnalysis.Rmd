@@ -265,7 +265,7 @@ results_mv <- data.frame(
    "Late",
    "Late+",
    "Recommended",
-   "Recommended+",
+   "Recommended+"
    ),
    N = PM_mv$g.levels.k,
    k = k5,
