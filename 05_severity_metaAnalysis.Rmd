@@ -113,11 +113,20 @@ axis(
 ```{r metafor_results}
 # obtain number of treatments included in each moderator variable
 k5 <-
-   as.data.frame(table(PM_dat_D$trial, PM_dat_D$spray_management)) %>%
+   as.data.frame(table(PM_dat_D$spray_management)) %>%
    filter(Freq != 0) %>%
    group_by(Var2) %>%
    summarise(n()) %>%
    pull()
+
+k6 <-
+   as.data.frame(table(PM_dat_D$trial_ref, PM_dat_D$spray_management)) %>%
+   filter(Freq != 0) %>%
+   group_by(Var2) %>%
+   summarise(n()) %>%
+   pull()
+
+intercept <- round(PMsev_mv$b, 4)[1,1]
 
 # create data.frame
 results_mv <- data.frame(
@@ -129,30 +138,36 @@ results_mv <- data.frame(
    "Recommended",
    "Recommended+"
    ),
-   N = PMsev_mv$g.levels.k,
-   k = k5,
+   N = k5,
+   k = k6,
    Effect = round(PMsev_mv$b, 4),
    se = round(PMsev_mv$se, 4),
    CI_lower = round(PMsev_mv$ci.lb, 4),
    CI_upper = round(PMsev_mv$ci.ub, 4),
    z_val = round(PMsev_mv$zval, 4),
-   p_val = reportP(PMsev_mv$pval, AsNumeric = FALSE, P_prefix = FALSE)
+   p_val = reportP(PMsev_mv$pval, AsNumeric = FALSE, P_prefix = FALSE),
+   eff_bar = round(1 -(intercept + PMsev_mv$b)/intercept,4)*100,
+   eff_CI_low = round(1 -(intercept + PMsev_mv$ci.lb)/intercept,4)*100,
+   eff_CI_high = round(1 -(intercept + PMsev_mv$ci.ub)/intercept,4)*100
 )
 
 # rename colnames to give table headings
-colnames(results_mv)[c(2:5, 7:10)] <-
-   c("Treatment",
+colnames(results_mv)[c(1:4,6:12 )] <-
+   c("Moderator",
      "N",
      "k",
      "mu",
      "CI_{L}",
      "CI_{U}",
      "Z",
-     "P")
+     "P",
+     "Efficacy",
+     "Eff CI upper",
+     "Eff CI_lower")
 
 disease_estimates_table <-
-   flextable(results_mv[c(2,5,6,3,4), c(1, 3:8, 10)]) %>%
-   align(j = 3:8, align = "center", part = "all") %>%
+   flextable(results_mv[c(2,5,6,3,4), c(1:4,6:7, 9:12)]) %>%
+   align(j = 2:10, align = "center", part = "all") %>%
    fontsize(size = 8, part = "body") %>%
    fontsize(size = 10, part = "header") %>%
    italic(italic = TRUE, part = "header") %>%
@@ -162,7 +177,7 @@ disease_estimates_table <-
    autofit() %>%
    footnote(
       i = 1,
-      j = c(2:4, 6:8),
+      j = c(2:10),
       value = as_paragraph(
          c(
             "number of treatment means categorised to each spray schedule",
@@ -170,13 +185,28 @@ disease_estimates_table <-
             "estimated mean yield determined by the meta-analysis",
             "Lower range of the 95% confidence interval",
             "Upper range of the 95% confidence interval",
-            "indicates the significance between each respective spray schedule and the no spray control (intercept)"
+            "indicates the significance between each respective spray schedule and the no spray control (intercept)",
+            "Fungicide spray schedule efficacy",
+            "Lower range of the 95% confidence interval",
+            "Upper range of the 95% confidence interval"
          )
       ),
-      ref_symbols = letters[1:6],
+      ref_symbols = letters[c(1:7,4,5)],
       part = "header",
       inline = TRUE
-   )
+   )%>%
+   add_header(Moderator = "",
+              N = "",
+              k = "",
+              mu = "Effect Size",
+              `CI_{L}` = "Effect Size",
+              `CI_{U}` = "Effect Size",
+              P  = "Effect Size",
+              Efficacy = "PM control",
+              `Eff CI_lower` = "PM control",
+              `Eff CI upper` = "PM control") %>%
+   merge_h( part = "header")%>%
+   hline_top(part="all", border = officer::fp_border(color = "black", width = 2) )
 
 disease_estimates_table
 ```
