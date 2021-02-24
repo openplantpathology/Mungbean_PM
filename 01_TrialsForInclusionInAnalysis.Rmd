@@ -509,7 +509,8 @@ PM_dat_Y <-
 ```
 
 
-Four trials will be removed for our disease severity data set `PM_dat_D` for not reporting yield variance.  
+Four trials will be removed for our disease severity data set `PM_dat_D` for not reporting yield variance.
+Leaving 
 ```{r TrialsWithVariance_D}
 PM_MB_dat %>%
    mutate(No_Var = is.na(disease_error)) %>%
@@ -540,7 +541,7 @@ PM_dat_Y <-
          case_when(
             Y_error_type == "stdev" ~ yield_error ^ 2,
             Y_error_type == "lsd (P=0.05)" ~
-               (replicates * ((yield_error / 1.96) ^ 2) / 2) / replicates
+               (replicates * ((yield_error / 1.96) ^ 2) / 2)
          ),
       id = row_number(),
       spray_management = fct_relevel(spray_management, sort)
@@ -560,7 +561,7 @@ PM_dat_D <-
          case_when(
             D_error_type == "stdev" ~ disease_error ^ 2,
             D_error_type == "lsd (P=0.05)" ~
-               (replicates * ((disease_error / 1.96) ^ 2) / 2) / replicates
+               (replicates * ((disease_error / 1.96) ^ 2) / 2)
          ),
       id = row_number(),
       spray_management = fct_relevel(spray_management, sort)
