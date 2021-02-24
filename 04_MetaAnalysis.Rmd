@@ -196,13 +196,22 @@ anova(PM_mv, PM_mv_dp)
 ```
 This comparison tells us the meta-analysis including `d_pressure` explained more residual heterogeneity, as shown by the lower QE value.
 However the higher AIC indicates that the model omitting `d_pressure` is a slightly better fit.
-Also the chi-squared test uncertain that the `d_pressure` model is significantly better as indicated by the `pval` 0.1336.
-The higher log likelihood on the `d_pressure` model does intricate there is some merit to this model and that perhaps with more trials to increase statistical power might provide a useful model.  
+Also the chi-squared test marginally significant that the `d_pressure` model is better as indicated by the `pval` 0.0468.
+The higher log likelihood on the `d_pressure` model does indicate there is some merit to this model.  
+It is worth noting that there were no Late plus schedules that experienced low disease pressure. 
+Even though the disease pressure interaction on the moderators was marginally significant (P =0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky. More data is needed to explore this possible effect.
+
+
+```{r}
+PM_dat_Y %>%
+   group_by(spray_management, d_pressure)%>%
+   summarise(n())
+```
+
 
 ```{r}
 summary(PM_mv_dp)
 ```
-
 
 
 ### Test variance-covavriance matrix structure
