@@ -21,7 +21,14 @@ The meta-analysis's main aim is to determine:
 ## Contents
 This compendium is broken down into seven sections:  
 
-   1. [Details of the experiments, which were included in the analysis][Studies considered in meta-analysis]  
+   1. [Details of the experiments, and application of inclusion criteria in the analysis][Trials considered for inclusion in meta-analysis]  
+      a. [Inclusion criteria][Criteria for inclusion in meta-analysis]
+      b. [Import data][Import data]
+      c. [Trial summary][Summary of all trials]
+      d. [Locations of considered trials][Experiment locations]
+      e. [Apply selection criteria][Subset data to selection criteria]
+      f. [Classifing moderator variable - spray schedule][Classifying spray schedule]
+      g. [Identifing treatment variance][Identify variance]
    2. [Preliminary data exploration which investigates possible variables that could influence the meta-analysis][Preliminary Analysis]  
       a. [Fungicides][Fungicides]  
       b. [Mungbean cultivar][Mungbean cultivars]  
