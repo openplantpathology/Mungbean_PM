@@ -14,17 +14,14 @@ theme_set(theme_usq()
 Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Research and Development Corporation (GRDC) northern grains region were sourced for a meta-analysis.
 
 Data was collected from a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland and the National Growers Association.
-We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2014.
+We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2014 and GRDC for funding many of the trials featured in this meta-analysis.
 
-
-<br>
-<br>
 <br>
 
 
 ## Criteria for inclusion in meta-analysis  
 
-   1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants.  
+   1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants in eastern Australia.  
    2. Trial data needed to include:  
       i) Fungicide active ingredients.  
       ii) A demethylase inhibitor (DMI) fungicide.  
@@ -35,14 +32,10 @@ We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue
       vii) Crop yield.  
       viii) Treatment means and accompanying variance.
 
-
-
-<br>
-<br>
 <br>
 
-## Import data and apply selection criteria  
-### Import data from trials we have the raw data  
+## Import data  
+**Import data from trials where we obtained the raw data**  
 ```{r import_dataRAW}
 PM_MB_raw <-
    rbind(
@@ -87,15 +80,15 @@ write.csv(
 <br>
 
 
-### Import dataset of manual entries  
-Import dataset which were manually entered from trial reports  
+Import dataset of manual entries  
+**Import dataset which were manually entered from trial reports**  
 ```{r import_dataMan}
 PM_MB_man <-
    read.csv(here("cache/PM_Mungbean_DataManuallyEntered.csv"),
             stringsAsFactors = FALSE)
 ```
 
-Bind datasets, data set compiled from raw trial data and data manually compiled from trial reports.  
+Bind raw and transcribed datasets.  
 ```{r bind_data}
 PM_MB_dat <-
    rbind(PM_MB_raw,
@@ -106,7 +99,7 @@ PM_MB_dat <-
 <br>
 <br>
 
-### Summary of all trials  
+## Summary of all trials  
 ```{r data_summary, echo=FALSE, message=FALSE, warning=FALSE}
 PM_MB_dat %>%
    arrange(year, location) %>%
@@ -119,6 +112,7 @@ PM_MB_dat %>%
       } else{
          as.character(paste(min(replicates), "-", max(replicates)))
       },
+      `Trial design` = unique(trial_design),
       `Planting date` = unique(planting_date),
       `First sign of disease` = unique(first_sign_disease),
       `Fungicide treatments` = length(n_treatment),
@@ -132,6 +126,7 @@ PM_MB_dat %>%
          "Year",
          "Location",
          "Replicates\nper treatments",
+         "Trial design",
          "Planting date",
          "First sign\nof disease",
          "Fungicide\n treatments"
@@ -146,7 +141,7 @@ PM_MB_dat %>%
 
 ### Experiment locations  
 
-The following map displays experiment locations in the GRDC Northern Grains Region, which were considered for inclusion in this meta-analysis.  
+Trial locations occurring in the GRDC Northern Grains Region.  
 
 ```{r Experiment_locations, echo=FALSE}
 experiment_sites <- data.frame(
@@ -223,7 +218,9 @@ All trials identified for this meta-analysis reported:
 
 Therefore no trials need to be removed to satisfy these criteria.  
 
+<br>
 
+**Retain trials including: Yield**
 Three trials omitted due to not reporting yields  
 ```{r TrialWithoutYield}
 PM_MB_dat %>%
@@ -235,9 +232,8 @@ PM_MB_dat <- PM_MB_dat %>%
 ```
 
 <br>
-<br>
-<br>
 
+**Retain trials including: Disease severity**
 One more was trial removed as it did not report disease severity.  
 ```{r TrialsWithotDisease}
 PM_MB_dat %>%
@@ -252,6 +248,7 @@ PM_MB_dat <- PM_MB_dat %>%
 <br>
 <br>
 
+**Retain trials including: fungicide application dates**
 No trials from our subset need to be removed for not reporting fungicide application dates.  
 ```{r FungicideApplicationDates}
 PM_MB_dat %>%
@@ -265,6 +262,7 @@ PM_MB_dat %>%
 <br>
 <br>
 
+**Retain trials including: fungicide dose**
 No trials from our subset need to be removed for not reporting fungicide dose.  
 ```{r FungicideDoseTrials}
 PM_MB_dat %>%
@@ -278,7 +276,7 @@ PM_MB_dat %>%
 <br>
 <br>
 
-
+**Exclude fungicides tested in too few trials**
 We need to focus the meta-analysis on fungicides with the same mode of action.
 Let's look at all the fungicides and retain the best represented fungicide group in the data.
 ```{r Fungicides}
@@ -309,8 +307,7 @@ This can then be compared to an additional meta-analysis including azoxystrobin 
 <br>
 <br>
 
-## Subset to trials containing DMI fungicides
-
+**Retain only fungicides with DMI action**
 ```{r filterDMI_trials}
 DMI_Trials <-
    PM_MB_dat %>%
@@ -353,7 +350,7 @@ PM_MB_dat <-
 
 
 
-## Classifying spray schedule  
+## Defining spray schedule variable  
 
 First are going to calculate the time between the first sign of disease and the fungicide applications.  
 
@@ -368,12 +365,12 @@ PM_MB_dat %<>%
 
 To ensure sufficient number of replicates, we will bin the continuous variable into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.  
 
-These categorical variables are named:
-   - **Early**: First fungicide application was prior to first sign of disease. 
-   - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign. 
-   - **Late**: First fungicide application was four or more days after first sign of disease being observed. 
+These categorical variables are named:  
+   - **Early**: First fungicide application was prior to first sign of disease.  
+   - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.  
+   - **Late**: First fungicide application was four or more days after first sign of disease being observed.  
    
-The number of sprays need also be defined.
+The number of follow-up sprays need also be defined.
 
 ```{r TreatmentTable}
 data.frame(
@@ -431,7 +428,7 @@ PM_MB_dat[PM_MB_dat$fungicide_ai == "control",
 ```
 
 
-Now to view the number break-down of the `spray_management` treatments in the yield and disease severity data-sets
+Now to view the number break-down of the `spray_management` treatments in the *yield* and *disease severity* data-sets
 
 ```{r tableSprayManagement_Y}
 table(PM_MB_dat$spray_management)
@@ -459,9 +456,9 @@ PM_MB_dat <-
 ```
 
 
-## Trial variance
-We need variance for each treatment for the data to be useful in a meta-analysis.
-Lets look at which of the included trials contain variance for both response variables of interest, yield and disease severity.
+## Identify variance
+We need variance accompanying the mean observations for each treatment to successfully undertake a meta-analysis.
+Lets investigate which of the included trials included variance for both response variables of interest, yield and disease severity.
 
 ```{r Trials_For_Inclusion}
 PM_MB_dat %>%
@@ -474,8 +471,12 @@ PM_MB_dat %>%
       TRUE ~ "Nil"
    )) %>%
    distinct(trial_ref, location, year, MA_analysis) %>%
-   arrange(year) 
+   arrange(year) %>%
+   kable()
+```
 
+Remove one trial in Emerald which did not report disease variance or yield variance.
+```{r remove_nil_var}
 # Remove trials without variance for both Disease and yield for data_set `PM_MB_dat
 PM_MB_dat <- 
    PM_MB_dat %>%
@@ -484,15 +485,13 @@ PM_MB_dat <-
          is.na(disease_error) ~ NA_character_,
       TRUE ~ trial_ref)) %>%
    filter(trial_ref %in% contains_var) %>%
-   select(-contains_var)
+   select(-contains_var) 
 ```
 
-
-## Excluding variance
 Following an inspection of the yield and disease variance we determined imputation was not suitable and therefore we must exclude trials that did not report variance.
 For each analysis, yield and disease severity a separate data-set will be created, including only trials that report variance for the respective response variable
 
-Four trials will be removed for our yield data set `PM_dat_Y` for not reporting yield variance.  
+One more trial will be removed for our yield data set `PM_dat_Y` for not reporting yield variance.  
 ```{r TrialsWithVariance}
 PM_MB_dat %>%
    mutate(No_Var = is.na(yield_error)) %>%
@@ -509,8 +508,7 @@ PM_dat_Y <-
 ```
 
 
-Four trials will be removed for our disease severity data set `PM_dat_D` for not reporting yield variance.
-Leaving 
+Two more trials will be removed for our disease severity data set `PM_dat_D` for not reporting yield variance.
 ```{r TrialsWithVariance_D}
 PM_MB_dat %>%
    mutate(No_Var = is.na(disease_error)) %>%
@@ -530,7 +528,7 @@ PM_dat_D <-
 ## Standardise Variance
 
 All the variance types need to be converted to sample variance. 
-First we will start by standardising yield variance according to the method reported by [Nugugi et.al (2011)](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221).
+First we will start by standardising yield variance according to the method reported by [Ngugi et.al (2011)](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221).
 
 ### Yield variance standardisation
 ```{r StandardiseYieldVariance}
@@ -573,7 +571,7 @@ PM_dat_D <-
 
 
 
-
+#### Save the cleaned data
 ```{r saveData01}
 write.csv(PM_dat_Y, file = "cache/PM_yield_clean_data.csv", row.names = FALSE)
 write.csv(PM_dat_D, file = "cache/PM_disease_clean_data.csv", row.names = FALSE)
