@@ -118,7 +118,7 @@ print(doc, target = "paper/figures/Table1_severity&yield.docx")
 
 ## Disease and Yield in a box blot
 
-```{r bwplot}
+```{r bwplot_sev}
 sev_control_plot <- 
    PM_MB_dat %>%
    filter(fungicide_ai == "control") %>%
@@ -136,7 +136,7 @@ sev_control_plot <-
 sev_control_plot      
 ```
 
-```{r bwplot}
+```{r bwplot_yield}
 sev_schedule_plot <-
    PM_MB_dat %>%
    ggplot(aes(x = spray_management, y = PM_final_severity)) +
@@ -170,7 +170,7 @@ sev_schedule_plot <-
 sev_schedule_plot
 ```
 
-```{r}
+```{r bwplot_yield_year}
 Y_control_plot <-
    PM_MB_dat %>%
    filter(fungicide_ai == "control") %>%
@@ -192,7 +192,7 @@ Y_control_plot <-
 Y_control_plot
 ```
 
-```{r bwplot}
+```{r bwplot_yield_sched}
 Y_schedule_plot <- 
    PM_MB_dat %>%
    ggplot(aes(x = spray_management, y = grain_yield.t.ha.)) +
