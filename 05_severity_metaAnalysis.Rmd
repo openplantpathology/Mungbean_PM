@@ -115,9 +115,7 @@ axis(
 k5 <-
    as.data.frame(table(PM_dat_D$spray_management)) %>%
    filter(Freq != 0) %>%
-   group_by(Var2) %>%
-   summarise(n()) %>%
-   pull()
+   pull(Freq)
 
 k6 <-
    as.data.frame(table(PM_dat_D$trial_ref, PM_dat_D$spray_management)) %>%
@@ -147,8 +145,9 @@ results_mv <- data.frame(
    z_val = round(PMsev_mv$zval, 4),
    p_val = reportP(PMsev_mv$pval, AsNumeric = FALSE, P_prefix = FALSE),
    eff_bar = round(1 -(intercept + PMsev_mv$b)/intercept,4)*100,
-   eff_CI_low = round(1 -(intercept + PMsev_mv$ci.lb)/intercept,4)*100,
-   eff_CI_high = round(1 -(intercept + PMsev_mv$ci.ub)/intercept,4)*100
+   eff_CI_high = round(1 -(intercept + PMsev_mv$ci.ub)/intercept,4)*100,
+   eff_CI_low = round(1 -(intercept + PMsev_mv$ci.lb)/intercept,4)*100
+   
 )
 
 # rename colnames to give table headings
@@ -162,8 +161,8 @@ colnames(results_mv)[c(1:4,6:12 )] <-
      "Z",
      "P",
      "Efficacy",
-     "Eff CI upper",
-     "Eff CI_lower")
+     "Eff CI_lower",
+     "Eff CI upper")
 
 disease_estimates_table <-
    flextable(results_mv[c(2,5,6,3,4), c(1:4,6:7, 9:12)]) %>%
