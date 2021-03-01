@@ -565,16 +565,7 @@ That is, the row spacing appeared to increase yield even if the amount of powder
 The amount of disease pressure between seasons is another variable which could impact mungbean yield meta-analysis effect size. 
 ```{r D_pres}
 # Assess the effect of yield pressure on the spray schedule efficacy
-PM_MB_dat[,"trial_ref"]
-
-mean_control <- function(trial) {
-   mean(PM_MB_dat[PM_MB_dat$trial_ref == trial &
-               PM_MB_dat$fungicide_ai == "control", "grain_yield.t.ha."], na.rm = TRUE)
-}
-
-PM_MB_dat$Y_control <- sapply(PM_MB_dat$trial_ref, mean_control)
-
-# Quantile to separate disease pressure
+# Quantile to separate disease pressure into High, Medium and low disease pressure categories
 DP33 <- 
    PM_MB_dat %>%
    filter(fungicide_ai == "control") %>%
