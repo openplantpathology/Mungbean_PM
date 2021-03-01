@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
+```{r Yield_ME_libraries, message=FALSE, include=FALSE}
 if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(tidyverse,
@@ -45,7 +45,7 @@ To do this, in our model:
    - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
 
 ### Define Trial
-```{r define_trial}
+```{r Yield_define_trial}
 PM_dat_Y <-
    PM_dat_Y %>%
    mutate(trial = paste(trial_ref,
@@ -65,7 +65,7 @@ For the first grain yield meta-analysis will be an ARM based model using the `me
 
 We are using the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
 
-```{r Metafor-analysis}
+```{r Yield_Metafor-analysis}
 PM_mv <- rma.mv(
    yi = grain_yield.t.ha.,
    vi,
@@ -118,7 +118,7 @@ To put this onset number into context for plant maturity, 40 days is approximate
 
 We are adding the `onset` variable as a moderator to test and interaction with the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
 
-```{r osset_Metafor-analysis}
+```{r onset_Metafor-analysis}
 PM_mv_onset <- rma.mv(
    yi = grain_yield.t.ha.,
    vi,
@@ -257,7 +257,7 @@ The analysis shows there is still a significant amount of residual heterogeneity
 ### Meta-analysis moderator estimates table
 Let's present the meta-analysis results for the moderator variables in a table of estimates.
 
-```{r metafor_results}
+```{r metafor_results_table_yield}
 # obtain number of treatments included in each moderator variable
 k5 <-
    as.data.frame(table(PM_dat_Y$trial, PM_dat_Y$spray_management)) %>%
@@ -332,7 +332,7 @@ print(doc, target = "paper/figures/Table2_yield_estimates.docx")
 
 Let's view these comparisons in a plot.
 
-```{r metafor_plot}
+```{r metafor_plot_yied}
 results_mv %>%
    filter(Treatment != "control") %>%
    mutate(Treatment = factor(Treatment, levels = rev(
@@ -373,7 +373,7 @@ ggsave("paper/figures/Fig2_means_difference.png",
 
 Let's investigate the treatment contrasts
 
-```{r PM_Mv_Contrast}
+```{r PM_Mv_Contrast_yield}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
 summary(glht(PM_mv, linfct = cbind(contrMat(rep(
    1, 6
@@ -387,7 +387,7 @@ contrast_Ssum
 ```
 
 These contrasts can be viewed in a plot
-```{r plotContrasts}
+```{r plotContrasts_yield}
 par(mar = c(5, 13, 4, 2) + 0.1)
 plot(glht(PM_mv, linfct = cbind(contrMat(rep(
    1, 6
@@ -431,14 +431,14 @@ The `netmeta` package uses a frequentist approach to the analysis and focuses on
 
 ```{r netmeta-analysis}
 datPM3 <- PM_dat_Y %>%
-   group_by(trial, spray_management, n) %>%
+   group_by(trial, spray_management, replicates) %>%
    summarize(yi_mean = mean(grain_yield.t.ha.),
              vi_mean = mean(vi)) %>%
    ungroup()
 
 PM_con <- pairwise(
    treat = spray_management,
-   n = n,
+   n = replicates,
    mean = yi_mean,
    sd = sqrt(vi_mean),
    studlab = trial,
@@ -514,8 +514,7 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 
 
 ```{r Save_meta_data, eval=FALSE}
-save(efficacy,
-     PM_dat_Y,
+save(PM_dat_Y,
      PM_mv,
      contrast_Ssum,
      file = here("cache/Meta-analysisData.Rdata"))
