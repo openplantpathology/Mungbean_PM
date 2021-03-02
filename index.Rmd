@@ -19,7 +19,7 @@ The meta-analysis's main aim is to determine:
 > When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields?  
 
 ## Contents
-This compendium is broken down into seven sections:  
+This compendium is broken down into four sections:  
 
    1. [Details of the experiments, and application of inclusion criteria in the analysis][Trials considered for inclusion in meta-analysis]  
       a. [Inclusion criteria][Criteria for inclusion in meta-analysis]
@@ -27,9 +27,43 @@ This compendium is broken down into seven sections:
       c. [Trial summary][Summary of all trials]
       d. [Locations of considered trials][Experiment locations]
       e. [Apply selection criteria][Subset data to selection criteria]
-      f. [Classifing moderator variable - spray schedule][Classifying spray schedule]
+      f. [Classifing moderator variable - spray schedule][Defining spray schedule variable]
       g. [Identifing treatment variance][Identify variance]
-   2. [Preliminary data exploration which investigates possible variables that could influence the meta-analysis][Preliminary Analysis]  
+   2. [Preliminary data exploration][Preliminary Analysis]  
+      a. [Trial summary statistics]  
+         i) [Seasons][Trial seasons]  
+         ii) [Location][Trial locations]  
+         iii) [Severity and Yield summary table][Powdery mildew severity and mungbean grain yield summary per trial]  
+         iv) [Severity and Yield summary plots][Summary plots]  
+      b. [Treatment focused summaries]  
+         i) [Fungicide type]  
+         ii) [Fungicide doses]  
+         iii) [Number of fungicide sprays]  
+         iv) [Mungbean cultivars]  
+         v) [Row spacing]  
+         vi) [Disease pressure]  
+         vii) [In-crop rainfall]  
+   3. [Grain yield meta-analysis]  
+      a. [Spray schedule meta-analysis and moderator interactions][Spray schedule meta-analysis]  
+         i. [Spray schedule moderator]  
+         ii. [Disease onset interaction with spray schedule]
+         iii. [Disease pressure interaction with spray schedule]  
+         iv. [Compare variance-covavriance matrix structure][Test variance-covavriance matrix structure]  
+      b. [Meta-analysis results summary]  
+         i. [Moderator estimates table]  
+         ii. [Moderator estimates plot]  
+         iii. [Moderator contrasts]  
+         iv. [Profile plots]
+      c. [netmeta analysis]  
+         i. [netmeta estimates plot]
+         ii. [Moderator netgraph]
+   4. [Powdery mildew severity Meta-analysis]  
+      a. [Disease severity spray schedule meta-analysis]
+         
+         
+      
+      
+      
       a. [Fungicides][Fungicides]  
       b. [Mungbean cultivar][Mungbean cultivars]  
       c. [Row spacing][Row spacing]  

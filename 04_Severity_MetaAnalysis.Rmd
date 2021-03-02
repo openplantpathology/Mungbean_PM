@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-# Meta-analysis of powdery mildew severity
+# Powdery mildew severity Meta-analysis  
 
 ```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
 if (!require("pacman"))
@@ -66,6 +66,12 @@ PM_dat_D <-
 
    - We will investigate the effect size of our treatment - spray management,
 
+<br>  
+<br>  
+<br>  
+******  
+
+## Disease severity spray schedule meta-analysis  
 
 ```{r Metafor-Sev-analysis}
 PMsev_mv <- rma.mv(
@@ -84,6 +90,12 @@ summary(PMsev_mv)
 
 All spray schedules were effective at lowering the disease severity at the end of the season
 
+<br>  
+<br>  
+<br>  
+
+### Disease severity moderator contrasts 
+
 ```{r sevContrasts}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
 
@@ -94,6 +106,10 @@ contrast_Ssum <-
 
 contrast_Ssum
 ```
+
+<br>  
+<br>  
+<br>  
 
 ```{r plotsevContrasts}
 par(mar = c(5, 13, 4, 2) + 0.1)
@@ -109,7 +125,11 @@ axis(
 )
 ```
 
+<br>  
+<br>  
+<br>  
 
+### Meta-analysis summary table
 ```{r metafor_results}
 # obtain number of treatments included in each moderator variable
 k5 <-

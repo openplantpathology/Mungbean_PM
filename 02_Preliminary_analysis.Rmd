@@ -25,7 +25,7 @@ load("cache/ImportDataAndSelectTrials01.Rdata")
 
 Now we have the clean data let's summarise the main variables.
 
-## Trial summaries statistics  
+## Trial summary statistics  
 
 The data explored in the `PM_MB_dat` data frame is a clean data frame focusing on trials which met the selection criteria testing DMI fungicides (tebuconazole / propiconazole) or no spray controls. 
 
