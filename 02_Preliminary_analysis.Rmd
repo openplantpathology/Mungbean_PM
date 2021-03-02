@@ -16,7 +16,7 @@ pacman::p_load(tidyverse,
                gridExtra)
 
 if (!require("theme.usq"))
-   devtools::install_github("adamhsparks/theme.usq")
+   remotes::install_github("adamhsparks/theme.usq")
 library(theme.usq)
 theme_set(theme_usq()
 )
