@@ -1,7 +1,5 @@
 home
 contents
-other-research-questions-which-are-not-the-focus-of-this-study
-possible-sources-of-variation-in-this-analysis.
 trials-considered-for-inclusion-in-meta-analysis
 criteria-for-inclusion-in-meta-analysis
 import-data
