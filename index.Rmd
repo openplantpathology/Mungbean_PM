@@ -11,14 +11,19 @@ link-citations: yes
 github-repo: OpenPlantPathology/Mungbean_PM
 description: "A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew."
 ---
-# Home
+# About
+## Background  
+A common practice for managing powdery mildew in mungbean is to couple fungicide with an insecticide spray early in the development of the crop, usually before the disease is detected. This is despite the current recommendations that the best yield protection is achieved when the fungicide is first applied at the first sign of the disease. These recommendations were based on individual studies, many of which lacked sufficient power to draw significant conclusions. We undertook a meta-analysis to determine, when should the first fungicide spray be applied on mungbean to maximise yield protection.  
 
-This research compendium details the statistical analysis and methods of a meta-analysis of fungicide efficacy trials for controlling powdery mildew in mungbean.
+## Compendium contents
+This research compendium details importing and summarising the raw data, application of the selection criteria, defining moderator variables for fungicide spray timing, and the statistical analysis methods for this meta-analysis of fungicide efficacy trials for controlling powdery mildew in mungbean.
 The meta-analysis's main aim is to determine:
 
 > When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields?  
 
-## Contents
+For completeness We also evaluated the efficacy of spray schedules on disease severity in the field.
+
+## Main chapters
 This compendium is broken down into four sections:  
 
    1. [Details of the experiments, and application of inclusion criteria in the analysis][Trials considered for inclusion in meta-analysis]  
@@ -29,6 +34,7 @@ This compendium is broken down into four sections:
          
 These sections detail the methods and process we undertook during this meta-analysis. 
 
+## Links to manuscript
 The manuscript publishing the results presented in this compendium can be found at ....
 
 Preprint at .........
