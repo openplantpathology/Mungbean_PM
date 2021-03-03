@@ -22,76 +22,13 @@ The meta-analysis's main aim is to determine:
 This compendium is broken down into four sections:  
 
    1. [Details of the experiments, and application of inclusion criteria in the analysis][Trials considered for inclusion in meta-analysis]  
-      a. [Inclusion criteria][Criteria for inclusion in meta-analysis]
-      b. [Import data][Import data]
-      c. [Trial summary][Summary of all trials]
-      d. [Locations of considered trials][Experiment locations]
-      e. [Apply selection criteria][Subset data to selection criteria]
-      f. [Classifing moderator variable - spray schedule][Defining spray schedule variable]
-      g. [Identifing treatment variance][Identify variance]
    2. [Preliminary data exploration][Preliminary Analysis]  
-      a. [Trial summary statistics]  
-         i) [Seasons][Trial seasons]  
-         ii) [Location][Trial locations]  
-         iii) [Severity and Yield summary table][Powdery mildew severity and mungbean grain yield summary per trial]  
-         iv) [Severity and Yield summary plots][Summary plots]  
-      b. [Treatment focused summaries]  
-         i) [Fungicide type]  
-         ii) [Fungicide doses]  
-         iii) [Number of fungicide sprays]  
-         iv) [Mungbean cultivars]  
-         v) [Row spacing]  
-         vi) [Disease pressure]  
-         vii) [In-crop rainfall]  
+   *including a summary of the cleaned trial data and the treatments*
    3. [Grain yield meta-analysis]  
-      a. [Spray schedule meta-analysis and moderator interactions][Spray schedule meta-analysis]  
-         i. [Spray schedule moderator]  
-         ii. [Disease onset interaction with spray schedule]
-         iii. [Disease pressure interaction with spray schedule]  
-         iv. [Compare variance-covavriance matrix structure][Test variance-covavriance matrix structure]  
-      b. [Meta-analysis results summary]  
-         i. [Moderator estimates table]  
-         ii. [Moderator estimates plot]  
-         iii. [Moderator contrasts]  
-         iv. [Profile plots]
-      c. [netmeta analysis]  
-         i. [netmeta estimates plot]
-         ii. [Moderator netgraph]
    4. [Powdery mildew severity Meta-analysis]  
-      a. [Disease severity spray schedule meta-analysis]
          
-         
-      
-      
-      
-      a. [Fungicides][Fungicides]  
-      b. [Mungbean cultivar][Mungbean cultivars]  
-      c. [Row spacing][Row spacing]  
-      d. [Rainfall][Yield vs in-season rain]  
-      e. [When conditions become suitable for powdery mildew infection][Season range and first incidence]  
-   3. [Preparation of data for the meta-analysis][Prepare data for meta-analysis]  
-   4. [Meta-analysis of the effect of fungicide spray schedule on yield loss][Meta-analysis]  
-   5. [Meta-analysis of the effect of fungicide spray schedule on disease severity and yield loss][AUPDC meta-analysis]
-   6. [Manuscript Wireframe][Manuscript wire frame]
-   7. [Manuscript: A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew.][Manuscript]
+These sections detail the methods and process we undertook during this meta-analysis. 
 
-## Other research questions, which are not the focus of this study
+The manuscript publishing the results presented in this compendium can be found at ....
 
-+ How has the first sign of powdery mildew changed between the seasons and experimental sites?
-
-+ Is there an ideal planting time, or fungicide management strategy, which could make use of powdery mildew defoliation during pod maturation resulting in an increased yield?
-
-+ Do infections that occur before flowering increase the probable yield loss?
-
-## Possible sources of variation in this analysis.
-
-+ Variability among host genotypes.
-
-   + The probable influence of season might be influenced by host genotype.
-   This is because newer varieties were adopted into experimental trials as they were released.
-   
-   + Between 2001 and 2015 mungbean genotype changed from Green Diamond, Berken, Crystal to Jade.
-   Jade was the only cultivar used between 2015 and 2019.
-   
-   + Estimations of plant maturity stages over each growing season.
-    These estimations might able to be computed using APSIM.
+Preprint at .........
