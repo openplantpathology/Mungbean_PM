@@ -5,8 +5,7 @@ crop_rain <- function(latitude, longitude, start, end) {
    # locations <- unique(data.frame(lat = latitude,
    #                                lon = longitude))
    
-   LL <- c(latitude, longitude)
-   
+   LL <- format(round(as.numeric(c(latitude, longitude)),4), nsmall = 4)
    
       if (file.exists(paste("weather/", str_remove(paste(LL, collapse = ""),"-"), ".csv", sep = ""))) {
       station_site <-
