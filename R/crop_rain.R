@@ -8,13 +8,9 @@ crop_rain <- function(latitude, longitude, start, end) {
    LL <- c(latitude, longitude)
    
    
-   #cat(LL, length(LL), class(LL))
-   
-   
-   
-   if (file.exists(paste("weather/", paste(LL, collapse = ""), ".csv", sep = ""))) {
+      if (file.exists(paste("weather/", str_remove(paste(LL, collapse = ""),"-"), ".csv", sep = ""))) {
       station_site <-
-         read.csv(paste("weather/", paste(LL, collapse = ""), ".csv", sep = ""),
+         read.csv(paste("weather/", str_remove(paste(LL, collapse = ""),"-"), ".csv", sep = ""),
                   stringsAsFactors = FALSE)
       #message("imported: ",paste(LL,collapse = " "))
       site_num <- unique(station_site$site_num)
@@ -35,7 +31,7 @@ crop_rain <- function(latitude, longitude, start, end) {
       
       write.csv(
          station_site,
-         file = paste("weather/", paste(LL, collapse = ""), ".csv", sep = ""),
+         file = paste("weather/", str_remove(paste(LL, collapse = ""),"-"), ".csv", sep = ""),
          row.names = FALSE
       )
    }
