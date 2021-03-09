@@ -7,65 +7,12 @@ crop_rain <-
             longitude,
             first_day,
             last_day) {
-      # # locations <- unique(data.frame(lat = latitude,
-      # #                                lon = longitude))
-      #
-      # LL <- format(round(as.numeric(c(latitude, longitude)),4), nsmall = 4)
-      #
-      #    if (file.exists(paste("weather/", str_remove(paste(LL, collapse = ""),"-"), ".csv", sep = ""))) {
-      #    station_site <-
-      #       read.csv(paste("weather/", str_remove(paste(LL, collapse = ""),"-"), ".csv", sep = ""),
-      #                stringsAsFactors = FALSE)
-      #    #message("imported: ",paste(LL,collapse = " "))
-      #    site_num <- unique(station_site$site_num)
-      #
-      # } else{
-      #    stat_sweep <- sweep_for_stations(latlon = as.numeric(LL))
-      #
-      #    site_num <- stat_sweep[1, site]
-      #    banned_stations <- c("055286") # stations don't report rain
-      #
-      #    if (banned_stations %in% site_num) {
-      #       site_num <- stat_sweep[2, site]
-      #    }
-      #    message("Downloading weather data from BOM servers,\nplease make a cup of coffee this will take some time.")
-      #    station_site <-
-      #       bomrang::get_historical(stationid = site_num, type = "rain")
-      #    station_site$site_num <- as.character(site_num)
-      #
-      #    write.csv(
-      #       station_site,
-      #       file = paste("weather/", str_remove(paste(LL, collapse = ""),"-"), ".csv", sep = ""),
-      #       row.names = FALSE
-      #    )
-      # }
-      #
-      #
-      # season <- interval(start = ymd(start), end = ymd(end))
-      #
-      # sum_rain <-
-      #    station_site %>%
-      #    mutate(log_date = ymd(paste(year, month, day, sep = "-"))) %>%
-      #    filter(log_date %within% season) %>%
-      #    summarise(total_rain = sum(rainfall, na.rm = TRUE)) %>%
-      #    pull()
-      #
-      # return(sum_rain)
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+ 
       input_data <- data.frame(location_name, latitude, longitude)
       trials <- unique(input_data)
       
       
-      # Download data
+      # Download trial data
       trials$stat_file <-
          apply(trials, 1, function(LL) {
             stat_sweep <-
@@ -94,8 +41,8 @@ crop_rain <-
          })
 
 
-      input_data$stat_file <- NA_character_
-      # add a column with the weather station file to 
+      
+      # add a column with the weather station file name 
       for (i in 1:nrow(trials)) {
          input_data <- 
             input_data%>%
@@ -110,6 +57,7 @@ crop_rain <-
       }
       
       
+      # calculate the sum rainfall for the specified time interval
       input_data$sum_rain <-
          apply(input_data, 1, function(x1) {
             weather <-
@@ -123,25 +71,8 @@ crop_rain <-
                summarise(total_rain = sum(rainfall, na.rm = TRUE)) %>%
                pull()
          })
-      
-         
-      # cbind(input_data, start, end)
-      # 
-      #    input_data$season <- interval(start = ymd(input_data$start), end = ymd(input_data$end))
-      #    
-      #    # input_data %>%
-         #    mutate(sum_rain = read.csv())
-         # 
-         # sum_rain <-
-         #    weather %>%
-         #    mutate(log_date = ymd(paste(year, month, day, sep = "-"))) %>%
-         #    filter(log_date %within% season) %>%
-         #    summarise(total_rain = sum(rainfall, na.rm = TRUE)) %>%
-         #    pull()
-         # 
-         # return(sum_rain)
-         
-      
+
+      # ensure NA is returned not 0 when start or end times are NA
       input_data <-
          input_data %>%
          mutate(sum_rain = case_when(is.na(start) |
