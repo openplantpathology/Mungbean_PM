@@ -632,38 +632,21 @@ First an inspection of all rainfall within the season
 source("R/add_lat_longs.R") # code adds the latitude- and longitude to PM_MB_dat
 source("R/crop_rain.R")
 
-
-unique(PM_MB_dat[,c("location","lat","lon")])
-PM_MB_dat[is.na(PM_MB_dat$lat),]
-
-trials <- unique(PM_MB_dat, c("location","lat","lon"))
-apply(trials,1, function(LL) {
-   
-   stat_sweep <- bomrang::sweep_for_stations(as.numeric(c(LL["lat"],LL["lon"])))
-   
-   # Remove banned stations
-   banned_stations <- c("055286") # stations don't report rain
-   stat_sweep <- stat_sweep[stat_sweep$site != banned_stations,]
-   
-   statID <- paste(stat_sweep[1,"name"],stat_sweep[1,"site"], sep = "_")
-   
-   return(statID)
-   
-})
-bomrang::sweep_for_stations(unlist(PM_MB_dat[1,c("lat","lon")]))
-
-bomrang::get
-
 # Obtain rainfall from bomrang
+
+crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = PM_MB_dat$planting_date,
+          last_day = PM_MB_dat$harvest_date)
+
+
 PM_MB_dat$sum_rain <-
-   apply(PM_MB_dat, 1, function(x) {
-      crop_rain(
-         latitude = x["lat"],
-         longitude = x["lon"],
-         start = x["planting_date"],
-         end = x["harvest_date"]
-      )
-   })
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = PM_MB_dat$planting_date,
+          last_day = PM_MB_dat$harvest_date)
 
 # plot yield vs rainfall
 PM_MB_dat %>%
@@ -684,14 +667,11 @@ We are choosing first sign of disease as a mid point in the crop maturity.
 
 ```{r early_season_rain}
 PM_MB_dat$early_rain <-
-   apply(PM_MB_dat, 1, function(x) {
-      crop_rain(
-         latitude = x["lat"],
-         longitude = x["lon"],
-         start = x["planting_date"],
-         end = x["first_sign_disease"]
-      )
-   })
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = PM_MB_dat$planting_date,
+          last_day = PM_MB_dat$first_sign_disease)
 
 PM_MB_dat %>%
    ggplot(aes(y = grain_yield.t.ha., x = early_rain)) + 
@@ -712,14 +692,12 @@ Here we only look at the effect of rainfall between the _first sign of disease_ 
 
 ```{r late_rain}
 PM_MB_dat$late_rain <-
-   apply(PM_MB_dat, 1, function(x) {
-      crop_rain(
-         latitude = x["lat"],
-         longitude = x["lon"],
-         start = x["first_sign_disease"],
-         end = x["harvest_date"]
-      )
-   })
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = PM_MB_dat$first_sign_disease,
+          last_day = PM_MB_dat$harvest_date)
+
 
 PM_MB_dat %>%
    ggplot(aes(y = grain_yield.t.ha., x = late_rain)) + 
@@ -739,14 +717,12 @@ There is a significant positive association here, indicating rainfall after dise
 Here we only look at the effect of rainfall between the 20 days after planting and 80 days after planting.
 ```{r mid_rain}
 PM_MB_dat$mid_rain <-
-   apply(PM_MB_dat, 1, function(x) {
-      crop_rain(
-         latitude = x["lat"],
-         longitude = x["lon"],
-         start = ymd(x["planting_date"]) + days(20),
-         end = ymd(x["planting_date"]) + days(80)
-      )
-   })
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = ymd(PM_MB_dat$planting_date) + days(20),
+          last_day = ymd(PM_MB_dat$planting_date) + days(80)
+   )
 
 PM_MB_dat %>%
    ggplot(aes(y = grain_yield.t.ha., x = mid_rain)) + 
