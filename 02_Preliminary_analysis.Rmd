@@ -1,6 +1,6 @@
 # Preliminary Analysis
 
-```{r PA_Libraries, include=FALSE, message=FALSE}
+```{r PA_Libraries, echo=TRUE, results='hide'}
 if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(tidyverse,
@@ -23,11 +23,14 @@ theme_set(theme_usq()
 load("cache/ImportDataAndSelectTrials01.Rdata")
 ```
 
-Now we have the clean data let's summarise the main variables.
+<br>  
+<br>  
 
 ## Trial summary statistics  
 
 The data explored in the `PM_MB_dat` data frame is a clean data frame focusing on trials which met the selection criteria testing DMI fungicides (tebuconazole / propiconazole) or no spray controls. 
+
+<br>  
 
 ### Trial seasons
 How many trials were undertaken each season.  
@@ -41,6 +44,10 @@ PM_MB_dat %>%
    flextable()
    
 ```
+
+<br>  
+<br>  
+
 ### Trial locations
 The location of the trials including DMI fungicides.  
 
@@ -51,7 +58,9 @@ PM_MB_dat %>%
    summarise(n = n())%>%
    flextable()
 ```
-<br>
+
+<br>  
+<br>  
 
 ### Powdery mildew severity and mungbean grain yield summary per trial  
 Show a summary of both `powdery mildew severity` and mungbean `grain yield` means and ranges for all trials including DMI fungicides.  
@@ -122,12 +131,12 @@ doc <- body_add_flextable(doc, value = Sev_yield_table)
 doc <- officer::body_end_section_landscape(doc)
 print(doc, target = "paper/figures/Table1_severity&yield.docx")
 ```
-<br>
-<br>
+<br>  
+<br>  
 
 
 ### Summary plots
-#### Seasonal disease pressure  
+#### Seasonal disease pressure in the control  
 
 ```{r bwplot_sev}
 sev_control_plot <- 
@@ -146,8 +155,8 @@ sev_control_plot <-
 
 sev_control_plot      
 ```
-<br>
-<br>
+<br>  
+<br>  
 
 #### Disease severity range for each spray schedule  
 
@@ -179,9 +188,9 @@ sev_schedule_plot
 ```
 
 <br>  
-<br>
+<br>  
 
-#### Seasonal grain yield  
+#### Seasonal grain yield in the control  
 
 ```{r bwplot_yield_year}
 Y_control_plot <-
@@ -205,7 +214,7 @@ Y_control_plot <-
 Y_control_plot
 ```
 
-<br>
+<br>  
 <br>  
 
 #### Mungbean yield for each spray schedule   
@@ -239,7 +248,7 @@ Y_schedule_plot <-
 Y_schedule_plot
 ```
 
-```{r}
+```{r include = FALSE}
 #library(gridExtra)
 # save plots into a 4 x 4 grid for publication
 
@@ -293,7 +302,8 @@ A quick inspection of the following factors were done to examine the possible in
    6. [Final disease rating / disease pressure][Disease pressure]
    7. [Moisture availability for the crop][In-crop rainfall]
    
-The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r min(PM_MB_dat$year)` - `r max(PM_MB_dat$year)`) of which the details are described in the [Trials considered for inclusion in meta-analysis]. 
+The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r min(PM_MB_dat$year)` - `r max(PM_MB_dat$year)`) of which the details are described in the [Trials considered for inclusion in meta-analysis].  
+
 <br>  
 
 ### Fungicide type
@@ -318,7 +328,6 @@ PM_MB_dat %>%
 <br>  
 <br>  
 
-*****
 
 #### Yield effect
 ```{r TebuVPropi_Yi}
@@ -332,10 +341,10 @@ PM_MB_dat %>%
    geom_boxplot() +
    scale_colour_usq()
 ```
-<br>  
-<br>  
 
-*****
+<br>  
+<br>  
+<br>  
 
 ### Fungicide Doses{#fungicide-doses}  
 This analysis focuses only the DMI fungicides, tebuconazole and propiconazole, which were trialled the most often.
@@ -357,7 +366,7 @@ PM_MB_dat %>%
 All trials that used tebuconazole used approximately the same dose.
 Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare.
 
-Doses for propiconazole range from 62.5 to 125, a large variation.  
+Doses for propiconazole range from 62.5&nbsp;g to 125&nbsp;g, a large variation.  
 Let's inspect the difference in yields for each dose.
 
 ```{r PropiDoseEffect}
@@ -372,12 +381,12 @@ PM_MB_dat %>%
    facet_grid(cols = vars(total_fungicide))
 ```
 
-This dose effect should be acknowledged in the meta-analysis.  
+This dose effect should be investigated in the meta-analysis.  
+
+<br>  
+<br>  
 
 How many treatments of each dose have been investigated per trial?  
-
-<br>
-
 
 ```{r table_PropiDoses}
 table(as.character(PM_MB_dat[PM_MB_dat$fungicide_ai == "propiconazole",]$trial_ref),
@@ -386,7 +395,6 @@ table(as.character(PM_MB_dat[PM_MB_dat$fungicide_ai == "propiconazole",]$trial_r
 <br>  
 <br>  
 
-*****
 
 ### Number of fungicide sprays  
 
@@ -399,7 +407,7 @@ Very few treatments were sprayed more than three times and only in `r unique(PM_
 <br>  
 <br>  
 
-*****
+
 ### Mungbean cultivars
 
 Australian mungbean varieties have the following resistance to powdery mildew.
@@ -431,8 +439,8 @@ PM_MB_dat %>%
 
 #### Yield loss in cultivar Jade  
 
-Mungbean Jade shows the best quantitative resistance to powdery mildew.  
-Based on a GRDC report by Sue Thompson [-@SueThompson2016] we want to know what the yield loss was in on cultivar Jade in the 2016 Trials.
+Cultivar Jade shows the best quantitative resistance to powdery mildew.  
+Based on the 2016 GRDC report by Sue Thompson [-@SueThompson2016] we want to know what is the possible yield loss for this moderately susceptible cultivar.
 
 ```{r JadeYieldLoss}
 PM_MB_dat %>%
@@ -465,14 +473,13 @@ PM_MB_dat %>%
 <br>  
 <br>  
 
-*****  
 
 ### Row spacing  
 
 Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease as well as fungicide timing and efficacy.
 The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly.
 This finding has also been shown by several other researchers' work in Queensland and New South Wales as well.
-Eight trials used a row spacing of 0.75&nbsp;meters and tebuconazole as an active ingredient (AI).
+
 
 ```{r row_spacing.m}
 PM_MB_dat %>%
@@ -491,15 +498,16 @@ PM_MB_dat %>%
    scale_fill_usq(name = "Fungicide AI")
 ```
 
-Let's plot the row spacing treatments for the response variables, *yield* and *disease severity*.  
+<br>  
+<br>  
+
+Will plotting row spacing treatments show differences for the response variables, *yield* and *disease severity*.  
 The main questions are:  
 
-   * Were there any statistical differences for mungbean yield or powdery mildew severity between row spacing treatments?  
+   * Were there any statistical differences for mungbean *yield* or *powdery mildew severity* between row spacing treatments?  
    
    * If not, can we pool certain row spacing that have no significant difference?  
 
-Let's plot disease severity in boxplots grouped by row spacing treatment.
-We are asking here, which row spacing leads to the higher disease severity? 
 
 ```{r RS_severity}
 # Which row spacing leads to the higher disease severity
@@ -517,7 +525,7 @@ PM_MB_dat %>%
 There is little difference here between the row spacing treatments, Let's look if there is a trial location effect as disease pressure lead to varying results.  
 
 ```{r RS_severity_x_trial}
-# Which row spacing leads to the higher disease severity
+# Does trial year and location interact between row spacing amd disease severity
 PM_MB_dat %>%
    filter(year == 2017 |
              year == 2018) %>%
@@ -529,6 +537,8 @@ PM_MB_dat %>%
    ylab("Final severity rating") +
    xlab("Row spacing (m)")
 ```
+
+<br>  
 
 In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.
 
@@ -553,19 +563,19 @@ The plots seem to imply when yield is limited, presumably by other abiotic facto
 However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.
 
 Overall row spacing may influence both powdery mildew severity and yield.
-However, in the studies that were conducted, no interaction was found between row spacing, powdery mildew severity and yield.
-That is, the row spacing appeared to increase yield even if the amount of powdery mildew increased and no relationship could be detected between an interaction of the three.
+However, in the trial reports, no significant interaction was found between row spacing, powdery mildew severity and yield.
+That is, with narrower row spacing appeared to increase yield even if the amount of powdery mildew increased and no relationship could be detected between an interaction of the three.
 
 <br>  
 <br>  
 
-*****
+
 
 ### Disease pressure  
 The amount of disease pressure between seasons is another variable which could impact mungbean yield meta-analysis effect size. 
 ```{r D_pres}
 # Assess the effect of yield pressure on the spray schedule efficacy
-# Quantile to separate disease pressure into High, Medium and low disease pressure categories
+# Use quantiles to separate disease pressure into High, Medium and low disease pressure categories
 DP33 <- 
    PM_MB_dat %>%
    filter(fungicide_ai == "control") %>%
@@ -613,7 +623,6 @@ It is worth noting there was not sufficient variation in the control plot diseas
 <br>  
 <br>  
 
-*****
 
 ### In-crop rainfall  
 #### Whole season
@@ -622,6 +631,28 @@ First an inspection of all rainfall within the season
 ```{r season_rainfall}
 source("R/add_lat_longs.R") # code adds the latitude- and longitude to PM_MB_dat
 source("R/crop_rain.R")
+
+
+unique(PM_MB_dat[,c("location","lat","lon")])
+PM_MB_dat[is.na(PM_MB_dat$lat),]
+
+trials <- unique(PM_MB_dat, c("location","lat","lon"))
+apply(trials,1, function(LL) {
+   
+   stat_sweep <- bomrang::sweep_for_stations(as.numeric(c(LL["lat"],LL["lon"])))
+   
+   # Remove banned stations
+   banned_stations <- c("055286") # stations don't report rain
+   stat_sweep <- stat_sweep[stat_sweep$site != banned_stations,]
+   
+   statID <- paste(stat_sweep[1,"name"],stat_sweep[1,"site"], sep = "_")
+   
+   return(statID)
+   
+})
+bomrang::sweep_for_stations(unlist(PM_MB_dat[1,c("lat","lon")]))
+
+bomrang::get
 
 # Obtain rainfall from bomrang
 PM_MB_dat$sum_rain <-
