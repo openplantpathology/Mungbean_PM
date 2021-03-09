@@ -5,8 +5,8 @@ crop_rain <-
    function(location_name,
             latitude,
             longitude,
-            start,
-            end) {
+            first_day,
+            last_day) {
       # # locations <- unique(data.frame(lat = latitude,
       # #                                lon = longitude))
       #
@@ -105,15 +105,24 @@ crop_rain <-
                                             trials[i, "stat_file"],
                                          TRUE ~ stat_file
                                             ),
-                   s1 = ymd(start),
-                   e1 = ymd(end))%>%
-            mutate(season = interval(start = s1, end = e1))
+                   start = first_day,
+                   end = last_day)
       }
       
       
-      # apply(input_data, 1, function(x1){
-      #   
-      #})
+      input_data$sum_rain <-
+         apply(input_data, 1, function(x1) {
+            weather <-
+               read.csv(file = x1["stat_file"], stringsAsFactors = FALSE)
+            
+            int1 <- interval(start = ymd(x1["start"]), end = ymd(x1["end"]))
+      
+            weather %>%
+               mutate(log_date = ymd(paste(year, month, day, sep = "-"))) %>%
+               filter(log_date %within% int1) %>%
+               summarise(total_rain = sum(rainfall, na.rm = TRUE)) %>%
+               pull()
+         })
       
          
       # cbind(input_data, start, end)
@@ -133,8 +142,12 @@ crop_rain <-
          # return(sum_rain)
          
       
-      
+      input_data <-
+         input_data %>%
+         mutate(sum_rain = case_when(is.na(start) |
+                             is.na(end) ~ NA_real_,
+                TRUE ~ sum_rain))
 
       
-      return(input_data)
+      return(input_data$sum_rain)
    }
