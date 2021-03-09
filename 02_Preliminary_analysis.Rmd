@@ -627,6 +627,8 @@ It is worth noting there was not sufficient variation in the control plot diseas
 ### In-crop rainfall  
 #### Whole season
 
+In season rainfall is known to contribute significantly to crop yields, however the timing of rainfall is likely important.  
+
 First an inspection of all rainfall within the season
 ```{r season_rainfall}
 source("R/add_lat_longs.R") # code adds the latitude- and longitude to PM_MB_dat
@@ -712,8 +714,8 @@ PM_MB_dat$mid_rain <-
    crop_rain(location_name = PM_MB_dat$location,
           latitude = PM_MB_dat$lat,
           longitude = PM_MB_dat$lon,
-          first_day = ymd(PM_MB_dat$planting_date) + days(20),
-          last_day = ymd(PM_MB_dat$planting_date) + days(80)
+          first_day = ymd(PM_MB_dat$planting_date) + days(45),
+          last_day = ymd(PM_MB_dat$planting_date) + days(75)
    )
 
 PM_MB_dat %>%
@@ -726,10 +728,13 @@ summary(lm(grain_yield.t.ha. ~ mid_rain, data = PM_MB_dat))
 ```
 There is no association with mid season rain and crop yields.  
 
+From the plots shown here we can draw the conclusion that we lack sufficient information. 
+Most likely available soil water between trials along with other unobserved variables influence of rainfall on mungbean crops and therefore we will not investigate any further.  
+
 <br>  
 <br> 
 <br> 
-******  
+******
 
 ### FAO mungbean data
 
