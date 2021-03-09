@@ -633,14 +633,6 @@ source("R/add_lat_longs.R") # code adds the latitude- and longitude to PM_MB_dat
 source("R/crop_rain.R")
 
 # Obtain rainfall from bomrang
-
-crop_rain(location_name = PM_MB_dat$location,
-          latitude = PM_MB_dat$lat,
-          longitude = PM_MB_dat$lon,
-          first_day = PM_MB_dat$planting_date,
-          last_day = PM_MB_dat$harvest_date)
-
-
 PM_MB_dat$sum_rain <-
    crop_rain(location_name = PM_MB_dat$location,
           latitude = PM_MB_dat$lat,
