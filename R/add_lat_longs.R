@@ -31,8 +31,10 @@ PM_MB_dat <-
             experiment_sites[experiment_sites$location == "NGA - Millmerran", "lat"],
          location == "Missen Flats" ~
             experiment_sites[experiment_sites$location == "Missen Flats", "lat"],
-         location == "Wellcamp " ~
-            experiment_sites[experiment_sites$location == "Wellcamp", "lat"]
+         location == "Wellcamp" ~
+            experiment_sites[experiment_sites$location == "Wellcamp", "lat"],
+         location == "Gatton" ~
+            experiment_sites[experiment_sites$location == "Gatton", "lat"]
       ),
       lon = case_when(
          location == "Hermitage" ~
@@ -49,8 +51,10 @@ PM_MB_dat <-
             experiment_sites[experiment_sites$location == "NGA - Millmerran", "lon"],
          location == "Missen Flats" ~
             experiment_sites[experiment_sites$location == "Missen Flats", "lon"],
-         location == "Wellcamp " ~
-            experiment_sites[experiment_sites$location == "Wellcamp", "lon"]
+         location == "Wellcamp" ~
+            experiment_sites[experiment_sites$location == "Wellcamp", "lon"],
+         location == "Gatton" ~
+            experiment_sites[experiment_sites$location == "Gatton", "lon"]
       )
    )
 
