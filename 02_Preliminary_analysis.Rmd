@@ -320,9 +320,7 @@ PM_MB_dat %>%
    labs(caption = paste("Control n:", n_C,
                         "; Propiconazole n:", n_P,
                         "; Tebuconazole n:", n_T, sep = "")) +
-   geom_boxplot() +
-   scale_fill_usq() +
-   scale_colour_usq()
+   geom_boxplot()
 ```
 
 <br>  
@@ -338,8 +336,7 @@ PM_MB_dat %>%
    labs(caption = paste("Control n:", n_C,
                         "; Propiconazole n:", n_P,
                         "; Tebuconazole n:", n_T, sep = "")) +
-   geom_boxplot() +
-   scale_colour_usq()
+   geom_boxplot()
 ```
 
 <br>  
