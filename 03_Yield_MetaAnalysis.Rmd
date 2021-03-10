@@ -122,7 +122,7 @@ PM_dat_Y <- PM_dat_Y %>%
                             first_sign_days > 42 ~ "late_onset"))
 ```
 
-Inspect a histogram of when first sign occured in the crop
+Inspect a histogram of when first sign occurred in the crop
 ```{r hist_onset}
 PM_dat_Y %>%
    ggplot(aes(x = as.integer(first_sign_days))) +
@@ -191,7 +191,7 @@ PM_dat_Y <- PM_dat_Y %>%
                             PM_final_severity >= 8 ~ "high_pressure"))
 ```
 
-Inspect a histogram of when first sign occured in the crop
+Inspect a histogram of when first sign occurred in the crop
 ```{r hist_pressure}
 PM_dat_Y %>%
    ggplot(aes(x = PM_final_severity)) +
