@@ -13,7 +13,7 @@ crop_rain <-
       
       
       # Download trial data
-      trials$stat_file <-
+      trials$station_file <-
          apply(trials, 1, function(LL) {
             stat_sweep <-
                bomrang::sweep_for_stations(as.numeric(c(LL["latitude"], LL["longitude"])))
@@ -29,7 +29,7 @@ crop_rain <-
             stat_file <-
                paste("cache/weather/", statID, ".csv",sep = "", collapse = " ")
             
-            if (file.exists(stat_file)) {
+            if (stat_file %in% paste0("cache/weather/", list.files(here::here("cache/weather/")))) {
                #weather <- read.csv(stat_file, stringsAsFactors = FALSE)
                return(stat_file)
             } else{
@@ -41,27 +41,17 @@ crop_rain <-
          })
 
 
+      input_data <- full_join(input_data,trials, by = c("location_name", "latitude", "longitude"))
       
-      # add a column with the weather station file name 
-      for (i in 1:nrow(trials)) {
-         input_data <- 
-            input_data%>%
-            mutate(stat_file = case_when(location_name == trials[i, "location_name"] &
-                                            latitude == trials[i, "latitude"] &                     
-                                            longitude == trials[i, "longitude"] ~ 
-                                            trials[i, "stat_file"],
-                                         TRUE ~ stat_file
-                                            ),
-                   start = first_day,
-                   end = last_day)
-      }
-      
+      input_data$start <- first_day
+      input_data$end <- last_day
+
       
       # calculate the sum rainfall for the specified time interval
       input_data$sum_rain <-
          apply(input_data, 1, function(x1) {
             weather <-
-               read.csv(file = x1["stat_file"], stringsAsFactors = FALSE)
+               read.csv(file = x1["station_file"], stringsAsFactors = FALSE)
             
             int1 <- interval(start = ymd(x1["start"]), end = ymd(x1["end"]))
       
