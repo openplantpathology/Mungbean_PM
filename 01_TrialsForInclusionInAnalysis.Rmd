@@ -7,7 +7,7 @@ We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue
 
 <br>  
 
-### Load required r packages  
+### Load required R packages  
 
 ```{r MEsummary_Libraries, echo=TRUE, results='hide'}
 if (!require("pacman"))
