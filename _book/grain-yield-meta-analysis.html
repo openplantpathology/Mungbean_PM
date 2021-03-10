@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="grain-yield-meta-analysis" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Grain yield meta-analysis</h1>
-<p>Let’s get started with the analysis by first finding the best model fit that answers our research question.</p>
+<p>Let’s get started with the analysis by first finding the best fitting model which answers our research question.</p>
 <blockquote>
 <p>When, in relation to PM establishment in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop.</p>
 </blockquote>
@@ -292,6 +292,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="spray-schedule-meta-analysis" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Spray schedule meta-analysis</h2>
+<p>The <code>spray_management</code> moderator will be evaluated in the first model.
+Then this model will be tested against other models incorporating, time of disease onset, disease pressure and other variance-covariance matrix structures.</p>
 <div id="spray-schedule-moderator" class="section level3" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Spray schedule moderator</h3>
 <p>For the first grain yield meta-analysis will be an ARM based model or multi-variate meta-analysis, using the <code>metafor</code> package function <code>rma.mv()</code> <span class="citation">(<a href="powdery-mildew-severity-meta-analysis.html#ref-Viechtbauer2010" role="doc-biblioref">Viechtbauer 2010</a>)</span>.</p>
@@ -373,8 +375,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p><br><br />
 <br><br />
-<br><br />
-******</p>
+<br></p>
+<hr />
 </div>
 <div id="disease-onset-interaction-with-spray-schedule" class="section level3" number="4.1.2">
 <h3><span class="header-section-number">4.1.2</span> Disease onset interaction with spray schedule</h3>

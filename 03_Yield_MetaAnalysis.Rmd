@@ -5,7 +5,7 @@ editor_options:
 ---
 # Grain yield meta-analysis
 
-Let's get started with the analysis by first finding the best model fit that answers our research question.
+Let's get started with the analysis by first finding the best fitting model which answers our research question.
 
 > When, in relation to PM establishment in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop. 
 
@@ -28,6 +28,7 @@ To do this, the model will use the main variables:
    
    
 ```{r Yield_ME_libraries, echo=TRUE,results='hide'}
+# load R packages
 if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(
@@ -68,17 +69,21 @@ PM_dat_Y <-
                         sep = "_")) 
 ```
 
+
 <br>  
 <br>  
 <br>  
 
 ## Spray schedule meta-analysis  
 
+The `spray_management` moderator will be evaluated in the first model. 
+Then this model will be tested against other models incorporating, time of disease onset, disease pressure and other variance-covariance matrix structures.  
+
 ### Spray schedule moderator
 
-For the first grain yield meta-analysis will be an ARM based model or multi-variate meta-analysis, using the `metafor` package function `rma.mv()` [@Viechtbauer2010].
+This *grain yield* meta-analysis is a multi-variate meta-analysis, using the `metafor` package function `rma.mv()` [@Viechtbauer2010].
 
-We are using the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
+We are using the `spray_management` variable as a moderator and an interactive random term with the `trial` random variable. The variance-covariance matrix is specified as unstructured (UN) to allow correlations between and within trials.  
 
 ```{r Yield_Metafor-analysis}
 PM_mv <- rma.mv(
@@ -97,17 +102,15 @@ summary(PM_mv)
 
 <br>  
 <br>  
+<br>  
 
-
-******
+*****
 
 ### Disease onset interaction with spray schedule  
 
 To determine if the time at which disease occurs in the cropping season influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `early` or `late` disease onset.
 
-`early` and `late` will be divided by a number close to the median days after sowing when signs of the disease were first observed.
-A number close to the median should ensure roughly even numbers in each category.
-
+`early` and `late` categories should be divided by a number close to the median days after sowing when signs of the disease were first observed to ensure roughly even numbers in each category.
 ```{r median onset}
 PM_dat_Y %>%
    mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
