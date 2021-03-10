@@ -525,7 +525,7 @@ PM_MB_dat %>%
 There is little difference here between the row spacing treatments, Let's look if there is a trial location effect as disease pressure lead to varying results.  
 
 ```{r RS_severity_x_trial}
-# Does trial year and location interact between row spacing amd disease severity
+# Does trial year and location interact between row spacing and disease severity
 PM_MB_dat %>%
    filter(year == 2017 |
              year == 2018) %>%
@@ -676,7 +676,7 @@ PM_MB_dat %>%
 summary(lm(grain_yield.t.ha. ~ early_rain, data = PM_MB_dat))
 ```
 
-There is a significant negative association here, indicating rain fall early in the crop development negativley affects mungbean yields. However the very low R-squared value indicates it is no a strong one.
+There is a significant negative association here, indicating rain fall early in the crop development negatively affects mungbean yields. However the very low R-squared value indicates it is no a strong one.
 
 <br>  
 <br>  
