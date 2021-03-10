@@ -3,8 +3,31 @@ output: html_document
 editor_options: 
   chunk_output_type: inline
 ---
+# Grain yield meta-analysis
 
-```{r Yield_ME_libraries, message=FALSE, include=FALSE}
+Let's get started with the analysis by first finding the best model fit that answers our research question.
+
+> When, in relation to PM establishes in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop. 
+
+A secondary question to this aim is: given the time at which the first spray occurred does a second spray provide worthwhile yield protection.
+
+To do this, the model will use the main variables:
+
+   - *Grain yield* is our response variable (t / ha)
+
+   - *Trial*, which resolves combinations of categorical random variables: 
+      i) year  
+      ii) location  
+      iii) row spacing  
+      iv) fungicide dose
+      v) cultivar  
+      
+   - *spray_management* a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
+   
+   - *id* random variable indicating each treatment is independent
+   
+   
+```{r Yield_ME_libraries, echo=TRUE,results='hide'}
 if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(tidyverse,
@@ -24,25 +47,11 @@ theme_set(theme_usq())
 source(here("R/reportP.R"))
 
 # Data
-# load("cache/ImportDataAndSelectTrials01.Rdata")
-
 PM_dat_Y <-
    read.csv("cache/PM_yield_clean_data.csv", stringsAsFactors = FALSE)
 ```
 
-# Grain yield meta-analysis
 
-Let's get started with the analysis by first finding the best model fit that answers our research question.
-
-> When, in relation to PM establishes in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop. 
-
-A secondary question to this aim is: given the time at which the first spray occurred does a second spray provide worthwhile yield protection.
-
-To do this, in our model:
-
-   - Grain yield is our response variable (t / ha)
-
-   - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
 
 ### Define Trial
 ```{r Yield_define_trial}
@@ -56,8 +65,6 @@ PM_dat_Y <-
                         sep = "_")) 
 ```
 
-   - We will investigate the effect size of our treatment - spray management,
-
 <br>  
 <br>  
 <br>  
@@ -65,7 +72,7 @@ PM_dat_Y <-
 ## Spray schedule meta-analysis  
 ### Spray schedule moderator
 
-For the first grain yield meta-analysis will be an ARM based model using the `metafor` package [@Viechtbauer2010].
+For the first grain yield meta-analysis will be an ARM based model or multi-variate meta-analysis, using the `metafor` package function `rma.mv()` [@Viechtbauer2010].
 
 We are using the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
 
@@ -87,13 +94,14 @@ summary(PM_mv)
 <br>  
 <br>  
 <br>  
-******  
+******
 
 ### Disease onset interaction with spray schedule  
 
-To determine if when in the season the disease occurs influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `early` or `late` disease onset.
+To determine if the time at which disease occurs in the cropping season influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `early` or `late` disease onset.
 
-`early` and `late` will be divided by the median days after sowing when signs of the disease were first observed.
+`early` and `late` will be divided by a number close to the median days after sowing when signs of the disease were first observed.
+A number close to the median should ensure roughly even numbers in each category.
 ```{r median onset}
 PM_dat_Y %>%
    mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
@@ -101,22 +109,25 @@ PM_dat_Y %>%
    pull(first_sign_days)%>%
    median()
 ```
+We will choose 42 days as this is the average days to flowering in mungbean. 
+In addition Kelly et. al. [@-Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.
+
 Now lets define these two new variables, `first_sign_days` and `onset` in the data.
 
 ```{r define_onset}
 PM_dat_Y <- PM_dat_Y %>%
    mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
              lubridate::ymd(planting_date)) %>%
-   mutate(onset = case_when(first_sign_days <= 39 ~ "early_onset",
-                            first_sign_days > 39 ~ "late_onset"))
+   mutate(onset = case_when(first_sign_days <= 42 ~ "early_onset",
+                            first_sign_days > 42 ~ "late_onset"))
 ```
 
 Inspect a histogram of when first sign occured in the crop
 ```{r hist_onset}
 PM_dat_Y %>%
-   ggplot(aes(x = first_sign_days)) +
-   geom_histogram() +
-   geom_vline(xintercept = 39)
+   ggplot(aes(x = as.integer(first_sign_days))) +
+   geom_histogram(binwidth = 1) +
+   geom_vline(xintercept = 42)
 ```
 
 To put this onset number into context for plant maturity, 40 days is approximately when flowering begins in the plant.
@@ -124,7 +135,7 @@ To put this onset number into context for plant maturity, 40 days is approximate
 <br>  
 <br>  
 <br>  
-******  
+******
 
 #### metafor onset analysis
 
@@ -145,11 +156,11 @@ PM_mv_onset <- rma.mv(
 ```
 
 ```{r}
-anova(PM_mv, PM_mv_onset)
+anova(PM_mv, PM_mv_onset)$pval
 ```
 This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value.
 However the higher AIC indicates that the model omitting `onset` is a slightly better fit.
-Also the chi-squared test uncertain that the `onset` model is significantly better as indicated by the `pval` 0.3258.
+Also the chi-squared test uncertain that the `onset` model is significantly better as indicated by the `pval` `r round(anova(PM_mv, PM_mv_onset)$pval,3)`.
 The higher log likelihood on the `onset` model does intricate there is some merit to this model and that perhaps with more trials to increase statistical power might provide a useful model.  
 
 ```{r}
@@ -184,7 +195,7 @@ Inspect a histogram of when first sign occured in the crop
 ```{r hist_pressure}
 PM_dat_Y %>%
    ggplot(aes(x = PM_final_severity)) +
-   geom_histogram() +
+   geom_histogram(binwidth = 1) +
    geom_vline(xintercept = 8)
 ```
 
