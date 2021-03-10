@@ -32,7 +32,7 @@
   
 <link rel="prev" href="preliminary-analysis.html"/>
 <link rel="next" href="powdery-mildew-severity-meta-analysis.html"/>
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,20 +50,6 @@
 
 
 
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
 <link href="libs/tabwid-1.0.0/tabwid.css" rel="stylesheet" />
 
 
@@ -71,6 +57,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -152,7 +139,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Trials considered for inclusion in meta-analysis</a>
 <ul>
-<li class="chapter" data-level="2.0.1" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#load-required-r-packages"><i class="fa fa-check"></i><b>2.0.1</b> Load required r packages</a></li>
+<li class="chapter" data-level="2.0.1" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#load-required-r-packages"><i class="fa fa-check"></i><b>2.0.1</b> Load required R packages</a></li>
 <li class="chapter" data-level="2.1" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#criteria-for-inclusion-in-meta-analysis"><i class="fa fa-check"></i><b>2.1</b> Criteria for inclusion in meta-analysis</a></li>
 <li class="chapter" data-level="2.2" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#import-data"><i class="fa fa-check"></i><b>2.2</b> Import data</a></li>
 <li class="chapter" data-level="2.3" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#summary-of-all-trials"><i class="fa fa-check"></i><b>2.3</b> Summary of all trials</a>
@@ -246,27 +233,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">4</span> Grain yield meta-analysis</h1>
 <p>Let’s get started with the analysis by first finding the best model fit that answers our research question.</p>
 <blockquote>
-<p>When, in relation to PM establishes in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop.</p>
+<p>When, in relation to PM establishment in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop.</p>
 </blockquote>
 <p>A secondary question to this aim is: given the time at which the first spray occurred does a second spray provide worthwhile yield protection.</p>
-<p>To do this, in our model:</p>
+<p>To do this, the model will use the main variables:</p>
 <ul>
-<li><p>Grain yield is our response variable (t / ha)</p></li>
-<li><p>Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept</p></li>
+<li><p><em>Grain yield</em> is our response variable (t / ha)</p></li>
+<li><p><em>Trial</em>, which resolves combinations of categorical random variables:</p>
+<ol style="list-style-type: lower-roman">
+<li>year<br />
+</li>
+<li>location<br />
+</li>
+<li>row spacing<br />
+</li>
+<li>fungicide dose</li>
+<li>cultivar</li>
+</ol></li>
+<li><p><em>spray_management</em> a moderator to evaluate the difference in effect size attributed to fungicide application timing.</p></li>
+<li><p><em>id</em> random variable indicating each treatment is independent</p></li>
 </ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="grain-yield-meta-analysis.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;pacman&quot;</span>))</span>
+<span id="cb1-2"><a href="grain-yield-meta-analysis.html#cb1-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: pacman</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="grain-yield-meta-analysis.html#cb3-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,</span>
+<span id="cb3-2"><a href="grain-yield-meta-analysis.html#cb3-2" aria-hidden="true" tabindex="-1"></a>               kableExtra,</span>
+<span id="cb3-3"><a href="grain-yield-meta-analysis.html#cb3-3" aria-hidden="true" tabindex="-1"></a>               bomrang,</span>
+<span id="cb3-4"><a href="grain-yield-meta-analysis.html#cb3-4" aria-hidden="true" tabindex="-1"></a>               RColorBrewer,</span>
+<span id="cb3-5"><a href="grain-yield-meta-analysis.html#cb3-5" aria-hidden="true" tabindex="-1"></a>               metafor,</span>
+<span id="cb3-6"><a href="grain-yield-meta-analysis.html#cb3-6" aria-hidden="true" tabindex="-1"></a>               here,</span>
+<span id="cb3-7"><a href="grain-yield-meta-analysis.html#cb3-7" aria-hidden="true" tabindex="-1"></a>               netmeta,</span>
+<span id="cb3-8"><a href="grain-yield-meta-analysis.html#cb3-8" aria-hidden="true" tabindex="-1"></a>               multcomp,</span>
+<span id="cb3-9"><a href="grain-yield-meta-analysis.html#cb3-9" aria-hidden="true" tabindex="-1"></a>               flextable)</span>
+<span id="cb3-10"><a href="grain-yield-meta-analysis.html#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="grain-yield-meta-analysis.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;theme.usq&quot;</span>))</span>
+<span id="cb3-12"><a href="grain-yield-meta-analysis.html#cb3-12" aria-hidden="true" tabindex="-1"></a>   remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;adamhsparks/theme.usq&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: theme.usq</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="grain-yield-meta-analysis.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(theme.usq)</span>
+<span id="cb5-2"><a href="grain-yield-meta-analysis.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_usq</span>())</span>
+<span id="cb5-3"><a href="grain-yield-meta-analysis.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">&quot;R/reportP.R&quot;</span>))</span>
+<span id="cb5-4"><a href="grain-yield-meta-analysis.html#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="grain-yield-meta-analysis.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Data</span></span>
+<span id="cb5-6"><a href="grain-yield-meta-analysis.html#cb5-6" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="ot">&lt;-</span></span>
+<span id="cb5-7"><a href="grain-yield-meta-analysis.html#cb5-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">read.csv</span>(<span class="st">&quot;cache/PM_yield_clean_data.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <div id="define-trial" class="section level3" number="4.0.1">
 <h3><span class="header-section-number">4.0.1</span> Define Trial</h3>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="grain-yield-meta-analysis.html#cb84-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="ot">&lt;-</span></span>
-<span id="cb84-2"><a href="grain-yield-meta-analysis.html#cb84-2" aria-hidden="true" tabindex="-1"></a>   PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb84-3"><a href="grain-yield-meta-analysis.html#cb84-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">trial =</span> <span class="fu">paste</span>(trial_ref,</span>
-<span id="cb84-4"><a href="grain-yield-meta-analysis.html#cb84-4" aria-hidden="true" tabindex="-1"></a>                        year,</span>
-<span id="cb84-5"><a href="grain-yield-meta-analysis.html#cb84-5" aria-hidden="true" tabindex="-1"></a>                        location,</span>
-<span id="cb84-6"><a href="grain-yield-meta-analysis.html#cb84-6" aria-hidden="true" tabindex="-1"></a>                        host_genotype,</span>
-<span id="cb84-7"><a href="grain-yield-meta-analysis.html#cb84-7" aria-hidden="true" tabindex="-1"></a>                        row_spacing,</span>
-<span id="cb84-8"><a href="grain-yield-meta-analysis.html#cb84-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>)) </span></code></pre></div>
-<ul>
-<li>We will investigate the effect size of our treatment - spray management,</li>
-</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="grain-yield-meta-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="ot">&lt;-</span></span>
+<span id="cb6-2"><a href="grain-yield-meta-analysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>   PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="grain-yield-meta-analysis.html#cb6-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">trial =</span> <span class="fu">paste</span>(trial_ref,</span>
+<span id="cb6-4"><a href="grain-yield-meta-analysis.html#cb6-4" aria-hidden="true" tabindex="-1"></a>                        year,</span>
+<span id="cb6-5"><a href="grain-yield-meta-analysis.html#cb6-5" aria-hidden="true" tabindex="-1"></a>                        location,</span>
+<span id="cb6-6"><a href="grain-yield-meta-analysis.html#cb6-6" aria-hidden="true" tabindex="-1"></a>                        host_genotype,</span>
+<span id="cb6-7"><a href="grain-yield-meta-analysis.html#cb6-7" aria-hidden="true" tabindex="-1"></a>                        row_spacing,</span>
+<span id="cb6-8"><a href="grain-yield-meta-analysis.html#cb6-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>)) </span></code></pre></div>
 <p><br><br />
 <br><br />
 <br></p>
@@ -275,21 +294,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.1</span> Spray schedule meta-analysis</h2>
 <div id="spray-schedule-moderator" class="section level3" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Spray schedule moderator</h3>
-<p>For the first grain yield meta-analysis will be an ARM based model using the <code>metafor</code> package <span class="citation">(<a href="powdery-mildew-severity-meta-analysis.html#ref-Viechtbauer2010" role="doc-biblioref">Viechtbauer 2010</a>)</span>.</p>
+<p>For the first grain yield meta-analysis will be an ARM based model or multi-variate meta-analysis, using the <code>metafor</code> package function <code>rma.mv()</code> <span class="citation">(<a href="powdery-mildew-severity-meta-analysis.html#ref-Viechtbauer2010" role="doc-biblioref">Viechtbauer 2010</a>)</span>.</p>
 <p>We are using the <code>spray_management</code> variable as a moderator and an interactive term to the <code>trial</code> random variable.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="grain-yield-meta-analysis.html#cb85-1" aria-hidden="true" tabindex="-1"></a>PM_mv <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
-<span id="cb85-2"><a href="grain-yield-meta-analysis.html#cb85-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
-<span id="cb85-3"><a href="grain-yield-meta-analysis.html#cb85-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
-<span id="cb85-4"><a href="grain-yield-meta-analysis.html#cb85-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management,</span>
-<span id="cb85-5"><a href="grain-yield-meta-analysis.html#cb85-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
-<span id="cb85-6"><a href="grain-yield-meta-analysis.html#cb85-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="cb85-7"><a href="grain-yield-meta-analysis.html#cb85-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;UN&quot;</span>,</span>
-<span id="cb85-8"><a href="grain-yield-meta-analysis.html#cb85-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
-<span id="cb85-9"><a href="grain-yield-meta-analysis.html#cb85-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
-<span id="cb85-10"><a href="grain-yield-meta-analysis.html#cb85-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="grain-yield-meta-analysis.html#cb7-1" aria-hidden="true" tabindex="-1"></a>PM_mv <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
+<span id="cb7-2"><a href="grain-yield-meta-analysis.html#cb7-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
+<span id="cb7-3"><a href="grain-yield-meta-analysis.html#cb7-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
+<span id="cb7-4"><a href="grain-yield-meta-analysis.html#cb7-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management,</span>
+<span id="cb7-5"><a href="grain-yield-meta-analysis.html#cb7-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
+<span id="cb7-6"><a href="grain-yield-meta-analysis.html#cb7-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="cb7-7"><a href="grain-yield-meta-analysis.html#cb7-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;UN&quot;</span>,</span>
+<span id="cb7-8"><a href="grain-yield-meta-analysis.html#cb7-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
+<span id="cb7-9"><a href="grain-yield-meta-analysis.html#cb7-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
+<span id="cb7-10"><a href="grain-yield-meta-analysis.html#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Warning: Some combinations of the levels of the inner factor never occurred.
 ## Corresponding rho value(s) fixed to 0.</code></pre>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="grain-yield-meta-analysis.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PM_mv)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="grain-yield-meta-analysis.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PM_mv)</span></code></pre></div>
 <pre><code>## 
 ## Multivariate Meta-Analysis Model (k = 154; method: ML)
 ## 
@@ -359,27 +378,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="disease-onset-interaction-with-spray-schedule" class="section level3" number="4.1.2">
 <h3><span class="header-section-number">4.1.2</span> Disease onset interaction with spray schedule</h3>
-<p>To determine if when in the season the disease occurs influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining <code>early</code> or <code>late</code> disease onset.</p>
-<p><code>early</code> and <code>late</code> will be divided by the median days after sowing when signs of the disease were first observed.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="grain-yield-meta-analysis.html#cb89-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb89-2"><a href="grain-yield-meta-analysis.html#cb89-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">first_sign_days =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(first_sign_disease) <span class="sc">-</span></span>
-<span id="cb89-3"><a href="grain-yield-meta-analysis.html#cb89-3" aria-hidden="true" tabindex="-1"></a>             lubridate<span class="sc">::</span><span class="fu">ymd</span>(planting_date)) <span class="sc">%&gt;%</span></span>
-<span id="cb89-4"><a href="grain-yield-meta-analysis.html#cb89-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pull</span>(first_sign_days)<span class="sc">%&gt;%</span></span>
-<span id="cb89-5"><a href="grain-yield-meta-analysis.html#cb89-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">median</span>()</span></code></pre></div>
+<p>To determine if the time at which disease occurs in the cropping season influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining <code>early</code> or <code>late</code> disease onset.</p>
+<p><code>early</code> and <code>late</code> will be divided by a number close to the median days after sowing when signs of the disease were first observed.
+A number close to the median should ensure roughly even numbers in each category.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="grain-yield-meta-analysis.html#cb11-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="grain-yield-meta-analysis.html#cb11-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">first_sign_days =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(first_sign_disease) <span class="sc">-</span></span>
+<span id="cb11-3"><a href="grain-yield-meta-analysis.html#cb11-3" aria-hidden="true" tabindex="-1"></a>             lubridate<span class="sc">::</span><span class="fu">ymd</span>(planting_date)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="grain-yield-meta-analysis.html#cb11-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pull</span>(first_sign_days)<span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="grain-yield-meta-analysis.html#cb11-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">median</span>()</span></code></pre></div>
 <pre><code>## Time difference of 39 days</code></pre>
+<p>We will choose 42 days as this is the average days to flowering in mungbean.
+In addition Kelly et. al. [@-Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.</p>
 <p>Now lets define these two new variables, <code>first_sign_days</code> and <code>onset</code> in the data.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="grain-yield-meta-analysis.html#cb91-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="ot">&lt;-</span> PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb91-2"><a href="grain-yield-meta-analysis.html#cb91-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">first_sign_days =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(first_sign_disease) <span class="sc">-</span></span>
-<span id="cb91-3"><a href="grain-yield-meta-analysis.html#cb91-3" aria-hidden="true" tabindex="-1"></a>             lubridate<span class="sc">::</span><span class="fu">ymd</span>(planting_date)) <span class="sc">%&gt;%</span></span>
-<span id="cb91-4"><a href="grain-yield-meta-analysis.html#cb91-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">onset =</span> <span class="fu">case_when</span>(first_sign_days <span class="sc">&lt;=</span> <span class="dv">39</span> <span class="sc">~</span> <span class="st">&quot;early_onset&quot;</span>,</span>
-<span id="cb91-5"><a href="grain-yield-meta-analysis.html#cb91-5" aria-hidden="true" tabindex="-1"></a>                            first_sign_days <span class="sc">&gt;</span> <span class="dv">39</span> <span class="sc">~</span> <span class="st">&quot;late_onset&quot;</span>))</span></code></pre></div>
-<p>Inspect a histogram of when first sign occured in the crop</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="grain-yield-meta-analysis.html#cb92-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb92-2"><a href="grain-yield-meta-analysis.html#cb92-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> first_sign_days)) <span class="sc">+</span></span>
-<span id="cb92-3"><a href="grain-yield-meta-analysis.html#cb92-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb92-4"><a href="grain-yield-meta-analysis.html#cb92-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">39</span>)</span></code></pre></div>
-<pre><code>## Don&#39;t know how to automatically pick scale for object of type difftime. Defaulting to continuous.</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="grain-yield-meta-analysis.html#cb13-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="ot">&lt;-</span> PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="grain-yield-meta-analysis.html#cb13-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">first_sign_days =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(first_sign_disease) <span class="sc">-</span></span>
+<span id="cb13-3"><a href="grain-yield-meta-analysis.html#cb13-3" aria-hidden="true" tabindex="-1"></a>             lubridate<span class="sc">::</span><span class="fu">ymd</span>(planting_date)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="grain-yield-meta-analysis.html#cb13-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">onset =</span> <span class="fu">case_when</span>(first_sign_days <span class="sc">&lt;=</span> <span class="dv">42</span> <span class="sc">~</span> <span class="st">&quot;early_onset&quot;</span>,</span>
+<span id="cb13-5"><a href="grain-yield-meta-analysis.html#cb13-5" aria-hidden="true" tabindex="-1"></a>                            first_sign_days <span class="sc">&gt;</span> <span class="dv">42</span> <span class="sc">~</span> <span class="st">&quot;late_onset&quot;</span>))</span></code></pre></div>
+<p>Inspect a histogram of when first sign occurred in the crop</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="grain-yield-meta-analysis.html#cb14-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="grain-yield-meta-analysis.html#cb14-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.integer</span>(first_sign_days))) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="grain-yield-meta-analysis.html#cb14-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="grain-yield-meta-analysis.html#cb14-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">42</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/hist_onset-1.png" width="672" /></p>
 <p>To put this onset number into context for plant maturity, 40 days is approximately when flowering begins in the plant.</p>
 <p><br><br />
@@ -389,28 +409,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="metafor-onset-analysis" class="section level4" number="4.1.2.1">
 <h4><span class="header-section-number">4.1.2.1</span> metafor onset analysis</h4>
 <p>We are adding the <code>onset</code> variable as a moderator to test and interaction with the <code>spray_management</code> variable as a moderator and an interactive term to the <code>trial</code> random variable.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="grain-yield-meta-analysis.html#cb95-1" aria-hidden="true" tabindex="-1"></a>PM_mv_onset <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
-<span id="cb95-2"><a href="grain-yield-meta-analysis.html#cb95-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
-<span id="cb95-3"><a href="grain-yield-meta-analysis.html#cb95-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
-<span id="cb95-4"><a href="grain-yield-meta-analysis.html#cb95-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management <span class="sc">*</span> onset,</span>
-<span id="cb95-5"><a href="grain-yield-meta-analysis.html#cb95-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
-<span id="cb95-6"><a href="grain-yield-meta-analysis.html#cb95-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="cb95-7"><a href="grain-yield-meta-analysis.html#cb95-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;UN&quot;</span>,</span>
-<span id="cb95-8"><a href="grain-yield-meta-analysis.html#cb95-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
-<span id="cb95-9"><a href="grain-yield-meta-analysis.html#cb95-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
-<span id="cb95-10"><a href="grain-yield-meta-analysis.html#cb95-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="grain-yield-meta-analysis.html#cb15-1" aria-hidden="true" tabindex="-1"></a>PM_mv_onset <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
+<span id="cb15-2"><a href="grain-yield-meta-analysis.html#cb15-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
+<span id="cb15-3"><a href="grain-yield-meta-analysis.html#cb15-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
+<span id="cb15-4"><a href="grain-yield-meta-analysis.html#cb15-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management <span class="sc">*</span> onset,</span>
+<span id="cb15-5"><a href="grain-yield-meta-analysis.html#cb15-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
+<span id="cb15-6"><a href="grain-yield-meta-analysis.html#cb15-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="cb15-7"><a href="grain-yield-meta-analysis.html#cb15-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;UN&quot;</span>,</span>
+<span id="cb15-8"><a href="grain-yield-meta-analysis.html#cb15-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
+<span id="cb15-9"><a href="grain-yield-meta-analysis.html#cb15-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
+<span id="cb15-10"><a href="grain-yield-meta-analysis.html#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Warning: Some combinations of the levels of the inner factor never occurred.
 ## Corresponding rho value(s) fixed to 0.</code></pre>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="grain-yield-meta-analysis.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(PM_mv, PM_mv_onset)</span></code></pre></div>
-<pre><code>## 
-##         df      AIC     BIC     AICc  logLik    LRT   pval        QE 
-## Full    33 -38.5465 61.6730 -19.8465 52.2732               7982.9638 
-## Reduced 27 -43.9598 38.0379 -31.9598 48.9799 6.5867 0.3608 9993.0956</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="grain-yield-meta-analysis.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(PM_mv, PM_mv_onset)<span class="sc">$</span>pval</span></code></pre></div>
+<pre><code>## [1] 0.3608</code></pre>
 <p>This comparison tells us the meta-analysis including <code>onset</code> explained more residual heterogeneity, as shown by the lower QE value.
 However the higher AIC indicates that the model omitting <code>onset</code> is a slightly better fit.
-Also the chi-squared test uncertain that the <code>onset</code> model is significantly better as indicated by the <code>pval</code> 0.3258.
+Also the chi-squared test uncertain that the <code>onset</code> model is significantly better as indicated by the <code>pval</code> 0.361.
 The higher log likelihood on the <code>onset</code> model does intricate there is some merit to this model and that perhaps with more trials to increase statistical power might provide a useful model.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="grain-yield-meta-analysis.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PM_mv_onset)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="grain-yield-meta-analysis.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PM_mv_onset)</span></code></pre></div>
 <pre><code>## 
 ## Multivariate Meta-Analysis Model (k = 154; method: ML)
 ## 
@@ -495,21 +512,20 @@ The higher log likelihood on the <code>onset</code> model does intricate there i
 <h3><span class="header-section-number">4.1.3</span> Disease pressure interaction with spray schedule</h3>
 <p>To determine if the seasonal disease pressure influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining <code>high_pressure</code> or <code>low_pressure</code>.</p>
 <p><code>high_pressure</code> and <code>low_pressure</code> will be divided by the median disease severity in the no spray control treatments at the end of the season.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="grain-yield-meta-analysis.html#cb101-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb101-2"><a href="grain-yield-meta-analysis.html#cb101-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(fungicide_ai <span class="sc">==</span> <span class="st">&quot;control&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb101-3"><a href="grain-yield-meta-analysis.html#cb101-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pull</span>(PM_final_severity)<span class="sc">%&gt;%</span></span>
-<span id="cb101-4"><a href="grain-yield-meta-analysis.html#cb101-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">median</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="grain-yield-meta-analysis.html#cb21-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="grain-yield-meta-analysis.html#cb21-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(fungicide_ai <span class="sc">==</span> <span class="st">&quot;control&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="grain-yield-meta-analysis.html#cb21-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pull</span>(PM_final_severity)<span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="grain-yield-meta-analysis.html#cb21-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">median</span>()</span></code></pre></div>
 <pre><code>## [1] 8</code></pre>
 <p>Now lets define these two new variables, <code>first_sign_days</code> and <code>onset</code> in the data.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="grain-yield-meta-analysis.html#cb103-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="ot">&lt;-</span> PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb103-2"><a href="grain-yield-meta-analysis.html#cb103-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">d_pressure =</span> <span class="fu">case_when</span>(PM_final_severity <span class="sc">&lt;</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;low_pressure&quot;</span>,</span>
-<span id="cb103-3"><a href="grain-yield-meta-analysis.html#cb103-3" aria-hidden="true" tabindex="-1"></a>                            PM_final_severity <span class="sc">&gt;=</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;high_pressure&quot;</span>))</span></code></pre></div>
-<p>Inspect a histogram of when first sign occured in the crop</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="grain-yield-meta-analysis.html#cb104-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb104-2"><a href="grain-yield-meta-analysis.html#cb104-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PM_final_severity)) <span class="sc">+</span></span>
-<span id="cb104-3"><a href="grain-yield-meta-analysis.html#cb104-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb104-4"><a href="grain-yield-meta-analysis.html#cb104-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">8</span>)</span></code></pre></div>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="grain-yield-meta-analysis.html#cb23-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="ot">&lt;-</span> PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="grain-yield-meta-analysis.html#cb23-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">d_pressure =</span> <span class="fu">case_when</span>(PM_final_severity <span class="sc">&lt;</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;low_pressure&quot;</span>,</span>
+<span id="cb23-3"><a href="grain-yield-meta-analysis.html#cb23-3" aria-hidden="true" tabindex="-1"></a>                            PM_final_severity <span class="sc">&gt;=</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;high_pressure&quot;</span>))</span></code></pre></div>
+<p>Inspect a histogram of when first sign occurred in the crop</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="grain-yield-meta-analysis.html#cb24-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="grain-yield-meta-analysis.html#cb24-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PM_final_severity)) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="grain-yield-meta-analysis.html#cb24-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="grain-yield-meta-analysis.html#cb24-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">8</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/hist_pressure-1.png" width="672" /></p>
 <p><br><br />
 <br><br />
@@ -518,21 +534,21 @@ The higher log likelihood on the <code>onset</code> model does intricate there i
 <div id="metafor-disease-pressure-interaction" class="section level4" number="4.1.3.1">
 <h4><span class="header-section-number">4.1.3.1</span> metafor disease pressure interaction</h4>
 <p>We are adding the <code>onset</code> variable as a moderator to test and interaction with the <code>spray_management</code> variable as a moderator and an interactive term to the <code>trial</code> random variable.</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="grain-yield-meta-analysis.html#cb106-1" aria-hidden="true" tabindex="-1"></a>PM_mv_dp <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
-<span id="cb106-2"><a href="grain-yield-meta-analysis.html#cb106-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
-<span id="cb106-3"><a href="grain-yield-meta-analysis.html#cb106-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
-<span id="cb106-4"><a href="grain-yield-meta-analysis.html#cb106-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management <span class="sc">*</span> d_pressure,</span>
-<span id="cb106-5"><a href="grain-yield-meta-analysis.html#cb106-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
-<span id="cb106-6"><a href="grain-yield-meta-analysis.html#cb106-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="cb106-7"><a href="grain-yield-meta-analysis.html#cb106-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;UN&quot;</span>,</span>
-<span id="cb106-8"><a href="grain-yield-meta-analysis.html#cb106-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
-<span id="cb106-9"><a href="grain-yield-meta-analysis.html#cb106-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
-<span id="cb106-10"><a href="grain-yield-meta-analysis.html#cb106-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="grain-yield-meta-analysis.html#cb25-1" aria-hidden="true" tabindex="-1"></a>PM_mv_dp <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
+<span id="cb25-2"><a href="grain-yield-meta-analysis.html#cb25-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
+<span id="cb25-3"><a href="grain-yield-meta-analysis.html#cb25-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
+<span id="cb25-4"><a href="grain-yield-meta-analysis.html#cb25-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management <span class="sc">*</span> d_pressure,</span>
+<span id="cb25-5"><a href="grain-yield-meta-analysis.html#cb25-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
+<span id="cb25-6"><a href="grain-yield-meta-analysis.html#cb25-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="cb25-7"><a href="grain-yield-meta-analysis.html#cb25-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;UN&quot;</span>,</span>
+<span id="cb25-8"><a href="grain-yield-meta-analysis.html#cb25-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
+<span id="cb25-9"><a href="grain-yield-meta-analysis.html#cb25-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
+<span id="cb25-10"><a href="grain-yield-meta-analysis.html#cb25-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Warning in rma.mv(yi = grain_yield.t.ha., vi, mods = ~spray_management * :
 ## Redundant predictors dropped from the model.</code></pre>
 <pre><code>## Warning: Some combinations of the levels of the inner factor never occurred.
 ## Corresponding rho value(s) fixed to 0.</code></pre>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="grain-yield-meta-analysis.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(PM_mv, PM_mv_dp)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="grain-yield-meta-analysis.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(PM_mv, PM_mv_dp)</span></code></pre></div>
 <pre><code>## 
 ##         df      AIC     BIC     AICc  logLik     LRT   pval        QE 
 ## Full    32 -45.1999 51.9826 -27.7454 54.6000                7550.9672 
@@ -543,9 +559,9 @@ Also the chi-squared test marginally significant that the <code>d_pressure</code
 The higher log likelihood on the <code>d_pressure</code> model does indicate there is some merit to this model.<br />
 It is worth noting that there were no Late plus schedules that experienced low disease pressure.
 Even though the disease pressure interaction on the moderators was marginally significant (P =0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky. More data is needed to explore this possible effect.</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="grain-yield-meta-analysis.html#cb111-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb111-2"><a href="grain-yield-meta-analysis.html#cb111-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(spray_management, d_pressure)<span class="sc">%&gt;%</span></span>
-<span id="cb111-3"><a href="grain-yield-meta-analysis.html#cb111-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="grain-yield-meta-analysis.html#cb30-1" aria-hidden="true" tabindex="-1"></a>PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="grain-yield-meta-analysis.html#cb30-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(spray_management, d_pressure)<span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="grain-yield-meta-analysis.html#cb30-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;spray_management&#39;. You can override using the `.groups` argument.</code></pre>
 <pre><code>## # A tibble: 11 x 3
 ## # Groups:   spray_management [6]
@@ -562,7 +578,7 @@ Even though the disease pressure interaction on the moderators was marginally si
 ##  9 Recommended      low_pressure     14
 ## 10 Recommended_plus high_pressure    10
 ## 11 Recommended_plus low_pressure     30</code></pre>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="grain-yield-meta-analysis.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PM_mv_dp)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="grain-yield-meta-analysis.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PM_mv_dp)</span></code></pre></div>
 <pre><code>## 
 ## Multivariate Meta-Analysis Model (k = 154; method: ML)
 ## 
@@ -656,18 +672,18 @@ Even though the disease pressure interaction on the moderators was marginally si
 <div id="test-variance-covavriance-matrix-structure" class="section level3" number="4.1.4">
 <h3><span class="header-section-number">4.1.4</span> Test variance-covavriance matrix structure</h3>
 <p>Let’s try the model with an implied simpler variance-covariance matrix “compound symmetry” (“CS”) to examine if unstructured matrix is suitable.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="grain-yield-meta-analysis.html#cb116-1" aria-hidden="true" tabindex="-1"></a>PM_mv_cs <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
-<span id="cb116-2"><a href="grain-yield-meta-analysis.html#cb116-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
-<span id="cb116-3"><a href="grain-yield-meta-analysis.html#cb116-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
-<span id="cb116-4"><a href="grain-yield-meta-analysis.html#cb116-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management,</span>
-<span id="cb116-5"><a href="grain-yield-meta-analysis.html#cb116-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
-<span id="cb116-6"><a href="grain-yield-meta-analysis.html#cb116-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="cb116-7"><a href="grain-yield-meta-analysis.html#cb116-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;CS&quot;</span>,</span>
-<span id="cb116-8"><a href="grain-yield-meta-analysis.html#cb116-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
-<span id="cb116-9"><a href="grain-yield-meta-analysis.html#cb116-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
-<span id="cb116-10"><a href="grain-yield-meta-analysis.html#cb116-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb116-11"><a href="grain-yield-meta-analysis.html#cb116-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-12"><a href="grain-yield-meta-analysis.html#cb116-12" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(PM_mv, PM_mv_cs)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="grain-yield-meta-analysis.html#cb35-1" aria-hidden="true" tabindex="-1"></a>PM_mv_cs <span class="ot">&lt;-</span> <span class="fu">rma.mv</span>(</span>
+<span id="cb35-2"><a href="grain-yield-meta-analysis.html#cb35-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">yi =</span> grain_yield.t.ha.,</span>
+<span id="cb35-3"><a href="grain-yield-meta-analysis.html#cb35-3" aria-hidden="true" tabindex="-1"></a>   vi,</span>
+<span id="cb35-4"><a href="grain-yield-meta-analysis.html#cb35-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mods =</span> <span class="sc">~</span> spray_management,</span>
+<span id="cb35-5"><a href="grain-yield-meta-analysis.html#cb35-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">&quot;ML&quot;</span>,</span>
+<span id="cb35-6"><a href="grain-yield-meta-analysis.html#cb35-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">random =</span> <span class="fu">list</span>(<span class="sc">~</span> spray_management <span class="sc">|</span> trial, <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="cb35-7"><a href="grain-yield-meta-analysis.html#cb35-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">struct =</span> <span class="st">&quot;CS&quot;</span>,</span>
+<span id="cb35-8"><a href="grain-yield-meta-analysis.html#cb35-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&quot;optim&quot;</span>),</span>
+<span id="cb35-9"><a href="grain-yield-meta-analysis.html#cb35-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> PM_dat_Y</span>
+<span id="cb35-10"><a href="grain-yield-meta-analysis.html#cb35-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-11"><a href="grain-yield-meta-analysis.html#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="grain-yield-meta-analysis.html#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(PM_mv, PM_mv_cs)</span></code></pre></div>
 <pre><code>## 
 ##         df      AIC      BIC     AICc  logLik     LRT   pval        QE 
 ## Full    27 -43.9598  38.0379 -31.9598 48.9799                9993.0956 
@@ -689,8 +705,8 @@ All comparisons were acceptable except for a comparison between <code>Early</cod
 <code>Early</code> and <code>Late_plus</code> treatments never occurred within the same trial, which is indicated by the right side of the table (hence the warning).</p>
 <p>In this result we can see that the <code>Early</code> treatment is not significantly different to the intercept, which in this case is the mean of the no spray <code>control</code>.
 However the other treatments are significantly different from the no-spray control (intercept).
-The <span class="math inline">\(Q_M\)</span> <a href="http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s%5B%5D=anova">omnibus test</a> of moderators, shows the moderators significantly influence the model (<span class="math inline">\(Q_M =\)</span> 37.3595017 <span class="math inline">\(,df =\)</span> 5, P &lt; 0.0001) and we can reject the null hypothesis (<span class="math inline">\(H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0\)</span>) that there is no difference between the moderators <span class="citation">(<a href="powdery-mildew-severity-meta-analysis.html#ref-Viechtbauer2010" role="doc-biblioref">Viechtbauer 2010</a>)</span>.
-The analysis shows there is still a significant amount of residual heterogeneity (<span class="math inline">\(Q_E =\)</span> 9993.095615 <span class="math inline">\(,df=\)</span> 149, P &lt; 0.0001 ) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.</p>
+The <span class="math inline">\(Q_M\)</span> <a href="http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s%5B%5D=anova">omnibus test</a> of moderators, shows the moderators significantly influence the model (<span class="math inline">\(Q_M =\)</span> 37.3595 <span class="math inline">\(,df =\)</span> 5, P &lt; 0.0001) and we can reject the null hypothesis (<span class="math inline">\(H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0\)</span>) that there is no difference between the moderators <span class="citation">(<a href="powdery-mildew-severity-meta-analysis.html#ref-Viechtbauer2010" role="doc-biblioref">Viechtbauer 2010</a>)</span>.
+The analysis shows there is still a significant amount of residual heterogeneity (<span class="math inline">\(Q_E =\)</span> 9993.0956 <span class="math inline">\(,df=\)</span> 149, P &lt; 0.0001 ) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.</p>
 <p><br>
 <br>
 <br>
@@ -701,69 +717,69 @@ The analysis shows there is still a significant amount of residual heterogeneity
 <div id="moderator-estimates-table" class="section level3" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Moderator estimates table</h3>
 <p>Let’s present the meta-analysis results for the moderator variables in a table of estimates.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="grain-yield-meta-analysis.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain number of treatments included in each moderator variable</span></span>
-<span id="cb118-2"><a href="grain-yield-meta-analysis.html#cb118-2" aria-hidden="true" tabindex="-1"></a>k5 <span class="ot">&lt;-</span></span>
-<span id="cb118-3"><a href="grain-yield-meta-analysis.html#cb118-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">as.data.frame</span>(<span class="fu">table</span>(PM_dat_Y<span class="sc">$</span>trial, PM_dat_Y<span class="sc">$</span>spray_management)) <span class="sc">%&gt;%</span></span>
-<span id="cb118-4"><a href="grain-yield-meta-analysis.html#cb118-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Freq <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb118-5"><a href="grain-yield-meta-analysis.html#cb118-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(Var2) <span class="sc">%&gt;%</span></span>
-<span id="cb118-6"><a href="grain-yield-meta-analysis.html#cb118-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb118-7"><a href="grain-yield-meta-analysis.html#cb118-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pull</span>()</span>
-<span id="cb118-8"><a href="grain-yield-meta-analysis.html#cb118-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-9"><a href="grain-yield-meta-analysis.html#cb118-9" aria-hidden="true" tabindex="-1"></a><span class="co"># create data.frame</span></span>
-<span id="cb118-10"><a href="grain-yield-meta-analysis.html#cb118-10" aria-hidden="true" tabindex="-1"></a>results_mv <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb118-11"><a href="grain-yield-meta-analysis.html#cb118-11" aria-hidden="true" tabindex="-1"></a>   <span class="at">Moderator =</span> <span class="fu">c</span>(</span>
-<span id="cb118-12"><a href="grain-yield-meta-analysis.html#cb118-12" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Intercept / No Spray control&quot;</span>,</span>
-<span id="cb118-13"><a href="grain-yield-meta-analysis.html#cb118-13" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Early&quot;</span>,</span>
-<span id="cb118-14"><a href="grain-yield-meta-analysis.html#cb118-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Late&quot;</span>,</span>
-<span id="cb118-15"><a href="grain-yield-meta-analysis.html#cb118-15" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Late+&quot;</span>,</span>
-<span id="cb118-16"><a href="grain-yield-meta-analysis.html#cb118-16" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Recommended&quot;</span>,</span>
-<span id="cb118-17"><a href="grain-yield-meta-analysis.html#cb118-17" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Recommended+&quot;</span></span>
-<span id="cb118-18"><a href="grain-yield-meta-analysis.html#cb118-18" aria-hidden="true" tabindex="-1"></a>   ),</span>
-<span id="cb118-19"><a href="grain-yield-meta-analysis.html#cb118-19" aria-hidden="true" tabindex="-1"></a>   <span class="at">N =</span> PM_mv<span class="sc">$</span>g.levels.k,</span>
-<span id="cb118-20"><a href="grain-yield-meta-analysis.html#cb118-20" aria-hidden="true" tabindex="-1"></a>   <span class="at">k =</span> k5,</span>
-<span id="cb118-21"><a href="grain-yield-meta-analysis.html#cb118-21" aria-hidden="true" tabindex="-1"></a>   <span class="at">Effect =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>b, <span class="dv">4</span>),</span>
-<span id="cb118-22"><a href="grain-yield-meta-analysis.html#cb118-22" aria-hidden="true" tabindex="-1"></a>   <span class="at">se =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>se, <span class="dv">4</span>),</span>
-<span id="cb118-23"><a href="grain-yield-meta-analysis.html#cb118-23" aria-hidden="true" tabindex="-1"></a>   <span class="at">CI_lower =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>ci.lb, <span class="dv">4</span>),</span>
-<span id="cb118-24"><a href="grain-yield-meta-analysis.html#cb118-24" aria-hidden="true" tabindex="-1"></a>   <span class="at">CI_upper =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>ci.ub, <span class="dv">4</span>),</span>
-<span id="cb118-25"><a href="grain-yield-meta-analysis.html#cb118-25" aria-hidden="true" tabindex="-1"></a>   <span class="at">z_val =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>zval, <span class="dv">4</span>),</span>
-<span id="cb118-26"><a href="grain-yield-meta-analysis.html#cb118-26" aria-hidden="true" tabindex="-1"></a>   <span class="at">p_val =</span> <span class="fu">reportP</span>(PM_mv<span class="sc">$</span>pval, <span class="at">AsNumeric =</span> <span class="cn">FALSE</span>, <span class="at">P_prefix =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb118-27"><a href="grain-yield-meta-analysis.html#cb118-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb118-28"><a href="grain-yield-meta-analysis.html#cb118-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-29"><a href="grain-yield-meta-analysis.html#cb118-29" aria-hidden="true" tabindex="-1"></a><span class="co"># rename colnames to give table headings</span></span>
-<span id="cb118-30"><a href="grain-yield-meta-analysis.html#cb118-30" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(results_mv)[<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">7</span><span class="sc">:</span><span class="dv">10</span>)] <span class="ot">&lt;-</span></span>
-<span id="cb118-31"><a href="grain-yield-meta-analysis.html#cb118-31" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(<span class="st">&quot;Treatment&quot;</span>,</span>
-<span id="cb118-32"><a href="grain-yield-meta-analysis.html#cb118-32" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;N&quot;</span>,</span>
-<span id="cb118-33"><a href="grain-yield-meta-analysis.html#cb118-33" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;k&quot;</span>,</span>
-<span id="cb118-34"><a href="grain-yield-meta-analysis.html#cb118-34" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;mu&quot;</span>,</span>
-<span id="cb118-35"><a href="grain-yield-meta-analysis.html#cb118-35" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;CI_{L}&quot;</span>,</span>
-<span id="cb118-36"><a href="grain-yield-meta-analysis.html#cb118-36" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;CI_{U}&quot;</span>,</span>
-<span id="cb118-37"><a href="grain-yield-meta-analysis.html#cb118-37" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;Z&quot;</span>,</span>
-<span id="cb118-38"><a href="grain-yield-meta-analysis.html#cb118-38" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;P&quot;</span>)</span>
-<span id="cb118-39"><a href="grain-yield-meta-analysis.html#cb118-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-40"><a href="grain-yield-meta-analysis.html#cb118-40" aria-hidden="true" tabindex="-1"></a>yield_estimates_table <span class="ot">&lt;-</span> </span>
-<span id="cb118-41"><a href="grain-yield-meta-analysis.html#cb118-41" aria-hidden="true" tabindex="-1"></a>   <span class="fu">flextable</span>(results_mv[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">4</span>), <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>,<span class="dv">10</span>)]) <span class="sc">%&gt;%</span></span>
-<span id="cb118-42"><a href="grain-yield-meta-analysis.html#cb118-42" aria-hidden="true" tabindex="-1"></a>   <span class="fu">align</span>(<span class="at">j =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>, <span class="at">part =</span> <span class="st">&quot;all&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb118-43"><a href="grain-yield-meta-analysis.html#cb118-43" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fontsize</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">part =</span> <span class="st">&quot;body&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb118-44"><a href="grain-yield-meta-analysis.html#cb118-44" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fontsize</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">part =</span> <span class="st">&quot;header&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb118-45"><a href="grain-yield-meta-analysis.html#cb118-45" aria-hidden="true" tabindex="-1"></a>   <span class="fu">italic</span>(<span class="at">italic =</span> <span class="cn">TRUE</span>, <span class="at">part =</span> <span class="st">&quot;header&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb118-46"><a href="grain-yield-meta-analysis.html#cb118-46" aria-hidden="true" tabindex="-1"></a>   <span class="fu">set_caption</span>(<span class="st">&quot;Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Yield estimates (u) were calculated from a network meta-analysis of data obtained from grey literature reports of &#39;k&#39; field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept.&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb118-47"><a href="grain-yield-meta-analysis.html#cb118-47" aria-hidden="true" tabindex="-1"></a>   <span class="fu">autofit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb118-48"><a href="grain-yield-meta-analysis.html#cb118-48" aria-hidden="true" tabindex="-1"></a>   <span class="fu">footnote</span>(<span class="at">i =</span> <span class="dv">1</span>,</span>
-<span id="cb118-49"><a href="grain-yield-meta-analysis.html#cb118-49" aria-hidden="true" tabindex="-1"></a>            <span class="at">j =</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">8</span>),</span>
-<span id="cb118-50"><a href="grain-yield-meta-analysis.html#cb118-50" aria-hidden="true" tabindex="-1"></a>            <span class="at">value =</span> <span class="fu">as_paragraph</span>(<span class="fu">c</span>(</span>
-<span id="cb118-51"><a href="grain-yield-meta-analysis.html#cb118-51" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;number of treatment means categorised to each spray schedule&quot;</span>,</span>
-<span id="cb118-52"><a href="grain-yield-meta-analysis.html#cb118-52" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;number of trials with the respective spray schedule&quot;</span>,</span>
-<span id="cb118-53"><a href="grain-yield-meta-analysis.html#cb118-53" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;estimated mean yield determined by the meta-analysis&quot;</span>,</span>
-<span id="cb118-54"><a href="grain-yield-meta-analysis.html#cb118-54" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;Lower range of the 95% confidence interval&quot;</span>,</span>
-<span id="cb118-55"><a href="grain-yield-meta-analysis.html#cb118-55" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;Upper range of the 95% confidence interval&quot;</span>,</span>
-<span id="cb118-56"><a href="grain-yield-meta-analysis.html#cb118-56" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;indicates the significance between each respective spray schedule and the no spray control (intercept)&quot;</span></span>
-<span id="cb118-57"><a href="grain-yield-meta-analysis.html#cb118-57" aria-hidden="true" tabindex="-1"></a>                                   )),</span>
-<span id="cb118-58"><a href="grain-yield-meta-analysis.html#cb118-58" aria-hidden="true" tabindex="-1"></a>            <span class="at">ref_symbols =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>],</span>
-<span id="cb118-59"><a href="grain-yield-meta-analysis.html#cb118-59" aria-hidden="true" tabindex="-1"></a>            <span class="at">part =</span> <span class="st">&quot;header&quot;</span>, <span class="at">inline =</span> <span class="cn">TRUE</span></span>
-<span id="cb118-60"><a href="grain-yield-meta-analysis.html#cb118-60" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb118-61"><a href="grain-yield-meta-analysis.html#cb118-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb118-62"><a href="grain-yield-meta-analysis.html#cb118-62" aria-hidden="true" tabindex="-1"></a>yield_estimates_table</span></code></pre></div>
-<template id="fca250f4-d7e1-4c99-a253-aad91f926b07"><style>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="grain-yield-meta-analysis.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain number of treatments included in each moderator variable</span></span>
+<span id="cb37-2"><a href="grain-yield-meta-analysis.html#cb37-2" aria-hidden="true" tabindex="-1"></a>k5 <span class="ot">&lt;-</span></span>
+<span id="cb37-3"><a href="grain-yield-meta-analysis.html#cb37-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">as.data.frame</span>(<span class="fu">table</span>(PM_dat_Y<span class="sc">$</span>trial, PM_dat_Y<span class="sc">$</span>spray_management)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-4"><a href="grain-yield-meta-analysis.html#cb37-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Freq <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-5"><a href="grain-yield-meta-analysis.html#cb37-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(Var2) <span class="sc">%&gt;%</span></span>
+<span id="cb37-6"><a href="grain-yield-meta-analysis.html#cb37-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb37-7"><a href="grain-yield-meta-analysis.html#cb37-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pull</span>()</span>
+<span id="cb37-8"><a href="grain-yield-meta-analysis.html#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="grain-yield-meta-analysis.html#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># create data.frame</span></span>
+<span id="cb37-10"><a href="grain-yield-meta-analysis.html#cb37-10" aria-hidden="true" tabindex="-1"></a>results_mv <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb37-11"><a href="grain-yield-meta-analysis.html#cb37-11" aria-hidden="true" tabindex="-1"></a>   <span class="at">Moderator =</span> <span class="fu">c</span>(</span>
+<span id="cb37-12"><a href="grain-yield-meta-analysis.html#cb37-12" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Intercept / No Spray control&quot;</span>,</span>
+<span id="cb37-13"><a href="grain-yield-meta-analysis.html#cb37-13" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Early&quot;</span>,</span>
+<span id="cb37-14"><a href="grain-yield-meta-analysis.html#cb37-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Late&quot;</span>,</span>
+<span id="cb37-15"><a href="grain-yield-meta-analysis.html#cb37-15" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Late+&quot;</span>,</span>
+<span id="cb37-16"><a href="grain-yield-meta-analysis.html#cb37-16" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Recommended&quot;</span>,</span>
+<span id="cb37-17"><a href="grain-yield-meta-analysis.html#cb37-17" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;Recommended+&quot;</span></span>
+<span id="cb37-18"><a href="grain-yield-meta-analysis.html#cb37-18" aria-hidden="true" tabindex="-1"></a>   ),</span>
+<span id="cb37-19"><a href="grain-yield-meta-analysis.html#cb37-19" aria-hidden="true" tabindex="-1"></a>   <span class="at">N =</span> PM_mv<span class="sc">$</span>g.levels.k,</span>
+<span id="cb37-20"><a href="grain-yield-meta-analysis.html#cb37-20" aria-hidden="true" tabindex="-1"></a>   <span class="at">k =</span> k5,</span>
+<span id="cb37-21"><a href="grain-yield-meta-analysis.html#cb37-21" aria-hidden="true" tabindex="-1"></a>   <span class="at">Effect =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>b, <span class="dv">4</span>),</span>
+<span id="cb37-22"><a href="grain-yield-meta-analysis.html#cb37-22" aria-hidden="true" tabindex="-1"></a>   <span class="at">se =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>se, <span class="dv">4</span>),</span>
+<span id="cb37-23"><a href="grain-yield-meta-analysis.html#cb37-23" aria-hidden="true" tabindex="-1"></a>   <span class="at">CI_lower =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>ci.lb, <span class="dv">4</span>),</span>
+<span id="cb37-24"><a href="grain-yield-meta-analysis.html#cb37-24" aria-hidden="true" tabindex="-1"></a>   <span class="at">CI_upper =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>ci.ub, <span class="dv">4</span>),</span>
+<span id="cb37-25"><a href="grain-yield-meta-analysis.html#cb37-25" aria-hidden="true" tabindex="-1"></a>   <span class="at">z_val =</span> <span class="fu">round</span>(PM_mv<span class="sc">$</span>zval, <span class="dv">4</span>),</span>
+<span id="cb37-26"><a href="grain-yield-meta-analysis.html#cb37-26" aria-hidden="true" tabindex="-1"></a>   <span class="at">p_val =</span> <span class="fu">reportP</span>(PM_mv<span class="sc">$</span>pval, <span class="at">AsNumeric =</span> <span class="cn">FALSE</span>, <span class="at">P_prefix =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb37-27"><a href="grain-yield-meta-analysis.html#cb37-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-28"><a href="grain-yield-meta-analysis.html#cb37-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-29"><a href="grain-yield-meta-analysis.html#cb37-29" aria-hidden="true" tabindex="-1"></a><span class="co"># rename colnames to give table headings</span></span>
+<span id="cb37-30"><a href="grain-yield-meta-analysis.html#cb37-30" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(results_mv)[<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">7</span><span class="sc">:</span><span class="dv">10</span>)] <span class="ot">&lt;-</span></span>
+<span id="cb37-31"><a href="grain-yield-meta-analysis.html#cb37-31" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(<span class="st">&quot;Treatment&quot;</span>,</span>
+<span id="cb37-32"><a href="grain-yield-meta-analysis.html#cb37-32" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;N&quot;</span>,</span>
+<span id="cb37-33"><a href="grain-yield-meta-analysis.html#cb37-33" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;k&quot;</span>,</span>
+<span id="cb37-34"><a href="grain-yield-meta-analysis.html#cb37-34" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;mu&quot;</span>,</span>
+<span id="cb37-35"><a href="grain-yield-meta-analysis.html#cb37-35" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;CI_{L}&quot;</span>,</span>
+<span id="cb37-36"><a href="grain-yield-meta-analysis.html#cb37-36" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;CI_{U}&quot;</span>,</span>
+<span id="cb37-37"><a href="grain-yield-meta-analysis.html#cb37-37" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;Z&quot;</span>,</span>
+<span id="cb37-38"><a href="grain-yield-meta-analysis.html#cb37-38" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;P&quot;</span>)</span>
+<span id="cb37-39"><a href="grain-yield-meta-analysis.html#cb37-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-40"><a href="grain-yield-meta-analysis.html#cb37-40" aria-hidden="true" tabindex="-1"></a>yield_estimates_table <span class="ot">&lt;-</span> </span>
+<span id="cb37-41"><a href="grain-yield-meta-analysis.html#cb37-41" aria-hidden="true" tabindex="-1"></a>   <span class="fu">flextable</span>(results_mv[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">4</span>), <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>,<span class="dv">10</span>)]) <span class="sc">%&gt;%</span></span>
+<span id="cb37-42"><a href="grain-yield-meta-analysis.html#cb37-42" aria-hidden="true" tabindex="-1"></a>   <span class="fu">align</span>(<span class="at">j =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>, <span class="at">part =</span> <span class="st">&quot;all&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-43"><a href="grain-yield-meta-analysis.html#cb37-43" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fontsize</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">part =</span> <span class="st">&quot;body&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-44"><a href="grain-yield-meta-analysis.html#cb37-44" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fontsize</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">part =</span> <span class="st">&quot;header&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-45"><a href="grain-yield-meta-analysis.html#cb37-45" aria-hidden="true" tabindex="-1"></a>   <span class="fu">italic</span>(<span class="at">italic =</span> <span class="cn">TRUE</span>, <span class="at">part =</span> <span class="st">&quot;header&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-46"><a href="grain-yield-meta-analysis.html#cb37-46" aria-hidden="true" tabindex="-1"></a>   <span class="fu">set_caption</span>(<span class="st">&quot;Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Yield estimates (u) were calculated from a network meta-analysis of data obtained from grey literature reports of &#39;k&#39; field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept.&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-47"><a href="grain-yield-meta-analysis.html#cb37-47" aria-hidden="true" tabindex="-1"></a>   <span class="fu">autofit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb37-48"><a href="grain-yield-meta-analysis.html#cb37-48" aria-hidden="true" tabindex="-1"></a>   <span class="fu">footnote</span>(<span class="at">i =</span> <span class="dv">1</span>,</span>
+<span id="cb37-49"><a href="grain-yield-meta-analysis.html#cb37-49" aria-hidden="true" tabindex="-1"></a>            <span class="at">j =</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">8</span>),</span>
+<span id="cb37-50"><a href="grain-yield-meta-analysis.html#cb37-50" aria-hidden="true" tabindex="-1"></a>            <span class="at">value =</span> <span class="fu">as_paragraph</span>(<span class="fu">c</span>(</span>
+<span id="cb37-51"><a href="grain-yield-meta-analysis.html#cb37-51" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;number of treatment means categorised to each spray schedule&quot;</span>,</span>
+<span id="cb37-52"><a href="grain-yield-meta-analysis.html#cb37-52" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;number of trials with the respective spray schedule&quot;</span>,</span>
+<span id="cb37-53"><a href="grain-yield-meta-analysis.html#cb37-53" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;estimated mean yield determined by the meta-analysis&quot;</span>,</span>
+<span id="cb37-54"><a href="grain-yield-meta-analysis.html#cb37-54" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;Lower range of the 95% confidence interval&quot;</span>,</span>
+<span id="cb37-55"><a href="grain-yield-meta-analysis.html#cb37-55" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;Upper range of the 95% confidence interval&quot;</span>,</span>
+<span id="cb37-56"><a href="grain-yield-meta-analysis.html#cb37-56" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;indicates the significance between each respective spray schedule and the no spray control (intercept)&quot;</span></span>
+<span id="cb37-57"><a href="grain-yield-meta-analysis.html#cb37-57" aria-hidden="true" tabindex="-1"></a>                                   )),</span>
+<span id="cb37-58"><a href="grain-yield-meta-analysis.html#cb37-58" aria-hidden="true" tabindex="-1"></a>            <span class="at">ref_symbols =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>],</span>
+<span id="cb37-59"><a href="grain-yield-meta-analysis.html#cb37-59" aria-hidden="true" tabindex="-1"></a>            <span class="at">part =</span> <span class="st">&quot;header&quot;</span>, <span class="at">inline =</span> <span class="cn">TRUE</span></span>
+<span id="cb37-60"><a href="grain-yield-meta-analysis.html#cb37-60" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb37-61"><a href="grain-yield-meta-analysis.html#cb37-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-62"><a href="grain-yield-meta-analysis.html#cb37-62" aria-hidden="true" tabindex="-1"></a>yield_estimates_table</span></code></pre></div>
+<template id="396cc13a-d4fa-4ce9-921b-ba75430d32ef"><style>
 .tabwid table{
   border-collapse:collapse;
   line-height:1;
@@ -797,15 +813,15 @@ The analysis shows there is still a significant amount of residual heterogeneity
 .tabwid table tr {
 background-color: transparent;
 }
-</style><div class="tabwid"><style>.cl-7e8f2eca{border-collapse:collapse;}.cl-7e7f5b26{font-family:'Arial';font-size:10pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-7e7f5b27{font-family:'Arial';font-size:6pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3pt;}.cl-7e7f5b28{font-family:'Arial';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-7e7f5b29{font-family:'Arial';font-size:6.6pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3.3pt;}.cl-7e7f5b2a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-7e7f8218{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-7e7f8219{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-7e7f821a{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-7e7fd006{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd007{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd008{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd009{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd00a{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd00b{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd00c{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd00d{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd00e{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd00f{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7fd010{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6f8{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6f9{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6fa{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6fb{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6fc{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6fd{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6fe{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff6ff{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff700{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff701{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e7ff702{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de0{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de1{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de2{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de3{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de4{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de5{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de6{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de7{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de8{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801de9{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e801dea{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7e8044d2{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}caption {color: #777;margin-top: 10px;margin-bottom: 10px;text-align: center;}</style><table class='cl-7e8f2eca'>
+</style><div class="tabwid"><style>.cl-5936f662{border-collapse:collapse;}.cl-593004f6{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-59300546{font-family:'Helvetica';font-size:6pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3pt;}.cl-59300550{font-family:'Helvetica';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-5930055a{font-family:'Helvetica';font-size:6.6pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3.3pt;}.cl-59300564{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-59301ae0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-59301aea{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-59301af4{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-59305ce4{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305cee{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305cf8{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d02{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d0c{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d0d{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d16{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d20{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d2a{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d34{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d3e{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d48{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d52{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d5c{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d5d{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d66{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d70{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d7a{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d84{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d8e{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d8f{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305d98{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305da2{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305da3{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dac{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305db6{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dc0{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dc1{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dca{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dd4{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dde{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305ddf{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305de8{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305df2{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dfc{width:48.3pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305dfd{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305e06{width:45pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305e10{width:29.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305e1a{width:51.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305e24{width:50pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-59305e2e{width:79.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}caption {color: #777;margin-top: 10px;margin-bottom: 10px;text-align: center;}</style><table class='cl-5936f662'>
 <caption class="Table Caption">
 (#tab:metafor_results_table_yield)Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Yield estimates (u) were calculated from a network meta-analysis of data obtained from grey literature reports of ‘k’ field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept.
 </caption>
-<thead><tr style="overflow-wrap:break-word;"><td class="cl-7e8044d2"><p class="cl-7e7f8218"><span class="cl-7e7f5b26">Moderator</span></p></td><td class="cl-7e801de6"><p class="cl-7e7f8219"><span class="cl-7e7f5b26">N</span><span class="cl-7e7f5b27">a</span></p></td><td class="cl-7e801de8"><p class="cl-7e7f821a"><span class="cl-7e7f5b26">k</span><span class="cl-7e7f5b27">b</span></p></td><td class="cl-7e801de7"><p class="cl-7e7f821a"><span class="cl-7e7f5b26">mu</span><span class="cl-7e7f5b27">c</span></p></td><td class="cl-7e801de7"><p class="cl-7e7f821a"><span class="cl-7e7f5b26">se</span></p></td><td class="cl-7e801de5"><p class="cl-7e7f821a"><span class="cl-7e7f5b26">CI_{L}</span><span class="cl-7e7f5b27">d</span></p></td><td class="cl-7e801dea"><p class="cl-7e7f821a"><span class="cl-7e7f5b26">CI_{U}</span><span class="cl-7e7f5b27">e</span></p></td><td class="cl-7e801de9"><p class="cl-7e7f821a"><span class="cl-7e7f5b26">P</span><span class="cl-7e7f5b27">f</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-7e7fd00b"><p class="cl-7e7f8218"><span class="cl-7e7f5b28">Early</span></p></td><td class="cl-7e7fd00c"><p class="cl-7e7f8219"><span class="cl-7e7f5b28">13</span></p></td><td class="cl-7e7fd009"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">7</span></p></td><td class="cl-7e7fd008"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0029</span></p></td><td class="cl-7e7fd008"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0439</span></p></td><td class="cl-7e7fd00a"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">-0.0830</span></p></td><td class="cl-7e7fd006"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0889</span></p></td><td class="cl-7e7fd007"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.9464</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-7e7fd010"><p class="cl-7e7f8218"><span class="cl-7e7f5b28">Recommended</span></p></td><td class="cl-7e7ff6f9"><p class="cl-7e7f8219"><span class="cl-7e7f5b28">27</span></p></td><td class="cl-7e7ff6fa"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">19</span></p></td><td class="cl-7e7fd00d"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.1378</span></p></td><td class="cl-7e7fd00d"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0339</span></p></td><td class="cl-7e7fd00f"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0713</span></p></td><td class="cl-7e7ff6f8"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.2043</span></p></td><td class="cl-7e7fd00e"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">&lt; 0.0001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-7e7fd010"><p class="cl-7e7f8218"><span class="cl-7e7f5b28">Recommended+</span></p></td><td class="cl-7e7ff6f9"><p class="cl-7e7f8219"><span class="cl-7e7f5b28">40</span></p></td><td class="cl-7e7ff6fa"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">17</span></p></td><td class="cl-7e7fd00d"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.1891</span></p></td><td class="cl-7e7fd00d"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0530</span></p></td><td class="cl-7e7fd00f"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0853</span></p></td><td class="cl-7e7ff6f8"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.2930</span></p></td><td class="cl-7e7fd00e"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0004</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-7e7fd010"><p class="cl-7e7f8218"><span class="cl-7e7f5b28">Late</span></p></td><td class="cl-7e7ff6f9"><p class="cl-7e7f8219"><span class="cl-7e7f5b28">17</span></p></td><td class="cl-7e7ff6fa"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">11</span></p></td><td class="cl-7e7fd00d"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.1374</span></p></td><td class="cl-7e7fd00d"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0440</span></p></td><td class="cl-7e7fd00f"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0512</span></p></td><td class="cl-7e7ff6f8"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.2237</span></p></td><td class="cl-7e7fd00e"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0018</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-7e7ff6fc"><p class="cl-7e7f8218"><span class="cl-7e7f5b28">Late+</span></p></td><td class="cl-7e7ff701"><p class="cl-7e7f8219"><span class="cl-7e7f5b28">19</span></p></td><td class="cl-7e7ff6ff"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">6</span></p></td><td class="cl-7e7ff6fd"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.1301</span></p></td><td class="cl-7e7ff6fd"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0578</span></p></td><td class="cl-7e7ff700"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0168</span></p></td><td class="cl-7e7ff6fe"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.2433</span></p></td><td class="cl-7e7ff6fb"><p class="cl-7e7f821a"><span class="cl-7e7f5b28">0.0244</span></p></td></tr></tbody><tfoot><tr style="overflow-wrap:break-word;"><td  colspan="8"class="cl-7e7ff702"><p class="cl-7e7f8218"><span class="cl-7e7f5b29">a</span><span class="cl-7e7f5b2a">number of treatment means categorised to each spray schedule</span><span class="cl-7e7f5b2a">; </span><span class="cl-7e7f5b29">b</span><span class="cl-7e7f5b2a">number of trials with the respective spray schedule</span><span class="cl-7e7f5b2a">; </span><span class="cl-7e7f5b29">c</span><span class="cl-7e7f5b2a">estimated mean yield determined by the meta-analysis</span><span class="cl-7e7f5b2a">; </span><span class="cl-7e7f5b29">d</span><span class="cl-7e7f5b2a">Lower range of the 95% confidence interval</span><span class="cl-7e7f5b2a">; </span><span class="cl-7e7f5b29">e</span><span class="cl-7e7f5b2a">Upper range of the 95% confidence interval</span><span class="cl-7e7f5b2a">; </span><span class="cl-7e7f5b29">f</span><span class="cl-7e7f5b2a">indicates the significance between each respective spray schedule and the no spray control (intercept)</span></p></td></tr></tfoot></table></div></template>
-<div id="42d8c29a-f1b3-4116-a8bd-6e11d3723b91"></div>
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-59305e2e"><p class="cl-59301ae0"><span class="cl-593004f6">Moderator</span></p></td><td class="cl-59305dfd"><p class="cl-59301aea"><span class="cl-593004f6">N</span><span class="cl-59300546">a</span></p></td><td class="cl-59305e10"><p class="cl-59301af4"><span class="cl-593004f6">k</span><span class="cl-59300546">b</span></p></td><td class="cl-59305e06"><p class="cl-59301af4"><span class="cl-593004f6">mu</span><span class="cl-59300546">c</span></p></td><td class="cl-59305e06"><p class="cl-59301af4"><span class="cl-593004f6">se</span></p></td><td class="cl-59305dfc"><p class="cl-59301af4"><span class="cl-593004f6">CI_{L}</span><span class="cl-59300546">d</span></p></td><td class="cl-59305e24"><p class="cl-59301af4"><span class="cl-593004f6">CI_{U}</span><span class="cl-59300546">e</span></p></td><td class="cl-59305e1a"><p class="cl-59301af4"><span class="cl-593004f6">P</span><span class="cl-59300546">f</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-59305d0d"><p class="cl-59301ae0"><span class="cl-59300550">Early</span></p></td><td class="cl-59305d16"><p class="cl-59301aea"><span class="cl-59300550">13</span></p></td><td class="cl-59305d02"><p class="cl-59301af4"><span class="cl-59300550">7</span></p></td><td class="cl-59305cf8"><p class="cl-59301af4"><span class="cl-59300550">0.0029</span></p></td><td class="cl-59305cf8"><p class="cl-59301af4"><span class="cl-59300550">0.0439</span></p></td><td class="cl-59305d0c"><p class="cl-59301af4"><span class="cl-59300550">-0.0830</span></p></td><td class="cl-59305ce4"><p class="cl-59301af4"><span class="cl-59300550">0.0889</span></p></td><td class="cl-59305cee"><p class="cl-59301af4"><span class="cl-59300550">0.9464</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-59305d3e"><p class="cl-59301ae0"><span class="cl-59300550">Recommended</span></p></td><td class="cl-59305d52"><p class="cl-59301aea"><span class="cl-59300550">27</span></p></td><td class="cl-59305d5c"><p class="cl-59301af4"><span class="cl-59300550">19</span></p></td><td class="cl-59305d20"><p class="cl-59301af4"><span class="cl-59300550">0.1378</span></p></td><td class="cl-59305d20"><p class="cl-59301af4"><span class="cl-59300550">0.0339</span></p></td><td class="cl-59305d34"><p class="cl-59301af4"><span class="cl-59300550">0.0713</span></p></td><td class="cl-59305d48"><p class="cl-59301af4"><span class="cl-59300550">0.2043</span></p></td><td class="cl-59305d2a"><p class="cl-59301af4"><span class="cl-59300550">&lt; 0.0001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-59305d3e"><p class="cl-59301ae0"><span class="cl-59300550">Recommended+</span></p></td><td class="cl-59305d52"><p class="cl-59301aea"><span class="cl-59300550">40</span></p></td><td class="cl-59305d5c"><p class="cl-59301af4"><span class="cl-59300550">17</span></p></td><td class="cl-59305d20"><p class="cl-59301af4"><span class="cl-59300550">0.1891</span></p></td><td class="cl-59305d20"><p class="cl-59301af4"><span class="cl-59300550">0.0530</span></p></td><td class="cl-59305d34"><p class="cl-59301af4"><span class="cl-59300550">0.0853</span></p></td><td class="cl-59305d48"><p class="cl-59301af4"><span class="cl-59300550">0.2930</span></p></td><td class="cl-59305d2a"><p class="cl-59301af4"><span class="cl-59300550">0.0004</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-59305d8e"><p class="cl-59301ae0"><span class="cl-59300550">Late</span></p></td><td class="cl-59305d8f"><p class="cl-59301aea"><span class="cl-59300550">17</span></p></td><td class="cl-59305d84"><p class="cl-59301af4"><span class="cl-59300550">11</span></p></td><td class="cl-59305d7a"><p class="cl-59301af4"><span class="cl-59300550">0.1374</span></p></td><td class="cl-59305d7a"><p class="cl-59301af4"><span class="cl-59300550">0.0440</span></p></td><td class="cl-59305d66"><p class="cl-59301af4"><span class="cl-59300550">0.0512</span></p></td><td class="cl-59305d5d"><p class="cl-59301af4"><span class="cl-59300550">0.2237</span></p></td><td class="cl-59305d70"><p class="cl-59301af4"><span class="cl-59300550">0.0018</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-59305da2"><p class="cl-59301ae0"><span class="cl-59300550">Late+</span></p></td><td class="cl-59305dc1"><p class="cl-59301aea"><span class="cl-59300550">19</span></p></td><td class="cl-59305db6"><p class="cl-59301af4"><span class="cl-59300550">6</span></p></td><td class="cl-59305da3"><p class="cl-59301af4"><span class="cl-59300550">0.1301</span></p></td><td class="cl-59305da3"><p class="cl-59301af4"><span class="cl-59300550">0.0578</span></p></td><td class="cl-59305dc0"><p class="cl-59301af4"><span class="cl-59300550">0.0168</span></p></td><td class="cl-59305dac"><p class="cl-59301af4"><span class="cl-59300550">0.2433</span></p></td><td class="cl-59305d98"><p class="cl-59301af4"><span class="cl-59300550">0.0244</span></p></td></tr></tbody><tfoot><tr style="overflow-wrap:break-word;"><td  colspan="8"class="cl-59305dca"><p class="cl-59301ae0"><span class="cl-5930055a">a</span><span class="cl-59300564">number of treatment means categorised to each spray schedule</span><span class="cl-59300564">; </span><span class="cl-5930055a">b</span><span class="cl-59300564">number of trials with the respective spray schedule</span><span class="cl-59300564">; </span><span class="cl-5930055a">c</span><span class="cl-59300564">estimated mean yield determined by the meta-analysis</span><span class="cl-59300564">; </span><span class="cl-5930055a">d</span><span class="cl-59300564">Lower range of the 95% confidence interval</span><span class="cl-59300564">; </span><span class="cl-5930055a">e</span><span class="cl-59300564">Upper range of the 95% confidence interval</span><span class="cl-59300564">; </span><span class="cl-5930055a">f</span><span class="cl-59300564">indicates the significance between each respective spray schedule and the no spray control (intercept)</span></p></td></tr></tfoot></table></div></template>
+<div id="149630eb-52a9-4cd9-83dc-ec7d0b1a54a2"></div>
 <script>
-var dest = document.getElementById("42d8c29a-f1b3-4116-a8bd-6e11d3723b91");
-var template = document.getElementById("fca250f4-d7e1-4c99-a253-aad91f926b07");
+var dest = document.getElementById("149630eb-52a9-4cd9-83dc-ec7d0b1a54a2");
+var template = document.getElementById("396cc13a-d4fa-4ce9-921b-ba75430d32ef");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -825,43 +841,43 @@ fantome.appendChild(templateContent);
 </div>
 <div id="moderator-estimates-plot" class="section level3" number="4.3.2">
 <h3><span class="header-section-number">4.3.2</span> Moderator estimates plot</h3>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="grain-yield-meta-analysis.html#cb119-1" aria-hidden="true" tabindex="-1"></a>results_mv <span class="sc">%&gt;%</span></span>
-<span id="cb119-2"><a href="grain-yield-meta-analysis.html#cb119-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Treatment <span class="sc">!=</span> <span class="st">&quot;control&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb119-3"><a href="grain-yield-meta-analysis.html#cb119-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">Treatment =</span> <span class="fu">factor</span>(Treatment, <span class="at">levels =</span> <span class="fu">rev</span>(</span>
-<span id="cb119-4"><a href="grain-yield-meta-analysis.html#cb119-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>( <span class="st">&quot;Early&quot;</span>,</span>
-<span id="cb119-5"><a href="grain-yield-meta-analysis.html#cb119-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Recommended&quot;</span>,</span>
-<span id="cb119-6"><a href="grain-yield-meta-analysis.html#cb119-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Recommended_plus&quot;</span>,</span>
-<span id="cb119-7"><a href="grain-yield-meta-analysis.html#cb119-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Late&quot;</span>,</span>
-<span id="cb119-8"><a href="grain-yield-meta-analysis.html#cb119-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Late_plus&quot;</span></span>
-<span id="cb119-9"><a href="grain-yield-meta-analysis.html#cb119-9" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb119-10"><a href="grain-yield-meta-analysis.html#cb119-10" aria-hidden="true" tabindex="-1"></a>   ))) <span class="sc">%&gt;%</span></span>
-<span id="cb119-11"><a href="grain-yield-meta-analysis.html#cb119-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(Treatment, mu)) <span class="sc">+</span></span>
-<span id="cb119-12"><a href="grain-yield-meta-analysis.html#cb119-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_hline</span>(</span>
-<span id="cb119-13"><a href="grain-yield-meta-analysis.html#cb119-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">yintercept =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.05</span>, <span class="fl">0.3</span>, <span class="at">by =</span> <span class="fl">0.05</span>),</span>
-<span id="cb119-14"><a href="grain-yield-meta-analysis.html#cb119-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;usq charcoal&quot;</span>),</span>
-<span id="cb119-15"><a href="grain-yield-meta-analysis.html#cb119-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">linetype =</span> <span class="dv">3</span></span>
-<span id="cb119-16"><a href="grain-yield-meta-analysis.html#cb119-16" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
-<span id="cb119-17"><a href="grain-yield-meta-analysis.html#cb119-17" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> <span class="dv">1</span> <span class="sc">/</span> se), <span class="at">shape =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
-<span id="cb119-18"><a href="grain-yield-meta-analysis.html#cb119-18" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> <span class="st">`</span><span class="at">CI_{L}</span><span class="st">`</span>, <span class="at">ymax =</span> <span class="st">`</span><span class="at">CI_{U}</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb119-19"><a href="grain-yield-meta-analysis.html#cb119-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb119-20"><a href="grain-yield-meta-analysis.html#cb119-20" aria-hidden="true" tabindex="-1"></a>   <span class="co">#ggtitle(&quot;Mean spray schedule effect sizes\nand 95% confidence intervals&quot;)+</span></span>
-<span id="cb119-21"><a href="grain-yield-meta-analysis.html#cb119-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(</span>
-<span id="cb119-22"><a href="grain-yield-meta-analysis.html#cb119-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Mean yield difference to control (t ha&quot;</span> <span class="sc">^</span> <span class="sc">-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb119-23"><a href="grain-yield-meta-analysis.html#cb119-23" aria-hidden="true" tabindex="-1"></a>   ))) <span class="sc">+</span></span>
-<span id="cb119-24"><a href="grain-yield-meta-analysis.html#cb119-24" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_x_discrete</span>(</span>
-<span id="cb119-25"><a href="grain-yield-meta-analysis.html#cb119-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Moderator variable&quot;</span>,</span>
-<span id="cb119-26"><a href="grain-yield-meta-analysis.html#cb119-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(</span>
-<span id="cb119-27"><a href="grain-yield-meta-analysis.html#cb119-27" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Late&quot;</span>[<span class="st">&quot;plus&quot;</span>]),</span>
-<span id="cb119-28"><a href="grain-yield-meta-analysis.html#cb119-28" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Late&quot;</span>[<span class="st">&quot;single&quot;</span>]),</span>
-<span id="cb119-29"><a href="grain-yield-meta-analysis.html#cb119-29" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Recommended&quot;</span>[<span class="st">&quot;plus&quot;</span>]),</span>
-<span id="cb119-30"><a href="grain-yield-meta-analysis.html#cb119-30" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Recommended&quot;</span>[<span class="st">&quot;single&quot;</span>]),</span>
-<span id="cb119-31"><a href="grain-yield-meta-analysis.html#cb119-31" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Early&quot;</span>[<span class="st">&quot;single&quot;</span>])</span>
-<span id="cb119-32"><a href="grain-yield-meta-analysis.html#cb119-32" aria-hidden="true" tabindex="-1"></a>         )</span>
-<span id="cb119-33"><a href="grain-yield-meta-analysis.html#cb119-33" aria-hidden="true" tabindex="-1"></a>   )</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="grain-yield-meta-analysis.html#cb38-1" aria-hidden="true" tabindex="-1"></a>results_mv <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="grain-yield-meta-analysis.html#cb38-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Treatment <span class="sc">!=</span> <span class="st">&quot;control&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="grain-yield-meta-analysis.html#cb38-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">Treatment =</span> <span class="fu">factor</span>(Treatment, <span class="at">levels =</span> <span class="fu">rev</span>(</span>
+<span id="cb38-4"><a href="grain-yield-meta-analysis.html#cb38-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>( <span class="st">&quot;Early&quot;</span>,</span>
+<span id="cb38-5"><a href="grain-yield-meta-analysis.html#cb38-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Recommended&quot;</span>,</span>
+<span id="cb38-6"><a href="grain-yield-meta-analysis.html#cb38-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Recommended_plus&quot;</span>,</span>
+<span id="cb38-7"><a href="grain-yield-meta-analysis.html#cb38-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Late&quot;</span>,</span>
+<span id="cb38-8"><a href="grain-yield-meta-analysis.html#cb38-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;Late_plus&quot;</span></span>
+<span id="cb38-9"><a href="grain-yield-meta-analysis.html#cb38-9" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb38-10"><a href="grain-yield-meta-analysis.html#cb38-10" aria-hidden="true" tabindex="-1"></a>   ))) <span class="sc">%&gt;%</span></span>
+<span id="cb38-11"><a href="grain-yield-meta-analysis.html#cb38-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(Treatment, mu)) <span class="sc">+</span></span>
+<span id="cb38-12"><a href="grain-yield-meta-analysis.html#cb38-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_hline</span>(</span>
+<span id="cb38-13"><a href="grain-yield-meta-analysis.html#cb38-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">yintercept =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.05</span>, <span class="fl">0.3</span>, <span class="at">by =</span> <span class="fl">0.05</span>),</span>
+<span id="cb38-14"><a href="grain-yield-meta-analysis.html#cb38-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;usq charcoal&quot;</span>),</span>
+<span id="cb38-15"><a href="grain-yield-meta-analysis.html#cb38-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">linetype =</span> <span class="dv">3</span></span>
+<span id="cb38-16"><a href="grain-yield-meta-analysis.html#cb38-16" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
+<span id="cb38-17"><a href="grain-yield-meta-analysis.html#cb38-17" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> <span class="dv">1</span> <span class="sc">/</span> se), <span class="at">shape =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb38-18"><a href="grain-yield-meta-analysis.html#cb38-18" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> <span class="st">`</span><span class="at">CI_{L}</span><span class="st">`</span>, <span class="at">ymax =</span> <span class="st">`</span><span class="at">CI_{U}</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb38-19"><a href="grain-yield-meta-analysis.html#cb38-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb38-20"><a href="grain-yield-meta-analysis.html#cb38-20" aria-hidden="true" tabindex="-1"></a>   <span class="co">#ggtitle(&quot;Mean spray schedule effect sizes\nand 95% confidence intervals&quot;)+</span></span>
+<span id="cb38-21"><a href="grain-yield-meta-analysis.html#cb38-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(</span>
+<span id="cb38-22"><a href="grain-yield-meta-analysis.html#cb38-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Mean yield difference to control (t ha&quot;</span> <span class="sc">^</span> <span class="sc">-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb38-23"><a href="grain-yield-meta-analysis.html#cb38-23" aria-hidden="true" tabindex="-1"></a>   ))) <span class="sc">+</span></span>
+<span id="cb38-24"><a href="grain-yield-meta-analysis.html#cb38-24" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_x_discrete</span>(</span>
+<span id="cb38-25"><a href="grain-yield-meta-analysis.html#cb38-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Moderator variable&quot;</span>,</span>
+<span id="cb38-26"><a href="grain-yield-meta-analysis.html#cb38-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(</span>
+<span id="cb38-27"><a href="grain-yield-meta-analysis.html#cb38-27" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Late&quot;</span>[<span class="st">&quot;plus&quot;</span>]),</span>
+<span id="cb38-28"><a href="grain-yield-meta-analysis.html#cb38-28" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Late&quot;</span>[<span class="st">&quot;single&quot;</span>]),</span>
+<span id="cb38-29"><a href="grain-yield-meta-analysis.html#cb38-29" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Recommended&quot;</span>[<span class="st">&quot;plus&quot;</span>]),</span>
+<span id="cb38-30"><a href="grain-yield-meta-analysis.html#cb38-30" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Recommended&quot;</span>[<span class="st">&quot;single&quot;</span>]),</span>
+<span id="cb38-31"><a href="grain-yield-meta-analysis.html#cb38-31" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="st">&quot;Early&quot;</span>[<span class="st">&quot;single&quot;</span>])</span>
+<span id="cb38-32"><a href="grain-yield-meta-analysis.html#cb38-32" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb38-33"><a href="grain-yield-meta-analysis.html#cb38-33" aria-hidden="true" tabindex="-1"></a>   )</span></code></pre></div>
 <p><img src="_main_files/figure-html/metafor_plot_yied-1.png" width="672" /></p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="grain-yield-meta-analysis.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;paper/figures/Fig2_means_difference.png&quot;</span>,</span>
-<span id="cb120-2"><a href="grain-yield-meta-analysis.html#cb120-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">3</span>,</span>
-<span id="cb120-3"><a href="grain-yield-meta-analysis.html#cb120-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">500</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="grain-yield-meta-analysis.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;paper/figures/Fig2_means_difference.png&quot;</span>,</span>
+<span id="cb39-2"><a href="grain-yield-meta-analysis.html#cb39-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">3</span>,</span>
+<span id="cb39-3"><a href="grain-yield-meta-analysis.html#cb39-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">500</span>)</span></code></pre></div>
 <pre><code>## Saving 7 x 3 in image</code></pre>
 <p><br><br />
 <br></p>
@@ -869,10 +885,10 @@ fantome.appendChild(templateContent);
 <div id="moderator-contrasts" class="section level3" number="4.3.3">
 <h3><span class="header-section-number">4.3.3</span> Moderator contrasts</h3>
 <p>Let’s investigate the treatment contrasts</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="grain-yield-meta-analysis.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/simple_summary.R&quot;</span>) <span class="co">#function to provide a table that includes the treatment names in the contrasts</span></span>
-<span id="cb122-2"><a href="grain-yield-meta-analysis.html#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">glht</span>(PM_mv, <span class="at">linfct =</span> <span class="fu">cbind</span>(<span class="fu">contrMat</span>(<span class="fu">rep</span>(</span>
-<span id="cb122-3"><a href="grain-yield-meta-analysis.html#cb122-3" aria-hidden="true" tabindex="-1"></a>   <span class="dv">1</span>, <span class="dv">6</span></span>
-<span id="cb122-4"><a href="grain-yield-meta-analysis.html#cb122-4" aria-hidden="true" tabindex="-1"></a>), <span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>))), <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">&quot;none&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="grain-yield-meta-analysis.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/simple_summary.R&quot;</span>) <span class="co">#function to provide a table that includes the treatment names in the contrasts</span></span>
+<span id="cb41-2"><a href="grain-yield-meta-analysis.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">glht</span>(PM_mv, <span class="at">linfct =</span> <span class="fu">cbind</span>(<span class="fu">contrMat</span>(<span class="fu">rep</span>(</span>
+<span id="cb41-3"><a href="grain-yield-meta-analysis.html#cb41-3" aria-hidden="true" tabindex="-1"></a>   <span class="dv">1</span>, <span class="dv">6</span></span>
+<span id="cb41-4"><a href="grain-yield-meta-analysis.html#cb41-4" aria-hidden="true" tabindex="-1"></a>), <span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>))), <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">&quot;none&quot;</span>))</span></code></pre></div>
 <pre><code>## 
 ##   Simultaneous Tests for General Linear Hypotheses
 ## 
@@ -881,74 +897,74 @@ fantome.appendChild(templateContent);
 ##     data = PM_dat_Y, method = &quot;ML&quot;, control = list(optimizer = &quot;optim&quot;))
 ## 
 ## Linear Hypotheses:
-##              Estimate Std. Error z value Pr(&gt;|z|)    
-## 2 - 1 == 0 -1.0873327  0.1099858  -9.886  &lt; 2e-16 ***
-## 3 - 1 == 0 -0.9528742  0.0865069 -11.015  &lt; 2e-16 ***
-## 4 - 1 == 0 -0.9602137  0.0812167 -11.823  &lt; 2e-16 ***
-## 5 - 1 == 0 -0.9524872  0.0907279 -10.498  &lt; 2e-16 ***
-## 6 - 1 == 0 -0.9011339  0.0781280 -11.534  &lt; 2e-16 ***
-## 3 - 2 == 0  0.1344585  0.0473917   2.837 0.004552 ** 
-## 4 - 2 == 0  0.1271189  0.0623833   2.038 0.041579 *  
-## 5 - 2 == 0  0.1348455  0.0292425   4.611    4e-06 ***
-## 6 - 2 == 0  0.1861988  0.0504372   3.692 0.000223 ***
-## 4 - 3 == 0 -0.0073395  0.0473195  -0.155 0.876738    
-## 5 - 3 == 0  0.0003871  0.0338151   0.011 0.990867    
-## 6 - 3 == 0  0.0517403  0.0377384   1.371 0.170367    
-## 5 - 4 == 0  0.0077266  0.0488628   0.158 0.874355    
-## 6 - 4 == 0  0.0590798  0.0454538   1.300 0.193677    
-## 6 - 5 == 0  0.0513532  0.0349093   1.471 0.141278    
+##             Estimate Std. Error z value             Pr(&gt;|z|)    
+## 2 - 1 == 0 -1.087333   0.109986   -9.89 &lt; 0.0000000000000002 ***
+## 3 - 1 == 0 -0.952874   0.086507  -11.02 &lt; 0.0000000000000002 ***
+## 4 - 1 == 0 -0.960214   0.081217  -11.82 &lt; 0.0000000000000002 ***
+## 5 - 1 == 0 -0.952487   0.090728  -10.50 &lt; 0.0000000000000002 ***
+## 6 - 1 == 0 -0.901134   0.078128  -11.53 &lt; 0.0000000000000002 ***
+## 3 - 2 == 0  0.134458   0.047392    2.84              0.00455 ** 
+## 4 - 2 == 0  0.127119   0.062383    2.04              0.04158 *  
+## 5 - 2 == 0  0.134846   0.029242    4.61             0.000004 ***
+## 6 - 2 == 0  0.186199   0.050437    3.69              0.00022 ***
+## 4 - 3 == 0 -0.007340   0.047319   -0.16              0.87674    
+## 5 - 3 == 0  0.000387   0.033815    0.01              0.99087    
+## 6 - 3 == 0  0.051740   0.037738    1.37              0.17037    
+## 5 - 4 == 0  0.007727   0.048863    0.16              0.87436    
+## 6 - 4 == 0  0.059080   0.045454    1.30              0.19368    
+## 6 - 5 == 0  0.051353   0.034909    1.47              0.14128    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- none method)</code></pre>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="grain-yield-meta-analysis.html#cb124-1" aria-hidden="true" tabindex="-1"></a>contrast_Ssum <span class="ot">&lt;-</span></span>
-<span id="cb124-2"><a href="grain-yield-meta-analysis.html#cb124-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">simple_summary</span>(<span class="fu">summary</span>(<span class="fu">glht</span>(PM_mv, <span class="at">linfct =</span> <span class="fu">cbind</span>(</span>
-<span id="cb124-3"><a href="grain-yield-meta-analysis.html#cb124-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">contrMat</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">6</span>), <span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>)</span>
-<span id="cb124-4"><a href="grain-yield-meta-analysis.html#cb124-4" aria-hidden="true" tabindex="-1"></a>   )), <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">&quot;none&quot;</span>)))</span>
-<span id="cb124-5"><a href="grain-yield-meta-analysis.html#cb124-5" aria-hidden="true" tabindex="-1"></a>contrast_Ssum</span></code></pre></div>
-<pre><code>##                             contrast  coefficients     StdErr       Zvalue
-## 2 - 1                Early - control -1.0873326701 0.10998584  -9.88611490
-## 3 - 1                 Late - control -0.9528742070 0.08650690 -11.01500858
-## 4 - 1            Late_plus - control -0.9602137484 0.08121665 -11.82286791
-## 5 - 1          Recommended - control -0.9524871505 0.09072787 -10.49828612
-## 6 - 1     Recommended_plus - control -0.9011339039 0.07812800 -11.53407055
-## 3 - 2                   Late - Early  0.1344584631 0.04739173   2.83717126
-## 4 - 2              Late_plus - Early  0.1271189218 0.06238331   2.03770734
-## 5 - 2            Recommended - Early  0.1348455196 0.02924245   4.61129282
-## 6 - 2       Recommended_plus - Early  0.1861987662 0.05043723   3.69169299
-## 4 - 3               Late_plus - Late -0.0073395414 0.04731948  -0.15510613
-## 5 - 3             Recommended - Late  0.0003870565 0.03381508   0.01144627
-## 6 - 3        Recommended_plus - Late  0.0517403031 0.03773844   1.37102393
-## 5 - 4        Recommended - Late_plus  0.0077265979 0.04886276   0.15812856
-## 6 - 4   Recommended_plus - Late_plus  0.0590798445 0.04545379   1.29977824
-## 6 - 5 Recommended_plus - Recommended  0.0513532466 0.03490928   1.47104857
-##              pvals sig
-## 2 - 1 0.000000e+00 ***
-## 3 - 1 0.000000e+00 ***
-## 4 - 1 0.000000e+00 ***
-## 5 - 1 0.000000e+00 ***
-## 6 - 1 0.000000e+00 ***
-## 3 - 2 4.551519e-03  **
-## 4 - 2 4.157921e-02   *
-## 5 - 2 4.001724e-06 ***
-## 6 - 2 2.227663e-04 ***
-## 4 - 3 8.767377e-01    
-## 5 - 3 9.908674e-01    
-## 6 - 3 1.703675e-01    
-## 5 - 4 8.743555e-01    
-## 6 - 4 1.936770e-01    
-## 6 - 5 1.412780e-01</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="grain-yield-meta-analysis.html#cb43-1" aria-hidden="true" tabindex="-1"></a>contrast_Ssum <span class="ot">&lt;-</span></span>
+<span id="cb43-2"><a href="grain-yield-meta-analysis.html#cb43-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">simple_summary</span>(<span class="fu">summary</span>(<span class="fu">glht</span>(PM_mv, <span class="at">linfct =</span> <span class="fu">cbind</span>(</span>
+<span id="cb43-3"><a href="grain-yield-meta-analysis.html#cb43-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">contrMat</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">6</span>), <span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>)</span>
+<span id="cb43-4"><a href="grain-yield-meta-analysis.html#cb43-4" aria-hidden="true" tabindex="-1"></a>   )), <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">&quot;none&quot;</span>)))</span>
+<span id="cb43-5"><a href="grain-yield-meta-analysis.html#cb43-5" aria-hidden="true" tabindex="-1"></a>contrast_Ssum</span></code></pre></div>
+<pre><code>##                             contrast coefficients  StdErr    Zvalue       pvals
+## 2 - 1                Early - control   -1.0873327 0.10999  -9.88611 0.000000000
+## 3 - 1                 Late - control   -0.9528742 0.08651 -11.01501 0.000000000
+## 4 - 1            Late_plus - control   -0.9602137 0.08122 -11.82287 0.000000000
+## 5 - 1          Recommended - control   -0.9524872 0.09073 -10.49829 0.000000000
+## 6 - 1     Recommended_plus - control   -0.9011339 0.07813 -11.53407 0.000000000
+## 3 - 2                   Late - Early    0.1344585 0.04739   2.83717 0.004551519
+## 4 - 2              Late_plus - Early    0.1271189 0.06238   2.03771 0.041579209
+## 5 - 2            Recommended - Early    0.1348455 0.02924   4.61129 0.000004002
+## 6 - 2       Recommended_plus - Early    0.1861988 0.05044   3.69169 0.000222766
+## 4 - 3               Late_plus - Late   -0.0073395 0.04732  -0.15511 0.876737653
+## 5 - 3             Recommended - Late    0.0003871 0.03382   0.01145 0.990867398
+## 6 - 3        Recommended_plus - Late    0.0517403 0.03774   1.37102 0.170367498
+## 5 - 4        Recommended - Late_plus    0.0077266 0.04886   0.15813 0.874355496
+## 6 - 4   Recommended_plus - Late_plus    0.0590798 0.04545   1.29978 0.193676984
+## 6 - 5 Recommended_plus - Recommended    0.0513532 0.03491   1.47105 0.141277981
+##       sig
+## 2 - 1 ***
+## 3 - 1 ***
+## 4 - 1 ***
+## 5 - 1 ***
+## 6 - 1 ***
+## 3 - 2  **
+## 4 - 2   *
+## 5 - 2 ***
+## 6 - 2 ***
+## 4 - 3    
+## 5 - 3    
+## 6 - 3    
+## 5 - 4    
+## 6 - 4    
+## 6 - 5</code></pre>
 <p>These contrasts can be viewed in a plot</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="grain-yield-meta-analysis.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">13</span>, <span class="dv">4</span>, <span class="dv">2</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
-<span id="cb126-2"><a href="grain-yield-meta-analysis.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">glht</span>(PM_mv, <span class="at">linfct =</span> <span class="fu">cbind</span>(<span class="fu">contrMat</span>(<span class="fu">rep</span>(</span>
-<span id="cb126-3"><a href="grain-yield-meta-analysis.html#cb126-3" aria-hidden="true" tabindex="-1"></a>   <span class="dv">1</span>, <span class="dv">6</span></span>
-<span id="cb126-4"><a href="grain-yield-meta-analysis.html#cb126-4" aria-hidden="true" tabindex="-1"></a>), <span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>))), <span class="at">yaxt =</span> <span class="st">&#39;n&#39;</span>)</span>
-<span id="cb126-5"><a href="grain-yield-meta-analysis.html#cb126-5" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(</span>
-<span id="cb126-6"><a href="grain-yield-meta-analysis.html#cb126-6" aria-hidden="true" tabindex="-1"></a>   <span class="dv">2</span>,</span>
-<span id="cb126-7"><a href="grain-yield-meta-analysis.html#cb126-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">at =</span> <span class="fu">seq_along</span>(contrast_Ssum<span class="sc">$</span>contrast),</span>
-<span id="cb126-8"><a href="grain-yield-meta-analysis.html#cb126-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">labels =</span> <span class="fu">rev</span>(contrast_Ssum<span class="sc">$</span>contrast),</span>
-<span id="cb126-9"><a href="grain-yield-meta-analysis.html#cb126-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">las =</span> <span class="dv">2</span>,</span>
-<span id="cb126-10"><a href="grain-yield-meta-analysis.html#cb126-10" aria-hidden="true" tabindex="-1"></a>   <span class="at">cex.axis =</span> <span class="fl">0.8</span></span>
-<span id="cb126-11"><a href="grain-yield-meta-analysis.html#cb126-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="grain-yield-meta-analysis.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">13</span>, <span class="dv">4</span>, <span class="dv">2</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb45-2"><a href="grain-yield-meta-analysis.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">glht</span>(PM_mv, <span class="at">linfct =</span> <span class="fu">cbind</span>(<span class="fu">contrMat</span>(<span class="fu">rep</span>(</span>
+<span id="cb45-3"><a href="grain-yield-meta-analysis.html#cb45-3" aria-hidden="true" tabindex="-1"></a>   <span class="dv">1</span>, <span class="dv">6</span></span>
+<span id="cb45-4"><a href="grain-yield-meta-analysis.html#cb45-4" aria-hidden="true" tabindex="-1"></a>), <span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>))), <span class="at">yaxt =</span> <span class="st">&#39;n&#39;</span>)</span>
+<span id="cb45-5"><a href="grain-yield-meta-analysis.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(</span>
+<span id="cb45-6"><a href="grain-yield-meta-analysis.html#cb45-6" aria-hidden="true" tabindex="-1"></a>   <span class="dv">2</span>,</span>
+<span id="cb45-7"><a href="grain-yield-meta-analysis.html#cb45-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">at =</span> <span class="fu">seq_along</span>(contrast_Ssum<span class="sc">$</span>contrast),</span>
+<span id="cb45-8"><a href="grain-yield-meta-analysis.html#cb45-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">labels =</span> <span class="fu">rev</span>(contrast_Ssum<span class="sc">$</span>contrast),</span>
+<span id="cb45-9"><a href="grain-yield-meta-analysis.html#cb45-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">las =</span> <span class="dv">2</span>,</span>
+<span id="cb45-10"><a href="grain-yield-meta-analysis.html#cb45-10" aria-hidden="true" tabindex="-1"></a>   <span class="at">cex.axis =</span> <span class="fl">0.8</span></span>
+<span id="cb45-11"><a href="grain-yield-meta-analysis.html#cb45-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/plotContrasts_yield-1.png" width="672" /></p>
 </div>
 <div id="profile-plots" class="section level3" number="4.3.4">
@@ -968,31 +984,31 @@ Caution! this will take some time to run.</p>
 <p>We can use the <code>netmeta</code> package to give a graphical representation of the pairwise comparisons.</p>
 <p>Let’s analyse the data again using a different statistical approach to see if our outcome with the <code>metafor</code> package was robust.
 The <code>netmeta</code> package uses a frequentist approach to the analysis and focuses on the pairwise comparisons between treatments.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="grain-yield-meta-analysis.html#cb127-1" aria-hidden="true" tabindex="-1"></a>datPM3 <span class="ot">&lt;-</span> PM_dat_Y <span class="sc">%&gt;%</span></span>
-<span id="cb127-2"><a href="grain-yield-meta-analysis.html#cb127-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(trial, spray_management, replicates) <span class="sc">%&gt;%</span></span>
-<span id="cb127-3"><a href="grain-yield-meta-analysis.html#cb127-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="at">yi_mean =</span> <span class="fu">mean</span>(grain_yield.t.ha.),</span>
-<span id="cb127-4"><a href="grain-yield-meta-analysis.html#cb127-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">vi_mean =</span> <span class="fu">mean</span>(vi)) <span class="sc">%&gt;%</span></span>
-<span id="cb127-5"><a href="grain-yield-meta-analysis.html#cb127-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ungroup</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="grain-yield-meta-analysis.html#cb46-1" aria-hidden="true" tabindex="-1"></a>datPM3 <span class="ot">&lt;-</span> PM_dat_Y <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="grain-yield-meta-analysis.html#cb46-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(trial, spray_management, replicates) <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="grain-yield-meta-analysis.html#cb46-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="at">yi_mean =</span> <span class="fu">mean</span>(grain_yield.t.ha.),</span>
+<span id="cb46-4"><a href="grain-yield-meta-analysis.html#cb46-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">vi_mean =</span> <span class="fu">mean</span>(vi)) <span class="sc">%&gt;%</span></span>
+<span id="cb46-5"><a href="grain-yield-meta-analysis.html#cb46-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ungroup</span>()</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;trial&#39;, &#39;spray_management&#39;. You can override using the `.groups` argument.</code></pre>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="grain-yield-meta-analysis.html#cb129-1" aria-hidden="true" tabindex="-1"></a>PM_con <span class="ot">&lt;-</span> <span class="fu">pairwise</span>(</span>
-<span id="cb129-2"><a href="grain-yield-meta-analysis.html#cb129-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">treat =</span> spray_management,</span>
-<span id="cb129-3"><a href="grain-yield-meta-analysis.html#cb129-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">n =</span> replicates,</span>
-<span id="cb129-4"><a href="grain-yield-meta-analysis.html#cb129-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mean =</span> yi_mean,</span>
-<span id="cb129-5"><a href="grain-yield-meta-analysis.html#cb129-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">sd =</span> <span class="fu">sqrt</span>(vi_mean),</span>
-<span id="cb129-6"><a href="grain-yield-meta-analysis.html#cb129-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">studlab =</span> trial,</span>
-<span id="cb129-7"><a href="grain-yield-meta-analysis.html#cb129-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> datPM3,</span>
-<span id="cb129-8"><a href="grain-yield-meta-analysis.html#cb129-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">sm =</span> <span class="st">&quot;MD&quot;</span></span>
-<span id="cb129-9"><a href="grain-yield-meta-analysis.html#cb129-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb129-10"><a href="grain-yield-meta-analysis.html#cb129-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb129-11"><a href="grain-yield-meta-analysis.html#cb129-11" aria-hidden="true" tabindex="-1"></a>net_con <span class="ot">&lt;-</span> <span class="fu">netmeta</span>(TE,</span>
-<span id="cb129-12"><a href="grain-yield-meta-analysis.html#cb129-12" aria-hidden="true" tabindex="-1"></a>                   seTE,</span>
-<span id="cb129-13"><a href="grain-yield-meta-analysis.html#cb129-13" aria-hidden="true" tabindex="-1"></a>                   treat1,</span>
-<span id="cb129-14"><a href="grain-yield-meta-analysis.html#cb129-14" aria-hidden="true" tabindex="-1"></a>                   treat2,</span>
-<span id="cb129-15"><a href="grain-yield-meta-analysis.html#cb129-15" aria-hidden="true" tabindex="-1"></a>                   studlab,</span>
-<span id="cb129-16"><a href="grain-yield-meta-analysis.html#cb129-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> PM_con,</span>
-<span id="cb129-17"><a href="grain-yield-meta-analysis.html#cb129-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sm =</span> <span class="st">&quot;MD&quot;</span>)</span>
-<span id="cb129-18"><a href="grain-yield-meta-analysis.html#cb129-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb129-19"><a href="grain-yield-meta-analysis.html#cb129-19" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(net_con)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="grain-yield-meta-analysis.html#cb48-1" aria-hidden="true" tabindex="-1"></a>PM_con <span class="ot">&lt;-</span> <span class="fu">pairwise</span>(</span>
+<span id="cb48-2"><a href="grain-yield-meta-analysis.html#cb48-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">treat =</span> spray_management,</span>
+<span id="cb48-3"><a href="grain-yield-meta-analysis.html#cb48-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">n =</span> replicates,</span>
+<span id="cb48-4"><a href="grain-yield-meta-analysis.html#cb48-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">mean =</span> yi_mean,</span>
+<span id="cb48-5"><a href="grain-yield-meta-analysis.html#cb48-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">sd =</span> <span class="fu">sqrt</span>(vi_mean),</span>
+<span id="cb48-6"><a href="grain-yield-meta-analysis.html#cb48-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">studlab =</span> trial,</span>
+<span id="cb48-7"><a href="grain-yield-meta-analysis.html#cb48-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">data =</span> datPM3,</span>
+<span id="cb48-8"><a href="grain-yield-meta-analysis.html#cb48-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">sm =</span> <span class="st">&quot;MD&quot;</span></span>
+<span id="cb48-9"><a href="grain-yield-meta-analysis.html#cb48-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-10"><a href="grain-yield-meta-analysis.html#cb48-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-11"><a href="grain-yield-meta-analysis.html#cb48-11" aria-hidden="true" tabindex="-1"></a>net_con <span class="ot">&lt;-</span> <span class="fu">netmeta</span>(TE,</span>
+<span id="cb48-12"><a href="grain-yield-meta-analysis.html#cb48-12" aria-hidden="true" tabindex="-1"></a>                   seTE,</span>
+<span id="cb48-13"><a href="grain-yield-meta-analysis.html#cb48-13" aria-hidden="true" tabindex="-1"></a>                   treat1,</span>
+<span id="cb48-14"><a href="grain-yield-meta-analysis.html#cb48-14" aria-hidden="true" tabindex="-1"></a>                   treat2,</span>
+<span id="cb48-15"><a href="grain-yield-meta-analysis.html#cb48-15" aria-hidden="true" tabindex="-1"></a>                   studlab,</span>
+<span id="cb48-16"><a href="grain-yield-meta-analysis.html#cb48-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> PM_con,</span>
+<span id="cb48-17"><a href="grain-yield-meta-analysis.html#cb48-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sm =</span> <span class="st">&quot;MD&quot;</span>)</span>
+<span id="cb48-18"><a href="grain-yield-meta-analysis.html#cb48-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-19"><a href="grain-yield-meta-analysis.html#cb48-19" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(net_con)</span></code></pre></div>
 <pre><code>## Number of studies: k = 23
 ## Number of treatments: n = 6
 ## Number of pairwise comparisons: m = 126
@@ -1069,13 +1085,13 @@ The <code>netmeta</code> package uses a frequentist approach to the analysis and
 <div id="netmeta-estimates-plot" class="section level3" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> netmeta estimates plot</h3>
 <p>Now let’s visualise this as a forest plot.</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="grain-yield-meta-analysis.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">forest</span>(</span>
-<span id="cb131-2"><a href="grain-yield-meta-analysis.html#cb131-2" aria-hidden="true" tabindex="-1"></a>   net_con,</span>
-<span id="cb131-3"><a href="grain-yield-meta-analysis.html#cb131-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">reference.group =</span> <span class="dv">1</span>,</span>
-<span id="cb131-4"><a href="grain-yield-meta-analysis.html#cb131-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">rightcols =</span> <span class="fu">c</span>(<span class="st">&quot;effect&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;Pscore&quot;</span>),</span>
-<span id="cb131-5"><a href="grain-yield-meta-analysis.html#cb131-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">rightlabs =</span> <span class="st">&quot;P-Score&quot;</span>,</span>
-<span id="cb131-6"><a href="grain-yield-meta-analysis.html#cb131-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">small.values =</span> <span class="st">&quot;bad&quot;</span></span>
-<span id="cb131-7"><a href="grain-yield-meta-analysis.html#cb131-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="grain-yield-meta-analysis.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">forest</span>(</span>
+<span id="cb50-2"><a href="grain-yield-meta-analysis.html#cb50-2" aria-hidden="true" tabindex="-1"></a>   net_con,</span>
+<span id="cb50-3"><a href="grain-yield-meta-analysis.html#cb50-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">reference.group =</span> <span class="dv">1</span>,</span>
+<span id="cb50-4"><a href="grain-yield-meta-analysis.html#cb50-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">rightcols =</span> <span class="fu">c</span>(<span class="st">&quot;effect&quot;</span>, <span class="st">&quot;ci&quot;</span>, <span class="st">&quot;Pscore&quot;</span>),</span>
+<span id="cb50-5"><a href="grain-yield-meta-analysis.html#cb50-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">rightlabs =</span> <span class="st">&quot;P-Score&quot;</span>,</span>
+<span id="cb50-6"><a href="grain-yield-meta-analysis.html#cb50-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">small.values =</span> <span class="st">&quot;bad&quot;</span></span>
+<span id="cb50-7"><a href="grain-yield-meta-analysis.html#cb50-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/netmeta-forest-1.png" width="672" />
 <br><br />
 <br><br />
@@ -1087,28 +1103,28 @@ The <code>netmeta</code> package uses a frequentist approach to the analysis and
 <p>The <code>netmeta</code> analysis suggests the spray schedule commencing early are no different to any other treatment including the no spray <code>control</code>.
 It estimates the mean is very similar to the recommended treatments.
 The <code>Recommended_plus</code> and <code>Late_plus</code> treatments show higher mean estimates, however are not significantly different from the <code>Early</code> estimate.</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="grain-yield-meta-analysis.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">netgraph</span>(</span>
-<span id="cb132-2"><a href="grain-yield-meta-analysis.html#cb132-2" aria-hidden="true" tabindex="-1"></a>   net_con,</span>
-<span id="cb132-3"><a href="grain-yield-meta-analysis.html#cb132-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">plastic =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb132-4"><a href="grain-yield-meta-analysis.html#cb132-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">col =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;support orange&quot;</span>),</span>
-<span id="cb132-5"><a href="grain-yield-meta-analysis.html#cb132-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">thickness =</span>  <span class="st">&quot;number.of.studies&quot;</span>,</span>
-<span id="cb132-6"><a href="grain-yield-meta-analysis.html#cb132-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">points =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb132-7"><a href="grain-yield-meta-analysis.html#cb132-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">col.points =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;usq charcoal&quot;</span>),</span>
-<span id="cb132-8"><a href="grain-yield-meta-analysis.html#cb132-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">cex.points =</span> <span class="dv">1</span>,</span>
-<span id="cb132-9"><a href="grain-yield-meta-analysis.html#cb132-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">number.of.studies =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb132-10"><a href="grain-yield-meta-analysis.html#cb132-10" aria-hidden="true" tabindex="-1"></a>   <span class="at">cex.number.of.studies =</span> <span class="dv">1</span>,</span>
-<span id="cb132-11"><a href="grain-yield-meta-analysis.html#cb132-11" aria-hidden="true" tabindex="-1"></a>   <span class="at">col.number.of.studies =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb132-12"><a href="grain-yield-meta-analysis.html#cb132-12" aria-hidden="true" tabindex="-1"></a>   <span class="at">bg.number.of.studies =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;support orange&quot;</span>),</span>
-<span id="cb132-13"><a href="grain-yield-meta-analysis.html#cb132-13" aria-hidden="true" tabindex="-1"></a>   <span class="at">multiarm =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb132-14"><a href="grain-yield-meta-analysis.html#cb132-14" aria-hidden="true" tabindex="-1"></a>   <span class="at">col.multiarm =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;support turquiose&quot;</span>),</span>
-<span id="cb132-15"><a href="grain-yield-meta-analysis.html#cb132-15" aria-hidden="true" tabindex="-1"></a>   <span class="at">pos.number.of.studies =</span> <span class="fl">0.4</span></span>
-<span id="cb132-16"><a href="grain-yield-meta-analysis.html#cb132-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="grain-yield-meta-analysis.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">netgraph</span>(</span>
+<span id="cb51-2"><a href="grain-yield-meta-analysis.html#cb51-2" aria-hidden="true" tabindex="-1"></a>   net_con,</span>
+<span id="cb51-3"><a href="grain-yield-meta-analysis.html#cb51-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">plastic =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb51-4"><a href="grain-yield-meta-analysis.html#cb51-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">col =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;support orange&quot;</span>),</span>
+<span id="cb51-5"><a href="grain-yield-meta-analysis.html#cb51-5" aria-hidden="true" tabindex="-1"></a>   <span class="at">thickness =</span>  <span class="st">&quot;number.of.studies&quot;</span>,</span>
+<span id="cb51-6"><a href="grain-yield-meta-analysis.html#cb51-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">points =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb51-7"><a href="grain-yield-meta-analysis.html#cb51-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">col.points =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;usq charcoal&quot;</span>),</span>
+<span id="cb51-8"><a href="grain-yield-meta-analysis.html#cb51-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">cex.points =</span> <span class="dv">1</span>,</span>
+<span id="cb51-9"><a href="grain-yield-meta-analysis.html#cb51-9" aria-hidden="true" tabindex="-1"></a>   <span class="at">number.of.studies =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb51-10"><a href="grain-yield-meta-analysis.html#cb51-10" aria-hidden="true" tabindex="-1"></a>   <span class="at">cex.number.of.studies =</span> <span class="dv">1</span>,</span>
+<span id="cb51-11"><a href="grain-yield-meta-analysis.html#cb51-11" aria-hidden="true" tabindex="-1"></a>   <span class="at">col.number.of.studies =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb51-12"><a href="grain-yield-meta-analysis.html#cb51-12" aria-hidden="true" tabindex="-1"></a>   <span class="at">bg.number.of.studies =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;support orange&quot;</span>),</span>
+<span id="cb51-13"><a href="grain-yield-meta-analysis.html#cb51-13" aria-hidden="true" tabindex="-1"></a>   <span class="at">multiarm =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb51-14"><a href="grain-yield-meta-analysis.html#cb51-14" aria-hidden="true" tabindex="-1"></a>   <span class="at">col.multiarm =</span> <span class="fu">usq_cols</span>(<span class="st">&quot;support turquiose&quot;</span>),</span>
+<span id="cb51-15"><a href="grain-yield-meta-analysis.html#cb51-15" aria-hidden="true" tabindex="-1"></a>   <span class="at">pos.number.of.studies =</span> <span class="fl">0.4</span></span>
+<span id="cb51-16"><a href="grain-yield-meta-analysis.html#cb51-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/netgraphGW-1.png" width="672" /></p>
 <p><br><br />
 <br><br />
 <br><br />
 ******</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="grain-yield-meta-analysis.html#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="fu">netleague</span>(net_con)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="grain-yield-meta-analysis.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">netleague</span>(net_con)</span></code></pre></div>
 <pre><code>## League table (fixed effects model):
 ##                                                       
 ##                     control -0.1047 [-0.1936; -0.0157]
@@ -1154,7 +1170,7 @@ The <code>Recommended_plus</code> and <code>Late_plus</code> treatments show hig
 ##   0.1468 [-0.0061;  0.2997]  0.0043 [-0.1471;  0.1557]
 ##                 Recommended -0.0496 [-0.1233;  0.0241]
 ##  -0.0502 [-0.1225;  0.0221]           Recommended_plus</code></pre>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="grain-yield-meta-analysis.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decomp.design</span>(net_con)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="grain-yield-meta-analysis.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decomp.design</span>(net_con)</span></code></pre></div>
 <pre><code>## Q statistics to assess homogeneity / consistency
 ## 
 ##                      Q df  p-value
@@ -1188,7 +1204,7 @@ The <code>Recommended_plus</code> and <code>Late_plus</code> treatments show hig
 ## 
 ##                     Q df p-value tau.within tau2.within
 ## Between designs 18.09 11  0.0795     0.0799      0.0064</code></pre>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="grain-yield-meta-analysis.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">netsplit</span>(net_con)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="grain-yield-meta-analysis.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">netsplit</span>(net_con)</span></code></pre></div>
 <pre><code>## Separate indirect from direct evidence (SIDE) using back-calculation method
 ## 
 ## Fixed effects model: 
@@ -1239,21 +1255,21 @@ The <code>Recommended_plus</code> and <code>Late_plus</code> treatments show hig
 ##  Diff       - Difference between direct and indirect treatment estimates
 ##  z          - z-value of test for disagreement (direct versus indirect)
 ##  p-value    - p-value of test for disagreement (direct versus indirect)</code></pre>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="grain-yield-meta-analysis.html#cb139-1" aria-hidden="true" tabindex="-1"></a>nm1 <span class="ot">&lt;-</span> <span class="fu">netmeasures</span>(net_con)</span>
-<span id="cb139-2"><a href="grain-yield-meta-analysis.html#cb139-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb139-3"><a href="grain-yield-meta-analysis.html#cb139-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb139-4"><a href="grain-yield-meta-analysis.html#cb139-4" aria-hidden="true" tabindex="-1"></a>   nm1<span class="sc">$</span>meanpath,</span>
-<span id="cb139-5"><a href="grain-yield-meta-analysis.html#cb139-5" aria-hidden="true" tabindex="-1"></a>   nm1<span class="sc">$</span>minpar,</span>
-<span id="cb139-6"><a href="grain-yield-meta-analysis.html#cb139-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">pch =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb139-7"><a href="grain-yield-meta-analysis.html#cb139-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">xlab =</span> <span class="st">&quot;Mean path length&quot;</span>,</span>
-<span id="cb139-8"><a href="grain-yield-meta-analysis.html#cb139-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">ylab =</span> <span class="st">&quot;Minimal parallelism&quot;</span></span>
-<span id="cb139-9"><a href="grain-yield-meta-analysis.html#cb139-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb139-10"><a href="grain-yield-meta-analysis.html#cb139-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(nm1<span class="sc">$</span>meanpath, nm1<span class="sc">$</span>minpar, <span class="fu">names</span>(nm1<span class="sc">$</span>meanpath), <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="grain-yield-meta-analysis.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(PM_dat_Y,</span>
-<span id="cb140-2"><a href="grain-yield-meta-analysis.html#cb140-2" aria-hidden="true" tabindex="-1"></a>     PM_mv,</span>
-<span id="cb140-3"><a href="grain-yield-meta-analysis.html#cb140-3" aria-hidden="true" tabindex="-1"></a>     contrast_Ssum,</span>
-<span id="cb140-4"><a href="grain-yield-meta-analysis.html#cb140-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;cache/Meta-analysisData.Rdata&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="grain-yield-meta-analysis.html#cb58-1" aria-hidden="true" tabindex="-1"></a>nm1 <span class="ot">&lt;-</span> <span class="fu">netmeasures</span>(net_con)</span>
+<span id="cb58-2"><a href="grain-yield-meta-analysis.html#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="grain-yield-meta-analysis.html#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb58-4"><a href="grain-yield-meta-analysis.html#cb58-4" aria-hidden="true" tabindex="-1"></a>   nm1<span class="sc">$</span>meanpath,</span>
+<span id="cb58-5"><a href="grain-yield-meta-analysis.html#cb58-5" aria-hidden="true" tabindex="-1"></a>   nm1<span class="sc">$</span>minpar,</span>
+<span id="cb58-6"><a href="grain-yield-meta-analysis.html#cb58-6" aria-hidden="true" tabindex="-1"></a>   <span class="at">pch =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb58-7"><a href="grain-yield-meta-analysis.html#cb58-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">xlab =</span> <span class="st">&quot;Mean path length&quot;</span>,</span>
+<span id="cb58-8"><a href="grain-yield-meta-analysis.html#cb58-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">ylab =</span> <span class="st">&quot;Minimal parallelism&quot;</span></span>
+<span id="cb58-9"><a href="grain-yield-meta-analysis.html#cb58-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb58-10"><a href="grain-yield-meta-analysis.html#cb58-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(nm1<span class="sc">$</span>meanpath, nm1<span class="sc">$</span>minpar, <span class="fu">names</span>(nm1<span class="sc">$</span>meanpath), <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="grain-yield-meta-analysis.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(PM_dat_Y,</span>
+<span id="cb59-2"><a href="grain-yield-meta-analysis.html#cb59-2" aria-hidden="true" tabindex="-1"></a>     PM_mv,</span>
+<span id="cb59-3"><a href="grain-yield-meta-analysis.html#cb59-3" aria-hidden="true" tabindex="-1"></a>     contrast_Ssum,</span>
+<span id="cb59-4"><a href="grain-yield-meta-analysis.html#cb59-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;cache/Meta-analysisData.Rdata&quot;</span>))</span></code></pre></div>
 
 </div>
 </div>
