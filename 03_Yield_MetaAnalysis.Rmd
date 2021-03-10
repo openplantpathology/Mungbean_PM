@@ -30,15 +30,17 @@ To do this, the model will use the main variables:
 ```{r Yield_ME_libraries, echo=TRUE,results='hide'}
 if (!require("pacman"))
    install.packages("pacman")
-pacman::p_load(tidyverse,
-               kableExtra,
-               bomrang,
-               RColorBrewer,
-               metafor,
-               here,
-               netmeta,
-               multcomp,
-               flextable)
+pacman::p_load(
+   tidyverse,
+   kableExtra,
+   bomrang,
+   RColorBrewer,
+   metafor,
+   here,
+   netmeta,
+   multcomp,
+   flextable
+)
 
 if (!require("theme.usq"))
    remotes::install_github("adamhsparks/theme.usq")
@@ -48,7 +50,8 @@ source(here("R/reportP.R"))
 
 # Data
 PM_dat_Y <-
-   read.csv("cache/PM_yield_clean_data.csv", stringsAsFactors = FALSE)
+   read.csv("cache/PM_yield_clean_data.csv", stringsAsFactors = FALSE
+   )
 ```
 
 
@@ -70,6 +73,7 @@ PM_dat_Y <-
 <br>  
 
 ## Spray schedule meta-analysis  
+
 ### Spray schedule moderator
 
 For the first grain yield meta-analysis will be an ARM based model or multi-variate meta-analysis, using the `metafor` package function `rma.mv()` [@Viechtbauer2010].
@@ -79,10 +83,10 @@ We are using the `spray_management` variable as a moderator and an interactive t
 ```{r Yield_Metafor-analysis}
 PM_mv <- rma.mv(
    yi = grain_yield.t.ha.,
-   vi,
+   V = vi,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
    data = PM_dat_Y
@@ -93,7 +97,8 @@ summary(PM_mv)
 
 <br>  
 <br>  
-<br>  
+
+
 ******
 
 ### Disease onset interaction with spray schedule  
@@ -102,27 +107,32 @@ To determine if the time at which disease occurs in the cropping season influenc
 
 `early` and `late` will be divided by a number close to the median days after sowing when signs of the disease were first observed.
 A number close to the median should ensure roughly even numbers in each category.
+
 ```{r median onset}
 PM_dat_Y %>%
    mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
              lubridate::ymd(planting_date)) %>%
-   pull(first_sign_days)%>%
+   pull(first_sign_days) %>%
    median()
 ```
-We will choose 42 days as this is the average days to flowering in mungbean. 
-In addition Kelly et. al. [@-Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.
 
-Now lets define these two new variables, `first_sign_days` and `onset` in the data.
+We will choose 42 days as this is the average days to flowering in mungbean. 
+In addition, Kelly et. al. [-@Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.
+
+Now let's define these two new variables, `first_sign_days` and `onset` in the data.
 
 ```{r define_onset}
 PM_dat_Y <- PM_dat_Y %>%
    mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
              lubridate::ymd(planting_date)) %>%
-   mutate(onset = case_when(first_sign_days <= 42 ~ "early_onset",
-                            first_sign_days > 42 ~ "late_onset"))
+   mutate(onset = case_when(
+      first_sign_days <= 42 ~ "early_onset",
+      first_sign_days > 42 ~ "late_onset"
+   ))
 ```
 
-Inspect a histogram of when first sign occurred in the crop
+Inspect a histogram of when first sign occurred in the crop.
+
 ```{r hist_onset}
 PM_dat_Y %>%
    ggplot(aes(x = as.integer(first_sign_days))) +
@@ -134,7 +144,7 @@ To put this onset number into context for plant maturity, 40 days is approximate
 
 <br>  
 <br>  
-<br>  
+
 ******
 
 #### metafor onset analysis
@@ -144,32 +154,32 @@ We are adding the `onset` variable as a moderator to test and interaction with t
 ```{r onset_Metafor-analysis}
 PM_mv_onset <- rma.mv(
    yi = grain_yield.t.ha.,
-   vi,
+   V = vi,
    mods = ~ spray_management * onset,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
    data = PM_dat_Y
 )
-
 ```
 
 ```{r}
-anova(PM_mv, PM_mv_onset)$pval
+anova(PM_mv, PM_mv_onset)
 ```
-This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value.
-However the higher AIC indicates that the model omitting `onset` is a slightly better fit.
-Also the chi-squared test uncertain that the `onset` model is significantly better as indicated by the `pval` `r round(anova(PM_mv, PM_mv_onset)$pval,3)`.
-The higher log likelihood on the `onset` model does intricate there is some merit to this model and that perhaps with more trials to increase statistical power might provide a useful model.  
 
 ```{r}
 summary(PM_mv_onset)
 ```
 
+This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value.
+However the higher AIC indicates that the model omitting `onset` is a slightly better fit.
+Also the chi-squared test is uncertain that the `onset` model is significantly better as indicated by the ANOVA `pval` `r round(anova(PM_mv, PM_mv_onset)$pval,3)`.
+The higher log likelihood on the `onset` model does indicate that there is some merit to this model and that perhaps with more trials to increase statistical power it might be a useful model.  
 <br>  
 <br>  
 <br>  
+
 ******  
 
 ### Disease pressure interaction with spray schedule
@@ -177,21 +187,28 @@ summary(PM_mv_onset)
 To determine if the seasonal disease pressure influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `high_pressure` or `low_pressure`.
 
 `high_pressure` and `low_pressure` will be divided by the median disease severity in the no spray control treatments at the end of the season.
+
 ```{r median_pressure}
 PM_dat_Y %>%
    filter(fungicide_ai == "control") %>%
-   pull(PM_final_severity)%>%
+   pull(PM_final_severity) %>%
    median()
 ```
-Now lets define these two new variables, `first_sign_days` and `onset` in the data.
+
+Now let's define these two new variables, `low_pressure` and `high_pressure` in the data.
 
 ```{r define_disease_pressure}
 PM_dat_Y <- PM_dat_Y %>%
-   mutate(d_pressure = case_when(PM_final_severity < 8 ~ "low_pressure",
-                            PM_final_severity >= 8 ~ "high_pressure"))
+   mutate(
+      d_pressure = case_when(
+         PM_final_severity < 8 ~ "low_pressure",
+         PM_final_severity >= 8 ~ "high_pressure"
+      )
+   )
 ```
 
-Inspect a histogram of when first sign occurred in the crop
+Inspect a histogram of the final severity values in the crop.
+
 ```{r hist_pressure}
 PM_dat_Y %>%
    ggplot(aes(x = PM_final_severity)) +
@@ -202,25 +219,25 @@ PM_dat_Y %>%
 <br>  
 <br>  
 <br>  
+
 ******  
 
 
 #### metafor disease pressure interaction
 
-We are adding the `onset` variable as a moderator to test and interaction with the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
+We are adding the `d_pressure` variable as a moderator to test and interaction with the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
 
 ```{r Dpressure_Metafor-analysis}
 PM_mv_dp <- rma.mv(
    yi = grain_yield.t.ha.,
-   vi,
+   V = vi,
    mods = ~ spray_management * d_pressure,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
    data = PM_dat_Y
 )
-
 ```
 
 ```{r}
@@ -236,7 +253,7 @@ Even though the disease pressure interaction on the moderators was marginally si
 
 ```{r}
 PM_dat_Y %>%
-   group_by(spray_management, d_pressure)%>%
+   group_by(spray_management, d_pressure) %>%
    summarise(n())
 ```
 
@@ -248,17 +265,20 @@ summary(PM_mv_dp)
 <br>  
 <br>  
 <br>  
+
 ******  
 
 ### Test variance-covavriance matrix structure
-Let's try the model with an implied simpler variance-covariance matrix "compound symmetry" ("CS") to examine if unstructured matrix is suitable.
+
+Let's try the model with an implied simpler variance-covariance matrix, "compound symmetry" (CS), to examine if unstructured matrix is suitable.
+
 ```{r}
 PM_mv_cs <- rma.mv(
    yi = grain_yield.t.ha.,
-   vi,
+   V = vi,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "CS",
    control = list(optimizer = "optim"),
    data = PM_dat_Y
@@ -269,14 +289,13 @@ anova(PM_mv, PM_mv_cs)
 
 Again `PM_mv` (Full) prevails as the better model (p = 0.0014; AIC = -45.4359) and therefore we should keep the unstructured variance-covariance matrix.
 
- > Therfore the model `PM_mv`, is a best fit.
+ > Therefore the model `PM_mv`, is a best fit.
 
 
 ## Summarise PM_mv model
 
 The first table in the `PM_mv` output shows tau^2 (between trial variance) of each moderator random effects and the number of occurrences for each treatment in the analysis.
 This effectively shows the heterogeneity between experiments for these particular treatments.
-
 
 The tau^2 also gives us the heterogeneity between trials and indicates `Recommended_plus` showed the highest heterogeneity between experiments followed by `Late_plus`, `Late` then `Recommended`, with `Early` and the no-spray `control` showing the least heterogeneity.
 
@@ -293,10 +312,13 @@ The analysis shows there is still a significant amount of residual heterogeneity
 <br>
 <br>
 <br>
+
 ******
 
 ## Meta-analysis results summary
+
 ### Moderator estimates table
+
 Let's present the meta-analysis results for the moderator variables in a table of estimates.
 
 ```{r metafor_results_table_yield}
@@ -311,12 +333,12 @@ k5 <-
 # create data.frame
 results_mv <- data.frame(
    Moderator = c(
-   "Intercept / No Spray control",
-   "Early",
-   "Late",
-   "Late+",
-   "Recommended",
-   "Recommended+"
+      "Intercept / No Spray control",
+      "Early",
+      "Late",
+      "Late+",
+      "Recommended",
+      "Recommended+"
    ),
    N = PM_mv$g.levels.k,
    k = k5,
@@ -339,32 +361,39 @@ colnames(results_mv)[c(2:5, 7:10)] <-
      "Z",
      "P")
 
-yield_estimates_table <- 
-   flextable(results_mv[c(2,5,6,3,4), c(1,3:8,10)]) %>%
+yield_estimates_table <-
+   flextable(results_mv[c(2, 5, 6, 3, 4), c(1, 3:8, 10)]) %>%
    align(j = 3:8, align = "center", part = "all") %>%
    fontsize(size = 8, part = "body") %>%
    fontsize(size = 10, part = "header") %>%
    italic(italic = TRUE, part = "header") %>%
-   set_caption("Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Yield estimates (u) were calculated from a network meta-analysis of data obtained from grey literature reports of 'k' field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept.") %>%
+   set_caption(
+      "Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Yield estimates (u) were calculated from a network meta-analysis of data obtained from grey literature reports of 'k' field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
+   ) %>%
    autofit() %>%
-   footnote(i = 1,
-            j = c(2:4,6:8),
-            value = as_paragraph(c(
-               "number of treatment means categorised to each spray schedule",
-               "number of trials with the respective spray schedule",
-               "estimated mean yield determined by the meta-analysis",
-               "Lower range of the 95% confidence interval",
-               "Upper range of the 95% confidence interval",
-               "indicates the significance between each respective spray schedule and the no spray control (intercept)"
-                                   )),
-            ref_symbols = letters[1:6],
-            part = "header", inline = TRUE
-            )
+   footnote(
+      i = 1,
+      j = c(2:4, 6:8),
+      value = as_paragraph(
+         c(
+            "number of treatment means categorised to each spray schedule",
+            "number of trials with the respective spray schedule",
+            "estimated mean yield determined by the meta-analysis",
+            "Lower range of the 95% confidence interval",
+            "Upper range of the 95% confidence interval",
+            "indicates the significance between each respective spray schedule and the no spray control (intercept)"
+         )
+      ),
+      ref_symbols = letters[1:6],
+      part = "header",
+      inline = TRUE
+   )
 
 yield_estimates_table
 ```
 
-Save table to a word document to use in manuscript
+Save table to a word document to use in manuscript.
+
 ```{r eval=FALSE, include=FALSE}
 # Save table as a word document
 doc <- officer::read_docx()
@@ -383,7 +412,8 @@ Let's view these comparisons in a plot.
 results_mv %>%
    filter(Treatment != "control") %>%
    mutate(Treatment = factor(Treatment, levels = rev(
-      c( "Early",
+      c(
+         "Early",
          "Recommended",
          "Recommended_plus",
          "Late",
@@ -411,7 +441,7 @@ results_mv %>%
          expression("Recommended"["plus"]),
          expression("Recommended"["single"]),
          expression("Early"["single"])
-         )
+      )
    )
 ggsave("paper/figures/Fig2_means_difference.png",
        height = 3,
@@ -422,6 +452,7 @@ ggsave("paper/figures/Fig2_means_difference.png",
 <br>  
 
 ### Moderator contrasts
+
 Let's investigate the treatment contrasts
 
 ```{r PM_Mv_Contrast_yield}
@@ -437,7 +468,8 @@ contrast_Ssum
 
 ```
 
-These contrasts can be viewed in a plot
+These contrasts can be viewed in a plot.
+
 ```{r plotContrasts_yield}
 par(mar = c(5, 13, 4, 2) + 0.1)
 plot(glht(PM_mv, linfct = cbind(contrMat(rep(
@@ -474,6 +506,7 @@ profile(PM_mv, tau2 = 6)
 <br>  
 <br>  
 <br>  
+
 ******  
 
 
@@ -531,6 +564,7 @@ forest(
 <br>  
 <br>  
 <br>  
+
 ******  
 
 ### Moderator netgraph
@@ -561,6 +595,7 @@ netgraph(
 <br>  
 <br>  
 <br>  
+
 ******  
 
 ```{r}
