@@ -41,7 +41,7 @@ hist(PM_dat_D$PM_final_severity)
 
 Let's get started with the analysis by first finding the best model fit that answers our research question.
 
-> When, in relation to PM establishes in the crop, should farmers begin spraying mungbean to obtain the highest fungicide efficacy for lowering disease severity: before PM establishing,  immediately after first sign of PM establishing, or after PM has become established in the crop. 
+> When, in relation to PM establishment in the crop, should farmers begin spraying mungbean to obtain the highest fungicide efficacy for lowering disease severity: before PM establishing,  immediately after first sign of PM establishing, or after PM has become established in the crop. 
 
 A secondary question to this aim is: does a second spray increase the efficacy?
 

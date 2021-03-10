@@ -7,7 +7,7 @@ editor_options:
 
 Let's get started with the analysis by first finding the best model fit that answers our research question.
 
-> When, in relation to PM establishes in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop. 
+> When, in relation to PM establishment in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop. 
 
 A secondary question to this aim is: given the time at which the first spray occurred does a second spray provide worthwhile yield protection.
 
