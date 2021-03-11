@@ -2,6 +2,7 @@
 # it requires the summary of a glht test on a model object
 
 source(here::here("R/p_star.R"))
+source(here::here("R/reportP.R"))
 
 simple_summary <-
    function(sum_meta){
@@ -17,12 +18,13 @@ simple_summary <-
          return(new_name)
       }
       
-      data.frame(contrast = rename_index(index_name = ind_names, char_name = names1),
-                 coefficients = sum_meta[["test"]]$coefficients,
-                 StdErr = sum_meta[["test"]]$sigma,
-                 'Zvalue' = sum_meta[["test"]]$tstat,
-                 pvals = sum_meta[["test"]]$pvalues,
-                 sig = p_star(sum_meta[["test"]]$pvalues)
-                                         )
+      data.frame(
+         contrast = rename_index(index_name = ind_names, char_name = names1),
+         coefficients = round(sum_meta[["test"]]$coefficients, 4),
+         StdErr = round(sum_meta[["test"]]$sigma,4),
+         'Zvalue' = round(sum_meta[["test"]]$tstat,4),
+         pvals = reportP(sum_meta[["test"]]$pvalues, AsNumeric = TRUE, P_prefix = FALSE),
+         sig = p_star(sum_meta[["test"]]$pvalues)
+      )
          
    }
