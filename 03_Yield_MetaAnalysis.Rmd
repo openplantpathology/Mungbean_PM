@@ -19,8 +19,7 @@ To do this, the model will use the main variables:
       i) year  
       ii) location  
       iii) row spacing  
-      iv) fungicide dose
-      v) cultivar  
+      iv) cultivar  
       
    - *spray_management* a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
    
@@ -96,8 +95,6 @@ PM_mv <- rma.mv(
    control = list(optimizer = "optim"),
    data = PM_dat_Y
 )
-
-summary(PM_mv)
 ```
 
 <br>  
@@ -122,7 +119,7 @@ PM_dat_Y %>%
 We will choose 42 days as this is the average days to flowering in mungbean. 
 In addition, Kelly et. al. [-@Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.
 
-Now let's define these two new variables, `first_sign_days` and `onset` in the data.
+Now let's define a continuous variable`first_sign_days` and a categorical variable `onset`.
 
 ```{r define_onset}
 PM_dat_Y <- PM_dat_Y %>%
@@ -143,7 +140,8 @@ PM_dat_Y %>%
    geom_vline(xintercept = 42)
 ```
 
-To put this onset number into context for plant maturity, 40 days is approximately when flowering begins in the plant.
+`early_onset` contains `r nrow(PM_dat_Y[PM_dat_Y$onset == "early_onset",])` treatments and,  
+`late_onset` contains `r nrow(PM_dat_Y[PM_dat_Y$onset == "late_onset",])` treatments.  
 
 <br>  
 <br>  
@@ -171,14 +169,10 @@ PM_mv_onset <- rma.mv(
 anova(PM_mv, PM_mv_onset)
 ```
 
-```{r}
-summary(PM_mv_onset)
-```
+This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value, and has a better fit, indicated by the higher log-likelihood with the additional `onset` parameters.
+However the higher AIC indicates in the model with the additional `onset` parameters does not sufficiently improve the model fit to warrant including these parameters and therefore the 'reduced' model is a better option.
+This inference is also reflected by the the chi-squared test, which is uncertain that the `onset` model is significantly better as indicated by the ANOVA `pval` `r round(anova(PM_mv, PM_mv_onset)$pval,3)`.
 
-This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value.
-However the higher AIC indicates that the model omitting `onset` is a slightly better fit.
-Also the chi-squared test is uncertain that the `onset` model is significantly better as indicated by the ANOVA `pval` `r round(anova(PM_mv, PM_mv_onset)$pval,3)`.
-The higher log likelihood on the `onset` model does indicate that there is some merit to this model and that perhaps with more trials to increase statistical power it might be a useful model.  
 <br>  
 <br>  
 <br>  
@@ -187,7 +181,7 @@ The higher log likelihood on the `onset` model does indicate that there is some 
 
 ### Disease pressure interaction with spray schedule
 
-To determine if the seasonal disease pressure influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `high_pressure` or `low_pressure`.
+To determine if the seasonal disease pressure influences the efficacy at which fungicide applications protect yield a categorical variable defining `high_pressure` or `low_pressure` can be defined.
 
 `high_pressure` and `low_pressure` will be divided by the median disease severity in the no spray control treatments at the end of the season.
 
@@ -198,7 +192,7 @@ PM_dat_Y %>%
    median()
 ```
 
-Now let's define these two new variables, `low_pressure` and `high_pressure` in the data.
+Now to define these two new variables, `low_pressure` and `high_pressure` in the data.
 
 ```{r define_disease_pressure}
 PM_dat_Y <- PM_dat_Y %>%
@@ -228,7 +222,7 @@ PM_dat_Y %>%
 
 #### metafor disease pressure interaction
 
-We are adding the `d_pressure` variable as a moderator to test and interaction with the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
+Test `d_pressure` variable addition as a moderator to evaluate it's interaction with the `spray_management` to influence the grain yield effect size.
 
 ```{r Dpressure_Metafor-analysis}
 PM_mv_dp <- rma.mv(
@@ -246,15 +240,16 @@ PM_mv_dp <- rma.mv(
 ```{r}
 anova(PM_mv, PM_mv_dp)
 ```
-This comparison tells us the meta-analysis including `d_pressure` explained more residual heterogeneity, as shown by the lower QE value.
-However the higher AIC indicates that the model omitting `d_pressure` is a slightly better fit.
-Also the chi-squared test marginally significant that the `d_pressure` model is better as indicated by the `pval` 0.0468.
-The higher log likelihood on the `d_pressure` model does indicate there is some merit to this model.  
-It is worth noting that there were no Late plus schedules that experienced low disease pressure. 
-Even though the disease pressure interaction on the moderators was marginally significant (P =0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky. More data is needed to explore this possible effect.
+This comparison tells us the meta-analysis including `d_pressure` explained more residual heterogeneity, as shown by the lower QE value, and has a better fit, indicated by the higher log-likelihood with the additional `d_pressure` parameter.
+However the lower AIC in the 'Full' model indicates that retaining the model including the additional `d_pressure` variables could be a reasonable decision.
+In addition the chi-squared test indicates that the `d_pressure` model is better as indicated by the `pval` 0.0468.  
+
+However it is worth noting that there were no Late plus schedules that experienced low disease pressure. 
+Even though the disease pressure interaction on the moderators could be deemed significant (P = 0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky. More data is needed to explore this possible effect.
 
 
 ```{r}
+# show the division of spray schedules by the d_pressure moderator
 PM_dat_Y %>%
    group_by(spray_management, d_pressure) %>%
    summarise(n())
@@ -273,7 +268,7 @@ summary(PM_mv_dp)
 
 ### Test variance-covavriance matrix structure
 
-Let's try the model with an implied simpler variance-covariance matrix, "compound symmetry" (CS), to examine if unstructured matrix is suitable.
+Test a model with an implied simpler variance-covariance matrix, "compound symmetry" (CS), to examine if unstructured matrix is suitable.
 
 ```{r}
 PM_mv_cs <- rma.mv(
@@ -292,20 +287,26 @@ anova(PM_mv, PM_mv_cs)
 
 Again `PM_mv` (Full) prevails as the better model (p = 0.0014; AIC = -45.4359) and therefore we should keep the unstructured variance-covariance matrix.
 
- > Therefore the model `PM_mv`, is a best fit.
+ > Therefore the model `PM_mv`, is the preffered model with this data.
 
 
 ## Summarise PM_mv model
 
-The first table in the `PM_mv` output shows tau^2 (between trial variance) of each moderator random effects and the number of occurrences for each treatment in the analysis.
-This effectively shows the heterogeneity between experiments for these particular treatments.
+```{r PM_mv_summary}
+summary(PM_mv)
+```
 
-The tau^2 also gives us the heterogeneity between trials and indicates `Recommended_plus` showed the highest heterogeneity between experiments followed by `Late_plus`, `Late` then `Recommended`, with `Early` and the no-spray `control` showing the least heterogeneity.
+
+The first table in the `PM_mv` output shows the tau^2 (between trial variance) for each random effect intercept (spray_management) to trial and the number of occurrences for each treatment in the analysis.
+This effectively shows the heterogeneity between trials for these particular treatments.
+
+This table shows `Recommended_plus` showed the highest heterogeneity between trials followed by `Late_plus`, `Late` then `Recommended`, with `Early` and the no-spray `control` showing the least heterogeneity.
 
 The second table is in two parts (left and right). 
 The left part, rho, is the correlation of variation between the specified treatments.
-All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, `0.000` rho.
-`Early` and `Late_plus` treatments never occurred within the same trial, which is indicated by the right side of the table (hence the warning).  
+All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, indicating `0.000` rho.
+`Early` and `Late_plus` treatments never occurred within the same trial, which is indicated by the right side of the table (hence earlier warnings). 
+This is not a concern for this type of network meta-analysis because the differences between these treatments can be inferred by their differences with other treatments [@Madden2016].
 
 In this result we can see that the `Early` treatment is not significantly different to the intercept, which in this case is the mean of the no spray `control`.
 However the other treatments are significantly different from the no-spray control (intercept).
@@ -395,7 +396,6 @@ yield_estimates_table <-
 yield_estimates_table
 ```
 
-Save table to a word document to use in manuscript.
 
 ```{r eval=FALSE, include=FALSE}
 # Save table as a word document
@@ -407,9 +407,9 @@ print(doc, target = "paper/figures/Table2_yield_estimates.docx")
 <br>  
 <br>  
 
-Let's view these comparisons in a plot.
-
 ### Moderator estimates plot  
+
+View the moderator comparisons in a plot.
 
 ```{r metafor_plot_yied}
 results_mv %>%
@@ -432,7 +432,7 @@ results_mv %>%
    geom_point(aes(size = 1 / se), shape = 15) +
    geom_linerange(aes(ymin = `CI_{L}`, ymax = `CI_{U}`)) +
    coord_flip() +
-   #ggtitle("Mean spray schedule effect sizes\nand 95% confidence intervals")+
+   labs(caption = "Bars indicate 95% confidence intervals")+
    ylab(expression(paste(
       "Mean yield difference to control (t ha" ^ -1, ")", sep = ""
    ))) +
@@ -456,7 +456,7 @@ ggsave("paper/figures/Fig2_means_difference.png",
 
 ### Moderator contrasts
 
-Let's investigate the treatment contrasts
+Calculate treatment contrasts
 
 ```{r PM_Mv_Contrast_yield}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
@@ -491,12 +491,12 @@ axis(
 
 ### Profile plots
 
-Let's inspect the profile plots to ensure the model is not over-fitted.
+An inspection of the profile plots to ensure the model is not over-fitted can be undertaken.
 We expect to see the estimate align with the peak of the curve.
 Also that the shape of the line is a curve.
-Caution! this will take some time to run.
+As these plots take a long time to generate they will not be evaluated.
 
-```{r profile_plots, eval=FALSE, message=FALSE, include=FALSE, results="hide"}
+```{r profile_plots, eval=FALSE, echo=TRUE, results="hide"}
 profile(PM_mv, tau2 = 1)
 profile(PM_mv, tau2 = 2)
 profile(PM_mv, tau2 = 3)
@@ -515,10 +515,10 @@ profile(PM_mv, tau2 = 6)
 
 ## netmeta analysis
 
-We can use the `netmeta` package to give a graphical representation of the pairwise comparisons.
+The `netmeta` package can provide a graphical representation of the pairwise comparisons.
 
-Let's analyse the data again using a different statistical approach to see if our outcome with the `metafor` package was robust.
-The `netmeta` package uses a frequentist approach to the analysis and focuses on the pairwise comparisons between treatments.
+The `netmeta` package uses a frequentist approach focusing on the pairwise comparisons between treatments. 
+These results can be used to evaluate if our outcome with the `metafor` package was robust.
 
 ```{r netmeta-analysis}
 datPM3 <- PM_dat_Y %>%
@@ -553,7 +553,7 @@ summary(net_con)
 
 
 ### netmeta estimates plot
-Now let's visualise this as a forest plot.
+Visualise netmeta results as a forest plot.
 
 ```{r netmeta-forest}
 forest(
