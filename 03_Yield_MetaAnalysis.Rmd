@@ -13,7 +13,7 @@ A secondary question to this aim is: given the time at which the first spray occ
 
 To do this, the model will use the main variables:
 
-   - *Grain yield* is our response variable (t / ha)
+   - *Grain yield* the response variable (t / ha)
 
    - *Trial*, which resolves combinations of categorical random variables: 
       i) year  
@@ -252,7 +252,8 @@ Even though the disease pressure interaction on the moderators could be deemed s
 # show the division of spray schedules by the d_pressure moderator
 PM_dat_Y %>%
    group_by(spray_management, d_pressure) %>%
-   summarise(n())
+   summarise(n()) %>%
+   flextable()
 ```
 
 
@@ -467,7 +468,8 @@ contrast_Ssum <-
    simple_summary(summary(glht(PM_mv, linfct = cbind(
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
-contrast_Ssum
+contrast_Ssum %>%
+   flextable()
 
 ```
 
