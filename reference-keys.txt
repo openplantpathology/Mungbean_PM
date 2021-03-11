@@ -1,6 +1,10 @@
-home
-contents
+about
+background
+compendium-contents
+main-chapters
+links-to-manuscript
 trials-considered-for-inclusion-in-meta-analysis
+load-required-r-packages
 criteria-for-inclusion-in-meta-analysis
 import-data
 summary-of-all-trials
@@ -19,9 +23,9 @@ trial-seasons
 trial-locations
 powdery-mildew-severity-and-mungbean-grain-yield-summary-per-trial
 summary-plots
-seasonal-disease-pressure
+seasonal-disease-pressure-in-the-control
 disease-severity-range-for-each-spray-schedule
-seasonal-grain-yield
+seasonal-grain-yield-in-the-control
 mungbean-yield-for-each-spray-schedule
 treatment-focused-summaries
 fungicide-type

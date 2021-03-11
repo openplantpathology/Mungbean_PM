@@ -144,10 +144,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Home</a><ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contents"><i class="fa fa-check"></i><b>1.1</b> Contents</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#background"><i class="fa fa-check"></i><b>1.1</b> Background</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#compendium-contents"><i class="fa fa-check"></i><b>1.2</b> Compendium contents</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#main-chapters"><i class="fa fa-check"></i><b>1.3</b> Main chapters</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#links-to-manuscript"><i class="fa fa-check"></i><b>1.4</b> Links to manuscript</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html"><i class="fa fa-check"></i><b>2</b> Trials considered for inclusion in meta-analysis</a><ul>
+<li class="chapter" data-level="2.0.1" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#load-required-r-packages"><i class="fa fa-check"></i><b>2.0.1</b> Load required R packages</a></li>
 <li class="chapter" data-level="2.1" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#criteria-for-inclusion-in-meta-analysis"><i class="fa fa-check"></i><b>2.1</b> Criteria for inclusion in meta-analysis</a></li>
 <li class="chapter" data-level="2.2" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#import-data"><i class="fa fa-check"></i><b>2.2</b> Import data</a></li>
 <li class="chapter" data-level="2.3" data-path="trials-considered-for-inclusion-in-meta-analysis.html"><a href="trials-considered-for-inclusion-in-meta-analysis.html#summary-of-all-trials"><i class="fa fa-check"></i><b>2.3</b> Summary of all trials</a><ul>
@@ -227,66 +231,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="trials-considered-for-inclusion-in-meta-analysis" class="section level1">
 <h1><span class="header-section-number">2</span> Trials considered for inclusion in meta-analysis</h1>
+<p>Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Research and Development Corporation (GRDC) northern grains region were sourced for a meta-analysis.</p>
+<p>Data were collected from a number of researchers from the Department of Agriculture and Fisheries (DAF), the University of Southern Queensland (USQ) and the National Growers Association (NGA).
+We would like to acknowledge in particular Professor Malcolm Riley’s and Dr. Sue Thompson’s effort in establishing and coordinating early field trials between 2010 and 2014 and GRDC for funding many of the trials which were included in this meta-analysis.</p>
+<p><br></p>
+<div id="load-required-r-packages" class="section level3">
+<h3><span class="header-section-number">2.0.1</span> Load required R packages</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb1-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;pacman&quot;</span>))</span>
+<span id="cb1-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb1-2"></a>   <span class="kw">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: pacman</code></pre>
 <pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
 ## logical.return = TRUE, : there is no package called &#39;pacman&#39;</code></pre>
+<pre><code>## Installing package into &#39;/Users/runner/work/_temp/Library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## also installing the dependency &#39;remotes&#39;</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-1"></a>pacman<span class="op">::</span><span class="kw">p_load</span>(tidyverse, kableExtra, leaflet, htmltools, lubridate, here)</span></code></pre></div>
+<pre><code>## Installing package into &#39;/Users/runner/work/_temp/Library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## also installing the dependencies &#39;colorspace&#39;, &#39;sys&#39;, &#39;ps&#39;, &#39;farver&#39;, &#39;labeling&#39;, &#39;munsell&#39;, &#39;RColorBrewer&#39;, &#39;viridisLite&#39;, &#39;askpass&#39;, &#39;rematch&#39;, &#39;prettyunits&#39;, &#39;processx&#39;, &#39;backports&#39;, &#39;ellipsis&#39;, &#39;generics&#39;, &#39;assertthat&#39;, &#39;blob&#39;, &#39;DBI&#39;, &#39;lifecycle&#39;, &#39;R6&#39;, &#39;tidyselect&#39;, &#39;vctrs&#39;, &#39;withr&#39;, &#39;gtable&#39;, &#39;isoband&#39;, &#39;scales&#39;, &#39;Rcpp&#39;, &#39;pkgconfig&#39;, &#39;curl&#39;, &#39;openssl&#39;, &#39;fansi&#39;, &#39;utf8&#39;, &#39;clipr&#39;, &#39;BH&#39;, &#39;cpp11&#39;, &#39;cellranger&#39;, &#39;progress&#39;, &#39;callr&#39;, &#39;fs&#39;, &#39;selectr&#39;, &#39;broom&#39;, &#39;cli&#39;, &#39;crayon&#39;, &#39;dbplyr&#39;, &#39;dplyr&#39;, &#39;forcats&#39;, &#39;ggplot2&#39;, &#39;haven&#39;, &#39;hms&#39;, &#39;httr&#39;, &#39;lubridate&#39;, &#39;modelr&#39;, &#39;pillar&#39;, &#39;purrr&#39;, &#39;readr&#39;, &#39;readxl&#39;, &#39;reprex&#39;, &#39;rstudioapi&#39;, &#39;rvest&#39;, &#39;tibble&#39;, &#39;tidyr&#39;, &#39;xml2&#39;</code></pre>
 <pre><code>## 
-## The downloaded binary packages are in
-##  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp6XO171/downloaded_packages</code></pre>
+## tidyverse installed</code></pre>
+<pre><code>## Installing package into &#39;/Users/runner/work/_temp/Library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## also installing the dependencies &#39;systemfonts&#39;, &#39;webshot&#39;, &#39;svglite&#39;</code></pre>
 <pre><code>## 
-##   There are binary versions available but the source versions are later:
-##        binary source needs_compilation
-## ps      1.5.0  1.6.0              TRUE
-## farver  2.0.3  2.1.0              TRUE
-## 
-## 
-## The downloaded binary packages are in
-##  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp6XO171/downloaded_packages
-## 
-## The downloaded binary packages are in
-##  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp6XO171/downloaded_packages
-## 
-## The downloaded binary packages are in
-##  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp6XO171/downloaded_packages
-## 
-## The downloaded binary packages are in
-##  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp6XO171/downloaded_packages</code></pre>
+## kableExtra installed</code></pre>
+<pre><code>## Installing package into &#39;/Users/runner/work/_temp/Library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## also installing the dependencies &#39;lazyeval&#39;, &#39;gridExtra&#39;, &#39;crosstalk&#39;, &#39;htmlwidgets&#39;, &#39;png&#39;, &#39;raster&#39;, &#39;sp&#39;, &#39;viridis&#39;, &#39;leaflet.providers&#39;</code></pre>
+<pre><code>## 
+## leaflet installed</code></pre>
+<pre><code>## Installing package into &#39;/Users/runner/work/_temp/Library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## also installing the dependency &#39;rprojroot&#39;</code></pre>
+<pre><code>## 
+## here installed</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;theme.usq&quot;</span>))</span>
+<span id="cb19-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-2"></a>   remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;adamhsparks/theme.usq&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: theme.usq</code></pre>
 <pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
 ## logical.return = TRUE, : there is no package called &#39;theme.usq&#39;</code></pre>
-<pre><code>## Rttf2pt1    (NA -&gt; 1.3.8) [CRAN]
-## extrafontdb (NA -&gt; 1.0  ) [CRAN]
-## extrafont   (NA -&gt; 0.17 ) [CRAN]
-## 
-## The downloaded binary packages are in
-##  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp6XO171/downloaded_packages
-##   
-   checking for file ‘/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp6XO171/remotes6e7449d91c9/adamhsparks-theme.usq-451eeba/DESCRIPTION’ ...
-  
-✔  checking for file ‘/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp6XO171/remotes6e7449d91c9/adamhsparks-theme.usq-451eeba/DESCRIPTION’ (417ms)
-## 
-  
-─  preparing ‘theme.usq’:
-## 
-  
-   checking DESCRIPTION meta-information ...
-  
-✔  checking DESCRIPTION meta-information
-## 
-  
-─  checking for LF line-endings in source and make files and shell scripts
-## 
-  
-─  checking for empty or unneeded directories
-## 
-  
-─  building ‘theme.usq_1.0.3.tar.gz’
-## 
-  
-   
-## </code></pre>
-<p>Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Research and Development Corporation (GRDC) northern grains region were sourced for a meta-analysis.</p>
-<p>Data was collected from a number of researchers from the Department of Agriculture and Primary Industries and the University of Southern Queensland and the National Growers Association.
-We would like to acknowledge in particular Professor Malcolm Riley’s and Dr. Sue Thompson’s effort in establishing and coordinating early field trials between 2010 and 2014 and GRDC for funding many of the trials featured in this meta-analysis.</p>
-<p><br></p>
+<pre><code>## Using bundled GitHub PAT. Please add your own PAT to the env var `GITHUB_PAT`</code></pre>
+<pre><code>## Downloading GitHub repo adamhsparks/theme.usq@HEAD</code></pre>
+<pre><code>## Installing 3 packages: Rttf2pt1, extrafontdb, extrafont</code></pre>
+<pre><code>## Installing packages into &#39;/Users/runner/work/_temp/Library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## Running `R CMD build`...</code></pre>
+<pre><code>## Installing package into &#39;/Users/runner/work/_temp/Library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb28-1"></a><span class="kw">library</span>(theme.usq)</span>
+<span id="cb28-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb28-2"></a><span class="kw">theme_set</span>(<span class="kw">theme_usq</span>())</span></code></pre></div>
+<p><br><br />
+<br></p>
+</div>
 <div id="criteria-for-inclusion-in-meta-analysis" class="section level2">
 <h2><span class="header-section-number">2.1</span> Criteria for inclusion in meta-analysis</h2>
 <ol style="list-style-type: decimal">
@@ -311,65 +308,97 @@ We would like to acknowledge in particular Professor Malcolm Riley’s and Dr. 
 <li>Treatment means and accompanying variance.</li>
 </ol></li>
 </ol>
-<p><br></p>
+<p><br><br />
+<br></p>
 </div>
 <div id="import-data" class="section level2">
 <h2><span class="header-section-number">2.2</span> Import data</h2>
-<p><strong>Import data from trials where we obtained the raw data</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-1"></a>PM_MB_raw &lt;-</span>
-<span id="cb6-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-2"></a><span class="st">   </span><span class="kw">rbind</span>(</span>
-<span id="cb6-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-3"></a>      <span class="kw">read.csv</span>(</span>
-<span id="cb6-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-4"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/2010 PMmung Hermitage means.csv&quot;</span>),</span>
-<span id="cb6-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-5"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
-<span id="cb6-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-6"></a>      ),</span>
-<span id="cb6-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-7"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/2011 PMmung Herm means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-8"></a>      <span class="kw">read.csv</span>(</span>
-<span id="cb6-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-9"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/2011 PMmung Kingaroy means.csv&quot;</span>),</span>
-<span id="cb6-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-10"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
-<span id="cb6-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-11"></a>      ),</span>
-<span id="cb6-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-12"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/AM1305_Goolhi_means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-13"></a>      <span class="kw">read.csv</span>(</span>
-<span id="cb6-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-14"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/AM1304-MarysMount_means.csv&quot;</span>),</span>
-<span id="cb6-15"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-15"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
-<span id="cb6-16"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-16"></a>      ),</span>
-<span id="cb6-17"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-17"></a>      <span class="kw">read.csv</span>(</span>
-<span id="cb6-18"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-18"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/AM1303-Premer-Disease_means.csv&quot;</span>),</span>
-<span id="cb6-19"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-19"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
-<span id="cb6-20"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-20"></a>      ),</span>
-<span id="cb6-21"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-21"></a>      <span class="kw">read.csv</span>(</span>
-<span id="cb6-22"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-22"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/BB1305_Millmerran_means.csv&quot;</span>),</span>
-<span id="cb6-23"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-23"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
-<span id="cb6-24"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-24"></a>      ),</span>
-<span id="cb6-25"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-25"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Herm_16_means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-26"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-26"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/King_16_means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-27"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-27"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Fogerty_17_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-28"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-28"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Hermitage_17_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-29"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-29"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Wellcamp_18_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-30"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-30"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Hermitage_19_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb6-31"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-31"></a>   )</span>
-<span id="cb6-32"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-32"></a><span class="kw">write.csv</span>(</span>
-<span id="cb6-33"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-33"></a>   PM_MB_raw,</span>
-<span id="cb6-34"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-34"></a>   <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;cache/PM_Mungbean_SummaryOfTrialsWithRawData&quot;</span>),</span>
-<span id="cb6-35"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-35"></a>   <span class="dt">row.names =</span> <span class="ot">FALSE</span></span>
-<span id="cb6-36"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb6-36"></a>)</span></code></pre></div>
-<p><br>
-<br>
-<br></p>
+<p><strong>Import data from trials which the raw data was available</strong></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-1"></a>PM_MB_raw &lt;-</span>
+<span id="cb29-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-2"></a><span class="st">   </span><span class="kw">rbind</span>(</span>
+<span id="cb29-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-3"></a>      <span class="kw">read.csv</span>(</span>
+<span id="cb29-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-4"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/2010 PMmung Hermitage means.csv&quot;</span>),</span>
+<span id="cb29-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-5"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
+<span id="cb29-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-6"></a>      ),</span>
+<span id="cb29-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-7"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/2011 PMmung Herm means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb29-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-8"></a>      <span class="kw">read.csv</span>(</span>
+<span id="cb29-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-9"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/2011 PMmung Kingaroy means.csv&quot;</span>),</span>
+<span id="cb29-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-10"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
+<span id="cb29-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-11"></a>      ),</span>
+<span id="cb29-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-12"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/AM1305_Goolhi_means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb29-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-13"></a>      <span class="kw">read.csv</span>(</span>
+<span id="cb29-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-14"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/AM1304-MarysMount_means.csv&quot;</span>),</span>
+<span id="cb29-15"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-15"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
+<span id="cb29-16"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-16"></a>      ),</span>
+<span id="cb29-17"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-17"></a>      <span class="kw">read.csv</span>(</span>
+<span id="cb29-18"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-18"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/AM1303-Premer-Disease_means.csv&quot;</span>),</span>
+<span id="cb29-19"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-19"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
+<span id="cb29-20"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-20"></a>      ),</span>
+<span id="cb29-21"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-21"></a>      <span class="kw">read.csv</span>(</span>
+<span id="cb29-22"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-22"></a>         <span class="kw">here</span>(<span class="st">&quot;cache/BB1305_Millmerran_means.csv&quot;</span>),</span>
+<span id="cb29-23"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-23"></a>         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
+<span id="cb29-24"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-24"></a>      ),</span>
+<span id="cb29-25"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-25"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Herm_16_means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb29-26"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-26"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/King_16_means.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb29-27"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-27"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Fogerty_17_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb29-28"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-28"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Hermitage_17_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb29-29"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-29"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Wellcamp_18_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb29-30"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-30"></a>      <span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/Hermitage_19_mean.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb29-31"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-31"></a>   )</span>
+<span id="cb29-32"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-32"></a><span class="kw">write.csv</span>(</span>
+<span id="cb29-33"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-33"></a>   PM_MB_raw,</span>
+<span id="cb29-34"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-34"></a>   <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;cache/PM_Mungbean_SummaryOfTrialsWithRawData&quot;</span>),</span>
+<span id="cb29-35"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-35"></a>   <span class="dt">row.names =</span> <span class="ot">FALSE</span></span>
+<span id="cb29-36"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-36"></a>)</span></code></pre></div>
+<p><br></p>
 <p>Import dataset of manual entries<br />
 <strong>Import dataset which were manually entered from trial reports</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb7-1"></a>PM_MB_man &lt;-</span>
-<span id="cb7-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb7-2"></a><span class="st">   </span><span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/PM_Mungbean_DataManuallyEntered.csv&quot;</span>),</span>
-<span id="cb7-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb7-3"></a>            <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-1"></a>PM_MB_man &lt;-</span>
+<span id="cb30-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-2"></a><span class="st">   </span><span class="kw">read.csv</span>(<span class="kw">here</span>(<span class="st">&quot;cache/PM_Mungbean_DataManuallyEntered.csv&quot;</span>),</span>
+<span id="cb30-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-3"></a>            <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p>Bind raw and transcribed datasets.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb8-1"></a>PM_MB_dat &lt;-</span>
-<span id="cb8-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb8-2"></a><span class="st">   </span><span class="kw">rbind</span>(PM_MB_raw,</span>
-<span id="cb8-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb8-3"></a>         PM_MB_man)</span></code></pre></div>
-<p><br>
-<br>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb31-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-2"></a><span class="st">   </span><span class="kw">rbind</span>(PM_MB_raw,</span>
+<span id="cb31-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-3"></a>         PM_MB_man)</span></code></pre></div>
+<p><br><br />
 <br></p>
 </div>
 <div id="summary-of-all-trials" class="section level2">
 <h2><span class="header-section-number">2.3</span> Summary of all trials</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb32-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-2"></a><span class="st">   </span><span class="kw">arrange</span>(year, location) <span class="op">%&gt;%</span></span>
+<span id="cb32-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-3"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb32-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-4"></a><span class="st">   </span><span class="kw">summarise</span>(</span>
+<span id="cb32-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-5"></a>      <span class="dt">Year =</span> <span class="kw">unique</span>(year),</span>
+<span id="cb32-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-6"></a>      <span class="dt">Location =</span> <span class="kw">unique</span>(location),</span>
+<span id="cb32-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-7"></a>      <span class="st">`</span><span class="dt">Replicates per treatment</span><span class="st">`</span> =<span class="st"> </span><span class="cf">if</span> (<span class="kw">all</span>(replicates[<span class="dv">1</span>] <span class="op">==</span><span class="st"> </span>replicates)) {</span>
+<span id="cb32-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-8"></a>         <span class="kw">as.character</span>(replicates[<span class="dv">1</span>])</span>
+<span id="cb32-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-9"></a>      } <span class="cf">else</span>{</span>
+<span id="cb32-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-10"></a>         <span class="kw">as.character</span>(<span class="kw">paste</span>(<span class="kw">min</span>(replicates), <span class="st">&quot;-&quot;</span>, <span class="kw">max</span>(replicates)))</span>
+<span id="cb32-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-11"></a>      },</span>
+<span id="cb32-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-12"></a>      <span class="st">`</span><span class="dt">Trial design</span><span class="st">`</span> =<span class="st"> </span><span class="kw">unique</span>(trial_design),</span>
+<span id="cb32-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-13"></a>      <span class="st">`</span><span class="dt">Planting date</span><span class="st">`</span> =<span class="st"> </span><span class="kw">unique</span>(planting_date),</span>
+<span id="cb32-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-14"></a>      <span class="st">`</span><span class="dt">First sign of disease</span><span class="st">`</span> =<span class="st"> </span><span class="kw">unique</span>(first_sign_disease),</span>
+<span id="cb32-15"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-15"></a>      <span class="st">`</span><span class="dt">Fungicide treatments</span><span class="st">`</span> =<span class="st"> </span><span class="kw">length</span>(n_treatment),</span>
+<span id="cb32-16"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-16"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb32-17"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-17"></a><span class="st">   </span><span class="kw">arrange</span>(Year) <span class="op">%&gt;%</span></span>
+<span id="cb32-18"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-18"></a><span class="st">   </span><span class="kw">kable</span>(</span>
+<span id="cb32-19"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-19"></a>      <span class="dt">caption =</span> <span class="st">&quot;Description of Experiments&quot;</span>,</span>
+<span id="cb32-20"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-20"></a>      <span class="dt">align =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb32-21"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-21"></a>      <span class="dt">col.names =</span> <span class="kw">c</span>(</span>
+<span id="cb32-22"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-22"></a>         <span class="st">&quot;Unique Trial</span><span class="ch">\n</span><span class="st">Reference&quot;</span>,</span>
+<span id="cb32-23"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-23"></a>         <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb32-24"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-24"></a>         <span class="st">&quot;Location&quot;</span>,</span>
+<span id="cb32-25"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-25"></a>         <span class="st">&quot;Replicates</span><span class="ch">\n</span><span class="st">per treatments&quot;</span>,</span>
+<span id="cb32-26"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-26"></a>         <span class="st">&quot;Trial design&quot;</span>,</span>
+<span id="cb32-27"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-27"></a>         <span class="st">&quot;Planting date&quot;</span>,</span>
+<span id="cb32-28"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-28"></a>         <span class="st">&quot;First sign</span><span class="ch">\n</span><span class="st">of disease&quot;</span>,</span>
+<span id="cb32-29"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-29"></a>         <span class="st">&quot;Fungicide</span><span class="ch">\n</span><span class="st"> treatments&quot;</span></span>
+<span id="cb32-30"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-30"></a>      )</span>
+<span id="cb32-31"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-31"></a>   )  <span class="op">%&gt;%</span></span>
+<span id="cb32-32"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-32"></a><span class="st">   </span><span class="kw">kable_styling</span>(<span class="dt">fixed_thead =</span> <span class="ot">TRUE</span>, <span class="dt">full_width =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb32-33"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-33"></a><span class="st">   </span><span class="kw">column_spec</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span><span class="op">:</span><span class="dv">6</span>), <span class="dt">width =</span> <span class="st">&quot;3cm&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb32-34"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-34"></a><span class="st">   </span><span class="kw">scroll_box</span>(<span class="dt">height =</span> <span class="st">&quot;500px&quot;</span>) </span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; ">
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -1091,8 +1120,8 @@ RCB
 <div id="experiment-locations" class="section level3">
 <h3><span class="header-section-number">2.3.1</span> Experiment locations</h3>
 <p>Trial locations occurring in the GRDC Northern Grains Region.</p>
-<div id="htmlwidget-45c6449b4f9130b397e1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-45c6449b4f9130b397e1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[-28.215,-26.58,-27.56,-23.54,-27.51666,-31.43449,-27.923674,-31.0142,-31.00246,-27.905313,-27.564277],[152.1003,151.83,152.32,148.19,151.45,150.0052,151.242706,150.05018,149.82507,151.9772,151.867879],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Hermitage Research Station","Red Vale &amp; Kingaroy Research Station","Gatton","Emerald Agricultural College","Bongeen 1 &amp; 2","NGA - Premer","NGA - Millmerran","NGA - Marys Mount","NGA - Goolhi","Missen Flats","Wellcamp"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[-27.31,150.456],5,[]],"limits":{"lat":[-31.43449,-23.54],"lng":[148.19,152.32]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0e6d665564a269db19ab" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0e6d665564a269db19ab">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[-28.215,-26.58,-27.56,-23.54,-27.51666,-31.43449,-27.923674,-31.0142,-31.00246,-27.905313,-27.564277],[152.1003,151.83,152.32,148.19,151.45,150.0052,151.242706,150.05018,149.82507,151.9772,151.867879],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Hermitage Research Station","Red Vale &amp; Kingaroy Research Station","Gatton","Emerald Agricultural College","Bongeen 1 &amp; 2","NGA - Premer","NGA - Millmerran","NGA - Marys Mount","NGA - Goolhi","Missen Flats","Wellcamp"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[-27.31,150.456],5,[]],"limits":{"lat":[-31.43449,-23.54],"lng":[148.19,152.32]}},"evals":[],"jsHooks":[]}</script>
 <p><br>
 <br>
 <br></p>
@@ -1109,143 +1138,145 @@ All trials identified for this meta-analysis reported:</p>
 </ul>
 <p>Therefore no trials need to be removed to satisfy these criteria.</p>
 <p><br></p>
-<p><strong>Retain trials including: Yield</strong>
+<p><strong>Retain trials including: Yield</strong><br />
 Three trials omitted due to not reporting yields</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb9-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb9-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb9-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="kw">is.na</span>(grain_yield.t.ha.)) <span class="op">%&gt;%</span></span>
-<span id="cb9-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb9-3"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb33-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb33-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb33-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="kw">is.na</span>(grain_yield.t.ha.)) <span class="op">%&gt;%</span></span>
+<span id="cb33-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb33-3"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
 <pre><code>##     trial_ref year  location
 ## 1 mung0102/01 2002 Bongeen_2
 ## 2 mung0102/02 2002 Hermitage
 ## 3 mung0102/03 2002 Hermitage</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb11-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb11-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb11-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(grain_yield.t.ha.))</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb35-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb35-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb35-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(grain_yield.t.ha.))</span></code></pre></div>
 <p><br></p>
-<p><strong>Retain trials including: Disease severity</strong>
+<p><strong>Retain trials including: Disease severity</strong><br />
 One more was trial removed as it did not report disease severity.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb12-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb12-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb12-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="kw">is.na</span>(PM_final_severity)) <span class="op">%&gt;%</span></span>
-<span id="cb12-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb12-3"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb36-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb36-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb36-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="kw">is.na</span>(PM_final_severity)) <span class="op">%&gt;%</span></span>
+<span id="cb36-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb36-3"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
 <pre><code>##     trial_ref year location
 ## 1 mung1415/02 2015    Dalby</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb14-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb14-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb14-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(PM_final_severity))</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb38-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-2"></a><span class="st">   </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(PM_final_severity))</span></code></pre></div>
 <p><br>
 <br>
 <br></p>
-<p><strong>Retain trials including: fungicide application dates</strong>
+<p><strong>Retain trials including: fungicide application dates</strong><br />
 No trials from our subset need to be removed for not reporting fungicide application dates.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb15-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb15-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb15-2"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref) <span class="op">%&gt;%</span></span>
-<span id="cb15-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb15-3"></a><span class="st">   </span><span class="kw">summarise</span>(<span class="dt">No_Record_Of_Fungicide_Application_Dates =</span> <span class="kw">all</span>(<span class="kw">is.na</span>(fungicide_application_<span class="dv">1</span>)),</span>
-<span id="cb15-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb15-4"></a>             <span class="dt">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb15-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb15-5"></a><span class="st">   </span><span class="kw">filter</span>(No_Record_Of_Fungicide_Application_Dates)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb39-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-2"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb39-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-3"></a><span class="st">   </span><span class="kw">summarise</span>(<span class="dt">No_Record_Of_Fungicide_Application_Dates =</span> <span class="kw">all</span>(<span class="kw">is.na</span>(fungicide_application_<span class="dv">1</span>)),</span>
+<span id="cb39-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-4"></a>             <span class="dt">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb39-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-5"></a><span class="st">   </span><span class="kw">filter</span>(No_Record_Of_Fungicide_Application_Dates)</span></code></pre></div>
 <pre><code>## # A tibble: 0 x 2
 ## # … with 2 variables: trial_ref &lt;chr&gt;,
 ## #   No_Record_Of_Fungicide_Application_Dates &lt;lgl&gt;</code></pre>
 <p><br>
 <br>
 <br></p>
-<p><strong>Retain trials including: fungicide dose</strong>
+<p><strong>Retain trials including: fungicide dose</strong><br />
 No trials from our subset need to be removed for not reporting fungicide dose.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb17-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb17-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb17-2"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref) <span class="op">%&gt;%</span></span>
-<span id="cb17-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb17-3"></a><span class="st">   </span><span class="kw">summarise</span>(<span class="dt">No_Record_Of_Fungicide_Dose =</span> <span class="kw">all</span>(<span class="kw">is.na</span>(dose_ai.ha)),</span>
-<span id="cb17-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb17-4"></a>             <span class="dt">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb17-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb17-5"></a><span class="st">   </span><span class="kw">filter</span>(No_Record_Of_Fungicide_Dose)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb41-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb41-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb41-2"></a><span class="st">   </span><span class="kw">group_by</span>(trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb41-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb41-3"></a><span class="st">   </span><span class="kw">summarise</span>(<span class="dt">No_Record_Of_Fungicide_Dose =</span> <span class="kw">all</span>(<span class="kw">is.na</span>(dose_ai.ha)),</span>
+<span id="cb41-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb41-4"></a>             <span class="dt">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb41-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb41-5"></a><span class="st">   </span><span class="kw">filter</span>(No_Record_Of_Fungicide_Dose)</span></code></pre></div>
 <pre><code>## # A tibble: 0 x 2
 ## # … with 2 variables: trial_ref &lt;chr&gt;, No_Record_Of_Fungicide_Dose &lt;lgl&gt;</code></pre>
 <p><br>
 <br>
 <br></p>
-<p><strong>Exclude fungicides tested in too few trials</strong>
-We need to focus the meta-analysis on fungicides with the same mode of action.
-Let’s look at all the fungicides and retain the best represented fungicide group in the data.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb19-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-2"></a><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, trial_ref) <span class="op">%&gt;%</span></span>
-<span id="cb19-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-3"></a><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></span>
-<span id="cb19-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-4"></a><span class="st">   </span><span class="kw">count</span>(<span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb19-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-5"></a><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Trials =</span> n) <span class="op">%&gt;%</span></span>
-<span id="cb19-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-6"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(fungicide_ai, Trials), <span class="dt">y =</span> Trials)) <span class="op">+</span></span>
-<span id="cb19-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-7"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Fungicide active ingredient&quot;</span>) <span class="op">+</span></span>
-<span id="cb19-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-8"></a><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></span>
-<span id="cb19-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-9"></a><span class="st">   </span><span class="kw">geom_col</span>() <span class="op">+</span></span>
-<span id="cb19-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-10"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
-<span id="cb19-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-11"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Number of trials in which the</span><span class="ch">\n</span><span class="st">specified fungicide was used&quot;</span>) <span class="op">+</span></span>
-<span id="cb19-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-12"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
-<span id="cb19-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb19-13"></a><span class="st">   </span><span class="kw">coord_flip</span>()</span></code></pre></div>
+<p><strong>Exclude fungicides tested in too few trials</strong><br />
+The meta-analysis should be focused on fungicides with the same mode of action.
+Fungicides from the best represented group will be retained.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb43-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-2"></a><span class="st">   </span><span class="kw">group_by</span>(fungicide_ai, trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb43-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-3"></a><span class="st">   </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></span>
+<span id="cb43-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-4"></a><span class="st">   </span><span class="kw">count</span>(<span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb43-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-5"></a><span class="st">   </span><span class="kw">rename</span>(<span class="dt">Trials =</span> n) <span class="op">%&gt;%</span></span>
+<span id="cb43-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-6"></a><span class="st">   </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(fungicide_ai, Trials), <span class="dt">y =</span> Trials)) <span class="op">+</span></span>
+<span id="cb43-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-7"></a><span class="st">   </span><span class="kw">xlab</span>(<span class="st">&quot;Fungicide active ingredient&quot;</span>) <span class="op">+</span></span>
+<span id="cb43-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-8"></a><span class="st">   </span><span class="kw">ylab</span>(<span class="st">&quot;N Trials&quot;</span>) <span class="op">+</span></span>
+<span id="cb43-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-9"></a><span class="st">   </span><span class="kw">geom_col</span>() <span class="op">+</span></span>
+<span id="cb43-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-10"></a><span class="st">   </span><span class="kw">scale_fill_usq</span>() <span class="op">+</span></span>
+<span id="cb43-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-11"></a><span class="st">   </span><span class="kw">ggtitle</span>(<span class="dt">label =</span> <span class="st">&quot;Number of trials in which the</span><span class="ch">\n</span><span class="st">specified fungicide was used&quot;</span>) <span class="op">+</span></span>
+<span id="cb43-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-12"></a><span class="st">   </span><span class="kw">scale_colour_usq</span>() <span class="op">+</span></span>
+<span id="cb43-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb43-13"></a><span class="st">   </span><span class="kw">coord_flip</span>()</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;fungicide_ai&#39;. You can override using the `.groups` argument.</code></pre>
 <p><img src="_main_files/figure-html/Fungicides-1.png" width="672" /></p>
 <p>The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in the highest frequencies.
 The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.</p>
-<p>Amistar Xtra and Custodia both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate.</p>
-<p>Perhaps best way forward is to focus the meta-analysis on only the DMIs.
-This can then be compared to an additional meta-analysis including azoxystrobin as a comparison.</p>
+<p>Amistar Xtra and Custodia both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate therefore they will be removed.</p>
 <p><br>
 <br>
 <br></p>
 <p><strong>Retain only fungicides with DMI action</strong></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-1"></a>DMI_Trials &lt;-</span>
-<span id="cb21-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb21-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-3"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
-<span id="cb21-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-4"></a><span class="st">             </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb21-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-5"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref) <span class="op">%&gt;%</span></span>
-<span id="cb21-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-6"></a><span class="st">   </span><span class="kw">pull</span>()</span>
-<span id="cb21-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-7"></a></span>
-<span id="cb21-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-8"></a>PM_MB_dat &lt;-</span>
-<span id="cb21-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb21-9"></a><span class="st">   </span>PM_MB_dat[PM_MB_dat<span class="op">$</span>trial_ref <span class="op">%in%</span><span class="st"> </span>DMI_Trials, ]</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-1"></a>DMI_Trials &lt;-</span>
+<span id="cb45-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb45-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-3"></a><span class="st">   </span><span class="kw">filter</span>(fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
+<span id="cb45-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-4"></a><span class="st">             </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb45-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-5"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref) <span class="op">%&gt;%</span></span>
+<span id="cb45-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-6"></a><span class="st">   </span><span class="kw">pull</span>()</span>
+<span id="cb45-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-7"></a></span>
+<span id="cb45-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-8"></a>PM_MB_dat &lt;-</span>
+<span id="cb45-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb45-9"></a><span class="st">   </span>PM_MB_dat[PM_MB_dat<span class="op">$</span>trial_ref <span class="op">%in%</span><span class="st"> </span>DMI_Trials, ]</span></code></pre></div>
 <p>Now remove any non-DMI treatments or controls</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb22-1"></a>PM_MB_dat &lt;-</span>
-<span id="cb22-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb22-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb22-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb22-3"></a><span class="st">   </span><span class="kw">filter</span>(</span>
-<span id="cb22-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb22-4"></a>      fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span> <span class="op">|</span></span>
-<span id="cb22-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb22-5"></a><span class="st">         </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
-<span id="cb22-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb22-6"></a><span class="st">         </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span></span>
-<span id="cb22-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb22-7"></a>   )</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb46-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb46-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb46-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb46-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb46-3"></a><span class="st">   </span><span class="kw">filter</span>(</span>
+<span id="cb46-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb46-4"></a>      fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span> <span class="op">|</span></span>
+<span id="cb46-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb46-5"></a><span class="st">         </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;tebuconazole&quot;</span> <span class="op">|</span></span>
+<span id="cb46-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb46-6"></a><span class="st">         </span>fungicide_ai <span class="op">==</span><span class="st"> &quot;propiconazole&quot;</span></span>
+<span id="cb46-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb46-7"></a>   )</span></code></pre></div>
 <p><br>
 <br>
 <br></p>
 <div id="classify-dataset-variables" class="section level3">
 <h3><span class="header-section-number">2.4.1</span> Classify dataset variables</h3>
-<p>Finally, we are going to define the class of each variable in the data, retaining only the variables relevant to the analysis.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb23-1"></a><span class="kw">source</span>(<span class="st">&quot;R/classify_PM_data.R&quot;</span>)</span>
-<span id="cb23-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb23-2"></a></span>
-<span id="cb23-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb23-3"></a><span class="co"># classify dataset with Trials in both </span></span>
-<span id="cb23-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb23-4"></a>PM_MB_dat &lt;-</span>
-<span id="cb23-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb23-5"></a><span class="st">   </span><span class="kw">classify_PM_data</span>(PM_MB_dat)</span></code></pre></div>
+<p>Importantly, the class of each variable in the data should be defined, retaining only the variables relevant to the analysis.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb47-1"></a><span class="kw">source</span>(<span class="st">&quot;R/classify_PM_data.R&quot;</span>) <span class="co"># use a custom code</span></span>
+<span id="cb47-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb47-2"></a></span>
+<span id="cb47-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb47-3"></a><span class="co"># classify dataset with Trials in both </span></span>
+<span id="cb47-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb47-4"></a>PM_MB_dat &lt;-</span>
+<span id="cb47-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb47-5"></a><span class="st">   </span><span class="kw">classify_PM_data</span>(PM_MB_dat)</span></code></pre></div>
+<p><br><br />
+<br></p>
 </div>
 </div>
 <div id="defining-spray-schedule-variable" class="section level2">
 <h2><span class="header-section-number">2.5</span> Defining spray schedule variable</h2>
 <p>First are going to calculate the time between the first sign of disease and the fungicide applications.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb24-1"></a><span class="co"># collective data</span></span>
-<span id="cb24-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb24-2"></a>PM_MB_dat <span class="op">%&lt;&gt;%</span></span>
-<span id="cb24-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb24-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_1 =</span> fungicide_application_<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>first_sign_disease) <span class="op">%&gt;%</span></span>
-<span id="cb24-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb24-4"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_2 =</span> fungicide_application_<span class="dv">2</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb24-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb24-5"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_3 =</span> fungicide_application_<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">2</span>)</span></code></pre></div>
-<p>To ensure sufficient number of replicates, we will bin the continuous variable into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb48-1"></a><span class="co"># collective data</span></span>
+<span id="cb48-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb48-2"></a>PM_MB_dat <span class="op">%&lt;&gt;%</span></span>
+<span id="cb48-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb48-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_1 =</span> fungicide_application_<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>first_sign_disease) <span class="op">%&gt;%</span></span>
+<span id="cb48-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb48-4"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_2 =</span> fungicide_application_<span class="dv">2</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb48-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb48-5"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">fungicide_timing_3 =</span> fungicide_application_<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>fungicide_application_<span class="dv">2</span>)</span></code></pre></div>
+<p>To ensure sufficient number of replicates, treatments were binned by the first fungicide application date into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.</p>
+<p><br></p>
 <p>These categorical variables are named:<br />
 - <strong>Early</strong>: First fungicide application was prior to first sign of disease.<br />
 - <strong>Recommended</strong>: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.<br />
 - <strong>Late</strong>: First fungicide application was four or more days after first sign of disease being observed.</p>
+<p><br></p>
 <p>The number of follow-up sprays need also be defined.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-1"></a><span class="kw">data.frame</span>(</span>
-<span id="cb25-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-2"></a>   <span class="dt">TreatmentName =</span> <span class="kw">c</span>(</span>
-<span id="cb25-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-3"></a>      <span class="st">&quot;Early&quot;</span>,</span>
-<span id="cb25-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-4"></a>      <span class="st">&quot;Recommended&quot;</span>,</span>
-<span id="cb25-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-5"></a>      <span class="st">&quot;Late&quot;</span>,</span>
-<span id="cb25-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-6"></a>      <span class="st">&quot;EarlyPlus&quot;</span>,</span>
-<span id="cb25-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-7"></a>      <span class="st">&quot;RecommendedPlus&quot;</span>,</span>
-<span id="cb25-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-8"></a>      <span class="st">&quot;LatePlus&quot;</span></span>
-<span id="cb25-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-9"></a>   ),</span>
-<span id="cb25-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-10"></a>   <span class="dt">n_sprays =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Single&quot;</span>, <span class="st">&quot;Two - Three&quot;</span>), <span class="dt">each =</span> <span class="dv">3</span>),</span>
-<span id="cb25-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-11"></a>   <span class="dt">DaysRelativeToFirstSign =</span> <span class="kw">c</span>(</span>
-<span id="cb25-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-12"></a>      <span class="st">&quot;Prior to first sign of Powdery Mildew&quot;</span>,</span>
-<span id="cb25-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-13"></a>      <span class="st">&quot;1 - 3 days after first sign of Powdery Mildew&quot;</span>,</span>
-<span id="cb25-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-14"></a>      <span class="st">&quot;7 - 8 days after first sign of Powdery Mildew&quot;</span></span>
-<span id="cb25-15"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-15"></a>   )</span>
-<span id="cb25-16"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-16"></a>) <span class="op">%&gt;%</span></span>
-<span id="cb25-17"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb25-17"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-1"></a><span class="kw">data.frame</span>(</span>
+<span id="cb49-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-2"></a>   <span class="dt">TreatmentName =</span> <span class="kw">c</span>(</span>
+<span id="cb49-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-3"></a>      <span class="st">&quot;Early&quot;</span>,</span>
+<span id="cb49-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-4"></a>      <span class="st">&quot;Recommended&quot;</span>,</span>
+<span id="cb49-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-5"></a>      <span class="st">&quot;Late&quot;</span>,</span>
+<span id="cb49-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-6"></a>      <span class="st">&quot;EarlyPlus&quot;</span>,</span>
+<span id="cb49-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-7"></a>      <span class="st">&quot;RecommendedPlus&quot;</span>,</span>
+<span id="cb49-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-8"></a>      <span class="st">&quot;LatePlus&quot;</span></span>
+<span id="cb49-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-9"></a>   ),</span>
+<span id="cb49-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-10"></a>   <span class="dt">n_sprays =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Single&quot;</span>, <span class="st">&quot;Two - Three&quot;</span>), <span class="dt">each =</span> <span class="dv">3</span>),</span>
+<span id="cb49-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-11"></a>   <span class="dt">DaysRelativeToFirstSign =</span> <span class="kw">c</span>(</span>
+<span id="cb49-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-12"></a>      <span class="st">&quot;Prior to first sign of Powdery Mildew&quot;</span>,</span>
+<span id="cb49-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-13"></a>      <span class="st">&quot;1 - 3 days after first sign of Powdery Mildew&quot;</span>,</span>
+<span id="cb49-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-14"></a>      <span class="st">&quot;7 - 8 days after first sign of Powdery Mildew&quot;</span></span>
+<span id="cb49-15"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-15"></a>   )</span>
+<span id="cb49-16"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-16"></a>) <span class="op">%&gt;%</span></span>
+<span id="cb49-17"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb49-17"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1330,76 +1361,79 @@ Two - Three
 </tbody>
 </table>
 <p>Simplify the clusters for the data-set</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb26-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-2"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
-<span id="cb26-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-3"></a>      <span class="dt">spray_management =</span> <span class="kw">case_when</span>(</span>
-<span id="cb26-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-4"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb26-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-5"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
-<span id="cb26-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-6"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Early&quot;</span>,</span>
-<span id="cb26-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-7"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb26-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-8"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb26-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-9"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
-<span id="cb26-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-10"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Recommended&quot;</span>,</span>
-<span id="cb26-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-11"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb26-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-12"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
-<span id="cb26-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-13"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Late&quot;</span>,</span>
-<span id="cb26-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-14"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb26-15"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-15"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Early_plus&quot;</span>,</span>
-<span id="cb26-16"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-16"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
-<span id="cb26-17"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-17"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb26-18"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-18"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Recommended_plus&quot;</span>,</span>
-<span id="cb26-19"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-19"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
-<span id="cb26-20"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-20"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Late_plus&quot;</span>,</span>
-<span id="cb26-21"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-21"></a>         <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;Other&quot;</span></span>
-<span id="cb26-22"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-22"></a>      )</span>
-<span id="cb26-23"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-23"></a>   )</span>
-<span id="cb26-24"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-24"></a></span>
-<span id="cb26-25"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-25"></a>PM_MB_dat[PM_MB_dat<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>,</span>
-<span id="cb26-26"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-26"></a>          <span class="kw">c</span>(</span>
-<span id="cb26-27"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-27"></a>             <span class="st">&quot;fungicide_timing_1&quot;</span>,</span>
-<span id="cb26-28"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-28"></a>             <span class="st">&quot;fungicide_timing_2&quot;</span>,</span>
-<span id="cb26-29"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-29"></a>             <span class="st">&quot;fungicide_timing_3&quot;</span>,</span>
-<span id="cb26-30"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-30"></a>             <span class="st">&quot;spray_management&quot;</span></span>
-<span id="cb26-31"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb26-31"></a>          )] &lt;-<span class="st"> &quot;control&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-1"></a>PM_MB_dat &lt;-<span class="st"> </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb50-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-2"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
+<span id="cb50-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-3"></a>      <span class="dt">spray_management =</span> <span class="kw">case_when</span>(</span>
+<span id="cb50-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-4"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb50-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-5"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb50-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-6"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Early&quot;</span>,</span>
+<span id="cb50-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-7"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb50-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-8"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb50-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-9"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb50-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-10"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Recommended&quot;</span>,</span>
+<span id="cb50-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-11"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb50-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-12"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb50-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-13"></a><span class="st">            </span><span class="kw">is.na</span>(fungicide_application_<span class="dv">3</span>) <span class="op">~</span><span class="st"> &quot;Late&quot;</span>,</span>
+<span id="cb50-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-14"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb50-15"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-15"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Early_plus&quot;</span>,</span>
+<span id="cb50-16"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-16"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span></span>
+<span id="cb50-17"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-17"></a><span class="st">            </span>fungicide_timing_<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb50-18"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-18"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Recommended_plus&quot;</span>,</span>
+<span id="cb50-19"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-19"></a>         fungicide_timing_<span class="dv">1</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
+<span id="cb50-20"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-20"></a><span class="st">            </span><span class="op">!</span><span class="kw">is.na</span>(fungicide_application_<span class="dv">2</span>) <span class="op">~</span><span class="st"> &quot;Late_plus&quot;</span>,</span>
+<span id="cb50-21"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-21"></a>         <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;Other&quot;</span></span>
+<span id="cb50-22"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-22"></a>      )</span>
+<span id="cb50-23"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-23"></a>   )</span>
+<span id="cb50-24"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-24"></a></span>
+<span id="cb50-25"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-25"></a>PM_MB_dat[PM_MB_dat<span class="op">$</span>fungicide_ai <span class="op">==</span><span class="st"> &quot;control&quot;</span>,</span>
+<span id="cb50-26"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-26"></a>          <span class="kw">c</span>(</span>
+<span id="cb50-27"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-27"></a>             <span class="st">&quot;fungicide_timing_1&quot;</span>,</span>
+<span id="cb50-28"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-28"></a>             <span class="st">&quot;fungicide_timing_2&quot;</span>,</span>
+<span id="cb50-29"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-29"></a>             <span class="st">&quot;fungicide_timing_3&quot;</span>,</span>
+<span id="cb50-30"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-30"></a>             <span class="st">&quot;spray_management&quot;</span></span>
+<span id="cb50-31"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb50-31"></a>          )] &lt;-<span class="st"> &quot;control&quot;</span></span></code></pre></div>
 <p>Now to view the number break-down of the <code>spray_management</code> treatments in the <em>yield</em> and <em>disease severity</em> data-sets</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb27-1"></a><span class="kw">table</span>(PM_MB_dat<span class="op">$</span>spray_management)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb51-1"></a><span class="kw">table</span>(PM_MB_dat<span class="op">$</span>spray_management)</span></code></pre></div>
 <pre><code>## 
 ##          control            Early       Early_plus             Late 
 ##               40               13                5               17 
 ##        Late_plus      Recommended Recommended_plus 
 ##               20               32               46</code></pre>
 <p>‘Early_plus’ treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove ‘Early_plus’ from the analysis.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-1"></a>PM_MB_dat &lt;-</span>
-<span id="cb29-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb29-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-3"></a><span class="st">   </span><span class="kw">filter</span>(spray_management <span class="op">!=</span><span class="st"> &quot;Early_plus&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb29-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-4"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(fungicide_timing_<span class="dv">1</span>, <span class="co"># remove the following columns which no longer have use</span></span>
-<span id="cb29-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-5"></a>             fungicide_timing_<span class="dv">2</span>,</span>
-<span id="cb29-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-6"></a>             fungicide_timing_<span class="dv">3</span>,</span>
-<span id="cb29-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-7"></a>             fungicide_application_<span class="dv">1</span>,</span>
-<span id="cb29-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-8"></a>             fungicide_application_<span class="dv">2</span>,</span>
-<span id="cb29-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-9"></a>             fungicide_application_<span class="dv">3</span>,</span>
-<span id="cb29-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-10"></a>             fungicide_application_<span class="dv">4</span>,</span>
-<span id="cb29-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-11"></a>             fungicide_application_<span class="dv">5</span>,</span>
-<span id="cb29-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-12"></a>             fungicide_application_<span class="dv">6</span>,</span>
-<span id="cb29-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-13"></a>             fungicide_application_<span class="dv">7</span>,</span>
-<span id="cb29-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb29-14"></a>             ))</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-1"></a>PM_MB_dat &lt;-</span>
+<span id="cb53-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb53-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-3"></a><span class="st">   </span><span class="kw">filter</span>(spray_management <span class="op">!=</span><span class="st"> &quot;Early_plus&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb53-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-4"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(fungicide_timing_<span class="dv">1</span>, <span class="co"># remove the following columns which no longer have use</span></span>
+<span id="cb53-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-5"></a>             fungicide_timing_<span class="dv">2</span>,</span>
+<span id="cb53-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-6"></a>             fungicide_timing_<span class="dv">3</span>,</span>
+<span id="cb53-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-7"></a>             fungicide_application_<span class="dv">1</span>,</span>
+<span id="cb53-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-8"></a>             fungicide_application_<span class="dv">2</span>,</span>
+<span id="cb53-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-9"></a>             fungicide_application_<span class="dv">3</span>,</span>
+<span id="cb53-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-10"></a>             fungicide_application_<span class="dv">4</span>,</span>
+<span id="cb53-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-11"></a>             fungicide_application_<span class="dv">5</span>,</span>
+<span id="cb53-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-12"></a>             fungicide_application_<span class="dv">6</span>,</span>
+<span id="cb53-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-13"></a>             fungicide_application_<span class="dv">7</span>,</span>
+<span id="cb53-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb53-14"></a>             ))</span></code></pre></div>
+<p><br><br />
+<br><br />
+<br></p>
 </div>
 <div id="identify-variance" class="section level2">
 <h2><span class="header-section-number">2.6</span> Identify variance</h2>
 <p>We need variance accompanying the mean observations for each treatment to successfully undertake a meta-analysis.
 Lets investigate which of the included trials included variance for both response variables of interest, yield and disease severity.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb30-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">MA_analysis =</span> <span class="kw">case_when</span>(</span>
-<span id="cb30-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-3"></a>      <span class="kw">is.na</span>(yield_error <span class="op">&amp;</span><span class="st"> </span>disease_error) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span> <span class="op">~</span><span class="st"> &quot;Yield and Disease&quot;</span>,</span>
-<span id="cb30-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-4"></a>      <span class="kw">is.na</span>(yield_error) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span> <span class="op">&amp;</span><span class="st"> </span></span>
-<span id="cb30-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-5"></a><span class="st">         </span><span class="kw">is.na</span>(disease_error) <span class="op">~</span><span class="st"> &quot;Yield&quot;</span>,</span>
-<span id="cb30-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-6"></a>      <span class="kw">is.na</span>(disease_error) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span> <span class="op">&amp;</span><span class="st"> </span></span>
-<span id="cb30-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-7"></a><span class="st">         </span><span class="kw">is.na</span>(yield_error) <span class="op">~</span><span class="st"> &quot;Disease&quot;</span>,</span>
-<span id="cb30-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-8"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;Nil&quot;</span></span>
-<span id="cb30-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-9"></a>   )) <span class="op">%&gt;%</span></span>
-<span id="cb30-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-10"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, location, year, MA_analysis) <span class="op">%&gt;%</span></span>
-<span id="cb30-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-11"></a><span class="st">   </span><span class="kw">arrange</span>(year) <span class="op">%&gt;%</span></span>
-<span id="cb30-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb30-12"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb54-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">MA_analysis =</span> <span class="kw">case_when</span>(</span>
+<span id="cb54-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-3"></a>      <span class="kw">is.na</span>(yield_error <span class="op">&amp;</span><span class="st"> </span>disease_error) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span> <span class="op">~</span><span class="st"> &quot;Yield and Disease&quot;</span>,</span>
+<span id="cb54-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-4"></a>      <span class="kw">is.na</span>(yield_error) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span> <span class="op">&amp;</span><span class="st"> </span></span>
+<span id="cb54-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-5"></a><span class="st">         </span><span class="kw">is.na</span>(disease_error) <span class="op">~</span><span class="st"> &quot;Yield&quot;</span>,</span>
+<span id="cb54-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-6"></a>      <span class="kw">is.na</span>(disease_error) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span> <span class="op">&amp;</span><span class="st"> </span></span>
+<span id="cb54-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-7"></a><span class="st">         </span><span class="kw">is.na</span>(yield_error) <span class="op">~</span><span class="st"> &quot;Disease&quot;</span>,</span>
+<span id="cb54-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-8"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;Nil&quot;</span></span>
+<span id="cb54-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-9"></a>   )) <span class="op">%&gt;%</span></span>
+<span id="cb54-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-10"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, location, year, MA_analysis) <span class="op">%&gt;%</span></span>
+<span id="cb54-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-11"></a><span class="st">   </span><span class="kw">arrange</span>(year) <span class="op">%&gt;%</span></span>
+<span id="cb54-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb54-12"></a><span class="st">   </span><span class="kw">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1658,47 +1692,53 @@ Yield and Disease
 </tr>
 </tbody>
 </table>
+<p><br></p>
 <p>Remove one trial in Emerald which did not report disease variance or yield variance.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-1"></a><span class="co"># Remove trials without variance for both Disease and yield for data_set `PM_MB_dat</span></span>
-<span id="cb31-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-2"></a>PM_MB_dat &lt;-<span class="st"> </span></span>
-<span id="cb31-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-3"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb31-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-4"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">contains_var =</span> <span class="kw">case_when</span>(</span>
-<span id="cb31-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-5"></a>      <span class="kw">is.na</span>(yield_error) <span class="op">&amp;</span></span>
-<span id="cb31-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-6"></a><span class="st">         </span><span class="kw">is.na</span>(disease_error) <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
-<span id="cb31-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-7"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>trial_ref)) <span class="op">%&gt;%</span></span>
-<span id="cb31-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-8"></a><span class="st">   </span><span class="kw">filter</span>(trial_ref <span class="op">%in%</span><span class="st"> </span>contains_var) <span class="op">%&gt;%</span></span>
-<span id="cb31-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb31-9"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span>contains_var) </span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-1"></a><span class="co"># Remove trials without variance for both Disease and yield for data_set `PM_MB_dat</span></span>
+<span id="cb55-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-2"></a>PM_MB_dat &lt;-<span class="st"> </span></span>
+<span id="cb55-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-3"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb55-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-4"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">contains_var =</span> <span class="kw">case_when</span>(</span>
+<span id="cb55-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-5"></a>      <span class="kw">is.na</span>(yield_error) <span class="op">&amp;</span></span>
+<span id="cb55-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-6"></a><span class="st">         </span><span class="kw">is.na</span>(disease_error) <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
+<span id="cb55-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-7"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>trial_ref)) <span class="op">%&gt;%</span></span>
+<span id="cb55-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-8"></a><span class="st">   </span><span class="kw">filter</span>(trial_ref <span class="op">%in%</span><span class="st"> </span>contains_var) <span class="op">%&gt;%</span></span>
+<span id="cb55-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb55-9"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span>contains_var) </span></code></pre></div>
+<p><br></p>
 <p>Following an inspection of the yield and disease variance we determined imputation was not suitable and therefore we must exclude trials that did not report variance.
 For each analysis, yield and disease severity a separate data-set will be created, including only trials that report variance for the respective response variable</p>
-<p>One more trial will be removed for our yield data set <code>PM_dat_Y</code> for not reporting yield variance.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb32-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">No_Var =</span> <span class="kw">is.na</span>(yield_error)) <span class="op">%&gt;%</span></span>
-<span id="cb32-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-3"></a><span class="st">   </span><span class="kw">filter</span>(No_Var <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb32-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb32-4"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
+<p>One trial will be removed from the yield data set <code>PM_dat_Y</code> for not reporting yield variance.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb56-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb56-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb56-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">No_Var =</span> <span class="kw">is.na</span>(yield_error)) <span class="op">%&gt;%</span></span>
+<span id="cb56-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb56-3"></a><span class="st">   </span><span class="kw">filter</span>(No_Var <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb56-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb56-4"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
 <pre><code>##     trial_ref year location
 ## 1 mung1112/01 2012   Gatton</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb34-1"></a>PM_dat_Y &lt;-<span class="st"> </span></span>
-<span id="cb34-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb34-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb34-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb34-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">contains_var =</span> <span class="kw">case_when</span>(</span>
-<span id="cb34-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb34-4"></a>      <span class="kw">is.na</span>(yield_error) <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
-<span id="cb34-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb34-5"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>trial_ref)) <span class="op">%&gt;%</span></span>
-<span id="cb34-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb34-6"></a><span class="st">   </span><span class="kw">filter</span>(trial_ref <span class="op">%in%</span><span class="st"> </span>contains_var) <span class="op">%&gt;%</span></span>
-<span id="cb34-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb34-7"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span>contains_var)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb58-1"></a>PM_dat_Y &lt;-<span class="st"> </span></span>
+<span id="cb58-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb58-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb58-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb58-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">contains_var =</span> <span class="kw">case_when</span>(</span>
+<span id="cb58-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb58-4"></a>      <span class="kw">is.na</span>(yield_error) <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
+<span id="cb58-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb58-5"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>trial_ref)) <span class="op">%&gt;%</span></span>
+<span id="cb58-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb58-6"></a><span class="st">   </span><span class="kw">filter</span>(trial_ref <span class="op">%in%</span><span class="st"> </span>contains_var) <span class="op">%&gt;%</span></span>
+<span id="cb58-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb58-7"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span>contains_var)</span></code></pre></div>
+<p><br></p>
 <p>Two more trials will be removed for our disease severity data set <code>PM_dat_D</code> for not reporting yield variance.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb35-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb35-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb35-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">No_Var =</span> <span class="kw">is.na</span>(disease_error)) <span class="op">%&gt;%</span></span>
-<span id="cb35-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb35-3"></a><span class="st">   </span><span class="kw">filter</span>(No_Var <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb35-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb35-4"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb59-1"></a>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb59-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb59-2"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">No_Var =</span> <span class="kw">is.na</span>(disease_error)) <span class="op">%&gt;%</span></span>
+<span id="cb59-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb59-3"></a><span class="st">   </span><span class="kw">filter</span>(No_Var <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb59-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb59-4"></a><span class="st">   </span><span class="kw">distinct</span>(trial_ref, year, location)</span></code></pre></div>
 <pre><code>##     trial_ref year  location
 ## 1 mung1516/01 2016 Hermitage
 ## 2 mung1516/02 2016  Kingaroy</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb37-1"></a>PM_dat_D &lt;-<span class="st"> </span></span>
-<span id="cb37-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb37-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
-<span id="cb37-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb37-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">contains_var =</span> <span class="kw">case_when</span>(</span>
-<span id="cb37-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb37-4"></a>      <span class="kw">is.na</span>(disease_error) <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
-<span id="cb37-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb37-5"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>trial_ref)) <span class="op">%&gt;%</span></span>
-<span id="cb37-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb37-6"></a><span class="st">   </span><span class="kw">filter</span>(trial_ref <span class="op">%in%</span><span class="st"> </span>contains_var) <span class="op">%&gt;%</span></span>
-<span id="cb37-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb37-7"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span>contains_var)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb61-1"></a>PM_dat_D &lt;-<span class="st"> </span></span>
+<span id="cb61-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb61-2"></a><span class="st">   </span>PM_MB_dat <span class="op">%&gt;%</span></span>
+<span id="cb61-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb61-3"></a><span class="st">   </span><span class="kw">mutate</span>(<span class="dt">contains_var =</span> <span class="kw">case_when</span>(</span>
+<span id="cb61-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb61-4"></a>      <span class="kw">is.na</span>(disease_error) <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
+<span id="cb61-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb61-5"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>trial_ref)) <span class="op">%&gt;%</span></span>
+<span id="cb61-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb61-6"></a><span class="st">   </span><span class="kw">filter</span>(trial_ref <span class="op">%in%</span><span class="st"> </span>contains_var) <span class="op">%&gt;%</span></span>
+<span id="cb61-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb61-7"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span>contains_var)</span></code></pre></div>
+<p><br><br />
+<br><br />
+<br></p>
 </div>
 <div id="standardise-variance" class="section level2">
 <h2><span class="header-section-number">2.7</span> Standardise Variance</h2>
@@ -1706,43 +1746,44 @@ For each analysis, yield and disease severity a separate data-set will be create
 First we will start by standardising yield variance according to the method reported by <a href="https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221">Ngugi et.al (2011)</a>.</p>
 <div id="yield-variance-standardisation" class="section level3">
 <h3><span class="header-section-number">2.7.1</span> Yield variance standardisation</h3>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-1"></a>PM_dat_Y &lt;-</span>
-<span id="cb38-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-2"></a><span class="st">   </span>PM_dat_Y <span class="op">%&gt;%</span></span>
-<span id="cb38-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-3"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
-<span id="cb38-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-4"></a>      <span class="dt">vi =</span></span>
-<span id="cb38-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-5"></a>         <span class="kw">case_when</span>(</span>
-<span id="cb38-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-6"></a>            Y_error_type <span class="op">==</span><span class="st"> &quot;stdev&quot;</span> <span class="op">~</span><span class="st"> </span>yield_error <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
-<span id="cb38-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-7"></a>            Y_error_type <span class="op">==</span><span class="st"> &quot;lsd (P=0.05)&quot;</span> <span class="op">~</span></span>
-<span id="cb38-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-8"></a><span class="st">               </span>(replicates <span class="op">*</span><span class="st"> </span>((yield_error <span class="op">/</span><span class="st"> </span><span class="fl">1.96</span>) <span class="op">^</span><span class="st"> </span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>)</span>
-<span id="cb38-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-9"></a>         ),</span>
-<span id="cb38-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-10"></a>      <span class="dt">id =</span> <span class="kw">row_number</span>(),</span>
-<span id="cb38-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-11"></a>      <span class="dt">spray_management =</span> <span class="kw">fct_relevel</span>(spray_management, sort)</span>
-<span id="cb38-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-12"></a>   ) <span class="op">%&gt;%</span></span>
-<span id="cb38-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-13"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(yield_error,</span>
-<span id="cb38-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb38-14"></a>             Y_error_type))</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-1"></a>PM_dat_Y &lt;-</span>
+<span id="cb62-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-2"></a><span class="st">   </span>PM_dat_Y <span class="op">%&gt;%</span></span>
+<span id="cb62-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-3"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
+<span id="cb62-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-4"></a>      <span class="dt">vi =</span></span>
+<span id="cb62-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-5"></a>         <span class="kw">case_when</span>(</span>
+<span id="cb62-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-6"></a>            Y_error_type <span class="op">==</span><span class="st"> &quot;stdev&quot;</span> <span class="op">~</span><span class="st"> </span>yield_error <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
+<span id="cb62-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-7"></a>            Y_error_type <span class="op">==</span><span class="st"> &quot;lsd (P=0.05)&quot;</span> <span class="op">~</span></span>
+<span id="cb62-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-8"></a><span class="st">               </span>(replicates <span class="op">*</span><span class="st"> </span>((yield_error <span class="op">/</span><span class="st"> </span><span class="fl">1.96</span>) <span class="op">^</span><span class="st"> </span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb62-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-9"></a>         ),</span>
+<span id="cb62-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-10"></a>      <span class="dt">id =</span> <span class="kw">row_number</span>(),</span>
+<span id="cb62-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-11"></a>      <span class="dt">spray_management =</span> <span class="kw">fct_relevel</span>(spray_management, sort)</span>
+<span id="cb62-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-12"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb62-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-13"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(yield_error,</span>
+<span id="cb62-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb62-14"></a>             Y_error_type))</span></code></pre></div>
 </div>
 <div id="disease-severity-variance-standardisation" class="section level3">
 <h3><span class="header-section-number">2.7.2</span> Disease severity variance standardisation</h3>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-1"></a>PM_dat_D &lt;-</span>
-<span id="cb39-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-2"></a><span class="st">   </span>PM_dat_D <span class="op">%&gt;%</span></span>
-<span id="cb39-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-3"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
-<span id="cb39-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-4"></a>      <span class="dt">vi =</span></span>
-<span id="cb39-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-5"></a>         <span class="kw">case_when</span>(</span>
-<span id="cb39-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-6"></a>            D_error_type <span class="op">==</span><span class="st"> &quot;stdev&quot;</span> <span class="op">~</span><span class="st"> </span>disease_error <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
-<span id="cb39-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-7"></a>            D_error_type <span class="op">==</span><span class="st"> &quot;lsd (P=0.05)&quot;</span> <span class="op">~</span></span>
-<span id="cb39-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-8"></a><span class="st">               </span>(replicates <span class="op">*</span><span class="st"> </span>((disease_error <span class="op">/</span><span class="st"> </span><span class="fl">1.96</span>) <span class="op">^</span><span class="st"> </span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>)</span>
-<span id="cb39-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-9"></a>         ),</span>
-<span id="cb39-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-10"></a>      <span class="dt">id =</span> <span class="kw">row_number</span>(),</span>
-<span id="cb39-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-11"></a>      <span class="dt">spray_management =</span> <span class="kw">fct_relevel</span>(spray_management, sort)</span>
-<span id="cb39-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-12"></a>   ) <span class="op">%&gt;%</span></span>
-<span id="cb39-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-13"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(disease_error,</span>
-<span id="cb39-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb39-14"></a>             D_error_type))</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-1"></a>PM_dat_D &lt;-</span>
+<span id="cb63-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-2"></a><span class="st">   </span>PM_dat_D <span class="op">%&gt;%</span></span>
+<span id="cb63-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-3"></a><span class="st">   </span><span class="kw">mutate</span>(</span>
+<span id="cb63-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-4"></a>      <span class="dt">vi =</span></span>
+<span id="cb63-5"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-5"></a>         <span class="kw">case_when</span>(</span>
+<span id="cb63-6"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-6"></a>            D_error_type <span class="op">==</span><span class="st"> &quot;stdev&quot;</span> <span class="op">~</span><span class="st"> </span>disease_error <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
+<span id="cb63-7"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-7"></a>            D_error_type <span class="op">==</span><span class="st"> &quot;lsd (P=0.05)&quot;</span> <span class="op">~</span></span>
+<span id="cb63-8"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-8"></a><span class="st">               </span>(replicates <span class="op">*</span><span class="st"> </span>((disease_error <span class="op">/</span><span class="st"> </span><span class="fl">1.96</span>) <span class="op">^</span><span class="st"> </span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb63-9"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-9"></a>         ),</span>
+<span id="cb63-10"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-10"></a>      <span class="dt">id =</span> <span class="kw">row_number</span>(),</span>
+<span id="cb63-11"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-11"></a>      <span class="dt">spray_management =</span> <span class="kw">fct_relevel</span>(spray_management, sort)</span>
+<span id="cb63-12"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-12"></a>   ) <span class="op">%&gt;%</span></span>
+<span id="cb63-13"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-13"></a><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="kw">c</span>(disease_error,</span>
+<span id="cb63-14"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb63-14"></a>             D_error_type))</span></code></pre></div>
+<p><br></p>
 <div id="save-the-cleaned-data" class="section level4">
 <h4><span class="header-section-number">2.7.2.1</span> Save the cleaned data</h4>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb40-1"></a><span class="kw">write.csv</span>(PM_dat_Y, <span class="dt">file =</span> <span class="st">&quot;cache/PM_yield_clean_data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb40-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb40-2"></a><span class="kw">write.csv</span>(PM_dat_D, <span class="dt">file =</span> <span class="st">&quot;cache/PM_disease_clean_data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb40-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb40-3"></a><span class="kw">write.csv</span>(PM_MB_dat, <span class="dt">file =</span> <span class="st">&quot;cache/PM_MB_clean_data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb40-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb40-4"></a><span class="kw">save</span>(PM_MB_dat, PM_dat_D, PM_dat_Y, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;cache/ImportDataAndSelectTrials01.Rdata&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb64-1"></a><span class="kw">write.csv</span>(PM_dat_Y, <span class="dt">file =</span> <span class="st">&quot;cache/PM_yield_clean_data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb64-2"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb64-2"></a><span class="kw">write.csv</span>(PM_dat_D, <span class="dt">file =</span> <span class="st">&quot;cache/PM_disease_clean_data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb64-3"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb64-3"></a><span class="kw">write.csv</span>(PM_MB_dat, <span class="dt">file =</span> <span class="st">&quot;cache/PM_MB_clean_data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb64-4"><a href="trials-considered-for-inclusion-in-meta-analysis.html#cb64-4"></a><span class="kw">save</span>(PM_MB_dat, PM_dat_D, PM_dat_Y, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;cache/ImportDataAndSelectTrials01.Rdata&quot;</span>))</span></code></pre></div>
 
 </div>
 </div>
