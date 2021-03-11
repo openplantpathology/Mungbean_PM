@@ -469,7 +469,8 @@ contrast_Ssum <-
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 contrast_Ssum %>%
-   flextable()
+   flextable()%>%
+   autofit()
 
 ```
 
