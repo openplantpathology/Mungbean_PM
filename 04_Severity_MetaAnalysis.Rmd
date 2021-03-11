@@ -6,7 +6,27 @@ editor_options:
 
 # Powdery mildew severity Meta-analysis  
 
-```{r MEsummary_Libraries2, message=FALSE, include=FALSE}
+An additional question to our main aim: does spray schedule have a similar effect on disease severity?
+
+This model will be similar to the grain yield meta-analysis and use the main variables:
+
+   - *Powdery mildew severity* the response variable (1-9 scale)
+
+   - *Trial*, which resolves combinations of categorical random variables: 
+      i) year  
+      ii) location  
+      iii) row spacing  
+      iv) cultivar  
+      
+   - *spray_management* a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
+   
+   - *id* random variable indicating each treatment is independent
+
+
+<br>  
+
+Load libraries and data  
+```{r MEsummary_Libraries2, echo=TRUE,results='hide'}
 if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(tidyverse,
@@ -31,25 +51,9 @@ PM_dat_D <-
    read.csv("cache/PM_disease_clean_data.csv", stringsAsFactors = FALSE)
 ```
 
+<br>  
+<br>  
 
-
-Inspect for a normal distribution of disease severity
-```{r sev_hist}
-hist(PM_dat_D$PM_final_severity)
-```
-
-
-Let's get started with the analysis by first finding the best model fit that answers our research question.
-
-> When, in relation to PM establishment in the crop, should farmers begin spraying mungbean to obtain the highest fungicide efficacy for lowering disease severity: before PM establishing,  immediately after first sign of PM establishing, or after PM has become established in the crop. 
-
-A secondary question to this aim is: does a second spray increase the efficacy?
-
-To do this, in our model:
-
-   - Powdery mildew severity 1-9 scale
-
-   - Trial, which resolves combinations of categorical variables: year, location, row spacing, fungicide dose and cultivar; is set as a random intercept
 
 ### Define Trial
 ```{r define_trial}
@@ -63,13 +67,16 @@ PM_dat_D <-
                         sep = "_")) 
 ```
 
+Inspect disease severity for a normality.
+```{r sev_hist}
+hist(PM_dat_D$PM_final_severity)
+```
 
-   - We will investigate the effect size of our treatment - spray management,
+<br>  
+<br>  
+<br>  
 
-<br>  
-<br>  
-<br>  
-******  
+*****
 
 ## Disease severity spray schedule meta-analysis  
 
@@ -88,13 +95,16 @@ PMsev_mv <- rma.mv(
 summary(PMsev_mv)
 ```
 
-All spray schedules were effective at lowering the disease severity at the end of the season
+All spray schedules were effective at lowering the disease severity at the end of the season.
+`Recommended_plus` reduced powdery mildew incidence the most.  
 
 <br>  
 <br>  
 <br>  
 
 ### Disease severity moderator contrasts 
+
+Calculate the treatment contrasts
 
 ```{r sevContrasts}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
@@ -104,7 +114,8 @@ contrast_Ssum <-
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 
-contrast_Ssum
+contrast_Ssum %>%
+   flextable()
 ```
 
 <br>  
@@ -124,6 +135,10 @@ axis(
    cex.axis = 0.8
 )
 ```
+
+`Recommended_plus` limited disease severity significantly better than any other spray treatment. 
+`Late_plus` limited disease severity significantly better than a single `Late` application. 
+This indicates that two spray treatments were significantly better than a single application, but the timing of the fungicide application was more critical.  
 
 <br>  
 <br>  
@@ -230,7 +245,7 @@ disease_estimates_table <-
 disease_estimates_table
 ```
 
-Save table to a word document to use in manuscript
+
 ```{r eval=FALSE, include=FALSE}
 # Save table as a word document
 doc <- officer::read_docx()
