@@ -3,7 +3,6 @@ title: "A meta-analysis of powdery mildew yield loss mitigation strategies in Au
 author: "Paul Melloy, Emerson Del Ponte and Adam H. Sparks"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 site: bookdown::bookdown_site
-output: bookdown::gitbook
 documentclass: book
 bibliography: "Mungbean.bib"
 biblio-style: apalike
