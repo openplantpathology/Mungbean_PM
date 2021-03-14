@@ -23,7 +23,7 @@ simple_summary <-
          coefficients = round(sum_meta[["test"]]$coefficients, 4),
          StdErr = round(sum_meta[["test"]]$sigma,4),
          'Zvalue' = round(sum_meta[["test"]]$tstat,4),
-         pvals = reportP(sum_meta[["test"]]$pvalues, AsNumeric = TRUE, P_prefix = FALSE),
+         pvals = reportP(sum_meta[["test"]]$pvalues, AsNumeric = FALSE, P_prefix = FALSE),
          sig = p_star(sum_meta[["test"]]$pvalues)
       )
          
