@@ -15,11 +15,6 @@ if (!require("pacman"))
 
 pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, lubridate, here)
 
-if (!require("theme.usq"))
-   remotes::install_github("adamhsparks/theme.usq")
-
-library(theme.usq)
-theme_set(theme_usq())
 ```
 
 <br>  
@@ -294,9 +289,7 @@ PM_MB_dat %>%
    xlab("Fungicide active ingredient") +
    ylab("N Trials") +
    geom_col() +
-   scale_fill_usq() +
    ggtitle(label = "Number of trials in which the\nspecified fungicide was used") +
-   scale_colour_usq() +
    coord_flip()
 ```
 

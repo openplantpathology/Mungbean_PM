@@ -15,11 +15,6 @@ pacman::p_load(tidyverse,
                here,
                gridExtra)
 
-if (!require("theme.usq"))
-   remotes::install_github("adamhsparks/theme.usq")
-library(theme.usq)
-theme_set(theme_usq()
-)
 load("cache/ImportDataAndSelectTrials01.Rdata")
 ```
 
@@ -355,9 +350,7 @@ PM_MB_dat %>%
    ggplot(aes(x = as.factor(dose_ai.ha), fill = fungicide_ai)) +
    xlab("Dose (g ai/ha)") +
    ggtitle(label = "Total number of treatments for each respective tebuconazole\nor propiconazole dose") +
-   geom_bar() +
-   scale_fill_usq() +
-   scale_colour_usq()
+   geom_bar() 
 ```
 
 All trials that used tebuconazole used approximately the same dose.
@@ -373,7 +366,7 @@ PM_MB_dat %>%
    xlab("Dose (g ai/ha)") +
    labs(label = "Yield for each respective propiconazole dose",
         caption = "Facets indicate the number of applications") +
-   geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
+   geom_boxplot(fill = "grey", alpha = 0.5) +
    ylab("Grain yield t / ha") +
    facet_grid(cols = vars(total_fungicide))
 ```
@@ -430,7 +423,7 @@ PM_MB_dat %>%
    ylab("N Trials") +
    ggtitle(label = "Cultivars used in either tebuconazole or propiconazole trials") +
    geom_col() +
-   scale_fill_usq(name = "Fungicide AI")
+   scale_fill_discrete(name = "Fungicide AI")
 ```
 
 
@@ -492,7 +485,7 @@ PM_MB_dat %>%
    ggtitle(label = "Trial row spacing using tebuconazole") +
    geom_col(aes(fill = fungicide_ai),
             position = "dodge") +
-   scale_fill_usq(name = "Fungicide AI")
+   scale_fill_discrete(name = "Fungicide AI")
 ```
 
 <br>  
@@ -513,7 +506,7 @@ PM_MB_dat %>%
              year == 2018) %>%
    filter(fungicide_ai == "control") %>%
    ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
-   geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
+   geom_boxplot(alpha = 0.5) +
    ylab("Final severity rating") +
    xlab("Row spacing (m)") +
    ggtitle("Powdery mildew severity between different row spacing across all trials")
@@ -528,7 +521,7 @@ PM_MB_dat %>%
              year == 2018) %>%
    filter(fungicide_ai == "control") %>%
    ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
-   geom_boxplot(fill = usq_cols("usq charcoal"), alpha = 0.5) +
+   geom_boxplot(alpha = 0.5) +
    facet_grid(cols = vars(location)) +
    ggtitle("Powdery mildew variation between different row spacing") +
    ylab("Final severity rating") +
@@ -552,8 +545,8 @@ PM_MB_dat %>%
    geom_jitter(width = 0.05) +
    ggtitle("Grain yield results for different row spacing at three locations") +
    xlab("Row spacing (m)") +
-   ylab("Grain yield (t/ha)") +
-   scale_colour_usq()
+   ylab("Grain yield (t/ha)")+
+   theme_minimal()
 ```
 
 The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial.

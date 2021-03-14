@@ -42,10 +42,7 @@ pacman::p_load(
    flextable
 )
 
-if (!require("theme.usq"))
-   remotes::install_github("adamhsparks/theme.usq")
-library(theme.usq)
-theme_set(theme_usq())
+
 source(here("R/reportP.R"))
 
 # Data
@@ -84,7 +81,7 @@ This *grain yield* meta-analysis is a multi-variate meta-analysis, using the `me
 
 We are using the `spray_management` variable as a moderator and an interactive random term with the `trial` random variable. The variance-covariance matrix is specified as unstructured (UN) to allow correlations between and within trials.  
 
-```{r Yield_Metafor-analysis}
+```{r Yield_Metafor-analysis, cache=TRUE}
 PM_mv <- rma.mv(
    yi = grain_yield.t.ha.,
    V = vi,
@@ -121,7 +118,7 @@ In addition, Kelly et. al. [-@Kelly2017a] noted that yield losses are higher in 
 
 Now let's define a continuous variable`first_sign_days` and a categorical variable `onset`.
 
-```{r define_onset}
+```{r define_onset, cache=TRUE}
 PM_dat_Y <- PM_dat_Y %>%
    mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
              lubridate::ymd(planting_date)) %>%
@@ -152,7 +149,7 @@ PM_dat_Y %>%
 
 We are adding the `onset` variable as a moderator to test and interaction with the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
 
-```{r onset_Metafor-analysis}
+```{r onset_Metafor-analysis, cache=TRUE}
 PM_mv_onset <- rma.mv(
    yi = grain_yield.t.ha.,
    V = vi,
@@ -224,7 +221,7 @@ PM_dat_Y %>%
 
 Test `d_pressure` variable addition as a moderator to evaluate it's interaction with the `spray_management` to influence the grain yield effect size.
 
-```{r Dpressure_Metafor-analysis}
+```{r Dpressure_Metafor-analysis, cache=TRUE}
 PM_mv_dp <- rma.mv(
    yi = grain_yield.t.ha.,
    V = vi,
@@ -427,7 +424,6 @@ results_mv %>%
    ggplot(aes(Treatment, mu)) +
    geom_hline(
       yintercept = seq(-0.05, 0.3, by = 0.05),
-      color = usq_cols("usq charcoal"),
       linetype = 3
    ) +
    geom_point(aes(size = 1 / se), shape = 15) +
@@ -583,17 +579,13 @@ The `Recommended_plus` and `Late_plus` treatments show higher mean estimates, ho
 netgraph(
    net_con,
    plastic = FALSE,
-   col = usq_cols("support orange"),
    thickness =  "number.of.studies",
    points = FALSE,
-   col.points = usq_cols("usq charcoal"),
    cex.points = 1,
    number.of.studies = TRUE,
    cex.number.of.studies = 1,
    col.number.of.studies = "black",
-   bg.number.of.studies = usq_cols("support orange"),
    multiarm = FALSE,
-   col.multiarm = usq_cols("support turquiose"),
    pos.number.of.studies = 0.4
 )
 ```

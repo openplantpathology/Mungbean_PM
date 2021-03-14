@@ -40,10 +40,6 @@ pacman::p_load(tidyverse,
                dplyr,
                flextable)
 
-if (!require("theme.usq"))
-   remotes::install_github("adamhsparks/theme.usq")
-library(theme.usq)
-theme_set(theme_usq())
 source(here("R/reportP.R"))
 
 # Data
@@ -80,7 +76,7 @@ hist(PM_dat_D$PM_final_severity)
 
 ## Disease severity spray schedule meta-analysis  
 
-```{r Metafor-Sev-analysis}
+```{r Metafor-Sev-analysis, cache=TRUE}
 PMsev_mv <- rma.mv(
    yi = PM_final_severity,
    vi,
