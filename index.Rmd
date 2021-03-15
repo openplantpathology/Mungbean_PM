@@ -20,7 +20,7 @@ The meta-analysis's main aim is to determine:
 
 > When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields?  
 
-For completeness We also evaluated the efficacy of spray schedules on disease severity in the field.
+For completeness, we also evaluated the efficacy of spray schedules on disease severity in the field.
 
 ## Main chapters
 This compendium is broken down into four sections:  
