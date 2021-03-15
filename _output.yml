@@ -1,4 +1,5 @@
 bookdown::bs4_book:
+  css: style.css
   theme:
     primary: "steelblue"
 
