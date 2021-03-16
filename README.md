@@ -16,3 +16,7 @@ To render a new document open the R Markdown file, [index.Rmd](index.Rmd). Then 
 
 # Aims  
 When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields? 
+
+# Licence
+
+Data: [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/legalcode) International attribution requested in reuse.
