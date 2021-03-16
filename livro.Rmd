@@ -1,0 +1,2277 @@
+---
+title: "A meta-analysis of fungicide effects on mungbean powdery mildew"
+author: "Paul Melloy, Emerson Del Ponte and Adam H. Sparks"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: "Mungbean.bib"
+biblio-style: apalike
+link-citations: yes
+github-repo: OpenPlantPathology/Mungbean_PM
+description: "A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew."
+---
+# About
+## Background  
+A common practice for managing powdery mildew in mungbean is to couple fungicide with an insecticide spray early in the development of the crop, usually before the disease is detected. This is despite the current recommendations that the best yield protection is achieved when the fungicide is first applied at the first sign of the disease. These recommendations were based on individual studies, many of which lacked sufficient power to draw significant conclusions. We undertook a meta-analysis to determine, when should the first fungicide spray be applied on mungbean to maximise yield protection.  
+
+## Compendium contents
+This research compendium details importing and summarising the raw data, application of the selection criteria, defining moderator variables for fungicide spray timing, and the statistical analysis methods for this meta-analysis of fungicide efficacy trials for controlling powdery mildew in mungbean.
+The meta-analysis's main aim is to determine:
+
+> When is the optimum time to spray fungicide to limit the effect of powdery mildew on mungbean yields?  
+
+For completeness, we also evaluated the efficacy of spray schedules on disease severity in the field.
+
+## Main chapters
+This compendium is broken down into four sections:  
+
+   1. [Details of the experiments, and application of inclusion criteria in the analysis][Trials considered for inclusion in meta-analysis]  
+   2. [Preliminary data exploration][Preliminary Analysis]  
+   *including a summary of the cleaned trial data and the treatments*
+   3. [Grain yield meta-analysis]  
+   4. [Powdery mildew severity Meta-analysis]  
+         
+These sections detail the methods and process we undertook during this meta-analysis. 
+
+## Links to manuscript
+The manuscript publishing the results presented in this compendium can be found at ....
+
+Preprint at .........
+
+## Acknowledgments  
+This meta-analysis was carried out with the funding assistance of the Grains Research and Development Corporation in Australia. Raw data for this work were contributed by the University of Southern Queensland, Queensland Department of Agriculture, Fisheries and Forestry (DAF), and the Northern Grower Alliance. Additional thanks to Malcolm Riley, Sue Thompson and Lawrie Price.  
+
+<!--chapter:end:index.Rmd-->
+
+# Trials considered for inclusion in meta-analysis  
+
+Trials testing fungicide efficacy on powdery mildew in mungbean in the Grains Research and Development Corporation (GRDC) northern grains region were sourced for a meta-analysis.
+
+Data were collected from a number of researchers from the Department of Agriculture and Fisheries (DAF), the University of Southern Queensland (USQ) and the Northern Growers Alliance (NGA).
+We would like to acknowledge in particular Professor Malcolm Riley's and Dr. Sue Thompson's effort in establishing and coordinating early field trials between 2010 and 2014 and GRDC for funding many of the trials which were included in this meta-analysis.
+
+<br>  
+
+### Load required R packages  
+
+```{r MEsummary_Libraries, echo=TRUE, results='hide'}
+if (!require("pacman"))
+   install.packages("pacman")
+
+pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, lubridate, here)
+
+```
+
+<br>  
+<br>  
+
+## Criteria for inclusion in meta-analysis  
+
+   1. A field trial testing the efficacy of fungicide on powdery mildew afflicted mungbean plants in eastern Australia.  
+   2. Trial data needed to include:  
+      i) Fungicide active ingredients.  
+      ii) A demethylase inhibitor (DMI) fungicide.  
+      iii) The date at which powdery mildew first appeared in the trial.  
+      iv) Disease severity at the end of the growing seasons.  
+      v) Fungicide application dates.  
+      vi) Fungicide dose.  
+      vii) Crop yield.  
+      viii) Treatment means and accompanying variance.
+
+<br>  
+<br>  
+
+## Import data  
+**Import data from trials which the raw data was available**  
+```{r import_dataRAW}
+PM_MB_raw <-
+   rbind(
+      read.csv(
+         here("cache/2010 PMmung Hermitage means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(here("cache/2011 PMmung Herm means.csv"), stringsAsFactors = FALSE),
+      read.csv(
+         here("cache/2011 PMmung Kingaroy means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(here("cache/AM1305_Goolhi_means.csv"), stringsAsFactors = FALSE),
+      read.csv(
+         here("cache/AM1304-MarysMount_means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(
+         here("cache/AM1303-Premer-Disease_means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(
+         here("cache/BB1305_Millmerran_means.csv"),
+         stringsAsFactors = FALSE
+      ),
+      read.csv(here("cache/Herm_16_means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/King_16_means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Fogerty_17_mean.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_17_mean.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Wellcamp_18_mean.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_19_mean.csv"), stringsAsFactors = FALSE)
+   )
+write.csv(
+   PM_MB_raw,
+   file = here("cache/PM_Mungbean_SummaryOfTrialsWithRawData"),
+   row.names = FALSE
+)
+```
+
+<br>
+
+Import dataset of manual entries  
+**Import dataset which were manually entered from trial reports**  
+```{r import_dataMan}
+PM_MB_man <-
+   read.csv(here("cache/PM_Mungbean_DataManuallyEntered.csv"),
+            stringsAsFactors = FALSE)
+```
+
+Bind raw and transcribed datasets.  
+```{r bind_data}
+PM_MB_dat <-
+   rbind(PM_MB_raw,
+         PM_MB_man)
+```
+
+<br>  
+<br>  
+
+
+## Summary of all trials  
+
+```{r data_summary}
+PM_MB_dat %>%
+   arrange(year, location) %>%
+   group_by(trial_ref) %>%
+   summarise(
+      Year = unique(year),
+      Location = unique(location),
+      `Replicates per treatment` = if (all(replicates[1] == replicates)) {
+         as.character(replicates[1])
+      } else{
+         as.character(paste(min(replicates), "-", max(replicates)))
+      },
+      `Trial design` = unique(trial_design),
+      `Planting date` = unique(planting_date),
+      `First sign of disease` = unique(first_sign_disease),
+      `Fungicide treatments` = length(n_treatment),
+   ) %>%
+   arrange(Year) %>%
+   kable(
+      caption = "Description of Experiments",
+      align = "c",
+      col.names = c(
+         "Unique Trial\nReference",
+         "Year",
+         "Location",
+         "Replicates\nper treatments",
+         "Trial design",
+         "Planting date",
+         "First sign\nof disease",
+         "Fungicide\n treatments"
+      )
+   )  %>%
+   kable_styling(fixed_thead = TRUE, full_width = TRUE) %>%
+   column_spec(c(3, 5:6), width = "3cm") %>%
+   scroll_box(height = "500px") 
+```
+
+<br>
+
+### Experiment locations  
+
+Trial locations occurring in the GRDC Northern Grains Region.  
+
+```{r Experiment_locations, echo=FALSE}
+experiment_sites <- data.frame(
+   location = c(
+      "Hermitage Research Station",
+      "Red Vale & Kingaroy Research Station",
+      "Gatton",
+      "Emerald Agricultural College",
+      "Bongeen 1 & 2",
+      "NGA - Premer",
+      "NGA - Millmerran",
+      "NGA - Marys Mount",
+      "NGA - Goolhi",
+      "Missen Flats",
+      "Wellcamp"
+   ),
+   lat = c(
+      -28.215 ,
+      -26.58,
+      -27.56,
+      -23.54,
+      -27.51666,
+      -31.43449,
+      -27.923674,
+      -31.0142,
+      -31.00246,
+      -27.905313,
+      -27.564277
+   ),
+   lon = c(
+      152.1003,
+      151.83,
+      152.32,
+      148.19,
+      151.450,
+      150.0052,
+      151.242706,
+      150.05018,
+      149.82507,
+      151.9772,
+      151.867879
+   )
+)
+
+write.csv(experiment_sites,
+          "cache/Mungbean_experiment_sites.csv",
+          row.names = FALSE)
+
+leaflet(experiment_sites) %>%
+   addProviderTiles("Esri.WorldTopoMap") %>%
+   setView(lat = -27.31,
+           lng = 150.456,
+           zoom = 5) %>%
+   addMarkers(
+      lng = ~ lon,
+      lat = ~ lat,
+      popup = ~ htmlEscape(location)
+   )
+```
+
+<br>
+<br>
+<br>
+
+
+## Subset data to selection criteria  
+
+Let's apply the selection criteria our dataset.  
+All trials identified for this meta-analysis reported: 
+
+* fungicide active ingredient,
+* dose,
+* first sign of disease. 
+
+Therefore no trials need to be removed to satisfy these criteria.  
+
+<br>
+
+**Retain trials including: Yield**  
+Three trials omitted due to not reporting yields  
+```{r TrialWithoutYield}
+PM_MB_dat %>%
+   filter(is.na(grain_yield.t.ha.)) %>%
+   distinct(trial_ref, year, location)
+
+PM_MB_dat <- PM_MB_dat %>%
+   filter(!is.na(grain_yield.t.ha.))
+```
+
+<br>
+
+**Retain trials including: Disease severity**  
+One more was trial removed as it did not report disease severity.  
+```{r TrialsWithotDisease}
+PM_MB_dat %>%
+   filter(is.na(PM_final_severity)) %>%
+   distinct(trial_ref, year, location)
+
+PM_MB_dat <- PM_MB_dat %>%
+   filter(!is.na(PM_final_severity))
+```
+
+<br>
+<br>
+<br>
+
+**Retain trials including: fungicide application dates**  
+No trials from our subset need to be removed for not reporting fungicide application dates.  
+```{r FungicideApplicationDates}
+PM_MB_dat %>%
+   group_by(trial_ref) %>%
+   summarise(No_Record_Of_Fungicide_Application_Dates = all(is.na(fungicide_application_1)),
+             .groups = 'drop') %>%
+   filter(No_Record_Of_Fungicide_Application_Dates)
+```
+
+<br>
+<br>
+<br>
+
+**Retain trials including: fungicide dose**  
+No trials from our subset need to be removed for not reporting fungicide dose.  
+```{r FungicideDoseTrials}
+PM_MB_dat %>%
+   group_by(trial_ref) %>%
+   summarise(No_Record_Of_Fungicide_Dose = all(is.na(dose_ai.ha)),
+             .groups = 'drop') %>%
+   filter(No_Record_Of_Fungicide_Dose)
+```
+
+<br>
+<br>
+<br>
+
+**Exclude fungicides tested in too few trials**  
+The meta-analysis should be focused on fungicides with the same mode of action.
+Fungicides from the best represented group will be retained.
+```{r Fungicides}
+PM_MB_dat %>%
+   group_by(fungicide_ai, trial_ref) %>%
+   summarise() %>%
+   count(sort = TRUE) %>%
+   rename(Trials = n) %>%
+   ggplot(aes(x = reorder(fungicide_ai, Trials), y = Trials)) +
+   xlab("Fungicide active ingredient") +
+   ylab("N Trials") +
+   geom_col() +
+   ggtitle(label = "Number of trials in which the\nspecified fungicide was used") +
+   coord_flip()
+```
+
+The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in the highest frequencies.
+The DMIs have the same fungicide mode of action and are good candidates to be pooled in the meta-analysis.
+
+Amistar Xtra and Custodia both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate therefore they will be removed.  
+
+<br>
+<br>
+<br>
+
+**Retain only fungicides with DMI action**
+```{r filterDMI_trials}
+DMI_Trials <-
+   PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole") %>%
+   distinct(trial_ref) %>%
+   pull()
+
+PM_MB_dat <-
+   PM_MB_dat[PM_MB_dat$trial_ref %in% DMI_Trials, ]
+```
+
+Now remove any non-DMI treatments or controls  
+```{r KeepOnlyDMI}
+PM_MB_dat <-
+   PM_MB_dat %>%
+   filter(
+      fungicide_ai == "control" |
+         fungicide_ai == "tebuconazole" |
+         fungicide_ai == "propiconazole"
+   )
+```
+
+<br>
+<br>
+<br>
+
+### Classify dataset variables  
+
+Importantly, the class of each variable in the data should be defined, retaining only the variables relevant to the analysis. 
+
+```{r classifyData}
+source("R/classify_PM_data.R") # use a custom code
+
+# classify dataset with Trials in both 
+PM_MB_dat <-
+   classify_PM_data(PM_MB_dat)
+
+```
+
+<br>  
+<br>  
+
+
+## Defining spray schedule variable  
+
+First are going to calculate the time between the first sign of disease and the fungicide applications.  
+
+```{r clustered_fungicide_applications}
+# collective data
+PM_MB_dat %<>%
+   mutate(fungicide_timing_1 = fungicide_application_1 - first_sign_disease) %>%
+   mutate(fungicide_timing_2 = fungicide_application_2 - fungicide_application_1) %>%
+   mutate(fungicide_timing_3 = fungicide_application_3 - fungicide_application_2)
+
+```
+
+To ensure sufficient number of replicates, treatments were binned by the first fungicide application date into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.  
+
+<br>  
+
+These categorical variables are named:  
+   - **Early**: First fungicide application was prior to first sign of disease.  
+   - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.  
+   - **Late**: First fungicide application was four or more days after first sign of disease being observed.  
+
+<br>  
+
+The number of follow-up sprays need also be defined.
+
+```{r TreatmentTable}
+data.frame(
+   TreatmentName = c(
+      "Early",
+      "Recommended",
+      "Late",
+      "EarlyPlus",
+      "RecommendedPlus",
+      "LatePlus"
+   ),
+   n_sprays = rep(c("Single", "Two - Three"), each = 3),
+   DaysRelativeToFirstSign = c(
+      "Prior to first sign of Powdery Mildew",
+      "1 - 3 days after first sign of Powdery Mildew",
+      "7 - 8 days after first sign of Powdery Mildew"
+   )
+) %>%
+   kable()
+```
+
+Simplify the clusters for the data-set
+```{r simple_Y_clusters}
+PM_MB_dat <- PM_MB_dat %>%
+   mutate(
+      spray_management = case_when(
+         fungicide_timing_1 < 0 &
+            is.na(fungicide_application_2) &
+            is.na(fungicide_application_3) ~ "Early",
+         fungicide_timing_1 >= 0 &
+            fungicide_timing_1 < 4 &
+            is.na(fungicide_application_2) &
+            is.na(fungicide_application_3) ~ "Recommended",
+         fungicide_timing_1 >= 4 &
+            is.na(fungicide_application_2) &
+            is.na(fungicide_application_3) ~ "Late",
+         fungicide_timing_1 < 0 &
+            !is.na(fungicide_application_2) ~ "Early_plus",
+         fungicide_timing_1 >= 0 &
+            fungicide_timing_1 < 4 &
+            !is.na(fungicide_application_2) ~ "Recommended_plus",
+         fungicide_timing_1 >= 4 &
+            !is.na(fungicide_application_2) ~ "Late_plus",
+         TRUE ~ "Other"
+      )
+   )
+
+PM_MB_dat[PM_MB_dat$fungicide_ai == "control",
+          c(
+             "fungicide_timing_1",
+             "fungicide_timing_2",
+             "fungicide_timing_3",
+             "spray_management"
+          )] <- "control"
+```
+
+
+Now to view the number break-down of the `spray_management` treatments in the *yield* and *disease severity* data-sets
+
+```{r tableSprayManagement_Y}
+table(PM_MB_dat$spray_management)
+```
+
+
+'Early_plus' treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
+
+```{r simpler_clusters_remove}
+PM_MB_dat <-
+   PM_MB_dat %>%
+   filter(spray_management != "Early_plus") %>%
+   select(-c(fungicide_timing_1, # remove the following columns which no longer have use
+             fungicide_timing_2,
+             fungicide_timing_3,
+             fungicide_application_1,
+             fungicide_application_2,
+             fungicide_application_3,
+             fungicide_application_4,
+             fungicide_application_5,
+             fungicide_application_6,
+             fungicide_application_7,
+             ))
+
+```
+
+<br>  
+<br>  
+<br>  
+
+
+## Identify variance
+We need variance accompanying the mean observations for each treatment to successfully undertake a meta-analysis.
+Lets investigate which of the included trials included variance for both response variables of interest, yield and disease severity.
+
+```{r Trials_For_Inclusion}
+PM_MB_dat %>%
+   mutate(MA_analysis = case_when(
+      is.na(yield_error & disease_error) == FALSE ~ "Yield and Disease",
+      is.na(yield_error) == FALSE & 
+         is.na(disease_error) ~ "Yield",
+      is.na(disease_error) == FALSE & 
+         is.na(yield_error) ~ "Disease",
+      TRUE ~ "Nil"
+   )) %>%
+   distinct(trial_ref, location, year, MA_analysis) %>%
+   arrange(year) %>%
+   kable()
+```
+
+<br>  
+
+Remove one trial in Emerald which did not report disease variance or yield variance.
+```{r remove_nil_var}
+# Remove trials without variance for both Disease and yield for data_set `PM_MB_dat
+PM_MB_dat <- 
+   PM_MB_dat %>%
+   mutate(contains_var = case_when(
+      is.na(yield_error) &
+         is.na(disease_error) ~ NA_character_,
+      TRUE ~ trial_ref)) %>%
+   filter(trial_ref %in% contains_var) %>%
+   select(-contains_var) 
+```
+
+<br>  
+
+Following an inspection of the yield and disease variance we determined imputation was not suitable and therefore we must exclude trials that did not report variance.
+For each analysis, yield and disease severity a separate data-set will be created, including only trials that report variance for the respective response variable
+
+One trial will be removed from the yield data set `PM_dat_Y` for not reporting yield variance.  
+```{r TrialsWithVariance}
+PM_MB_dat %>%
+   mutate(No_Var = is.na(yield_error)) %>%
+   filter(No_Var == TRUE) %>%
+   distinct(trial_ref, year, location)
+
+PM_dat_Y <- 
+   PM_MB_dat %>%
+   mutate(contains_var = case_when(
+      is.na(yield_error) ~ NA_character_,
+      TRUE ~ trial_ref)) %>%
+   filter(trial_ref %in% contains_var) %>%
+   select(-contains_var)
+```
+
+<br>  
+
+Two more trials will be removed for our disease severity data set `PM_dat_D` for not reporting yield variance.
+```{r TrialsWithVariance_D}
+PM_MB_dat %>%
+   mutate(No_Var = is.na(disease_error)) %>%
+   filter(No_Var == TRUE) %>%
+   distinct(trial_ref, year, location)
+
+PM_dat_D <- 
+   PM_MB_dat %>%
+   mutate(contains_var = case_when(
+      is.na(disease_error) ~ NA_character_,
+      TRUE ~ trial_ref)) %>%
+   filter(trial_ref %in% contains_var) %>%
+   select(-contains_var)
+```
+
+<br>  
+<br>  
+<br>  
+
+## Standardise Variance
+
+All the variance types need to be converted to sample variance. 
+First we will start by standardising yield variance according to the method reported by [Ngugi et.al (2011)](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221).
+
+### Yield variance standardisation
+```{r StandardiseYieldVariance}
+PM_dat_Y <-
+   PM_dat_Y %>%
+   mutate(
+      vi =
+         case_when(
+            Y_error_type == "stdev" ~ yield_error ^ 2,
+            Y_error_type == "lsd (P=0.05)" ~
+               (replicates * ((yield_error / 1.96) ^ 2) / 2)
+         ),
+      id = row_number(),
+      spray_management = fct_relevel(spray_management, sort)
+   ) %>%
+   select(-c(yield_error,
+             Y_error_type))
+
+```
+
+
+### Disease severity variance standardisation
+```{r StandardiseSeverityVariance}
+PM_dat_D <-
+   PM_dat_D %>%
+   mutate(
+      vi =
+         case_when(
+            D_error_type == "stdev" ~ disease_error ^ 2,
+            D_error_type == "lsd (P=0.05)" ~
+               (replicates * ((disease_error / 1.96) ^ 2) / 2)
+         ),
+      id = row_number(),
+      spray_management = fct_relevel(spray_management, sort)
+   ) %>%
+   select(-c(disease_error,
+             D_error_type))
+
+```
+
+<br>  
+
+#### Save the cleaned data
+```{r saveData01}
+write.csv(PM_dat_Y, file = "cache/PM_yield_clean_data.csv", row.names = FALSE)
+write.csv(PM_dat_D, file = "cache/PM_disease_clean_data.csv", row.names = FALSE)
+write.csv(PM_MB_dat, file = "cache/PM_MB_clean_data.csv", row.names = FALSE)
+save(PM_MB_dat, PM_dat_D, PM_dat_Y, file = here("cache/ImportDataAndSelectTrials01.Rdata"))
+```
+
+
+<!--chapter:end:01_TrialsForInclusionInAnalysis.Rmd-->
+
+# Preliminary Analysis
+
+```{r PA_Libraries, echo=TRUE, results='hide'}
+if (!require("pacman"))
+   install.packages("pacman")
+pacman::p_load(tidyverse,
+               lubridate,
+               bomrang,
+               openxlsx,
+               devtools,
+               reshape2,
+               lme4,
+               kableExtra,
+               flextable,
+               here,
+               gridExtra)
+
+load("cache/ImportDataAndSelectTrials01.Rdata")
+```
+
+<br>  
+<br>  
+
+## Trial summary statistics  
+
+The data explored in the `PM_MB_dat` data frame is a clean data frame focusing on trials which met the selection criteria testing DMI fungicides (tebuconazole / propiconazole) or no spray controls. 
+
+<br>  
+
+### Trial seasons
+How many trials were undertaken each season.  
+
+```{r FinalTrialsForInclusion1}
+PM_MB_dat %>%
+   distinct(trial_ref, location, year) %>%
+   arrange(year) %>%
+   group_by(year) %>%
+   summarise(n = n())%>%
+   flextable()
+   
+```
+
+<br>  
+<br>  
+
+### Trial locations
+The location of the trials including DMI fungicides.  
+
+```{r FinalTrialsForInclusion}
+PM_MB_dat %>%
+   distinct(trial_ref, location, year) %>%
+   group_by(location) %>%
+   summarise(n = n())%>%
+   flextable()
+```
+
+<br>  
+<br>  
+
+### Powdery mildew severity and mungbean grain yield summary per trial  
+Show a summary of both `powdery mildew severity` and mungbean `grain yield` means and ranges for all trials including DMI fungicides.  
+
+```{r Full_Trial_Summary_table, warning= FALSE}
+Sev_yield_table <-
+   PM_MB_dat %>%
+   mutate(PM_sev_control = case_when(fungicide_ai == "control" ~ PM_final_severity,
+                                     TRUE ~ NA_real_)) %>%
+   mutate(PM_sev_treat = case_when(fungicide_ai != "control" ~ PM_final_severity,
+                                   TRUE ~ NA_real_)) %>%
+   mutate(PM_y_control = case_when(fungicide_ai == "control" ~ grain_yield.t.ha.,
+                                   TRUE ~ NA_real_)) %>%
+   mutate(PM_y_treat = case_when(fungicide_ai != "control" ~ grain_yield.t.ha.,
+                                 TRUE ~ NA_real_)) %>%
+   mutate(trial_ref = str_remove(trial_ref, "mung")) %>%  # remove "mung" prefix from trial_ref
+   group_by(trial_ref,
+            location,
+            year,
+            planting_date,
+            first_sign_disease) %>%
+   summarise(
+      n = n(),
+      m_PM_sev_control = round(median(PM_sev_control, na.rm = TRUE), digits = 2),
+      n_controls = sum(is.na(PM_sev_control) == FALSE),
+      min_PM_sev = round(min(PM_sev_treat, na.rm = TRUE), digits = 2),
+      max_PM_sev = round(max(PM_sev_treat, na.rm = TRUE), digits = 2),
+      m_PM_yield_control = round(mean(PM_y_control, na.rm = TRUE), digits = 3),
+      min_PM_yield = round(min(PM_y_treat, na.rm = TRUE), digits = 3),
+      max_PM_yield = round(max(PM_y_treat, na.rm = TRUE), digits = 3),
+      .groups = "drop"
+   ) %>%
+   arrange(year) %>%
+   mutate(PM_sev_range = paste(min_PM_sev, max_PM_sev, sep = " - ")) %>%
+   mutate(yield_range = paste(min_PM_yield, max_PM_yield, sep = " - ")) %>%
+   mutate(m_PM_sev_control = paste(m_PM_sev_control, " (", n_controls, ")", sep = "")) %>%
+   select(-c(min_PM_sev, max_PM_sev, min_PM_yield, max_PM_yield, n_controls)) %>%
+   select(c(1:7, 9, 8, 10)) %>% # order columns
+   flextable() %>%
+   set_header_labels(
+      trial_ref = "Trial code",
+      location = "Location",
+      year = "Year",
+      planting_date = "Sowing date",
+      first_sign_disease = "PM onset",
+      n = "n",
+      m_PM_sev_control = "Control median\nPM severity",
+      PM_sev_range = "PM severity\nrange",
+      m_PM_yield_control = "Control\nmean yield",
+      yield_range = "Yield range\n(t / ha)"
+   ) %>%
+   fontsize(size = 8, part = "body") %>%
+   fontsize(size = 10, part = "header") %>%
+   align(j = 3:10, align = "center", part = "all") %>%
+   autofit() %>%
+   width(j = 7:10, width = 1) %>%
+   width(j = 3, width = 0.5) %>%
+   set_caption(
+      "Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset date, number of treatments per trial (n), PM median plot severity of the non-fungicide treated plots and the severity range in fungicide treatments, bracketed numbers refer to the number of pooled control treatments summarised; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare"
+   )
+Sev_yield_table
+```
+
+```{r eval=FALSE, include=FALSE}
+# Save table as a word document
+doc <- officer::read_docx()
+doc <- body_add_flextable(doc, value = Sev_yield_table)
+doc <- officer::body_end_section_landscape(doc)
+print(doc, target = "paper/figures/Table1_severity&yield.docx")
+```
+<br>  
+<br>  
+
+
+### Summary plots
+#### Seasonal disease pressure in the control  
+
+```{r bwplot_sev}
+sev_control_plot <- 
+   PM_MB_dat %>%
+   filter(fungicide_ai == "control") %>%
+   ggplot(aes(x = year, y = PM_final_severity)) +
+   geom_boxplot(outlier.alpha = 0) +
+   geom_jitter(size = 2, colour = "cadetblue",alpha = 0.4,width = 0.15) +
+   scale_y_continuous(breaks = c(1,3,5,7,9), limits = c(0.9,9.1)) +
+   ylab("PM severity (1 -9)")+
+   # xlab("Crop season")+
+   # theme(axis.title.x=element_blank(),
+   #      axis.text.x=element_blank(),
+   #      axis.ticks.x=element_blank())+
+   ggtitle("A")
+
+sev_control_plot      
+```
+<br>  
+<br>  
+
+#### Disease severity range for each spray schedule  
+
+```{r bwplot_yield}
+sev_schedule_plot <-
+   PM_MB_dat %>%
+   ggplot(aes(x = spray_management, y = PM_final_severity)) +
+   geom_boxplot(outlier.alpha = 0) +
+   geom_jitter(
+      size = 2,
+      colour = "cadetblue",
+      alpha = 0.4,
+      width = 0.15
+   ) +
+   scale_y_continuous(breaks = c(1, 3, 5, 7, 9), limits = c(0.9, 9.1)) +
+   scale_x_discrete(labels = c(
+      "control",
+      "early",
+      "late",
+      "late+",
+      "recommended",
+      "recomended+"
+   )) +
+   ylab("PM severity (1 -9)") +
+   # xlab("Spray Schedule")+
+   ggtitle("B")
+   
+sev_schedule_plot
+```
+
+<br>  
+<br>  
+
+#### Seasonal grain yield in the control  
+
+```{r bwplot_yield_year}
+Y_control_plot <-
+   PM_MB_dat %>%
+   filter(fungicide_ai == "control") %>%
+   ggplot(aes(x = year, y = grain_yield.t.ha.)) +
+   geom_boxplot() +
+   geom_jitter(
+      size = 2,
+      colour = "coral",
+      alpha = 0.4,
+      width = 0.15
+   ) +
+   scale_y_continuous(breaks = seq(0, 2.5, by = 0.5), limits = c(0, 2.6)) +
+   ylab(bquote('Mungbean grain yield ' *  ~  ~ t ~ ha ^ -1 * "")) +
+   xlab("Crop season") +
+   theme(axis.text.x = element_text(angle = 20, hjust = 0.75),
+         plot.margin = margin(0.2, 0, 0.71, 0, "cm"),
+         axis.title.x = element_text(vjust = -5))
+
+Y_control_plot
+```
+
+<br>  
+<br>  
+
+#### Mungbean yield for each spray schedule   
+
+```{r bwplot_yield_sched}
+Y_schedule_plot <- 
+   PM_MB_dat %>%
+   ggplot(aes(x = spray_management, y = grain_yield.t.ha.)) +
+   geom_boxplot(outlier.alpha = 0) +
+   geom_jitter(
+      size = 2,
+      colour = "coral",
+      alpha = 0.4,
+      width = 0.15
+   ) +
+   scale_y_continuous(breaks = seq(0, 2.5, by = 0.5), limits = c(0, 2.6)) +
+   scale_x_discrete(labels = c(
+      "control",
+      "early",
+      "late",
+      "late+",
+      "recommended",
+      "recomended+"
+   )) +
+   #ylab(bquote('Mungbean grain yield ' *  ~  ~ t ~ ha ^ -1 * "")) +
+   xlab("Spray Schedule")+
+    theme(
+      axis.title.y = element_blank(),
+      axis.text.x = element_text(angle = 20, hjust = 0.75))
+
+Y_schedule_plot
+```
+
+```{r include = FALSE}
+#library(gridExtra)
+# save plots into a 4 x 4 grid for publication
+
+p4 <- arrangeGrob(
+   sev_control_plot + theme(
+      axis.title.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.title.y = element_blank()
+   ),
+   sev_schedule_plot + theme(
+      axis.title.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.title.y = element_blank()
+   ),
+   Y_control_plot,
+   Y_schedule_plot
+)
+
+ggsave(
+   filename = "paper/figures/Fig1_boxplots_yield&sev.tiff",
+   plot = p4,
+   device = "tiff",
+   height = 6,
+   width = 7,
+   dpi = 300,
+   units = "in"
+      
+)
+```
+ 
+ 
+![Box plots of the unsprayed control treatments means for both PM severity (top) and crop yield (bottom), indicating within-season variation (A), and trial treatment means for each spray schedule (B).](paper/figures/Fig1_boxplots_yield&sev.png)  
+
+<br>  
+<br>  
+<br>  
+<br>  
+
+*****  
+
+## Treatment focused summaries
+
+Various factors have been studied in the collated trials which may influence the subsequent meta-analysis.
+A quick inspection of the following factors were done to examine the possible influence these variables may have on on mungbean grain yield and/or powdery mildew mean plot severity.
+
+   1. [Fungicide type] (propiconazole and tebuconazole)  
+   2. [Fungicide Doses]
+   3. [Number of fungicide sprays]  
+   4. [Host cultivar][Mungbean cultivars] (probably is a co-variate with season due to changing cultivars over time)  
+   5. [Row spacing]  
+   6. [Final disease rating / disease pressure][Disease pressure]
+   7. [Moisture availability for the crop][In-crop rainfall]
+   
+The data plotted below are from `r length(unique(PM_MB_dat$trial_ref))` field trials between (`r min(PM_MB_dat$year)` - `r max(PM_MB_dat$year)`) of which the details are described in the [Trials considered for inclusion in meta-analysis].  
+
+<br>  
+
+### Fungicide type
+#### Powdery mildew severity
+```{r TebuVPropi_sev}
+n_C <- sum(PM_MB_dat$fungicide_ai == "control")
+n_P <- sum(PM_MB_dat$fungicide_ai == "propiconazole")
+n_T <- sum(PM_MB_dat$fungicide_ai == "tebuconazole")
+
+PM_MB_dat %>%
+   ggplot(aes(y = PM_final_severity, x = as.factor(fungicide_ai))) +
+   xlab("Fungicide treatment") +
+   ggtitle(label = "Powdery mildew severity for each fungicide active ingredient") +
+   labs(caption = paste("Control n:", n_C,
+                        "; Propiconazole n:", n_P,
+                        "; Tebuconazole n:", n_T, sep = "")) +
+   geom_boxplot()
+```
+
+<br>  
+<br>  
+
+
+#### Yield effect
+```{r TebuVPropi_Yi}
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = as.factor(fungicide_ai))) +
+   xlab("Fungicide treatment") +
+   ggtitle(label = "Grain yield for each fungicide active ingredient") +
+   labs(caption = paste("Control n:", n_C,
+                        "; Propiconazole n:", n_P,
+                        "; Tebuconazole n:", n_T, sep = "")) +
+   geom_boxplot()
+```
+
+<br>  
+<br>  
+<br>  
+
+### Fungicide Doses{#fungicide-doses}  
+This analysis focuses only the DMI fungicides, tebuconazole and propiconazole, which were trialled the most often.
+
+We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.
+
+```{r tebuAndPropi_dose}
+PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole") %>%
+   ggplot(aes(x = as.factor(dose_ai.ha), fill = fungicide_ai)) +
+   xlab("Dose (g ai/ha)") +
+   ggtitle(label = "Total number of treatments for each respective tebuconazole\nor propiconazole dose") +
+   geom_bar() 
+```
+
+All trials that used tebuconazole used approximately the same dose.
+Dose of the active ingredient ranged from 62.35&nbsp;g per hectare to 60&nbsp;g per hectare.
+
+Doses for propiconazole range from 62.5&nbsp;g to 125&nbsp;g, a large variation.  
+Let's inspect the difference in yields for each dose.
+
+```{r PropiDoseEffect}
+PM_MB_dat %>%
+   filter(fungicide_ai == "propiconazole") %>%
+   ggplot(aes(x = relevel(as.factor(dose_ai.ha), "62.5"), y = grain_yield.t.ha.)) +
+   xlab("Dose (g ai/ha)") +
+   labs(label = "Yield for each respective propiconazole dose",
+        caption = "Facets indicate the number of applications") +
+   geom_boxplot(fill = "grey", alpha = 0.5) +
+   ylab("Grain yield t / ha") +
+   facet_grid(cols = vars(total_fungicide))
+```
+
+This dose effect should be investigated in the meta-analysis.  
+
+<br>  
+<br>  
+
+How many treatments of each dose have been investigated per trial?  
+
+```{r table_PropiDoses}
+table(as.character(PM_MB_dat[PM_MB_dat$fungicide_ai == "propiconazole",]$trial_ref),
+      PM_MB_dat[PM_MB_dat$fungicide_ai == "propiconazole",]$dose_ai.ha)
+```
+<br>  
+<br>  
+
+
+### Number of fungicide sprays  
+
+Inspect the frequency of sprays per fungicide.  
+```{r Fungicide_x_nSprays}
+table(PM_MB_dat$fungicide_ai, PM_MB_dat$total_fungicide)
+```
+Very few treatments were sprayed more than three times and only in `r unique(PM_MB_dat[PM_MB_dat$total_fungicide == 3,"trial_ref"])`
+
+<br>  
+<br>  
+
+
+### Mungbean cultivars
+
+Australian mungbean varieties have the following resistance to powdery mildew.
+
+   - Berken: Highly susceptible
+   
+   - Crystal: Susceptible
+   
+   - Jade: Moderately susceptible
+
+Let's view a stacked bar plot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.
+
+```{r Host_genotype, message=FALSE}
+PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole") %>%
+   group_by(host_genotype, fungicide_ai, trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Treatments = n) %>%
+   ggplot(aes(x = host_genotype, y = Treatments, fill = fungicide_ai)) +
+   xlab("Cultivar") +
+   ylab("N Trials") +
+   ggtitle(label = "Cultivars used in either tebuconazole or propiconazole trials") +
+   geom_col() +
+   scale_fill_discrete(name = "Fungicide AI")
+```
+
+
+#### Yield loss in cultivar Jade  
+
+Cultivar Jade shows the best quantitative resistance to powdery mildew.  
+Based on the 2016 GRDC report by Sue Thompson [-@SueThompson2016] we want to know what is the possible yield loss for this moderately susceptible cultivar.
+
+```{r JadeYieldLoss}
+PM_MB_dat %>%
+   filter(year == "2016",
+          host_genotype == "Jade") %>%
+   mutate(Treatment = case_when(fungicide_ai == "control" ~ "control_yield",
+                                TRUE ~ "FungicideTreated_yield")) %>%
+   group_by(location, Treatment) %>%
+   summarise(
+      trial_ref = trial_ref,
+      location = location,
+      year = year,
+      Yield = mean(grain_yield.t.ha., na.rm = TRUE),
+      .groups = "drop"
+   ) %>%
+   distinct() %>%
+   pivot_wider(names_from = Treatment, values_from = Yield) %>%
+   mutate(Diff = FungicideTreated_yield - control_yield) %>%
+   mutate(percent = (Diff / FungicideTreated_yield) * 100) %>%
+   select(trial_ref,
+          location,
+          year,
+          control_yield,
+          FungicideTreated_yield,
+          percent,
+          Diff) %>%
+   flextable()
+```
+
+<br>  
+<br>  
+
+
+### Row spacing  
+
+Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease as well as fungicide timing and efficacy.
+The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly.
+This finding has also been shown by several other researchers' work in Queensland and New South Wales as well.
+
+
+```{r row_spacing.m}
+PM_MB_dat %>%
+   filter(fungicide_ai == "tebuconazole" |
+             fungicide_ai == "propiconazole") %>%
+   group_by(fungicide_ai, row_spacing, trial_ref) %>%
+   summarise() %>%
+   count() %>%
+   rename(Trials = n) %>%
+   ggplot(aes(x = as.factor(row_spacing), y = Trials)) +
+   xlab("Row Spacing (m)") +
+   ylab("N Trials") +
+   ggtitle(label = "Trial row spacing using tebuconazole") +
+   geom_col(aes(fill = fungicide_ai),
+            position = "dodge") +
+   scale_fill_discrete(name = "Fungicide AI")
+```
+
+<br>  
+<br>  
+
+Will plotting row spacing treatments show differences for the response variables, *yield* and *disease severity*.  
+The main questions are:  
+
+   * Were there any statistical differences for mungbean *yield* or *powdery mildew severity* between row spacing treatments?  
+   
+   * If not, can we pool certain row spacing that have no significant difference?  
+
+
+```{r RS_severity}
+# Which row spacing leads to the higher disease severity
+PM_MB_dat %>%
+   filter(year == 2017 |
+             year == 2018) %>%
+   filter(fungicide_ai == "control") %>%
+   ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
+   geom_boxplot(alpha = 0.5) +
+   ylab("Final severity rating") +
+   xlab("Row spacing (m)") +
+   ggtitle("Powdery mildew severity between different row spacing across all trials")
+```
+
+There is little difference here between the row spacing treatments, Let's look if there is a trial location effect as disease pressure lead to varying results.  
+
+```{r RS_severity_x_trial}
+# Does trial year and location interact between row spacing and disease severity
+PM_MB_dat %>%
+   filter(year == 2017 |
+             year == 2018) %>%
+   filter(fungicide_ai == "control") %>%
+   ggplot(aes(y = PM_final_severity, x = factor(row_spacing))) +
+   geom_boxplot(alpha = 0.5) +
+   facet_grid(cols = vars(location)) +
+   ggtitle("Powdery mildew variation between different row spacing") +
+   ylab("Final severity rating") +
+   xlab("Row spacing (m)")
+```
+
+<br>  
+
+In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.
+
+```{r RS_yield}
+# Which row spacing leads to the higher yield potential
+PM_MB_dat %>%
+   filter(year == 2017 |
+             year == 2018) %>%
+   ggplot(aes(
+      y = as.numeric(grain_yield.t.ha.),
+      x = as.factor(row_spacing),
+      colour = location
+   )) +
+   geom_jitter(width = 0.05) +
+   ggtitle("Grain yield results for different row spacing at three locations") +
+   xlab("Row spacing (m)") +
+   ylab("Grain yield (t/ha)")+
+   theme_minimal()
+```
+
+The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial.
+However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.
+
+Overall row spacing may influence both powdery mildew severity and yield.
+However, in the trial reports, no significant interaction was found between row spacing, powdery mildew severity and yield.
+That is, with narrower row spacing appeared to increase yield even if the amount of powdery mildew increased and no relationship could be detected between an interaction of the three.
+
+<br>  
+<br>  
+
+
+
+### Disease pressure  
+The amount of disease pressure between seasons is another variable which could impact mungbean yield meta-analysis effect size. 
+```{r D_pres}
+# Assess the effect of yield pressure on the spray schedule efficacy
+# Use quantiles to separate disease pressure into High, Medium and low disease pressure categories
+DP33 <- 
+   PM_MB_dat %>%
+   filter(fungicide_ai == "control") %>%
+   pull(PM_final_severity) %>%
+   quantile(0.3333)
+
+DP66 <- 
+   PM_MB_dat %>%
+   filter(fungicide_ai == "control") %>%
+   pull(PM_final_severity) %>%
+   quantile(0.6666)
+
+
+   
+
+PM_MB_dat %>%
+   mutate(yc = case_when(fungicide_ai == "control" ~ grain_yield.t.ha.,
+                         TRUE ~ NA_real_))%>%
+   group_by(trial_ref)%>%
+   mutate(yc = mean(yc, na.rm=TRUE)) %>%
+   mutate(yield_saved = case_when(fungicide_ai != "control" ~ grain_yield.t.ha. - yc,
+                    fungicide_ai == "control" ~ NA_real_)) %>%
+   mutate(dc = case_when(fungicide_ai == "control" ~ PM_final_severity,
+                         TRUE ~ NA_real_))%>%
+   mutate(dc = mean(dc, na.rm = TRUE))%>%
+   ungroup() %>%
+   mutate(disease_pressure = case_when(dc <= DP33 ~ "low",
+                                 dc <= DP66 &
+                                 dc > DP33 ~ "medium",
+                                 dc > DP66 ~ "high",
+                                 TRUE ~ NA_character_))%>%
+   filter(spray_management != "control") %>%
+   ggplot(aes(disease_pressure, yield_saved))+
+   geom_boxplot()+ 
+   facet_grid(. ~ spray_management)
+   
+```
+
+From these plots it is difficult to determine if there is an interaction between disease pressure and the yield saved, or if no interaction exists and fungicide efficacy in general has greater potential to save yield when disease pressure is higher.
+It is worth noting there was not sufficient variation in the control plot disease severity to produce a `medium` disease severity category.
+
+
+<br>  
+<br> 
+<br>  
+<br>  
+
+
+### In-crop rainfall  
+#### Whole season
+
+In season rainfall is known to contribute significantly to crop yields, however the timing of rainfall is likely important.  
+
+First an inspection of all rainfall within the season
+```{r season_rainfall}
+source("R/add_lat_longs.R") # code adds the latitude- and longitude to PM_MB_dat
+source("R/crop_rain.R")
+
+# Obtain rainfall from bomrang
+PM_MB_dat$sum_rain <-
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = PM_MB_dat$planting_date,
+          last_day = PM_MB_dat$harvest_date)
+
+# plot yield vs rainfall
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = sum_rain)) + 
+   geom_point()
+```
+
+```{r lm_total}
+summary(lm(grain_yield.t.ha. ~ sum_rain, data = PM_MB_dat))
+```
+
+<br>  
+<br>  
+
+#### Early-season rainfall
+Here we only look at the effect of rainfall between the _planting date_ and _first sign of disease_. 
+We are choosing first sign of disease as a mid point in the crop maturity.  
+
+```{r early_season_rain}
+PM_MB_dat$early_rain <-
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = PM_MB_dat$planting_date,
+          last_day = PM_MB_dat$first_sign_disease)
+
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = early_rain)) + 
+   geom_point()
+```
+
+```{r lm_early_rain}
+summary(lm(grain_yield.t.ha. ~ early_rain, data = PM_MB_dat))
+```
+
+There is a significant negative association here, indicating rain fall early in the crop development negatively affects mungbean yields. However the very low R-squared value indicates it is no a strong one.
+
+<br>  
+<br>  
+
+#### Late-season rainfall  
+Here we only look at the effect of rainfall between the _first sign of disease_ and _crop harvest_.
+
+```{r late_rain}
+PM_MB_dat$late_rain <-
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = PM_MB_dat$first_sign_disease,
+          last_day = PM_MB_dat$harvest_date)
+
+
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = late_rain)) + 
+   geom_point()
+```
+
+```{r lm_late_rain}
+summary(lm(grain_yield.t.ha. ~ late_rain, data = PM_MB_dat))
+```
+
+There is a significant positive association here, indicating rainfall after disease commences is likely to lead to increased yield. However the very low R-squared value indicates it is no a strong one.
+
+<br>  
+<br>  
+
+#### Mid-season rainfall  
+Here we only look at the effect of rainfall between the 20 days after planting and 80 days after planting.
+```{r mid_rain}
+PM_MB_dat$mid_rain <-
+   crop_rain(location_name = PM_MB_dat$location,
+          latitude = PM_MB_dat$lat,
+          longitude = PM_MB_dat$lon,
+          first_day = ymd(PM_MB_dat$planting_date) + days(45),
+          last_day = ymd(PM_MB_dat$planting_date) + days(75)
+   )
+
+PM_MB_dat %>%
+   ggplot(aes(y = grain_yield.t.ha., x = mid_rain)) + 
+   geom_point()
+```
+
+```{r lm_mid_rain}
+summary(lm(grain_yield.t.ha. ~ mid_rain, data = PM_MB_dat))
+```
+There is no association with mid season rain and crop yields.  
+
+From the plots shown here we can draw the conclusion that we lack sufficient information. 
+Most likely available soil water between trials along with other unobserved variables influence of rainfall on mungbean crops and therefore we will not investigate any further.  
+
+<br>  
+<br> 
+<br> 
+******
+
+### FAO mungbean data
+
+An important consideration for why to carry out work on mungbean diseases is the value the crop provides. 
+Let's pull in data from the FAOSTAT website for the area of mungbean crops harvested.
+
+```{r FAO_data_inquiry}
+beans <- read.csv(here("data/FAOSTAT_data_7-6-2020.csv"))
+
+str(beans)
+
+beans %>%
+   filter(Item == "Beans, dry",
+          Element == "Area harvested") %>%
+   select(Year, Value) %>%
+   ggplot(aes(y = Value, x = Year)) +
+   geom_point() +
+   geom_smooth()
+```
+
+
+<!--chapter:end:02_Preliminary_analysis.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+# Grain yield meta-analysis
+
+Let's get started with the analysis by first finding the best fitting model which answers our research question.
+
+> When, in relation to PM establishment in the crop, should farmers begin spraying mungbean to mitigate yield loss: before PM establishing, immediately after first sign of PM establishing, or after PM has become established in the crop. 
+
+A secondary question to this aim is: given the time at which the first spray occurred does a second spray provide worthwhile yield protection.
+
+To do this, the model will use the main variables:
+
+   - *Grain yield* the response variable (t / ha)
+
+   - *Trial*, which resolves combinations of categorical random variables: 
+      i) year  
+      ii) location  
+      iii) row spacing  
+      iv) cultivar  
+      
+   - *spray_management* a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
+   
+   - *id* random variable indicating each treatment is independent
+   
+   
+```{r Yield_ME_libraries, echo=TRUE,results='hide'}
+# load R packages
+if (!require("pacman"))
+   install.packages("pacman")
+pacman::p_load(
+   tidyverse,
+   kableExtra,
+   bomrang,
+   RColorBrewer,
+   metafor,
+   here,
+   netmeta,
+   multcomp,
+   flextable
+)
+
+
+source(here("R/reportP.R"))
+
+# Data
+PM_dat_Y <-
+   read.csv("cache/PM_yield_clean_data.csv", stringsAsFactors = FALSE
+   )
+```
+
+
+
+### Define Trial
+```{r Yield_define_trial}
+PM_dat_Y <-
+   PM_dat_Y %>%
+   mutate(trial = paste(trial_ref,
+                        year,
+                        location,
+                        host_genotype,
+                        row_spacing,
+                        sep = "_")) 
+```
+
+
+<br>  
+<br>  
+<br>  
+
+## Spray schedule meta-analysis  
+
+The `spray_management` moderator will be evaluated in the first model. 
+Then this model will be tested against other models incorporating, time of disease onset, disease pressure and other variance-covariance matrix structures.  
+
+### Spray schedule moderator
+
+This *grain yield* meta-analysis is a multi-variate meta-analysis, using the `metafor` package function `rma.mv()` [@Viechtbauer2010].
+
+We are using the `spray_management` variable as a moderator and an interactive random term with the `trial` random variable. The variance-covariance matrix is specified as unstructured (UN) to allow correlations between and within trials.  
+
+```{r Yield_Metafor-analysis, cache=TRUE}
+PM_mv <- rma.mv(
+   yi = grain_yield.t.ha.,
+   V = vi,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_Y
+)
+```
+
+<br>  
+<br>  
+<br>  
+
+*****
+
+### Disease onset interaction with spray schedule  
+
+To determine if the time at which disease occurs in the cropping season influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `early` or `late` disease onset.
+
+`early` and `late` categories should be divided by a number close to the median days after sowing when signs of the disease were first observed to ensure roughly even numbers in each category.
+```{r median onset}
+PM_dat_Y %>%
+   mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
+             lubridate::ymd(planting_date)) %>%
+   pull(first_sign_days) %>%
+   median()
+```
+
+We will choose 42 days as this is the average days to flowering in mungbean. 
+In addition, Kelly et. al. [-@Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.
+
+Now let's define a continuous variable`first_sign_days` and a categorical variable `onset`.
+
+```{r define_onset, cache=TRUE}
+PM_dat_Y <- PM_dat_Y %>%
+   mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
+             lubridate::ymd(planting_date)) %>%
+   mutate(onset = case_when(
+      first_sign_days <= 42 ~ "early_onset",
+      first_sign_days > 42 ~ "late_onset"
+   ))
+```
+
+Inspect a histogram of when first sign occurred in the crop.
+
+```{r hist_onset}
+PM_dat_Y %>%
+   ggplot(aes(x = as.integer(first_sign_days))) +
+   geom_histogram(binwidth = 1) +
+   geom_vline(xintercept = 42)
+```
+
+`early_onset` contains `r nrow(PM_dat_Y[PM_dat_Y$onset == "early_onset",])` treatments and,  
+`late_onset` contains `r nrow(PM_dat_Y[PM_dat_Y$onset == "late_onset",])` treatments.  
+
+<br>  
+<br>  
+
+******
+
+#### metafor onset analysis
+
+We are adding the `onset` variable as a moderator to test and interaction with the `spray_management` variable as a moderator and an interactive term to the `trial` random variable.
+
+```{r onset_Metafor-analysis, cache=TRUE}
+PM_mv_onset <- rma.mv(
+   yi = grain_yield.t.ha.,
+   V = vi,
+   mods = ~ spray_management * onset,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_Y
+)
+```
+
+```{r}
+anova(PM_mv, PM_mv_onset)
+```
+
+This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value, and has a better fit, indicated by the higher log-likelihood with the additional `onset` parameters.
+However the higher AIC indicates in the model with the additional `onset` parameters does not sufficiently improve the model fit to warrant including these parameters and therefore the 'reduced' model is a better option.
+This inference is also reflected by the the chi-squared test, which is uncertain that the `onset` model is significantly better as indicated by the ANOVA `pval` `r round(anova(PM_mv, PM_mv_onset)$pval,3)`.
+
+<br>  
+<br>  
+<br>  
+
+******  
+
+### Disease pressure interaction with spray schedule
+
+To determine if the seasonal disease pressure influences the efficacy at which fungicide applications protect yield a categorical variable defining `high_pressure` or `low_pressure` can be defined.
+
+`high_pressure` and `low_pressure` will be divided by the median disease severity in the no spray control treatments at the end of the season.
+
+```{r median_pressure}
+PM_dat_Y %>%
+   filter(fungicide_ai == "control") %>%
+   pull(PM_final_severity) %>%
+   median()
+```
+
+Now to define these two new variables, `low_pressure` and `high_pressure` in the data.
+
+```{r define_disease_pressure}
+PM_dat_Y <- PM_dat_Y %>%
+   mutate(
+      d_pressure = case_when(
+         PM_final_severity < 8 ~ "low_pressure",
+         PM_final_severity >= 8 ~ "high_pressure"
+      )
+   )
+```
+
+Inspect a histogram of the final severity values in the crop.
+
+```{r hist_pressure}
+PM_dat_Y %>%
+   ggplot(aes(x = PM_final_severity)) +
+   geom_histogram(binwidth = 1) +
+   geom_vline(xintercept = 8)
+```
+
+<br>  
+<br>  
+<br>  
+
+******  
+
+
+#### metafor disease pressure interaction
+
+Test `d_pressure` variable addition as a moderator to evaluate it's interaction with the `spray_management` to influence the grain yield effect size.
+
+```{r Dpressure_Metafor-analysis, cache=TRUE}
+PM_mv_dp <- rma.mv(
+   yi = grain_yield.t.ha.,
+   V = vi,
+   mods = ~ spray_management * d_pressure,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_Y
+)
+```
+
+```{r}
+anova(PM_mv, PM_mv_dp)
+```
+This comparison tells us the meta-analysis including `d_pressure` explained more residual heterogeneity, as shown by the lower QE value, and has a better fit, indicated by the higher log-likelihood with the additional `d_pressure` parameter.
+However the lower AIC in the 'Full' model indicates that retaining the model including the additional `d_pressure` variables could be a reasonable decision.
+In addition the chi-squared test indicates that the `d_pressure` model is better as indicated by the `pval` 0.0468.  
+
+However it is worth noting that there were no Late plus schedules that experienced low disease pressure. 
+Even though the disease pressure interaction on the moderators could be deemed significant (P = 0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky. More data is needed to explore this possible effect.
+
+
+```{r}
+# show the division of spray schedules by the d_pressure moderator
+PM_dat_Y %>%
+   group_by(spray_management, d_pressure) %>%
+   summarise(n()) %>%
+   flextable()
+```
+
+
+```{r}
+summary(PM_mv_dp)
+```
+
+<br>  
+<br>  
+<br>  
+
+******  
+
+### Test variance-covavriance matrix structure
+
+Test a model with an implied simpler variance-covariance matrix, "compound symmetry" (CS), to examine if unstructured matrix is suitable.
+
+```{r}
+PM_mv_cs <- rma.mv(
+   yi = grain_yield.t.ha.,
+   V = vi,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "CS",
+   control = list(optimizer = "optim"),
+   data = PM_dat_Y
+)
+
+anova(PM_mv, PM_mv_cs)
+```
+
+Again `PM_mv` (Full) prevails as the better model (p = 0.0014; AIC = -45.4359) and therefore we should keep the unstructured variance-covariance matrix.
+
+ > Therefore the model `PM_mv`, is the preffered model with this data.
+
+
+## Summarise PM_mv model
+
+```{r PM_mv_summary}
+summary(PM_mv)
+```
+
+
+The first table in the `PM_mv` output shows the tau^2 (between trial variance) for each random effect intercept (spray_management) to trial and the number of occurrences for each treatment in the analysis.
+This effectively shows the heterogeneity between trials for these particular treatments.
+
+This table shows `Recommended_plus` showed the highest heterogeneity between trials followed by `Late_plus`, `Late` then `Recommended`, with `Early` and the no-spray `control` showing the least heterogeneity.
+
+The second table is in two parts (left and right). 
+The left part, rho, is the correlation of variation between the specified treatments.
+All comparisons were acceptable except for a comparison between `Early` and `Late_plus`, indicating `0.000` rho.
+`Early` and `Late_plus` treatments never occurred within the same trial, which is indicated by the right side of the table (hence earlier warnings). 
+This is not a concern for this type of network meta-analysis because the differences between these treatments can be inferred by their differences with other treatments [@Madden2016].
+
+In this result we can see that the `Early` treatment is not significantly different to the intercept, which in this case is the mean of the no spray `control`.
+However the other treatments are significantly different from the no-spray control (intercept).
+The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M =$ `r PM_mv$QM` $,df =$ `r PM_mv$m`, `r reportP(PM_mv$QMp)`) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
+The analysis shows there is still a significant amount of residual heterogeneity ($Q_E =$ `r PM_mv$QE` $,df=$ `r PM_mv$k - PM_mv$m`, `r reportP(PM_mv$QEp)` ) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.  
+
+<br>
+<br>
+<br>
+
+******
+
+## Meta-analysis results summary
+
+### Moderator estimates table
+
+Let's present the meta-analysis results for the moderator variables in a table of estimates.
+
+```{r metafor_results_table_yield}
+# obtain number of treatments included in each moderator variable
+k5 <-
+   as.data.frame(table(PM_dat_Y$trial, PM_dat_Y$spray_management)) %>%
+   filter(Freq != 0) %>%
+   group_by(Var2) %>%
+   summarise(n()) %>%
+   pull()
+
+# create data.frame
+results_mv <- data.frame(
+   Moderator = c(
+      "Intercept / No Spray control",
+      "Early",
+      "Late",
+      "Late+",
+      "Recommended",
+      "Recommended+"
+   ),
+   N = PM_mv$g.levels.k,
+   k = k5,
+   Effect = round(PM_mv$b, 4),
+   se = round(PM_mv$se, 4),
+   CI_lower = round(PM_mv$ci.lb, 4),
+   CI_upper = round(PM_mv$ci.ub, 4),
+   z_val = round(PM_mv$zval, 4),
+   p_val = reportP(PM_mv$pval, AsNumeric = FALSE, P_prefix = FALSE)
+)
+
+# rename colnames to give table headings
+colnames(results_mv)[c(2:5, 7:10)] <-
+   c("Treatment",
+     "N",
+     "k",
+     "mu",
+     "CI_{L}",
+     "CI_{U}",
+     "Z",
+     "P")
+
+yield_estimates_table <-
+   flextable(results_mv[c(2, 5, 6, 3, 4), c(1, 3:8, 10)]) %>%
+   align(j = 3:8, align = "center", part = "all") %>%
+   fontsize(size = 8, part = "body") %>%
+   fontsize(size = 10, part = "header") %>%
+   italic(italic = TRUE, part = "header") %>%
+   set_caption(
+      "Table 2: Estimated mungbean yield mean difference to the no spray control (intercept) for each spray schedule treatment. Yield estimates (u) were calculated from a network meta-analysis of data obtained from grey literature reports of 'k' field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
+   ) %>%
+   autofit() %>%
+   footnote(
+      i = 1,
+      j = c(2:4, 6:8),
+      value = as_paragraph(
+         c(
+            "number of treatment means categorised to each spray schedule",
+            "number of trials with the respective spray schedule",
+            "estimated mean yield determined by the meta-analysis",
+            "Lower range of the 95% confidence interval",
+            "Upper range of the 95% confidence interval",
+            "indicates the significance between each respective spray schedule and the no spray control (intercept)"
+         )
+      ),
+      ref_symbols = letters[1:6],
+      part = "header",
+      inline = TRUE
+   )
+
+yield_estimates_table
+```
+
+
+```{r eval=FALSE, include=FALSE}
+# Save table as a word document
+doc <- officer::read_docx()
+doc <- body_add_flextable(doc, value = yield_estimates_table)
+print(doc, target = "paper/figures/Table2_yield_estimates.docx")
+```
+
+<br>  
+<br>  
+
+### Moderator estimates plot  
+
+View the moderator comparisons in a plot.
+
+```{r metafor_plot_yied}
+results_mv %>%
+   filter(Treatment != "control") %>%
+   mutate(Treatment = factor(Treatment, levels = rev(
+      c(
+         "Early",
+         "Recommended",
+         "Recommended_plus",
+         "Late",
+         "Late_plus"
+      )
+   ))) %>%
+   ggplot(aes(Treatment, mu)) +
+   geom_hline(
+      yintercept = seq(-0.05, 0.3, by = 0.05),
+      linetype = 3
+   ) +
+   geom_point(aes(size = 1 / se), shape = 15) +
+   geom_linerange(aes(ymin = `CI_{L}`, ymax = `CI_{U}`)) +
+   coord_flip() +
+   labs(caption = "Bars indicate 95% confidence intervals")+
+   ylab(expression(paste(
+      "Mean yield difference to control (t ha" ^ -1, ")", sep = ""
+   ))) +
+   scale_x_discrete(
+      "Moderator variable",
+      labels = c(
+         expression("Late"["plus"]),
+         expression("Late"["single"]),
+         expression("Recommended"["plus"]),
+         expression("Recommended"["single"]),
+         expression("Early"["single"])
+      )
+   )
+ggsave("paper/figures/Fig2_means_difference.png",
+       height = 3,
+       dpi = 500)
+```
+
+<br>  
+<br>  
+
+### Moderator contrasts
+
+Calculate treatment contrasts
+
+```{r PM_Mv_Contrast_yield}
+source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
+summary(glht(PM_mv, linfct = cbind(contrMat(rep(
+   1, 6
+), type = "Tukey"))), test = adjusted("none"))
+contrast_Ssum <-
+   simple_summary(summary(glht(PM_mv, linfct = cbind(
+      contrMat(rep(1, 6), type = "Tukey")
+   )), test = adjusted("none")))
+contrast_Ssum %>%
+   flextable()%>%
+   autofit()
+
+```
+
+These contrasts can be viewed in a plot.
+
+```{r plotContrasts_yield}
+par(mar = c(5, 13, 4, 2) + 0.1)
+plot(glht(PM_mv, linfct = cbind(contrMat(rep(
+   1, 6
+), type = "Tukey"))), yaxt = 'n')
+axis(
+   2,
+   at = seq_along(contrast_Ssum$contrast),
+   labels = rev(contrast_Ssum$contrast),
+   las = 2,
+   cex.axis = 0.8
+)
+```
+
+
+
+### Profile plots
+
+An inspection of the profile plots to ensure the model is not over-fitted can be undertaken.
+We expect to see the estimate align with the peak of the curve.
+Also that the shape of the line is a curve.
+As these plots take a long time to generate they will not be evaluated.
+
+```{r profile_plots, eval=FALSE, echo=TRUE, results="hide"}
+profile(PM_mv, tau2 = 1)
+profile(PM_mv, tau2 = 2)
+profile(PM_mv, tau2 = 3)
+profile(PM_mv, tau2 = 4)
+profile(PM_mv, tau2 = 5)
+profile(PM_mv, tau2 = 6)
+```
+
+
+<br>  
+<br>  
+<br>  
+
+******  
+
+
+## netmeta analysis
+
+The `netmeta` package can provide a graphical representation of the pairwise comparisons.
+
+The `netmeta` package uses a frequentist approach focusing on the pairwise comparisons between treatments. 
+These results can be used to evaluate if our outcome with the `metafor` package was robust.
+
+```{r netmeta-analysis}
+datPM3 <- PM_dat_Y %>%
+   group_by(trial, spray_management, replicates) %>%
+   summarize(yi_mean = mean(grain_yield.t.ha.),
+             vi_mean = mean(vi)) %>%
+   ungroup()
+
+PM_con <- pairwise(
+   treat = spray_management,
+   n = replicates,
+   mean = yi_mean,
+   sd = sqrt(vi_mean),
+   studlab = trial,
+   data = datPM3,
+   sm = "MD"
+)
+
+net_con <- netmeta(TE,
+                   seTE,
+                   treat1,
+                   treat2,
+                   studlab,
+                   data = PM_con,
+                   sm = "MD")
+
+summary(net_con)
+```
+
+<br>  
+<br>  
+
+
+### netmeta estimates plot
+Visualise netmeta results as a forest plot.
+
+```{r netmeta-forest}
+forest(
+   net_con,
+   reference.group = 1,
+   rightcols = c("effect", "ci", "Pscore"),
+   rightlabs = "P-Score",
+   small.values = "bad"
+)
+```
+<br>  
+<br>  
+<br>  
+
+******  
+
+### Moderator netgraph
+
+The `netmeta` analysis suggests the spray schedule commencing early are no different to any other treatment including the no spray `control`.
+It estimates the mean is very similar to the recommended treatments.
+The `Recommended_plus` and `Late_plus` treatments show higher mean estimates, however are not significantly different from the `Early` estimate.
+
+```{r netgraphGW}
+netgraph(
+   net_con,
+   plastic = FALSE,
+   thickness =  "number.of.studies",
+   points = FALSE,
+   cex.points = 1,
+   number.of.studies = TRUE,
+   cex.number.of.studies = 1,
+   col.number.of.studies = "black",
+   multiarm = FALSE,
+   pos.number.of.studies = 0.4
+)
+```
+
+<br>  
+<br>  
+<br>  
+
+******  
+
+```{r}
+netleague(net_con)
+
+decomp.design(net_con)
+
+netsplit(net_con)
+
+nm1 <- netmeasures(net_con)
+
+plot(
+   nm1$meanpath,
+   nm1$minpar,
+   pch = "",
+   xlab = "Mean path length",
+   ylab = "Minimal parallelism"
+)
+text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
+```
+
+
+
+```{r Save_meta_data, eval=FALSE}
+save(PM_dat_Y,
+     PM_mv,
+     contrast_Ssum,
+     file = here("cache/Meta-analysisData.Rdata"))
+```
+
+
+
+<!--chapter:end:03_Yield_MetaAnalysis.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Powdery mildew severity Meta-analysis  
+
+An additional question to our main aim: does spray schedule have a similar effect on disease severity?
+
+This model will be similar to the grain yield meta-analysis and use the main variables:
+
+   - *Powdery mildew severity* the response variable (1-9 scale)
+
+   - *Trial*, which resolves combinations of categorical random variables: 
+      i) year  
+      ii) location  
+      iii) row spacing  
+      iv) cultivar  
+      
+   - *spray_management* a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
+   
+   - *id* random variable indicating each treatment is independent
+
+
+<br>  
+
+Load libraries and data  
+```{r MEsummary_Libraries2, echo=TRUE,results='hide'}
+if (!require("pacman"))
+   install.packages("pacman")
+pacman::p_load(tidyverse,
+               kableExtra,
+               bomrang,
+               RColorBrewer,
+               metafor,
+               here,
+               netmeta,
+               multcomp,
+               dplyr,
+               flextable)
+
+source(here("R/reportP.R"))
+
+# Data
+PM_dat_D <-
+   read.csv("cache/PM_disease_clean_data.csv", stringsAsFactors = FALSE)
+```
+
+<br>  
+<br>  
+
+
+### Define Trial
+```{r define_trial}
+PM_dat_D <-
+   PM_dat_D %>%
+   mutate(trial = paste(trial_ref,
+                        year,
+                        location,
+                        host_genotype,
+                        row_spacing,
+                        sep = "_")) 
+```
+
+Inspect disease severity for a normality.
+```{r sev_hist}
+hist(PM_dat_D$PM_final_severity)
+```
+
+<br>  
+<br>  
+<br>  
+
+*****
+
+## Disease severity spray schedule meta-analysis  
+
+```{r Metafor-Sev-analysis, cache=TRUE}
+PMsev_mv <- rma.mv(
+   yi = PM_final_severity,
+   vi,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_D
+)
+
+summary(PMsev_mv)
+```
+
+All spray schedules were effective at lowering the disease severity at the end of the season.
+`Recommended_plus` reduced powdery mildew incidence the most.  
+
+<br>  
+<br>  
+<br>  
+
+### Disease severity moderator contrasts 
+
+Calculate the treatment contrasts
+
+```{r sevContrasts}
+source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
+
+contrast_Ssum <-
+   simple_summary(summary(glht(PMsev_mv, linfct = cbind(
+      contrMat(rep(1, 6), type = "Tukey")
+   )), test = adjusted("none")))
+
+contrast_Ssum %>%
+   flextable()%>%
+   autofit()
+```
+
+<br>  
+<br>  
+<br>  
+
+```{r plotsevContrasts}
+par(mar = c(5, 13, 4, 2) + 0.1)
+plot(glht(PMsev_mv, linfct = cbind(contrMat(rep(
+   1, 6
+), type = "Tukey"))), yaxt = 'n')
+axis(
+   2,
+   at = seq_along(contrast_Ssum$contrast),
+   labels = rev(contrast_Ssum$contrast),
+   las = 2,
+   cex.axis = 0.8
+)
+```
+
+`Recommended_plus` limited disease severity significantly better than any other spray treatment. 
+`Late_plus` limited disease severity significantly better than a single `Late` application. 
+This indicates that two spray treatments were significantly better than a single application, but the timing of the fungicide application was more critical.  
+
+<br>  
+<br>  
+<br>  
+
+### Meta-analysis summary table
+```{r metafor_results}
+# obtain number of treatments included in each moderator variable
+k5 <-
+   as.data.frame(table(PM_dat_D$spray_management)) %>%
+   filter(Freq != 0) %>%
+   pull(Freq)
+
+k6 <-
+   as.data.frame(table(PM_dat_D$trial_ref, PM_dat_D$spray_management)) %>%
+   filter(Freq != 0) %>%
+   group_by(Var2) %>%
+   summarise(n()) %>%
+   pull()
+
+intercept <- round(PMsev_mv$b, 4)[1,1]
+
+# create data.frame
+results_mv <- data.frame(
+   Moderator = c(
+   "Intercept / No Spray control",
+   "Early",
+   "Late",
+   "Late+",
+   "Recommended",
+   "Recommended+"
+   ),
+   N = k5,
+   k = k6,
+   Effect = round(PMsev_mv$b, 4),
+   se = round(PMsev_mv$se, 4),
+   CI_lower = round(PMsev_mv$ci.lb, 4),
+   CI_upper = round(PMsev_mv$ci.ub, 4),
+   z_val = round(PMsev_mv$zval, 4),
+   p_val = reportP(PMsev_mv$pval, AsNumeric = FALSE, P_prefix = FALSE),
+   eff_bar = round(1 -(intercept + PMsev_mv$b)/intercept,4)*100,
+   eff_CI_high = round(1 -(intercept + PMsev_mv$ci.ub)/intercept,4)*100,
+   eff_CI_low = round(1 -(intercept + PMsev_mv$ci.lb)/intercept,4)*100
+   
+)
+
+# rename colnames to give table headings
+colnames(results_mv)[c(1:4,6:12 )] <-
+   c("Moderator",
+     "N",
+     "k",
+     "mu",
+     "CI_{L}",
+     "CI_{U}",
+     "Z",
+     "P",
+     "Efficacy",
+     "Eff CI_lower",
+     "Eff CI upper")
+
+disease_estimates_table <-
+   flextable(results_mv[c(2,5,6,3,4), c(1:4,6:7, 9:12)]) %>%
+   align(j = 2:10, align = "center", part = "all") %>%
+   fontsize(size = 8, part = "body") %>%
+   fontsize(size = 10, part = "header") %>%
+   italic(italic = TRUE, part = "header") %>%
+   set_caption(
+      "Table 3: Estimated powdery mildew severity mean difference ($u$) to the no spray control (intercept) for each spray schedule treatment. Estimates were calculated from a network meta-analysis of data obtained from grey literature reports of (k) field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
+   ) %>%
+   autofit() %>%
+   footnote(
+      i = 1,
+      j = c(2:10),
+      value = as_paragraph(
+         c(
+            "number of treatment means categorised to each spray schedule",
+            "number of trials with the respective spray schedule",
+            "estimated mean yield determined by the meta-analysis",
+            "Lower range of the 95% confidence interval",
+            "Upper range of the 95% confidence interval",
+            "indicates the significance between each respective spray schedule and the no spray control (intercept)",
+            "Fungicide spray schedule efficacy",
+            "Lower range of the 95% confidence interval",
+            "Upper range of the 95% confidence interval"
+         )
+      ),
+      ref_symbols = letters[c(1:7,4,5)],
+      part = "header",
+      inline = TRUE
+   )%>%
+   add_header(Moderator = "",
+              N = "",
+              k = "",
+              mu = "Effect Size",
+              `CI_{L}` = "Effect Size",
+              `CI_{U}` = "Effect Size",
+              P  = "Effect Size",
+              Efficacy = "PM control",
+              `Eff CI_lower` = "PM control",
+              `Eff CI upper` = "PM control") %>%
+   merge_h( part = "header")%>%
+   hline_top(part="all", border = officer::fp_border(color = "black", width = 2) )
+
+disease_estimates_table
+```
+
+
+```{r eval=FALSE, include=FALSE}
+# Save table as a word document
+doc <- officer::read_docx()
+doc <- body_add_flextable(doc, value = disease_estimates_table)
+print(doc, target = "paper/figures/Table3_severity_esimates.docx")
+```
+
+
+<!--chapter:end:04_Severity_MetaAnalysis.Rmd-->
+
