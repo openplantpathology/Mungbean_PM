@@ -146,7 +146,8 @@ sev_control_plot <-
    # theme(axis.title.x=element_blank(),
    #      axis.text.x=element_blank(),
    #      axis.ticks.x=element_blank())+
-   ggtitle("A")
+   ggtitle("A") +
+   theme_minimal()
 
 sev_control_plot      
 ```
@@ -177,7 +178,8 @@ sev_schedule_plot <-
    )) +
    ylab("PM severity (1 -9)") +
    # xlab("Spray Schedule")+
-   ggtitle("B")
+   ggtitle("B")+
+   theme_minimal()
    
 sev_schedule_plot
 ```
@@ -235,10 +237,10 @@ Y_schedule_plot <-
       "recomended+"
    )) +
    #ylab(bquote('Mungbean grain yield ' *  ~  ~ t ~ ha ^ -1 * "")) +
-   xlab("Spray Schedule")+
-    theme(
-      axis.title.y = element_blank(),
-      axis.text.x = element_text(angle = 20, hjust = 0.75))
+   xlab("Spray schedule")+
+   theme_minimal()+
+   theme(axis.title.y = element_blank(),
+         axis.text.x = element_text(angle = 20, hjust = 0.75))
 
 Y_schedule_plot
 ```
@@ -273,7 +275,7 @@ ggsave(
       
 )
 ```
- 
+
  
 ![Box plots of the unsprayed control treatments means for both PM severity (top) and crop yield (bottom), indicating within-season variation (A), and trial treatment means for each spray schedule (B).](paper/figures/Fig1_boxplots_yield&sev.png)  
 
