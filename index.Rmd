@@ -34,9 +34,8 @@ This compendium is broken down into four sections:
 These sections detail the methods and process we undertook during this meta-analysis. 
 
 ## Links to manuscript
-The manuscript publishing the results presented in this compendium can be found at ....
 
-Preprint at .........
+The preprint is available from agriRxiv: <https://doi.org/10.31220/agriRxiv.2021.00042>.
 
 ## Acknowledgments  
-This meta-analysis was carried out with the funding assistance of the Grains Research and Development Corporation in Australia. Raw data for this work were contributed by the University of Southern Queensland, Queensland Department of Agriculture, Fisheries and Forestry (DAF), and the Northern Grower Alliance. Additional thanks to Malcolm Riley, Sue Thompson and Lawrie Price.  
+This meta-analysis was carried out with the funding assistance of the Grains Research and Development Corporation in Australia. Raw data for this work were contributed by the University of Southern Queensland, Queensland Department of Agriculture, Fisheries and Forestry (DAF), and the Northern Grower Alliance. Additional thanks to Malcolm Riley, Sue Thompson and Lawrie Price.
