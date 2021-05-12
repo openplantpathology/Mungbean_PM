@@ -66,8 +66,25 @@ PM_dat_D <-
 Inspect disease severity for a normality.
 ```{r sev_hist}
 hist(PM_dat_D$PM_final_severity)
+summary(PM_dat_D$PM_final_severity)
+```
+This meta-analysis assumes the effect size to be normally distributed, however, we can see here that it is skewed towards the top of the scale, eight and nine in this case.
+
+Traditionally disease severity is log transformed due to it being more likely to be skewed to the lower disease severity scores. In this case if we `log()` transformed the response it would increase the skew towards higher disease severity.
+
+We can improve the normality by transforming the effect size, disease severity, by squaring. As variance is proportional to the mean we square the variance aswell
+```{r}
+hist(PM_dat_D$PM_final_severity^2)
+summary(PM_dat_D$PM_final_severity^2)
 ```
 
+```{r}
+# dat1 <- escalc(measure = "MN", yi = PM_final_severity., vi = vi, ni = replicates, data = PM_dat_D, slab = paste0(trial, spray_management))
+
+PM_dat_D$yi_square <- PM_dat_D$PM_final_severity ^2
+PM_dat_D$vi_square <- (PM_dat_D$vi +1)^2
+```
+Note: Here I added 1 to the variance before it was squared. This is because squaring numbers below one makes the number smaller or remain zero. This does not change the meta-analysis estimates but does increase tao
 <br>  
 <br>  
 <br>  
@@ -77,6 +94,22 @@ hist(PM_dat_D$PM_final_severity)
 ## Disease severity spray schedule meta-analysis  
 
 ```{r Metafor-Sev-analysis, cache=TRUE}
+PMsev_mvSQ <- rma.mv(
+   yi = yi_square,
+   V = vi_square,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_D
+)
+
+summary(PMsev_mvSQ)
+```
+
+```{r Metafor-Sev-analysis, cache=TRUE}
+
 PMsev_mv <- rma.mv(
    yi = PM_final_severity,
    vi,
@@ -87,7 +120,6 @@ PMsev_mv <- rma.mv(
    control = list(optimizer = "optim"),
    data = PM_dat_D
 )
-
 summary(PMsev_mv)
 ```
 
@@ -110,7 +142,9 @@ contrast_Ssum <-
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 
-contrast_Ssum %>%
+contrast_Ssum[6:15,] %>%
+   mutate(coefficients = -sqrt(abs(coefficients)),
+          StdErr = sqrt(StdErr))%>%
    flextable()%>%
    autofit()
 ```
@@ -121,7 +155,7 @@ contrast_Ssum %>%
 
 ```{r plotsevContrasts}
 par(mar = c(5, 13, 4, 2) + 0.1)
-plot(glht(PMsev_mv, linfct = cbind(contrMat(rep(
+plot(glht(PMsev_mvSQ, linfct = cbind(contrMat(rep(
    1, 6
 ), type = "Tukey"))), yaxt = 'n')
 axis(
@@ -156,7 +190,7 @@ k6 <-
    summarise(n()) %>%
    pull()
 
-intercept <- round(PMsev_mv$b, 4)[1,1]
+intercept <- round(PMsev_mvSQ$b, 4)[1,1]
 
 # create data.frame
 results_mv <- data.frame(
@@ -170,17 +204,20 @@ results_mv <- data.frame(
    ),
    N = k5,
    k = k6,
-   Effect = round(PMsev_mv$b, 4),
-   se = round(PMsev_mv$se, 4),
-   CI_lower = round(PMsev_mv$ci.lb, 4),
-   CI_upper = round(PMsev_mv$ci.ub, 4),
-   z_val = round(PMsev_mv$zval, 4),
-   p_val = reportP(PMsev_mv$pval, AsNumeric = FALSE, P_prefix = FALSE),
-   eff_bar = round(1 -(intercept + PMsev_mv$b)/intercept,4)*100,
-   eff_CI_high = round(1 -(intercept + PMsev_mv$ci.ub)/intercept,4)*100,
-   eff_CI_low = round(1 -(intercept + PMsev_mv$ci.lb)/intercept,4)*100
+   Effect = round(sqrt(abs(PMsev_mvSQ$b)), 4),
+   se = round(sqrt(abs(PMsev_mvSQ$se)), 4),
+   CI_lower = round(sqrt(abs(PMsev_mvSQ$ci.lb)), 4),
+   CI_upper = round(sqrt(abs(PMsev_mvSQ$ci.ub)), 4),
+   z_val = round(sqrt(abs(PMsev_mvSQ$zval)), 4),
+   p_val = reportP(PMsev_mvSQ$pval, AsNumeric = FALSE, P_prefix = FALSE),
+   eff_bar = round(sqrt(abs(1 -(intercept + PMsev_mvSQ$b)/intercept)),4)*100,
+   eff_CI_high = round(sqrt(abs(1 -(intercept + PMsev_mvSQ$ci.ub)/intercept)),4)*100,
+   eff_CI_low = round(sqrt(abs(1 -(intercept + PMsev_mvSQ$ci.lb)/intercept)),4)*100
    
 )
+
+# restore negative numbers
+results_mv[2:6, c(4,6:8,10:12)] <- -results_mv[2:6, c(4,6:8,10:12)]
 
 # rename colnames to give table headings
 colnames(results_mv)[c(1:4,6:12 )] <-
