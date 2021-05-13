@@ -90,8 +90,10 @@ _Note: Here I added 1 to the variance before it was squared. This is because squ
 Let us also transform the severity onto a percentage scale so we can compare the results of meta-analyses with no transformation, squared severity, and percent severity.
 
 ```{r}
-PM_dat_D$yi_percent <- ((PM_dat_D$PM_final_severity - 1)/8) * 100
+PM_dat_D$yi_percent <- log(((PM_dat_D$PM_final_severity - 1)/8) * 100 +1)
 PM_dat_D$vi_percent <- ((PM_dat_D$vi)/8)* 100
+hist(PM_dat_D$yi_percent)
+summary(PM_dat_D$yi_percent)
 ```
 
 <br>  
@@ -139,7 +141,7 @@ This meta-analysis is more in-line with estimates from the yield meta-analysis. 
 
 Finally lets assess the percent severity
 ```{r Metafor-Sev-analysis, cache=TRUE}
-PMsev_mvSQ <- rma.mv(
+PMsev_mvPer <- rma.mv(
    yi = yi_percent,
    V = vi_percent,
    mods = ~ spray_management,
@@ -150,8 +152,10 @@ PMsev_mvSQ <- rma.mv(
    data = PM_dat_D
 )
 
-summary(PMsev_mvSQ)
+summary(PMsev_mvPer)
 ```
+Model does not converge we will proceed with the square transformed severity
+
 <br>  
 <br>  
 <br>  
@@ -163,14 +167,18 @@ Calculate the treatment contrasts
 ```{r sevContrasts}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
 
+intercept <-PMsev_mvSQ$b[1,1]
+z <- PMsev_mvSQ$zval[1]
+
 contrast_Ssum <-
-   simple_summary(summary(glht(PMsev_mv, linfct = cbind(
+   simple_summary(summary(glht(PMsev_mvSQ, linfct = cbind(
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 
 contrast_Ssum[6:15,] %>%
-   mutate(coefficients = -sqrt(abs(coefficients)),
-          StdErr = sqrt(StdErr))%>%
+   mutate(coefficients = sqrt(coefficients + intercept) - sqrt(intercept),
+          StdErr = sqrt(StdErr + intercept) - sqrt(intercept),
+          Zvalue = sqrt(Zvalue + z) - sqrt(z))%>%
    flextable()%>%
    autofit()
 ```
@@ -194,8 +202,8 @@ axis(
 ```
 
 `Recommended_plus` limited disease severity significantly better than any other spray treatment. 
-`Late_plus` limited disease severity significantly better than a single `Late` application. 
-This indicates that two spray treatments were significantly better than a single application, but the timing of the fungicide application was more critical.  
+Early sprays were not effective in decreasing disease severity.
+Two spray treatments were significantly better than a single application, but the timing of the fungicide application was more critical.  
 
 <br>  
 <br>  
