@@ -190,29 +190,45 @@ k6 <-
    summarise(n()) %>%
    pull()
 
-intercept <- round(PMsev_mvSQ$b, 4)[1,1]
+intercept <- PMsev_mvSQ$b[1,1]
 
 # create data.frame
 results_mv <- data.frame(
    Moderator = c(
-   "Intercept / No Spray control",
-   "Early",
-   "Late",
-   "Late+",
-   "Recommended",
-   "Recommended+"
+      "Intercept / No Spray control",
+      "Early",
+      "Late",
+      "Late+",
+      "Recommended",
+      "Recommended+"
    ),
    N = k5,
    k = k6,
-   Effect = round(sqrt(abs(PMsev_mvSQ$b)), 4),
-   se = round(sqrt(abs(PMsev_mvSQ$se)), 4),
-   CI_lower = round(sqrt(abs(PMsev_mvSQ$ci.lb)), 4),
-   CI_upper = round(sqrt(abs(PMsev_mvSQ$ci.ub)), 4),
-   z_val = round(sqrt(abs(PMsev_mvSQ$zval)), 4),
+   Effect = ifelse(PMsev_mvSQ$b == intercept, sqrt(intercept),
+                   round(
+                      sqrt(PMsev_mvSQ$b + intercept) - sqrt(intercept), 4
+                   )),
+   se = round(
+      sqrt(
+         ifelse(PMsev_mvSQ$b == intercept, intercept,
+                PMsev_mvSQ$b + intercept) + PMsev_mvSQ$se) -
+         sqrt(
+            ifelse(PMsev_mvSQ$b == intercept, intercept,
+                   PMsev_mvSQ$b + intercept)),
+      4),
+   CI_lower = round(sqrt(PMsev_mvSQ$ci.lb + intercept) - sqrt(intercept), 4),
+   CI_upper = round(sqrt(PMsev_mvSQ$ci.ub + intercept) - sqrt(intercept), 4),
+   z_val = round(PMsev_mvSQ$zval, 4),
    p_val = reportP(PMsev_mvSQ$pval, AsNumeric = FALSE, P_prefix = FALSE),
-   eff_bar = round(sqrt(abs(1 -(intercept + PMsev_mvSQ$b)/intercept)),4)*100,
-   eff_CI_high = round(sqrt(abs(1 -(intercept + PMsev_mvSQ$ci.ub)/intercept)),4)*100,
-   eff_CI_low = round(sqrt(abs(1 -(intercept + PMsev_mvSQ$ci.lb)/intercept)),4)*100
+   eff_bar = round(sqrt(1 - (
+      intercept + PMsev_mvSQ$b
+   ) / intercept), 4) * 100,
+   eff_CI_high = round(sqrt(
+      1 - (intercept + PMsev_mvSQ$ci.ub) / intercept
+   ), 4) * 100,
+   eff_CI_low = round(sqrt(
+      1 - (intercept + PMsev_mvSQ$ci.lb) / intercept
+   ), 4) * 100
    
 )
 
