@@ -90,8 +90,8 @@ _Note: Here I added 1 to the variance before it was squared. This is because squ
 Let us also transform the severity onto a percentage scale so we can compare the results of meta-analyses with no transformation, squared severity, and percent severity.
 
 ```{r}
-PM_dat_D$yi_percent <- log(((PM_dat_D$PM_final_severity - 1)/8) * 100 +1)
-PM_dat_D$vi_percent <- ((PM_dat_D$vi)/8)* 100
+PM_dat_D$yi_percent <- ((PM_dat_D$PM_final_severity)/median(PM_dat_D$PM_final_severity) * 100)
+PM_dat_D$vi_percent <- PM_dat_D$vi/median(PM_dat_D$PM_final_severity)
 hist(PM_dat_D$yi_percent)
 summary(PM_dat_D$yi_percent)
 ```
@@ -143,7 +143,7 @@ Finally lets assess the percent severity
 ```{r Metafor-Sev-analysis, cache=TRUE}
 PMsev_mvPer <- rma.mv(
    yi = yi_percent,
-   V = vi_percent,
+   V = vi,
    mods = ~ spray_management,
    method = "ML",
    random = list( ~ spray_management | trial, ~ 1 | id),
@@ -153,6 +153,8 @@ PMsev_mvPer <- rma.mv(
 )
 
 summary(PMsev_mvPer)
+# Intecep <- coef(PMsev_mvPer)[1]
+# ((coef(PMsev_mvPer)[2:6]+ Intecep)/100)* median(PM_dat_D$PM_final_severity) - (Intecep/100*median(PM_dat_D$PM_final_severity))
 ```
 Model does not converge we will proceed with the square transformed severity
 
@@ -295,7 +297,7 @@ disease_estimates_table <-
    fontsize(size = 10, part = "header") %>%
    italic(italic = TRUE, part = "header") %>%
    set_caption(
-      "Table 3: Estimated powdery mildew severity mean difference ($u$) to the no spray control (intercept) for each spray schedule treatment. Estimates were calculated from a network meta-analysis of data obtained from grey literature reports of (k) field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
+      "Table 3: Estimated powdery mildew severity mean difference ($u$) to the no spray control (intercept) for each spray schedule treatment. Estimates were back transformed using a square-root from the network meta-analysis of data obtained from grey literature reports of (k) field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
    ) %>%
    autofit() %>%
    footnote(
