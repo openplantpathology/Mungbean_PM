@@ -232,9 +232,6 @@ results_mv <- data.frame(
    
 )
 
-# restore negative numbers
-results_mv[2:6, c(4,6:8,10:12)] <- -results_mv[2:6, c(4,6:8,10:12)]
-
 # rename colnames to give table headings
 colnames(results_mv)[c(1:4,6:12 )] <-
    c("Moderator",
