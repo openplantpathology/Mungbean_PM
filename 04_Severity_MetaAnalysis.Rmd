@@ -63,28 +63,37 @@ PM_dat_D <-
                         sep = "_")) 
 ```
 
-Inspect disease severity for a normality.
+### Inspect PM severity for normality
+Given the meta-analysis assumes powdery mildew severity observations to be a univariate normal distubution $Y_i = N(\mu , \sigma)$, with a mean $\mu$ and standard deviation $\sigma$. We need to inspect severity for a normality.
 ```{r sev_hist}
 hist(PM_dat_D$PM_final_severity)
 summary(PM_dat_D$PM_final_severity)
 ```
-This meta-analysis assumes the effect size to be normally distributed, however, we can see here that it is skewed towards the top of the scale, eight and nine in this case.
+We can see here that powdery mildew severity observations are skewed towards the top of the scale, eight and nine in this case.
 
-Traditionally disease severity is log transformed due to it being more likely to be skewed to the lower disease severity scores. In this case if we `log()` transformed the response it would increase the skew towards higher disease severity.
+Traditionally disease severity is `log` transformed due to it being more likely to be skewed to the lower disease severity scores. In this case if we `log()` transformed the response it would increase the skew towards higher disease severity.
 
-We can improve the normality by transforming the effect size, disease severity, by squaring. As variance is proportional to the mean we square the variance aswell
+We can improve the normality by transforming the effect size, disease severity, by squaring.
 ```{r}
 hist(PM_dat_D$PM_final_severity^2)
 summary(PM_dat_D$PM_final_severity^2)
 ```
 
-```{r}
-# dat1 <- escalc(measure = "MN", yi = PM_final_severity., vi = vi, ni = replicates, data = PM_dat_D, slab = paste0(trial, spray_management))
-
+### Transform severity response
+As variance is proportional to the mean we square the variance as well.
+```{r square_severity}
 PM_dat_D$yi_square <- PM_dat_D$PM_final_severity ^2
 PM_dat_D$vi_square <- (PM_dat_D$vi +1)^2
 ```
-Note: Here I added 1 to the variance before it was squared. This is because squaring numbers below one makes the number smaller or remain zero. This does not change the meta-analysis estimates but does increase tao
+_Note: Here I added 1 to the variance before it was squared. This is because squaring numbers below one makes the number smaller or remain zero. This does not change the meta-analysis mean estimates but does increase heterogeneity and tao._  
+
+Let us also transform the severity onto a percentage scale so we can compare the results of meta-analyses with no transformation, squared severity, and percent severity.
+
+```{r}
+PM_dat_D$yi_percent <- ((PM_dat_D$PM_final_severity - 1)/8) * 100
+PM_dat_D$vi_percent <- ((PM_dat_D$vi)/8)* 100
+```
+
 <br>  
 <br>  
 <br>  
@@ -92,24 +101,8 @@ Note: Here I added 1 to the variance before it was squared. This is because squa
 *****
 
 ## Disease severity spray schedule meta-analysis  
-
+First lets look at the results of the meta-analysis without transformation
 ```{r Metafor-Sev-analysis, cache=TRUE}
-PMsev_mvSQ <- rma.mv(
-   yi = yi_square,
-   V = vi_square,
-   mods = ~ spray_management,
-   method = "ML",
-   random = list( ~ spray_management | trial, ~ 1 | id),
-   struct = "UN",
-   control = list(optimizer = "optim"),
-   data = PM_dat_D
-)
-
-summary(PMsev_mvSQ)
-```
-
-```{r Metafor-Sev-analysis, cache=TRUE}
-
 PMsev_mv <- rma.mv(
    yi = PM_final_severity,
    vi,
@@ -124,8 +117,41 @@ summary(PMsev_mv)
 ```
 
 All spray schedules were effective at lowering the disease severity at the end of the season.
-`Recommended_plus` reduced powdery mildew incidence the most.  
+`Recommended_plus` reduced powdery mildew incidence the most, however `Early` sprays are estimated as more effective than single `late` sprays and not significantly different to single `recommended` sprays at reducing powdery mildew severity assessed the end of the season. This does not reflect the results of the yield analysis.  
 
+Next lets assess the square transformed severity
+```{r Metafor-Sev-analysis, cache=TRUE}
+PMsev_mvSQ <- rma.mv(
+   yi = yi_square,
+   V = vi_square,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_D
+)
+
+summary(PMsev_mvSQ)
+```
+This meta-analysis is more in-line with estimates from the yield meta-analysis. `Early` sprays are not effective at reducing powdery mildew severity and two or more sprays had higher efficacy than single sprays. Recommended sprays were the most effective spray timing at reducing disease severity.  
+
+
+Finally lets assess the percent severity
+```{r Metafor-Sev-analysis, cache=TRUE}
+PMsev_mvSQ <- rma.mv(
+   yi = yi_percent,
+   V = vi_percent,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_D
+)
+
+summary(PMsev_mvSQ)
+```
 <br>  
 <br>  
 <br>  
