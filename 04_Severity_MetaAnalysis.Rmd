@@ -136,7 +136,7 @@ new_sev <- predict(object =  g1,
                    )
 # inspect distribution
 hist(new_sev)
-PM_dat_D$yi_percent <- new_sev
+PM_dat_D$yi_percent <- new_sev 
 
 # Conversion of variance
 # Here I add the variance and mean severity and predict the conversion value
@@ -145,10 +145,17 @@ PM_dat_D$vi_percent  <- predict(object =  g1,
                    newdata = data.frame(y = PM_dat_D[,"vi"] + PM_dat_D[,"PM_final_severity"])
                    ) - PM_dat_D$yi_percent
 
-# campare untransformed variance to transformed variance
+# compare untransformed variance to transformed variance
 summary(PM_dat_D$vi)
 summary(PM_dat_D$vi_percent)
-PM_dat_D[10:12,]
+
+# scale to 100% 
+PM_dat_D$yi_percent  <- PM_dat_D$yi_percent * 100
+PM_dat_D$vi_percent  <- PM_dat_D$vi_percent * 100
+
+# scale to 100% 
+PM_dat_D$L_yi_p  <- log(PM_dat_D$yi_percent + 1 )
+PM_dat_D$L_vi_p  <- log(PM_dat_D$vi_percent +1 )
 ```
 
 <br>  
@@ -197,8 +204,8 @@ This meta-analysis is more in-line with estimates from the yield meta-analysis. 
 Finally lets assess the percent severity
 ```{r Metafor-Sev-analysis, cache=TRUE}
 PMsev_mvPer <- rma.mv(
-   yi = yi_percent,
-   V = vi,
+   yi = L_yi_p,
+   V = L_vi_p,
    mods = ~ spray_management,
    method = "ML",
    random = list( ~ spray_management | trial, ~ 1 | id),
