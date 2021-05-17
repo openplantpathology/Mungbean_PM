@@ -38,7 +38,8 @@ pacman::p_load(tidyverse,
                netmeta,
                multcomp,
                dplyr,
-               flextable)
+               flextable,
+               gam)
 
 source(here("R/reportP.R"))
 
