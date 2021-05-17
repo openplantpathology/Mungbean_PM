@@ -90,10 +90,64 @@ _Note: Here I added 1 to the variance before it was squared. This is because squ
 Let us also transform the severity onto a percentage scale so we can compare the results of meta-analyses with no transformation, squared severity, and percent severity.
 
 ```{r}
-PM_dat_D$yi_percent <- ((PM_dat_D$PM_final_severity)/median(PM_dat_D$PM_final_severity) * 100)
-PM_dat_D$vi_percent <- PM_dat_D$vi/median(PM_dat_D$PM_final_severity)
-hist(PM_dat_D$yi_percent)
-summary(PM_dat_D$yi_percent)
+# Disease response ratio
+# create column giving the respective disease severity in the control 
+PM_dat_D$yi_C <- unlist(apply(PM_dat_D, 1, function(x1){
+   
+   mean(PM_dat_D[PM_dat_D$trial == x1[["trial"]] &
+               PM_dat_D$spray_management == "control", "PM_final_severity"])
+}))
+
+# Calculate response ratio
+PM_dat_D$yi_RR <- PM_dat_D$PM_final_severity/PM_dat_D$yi_C
+hist(PM_dat_D[PM_dat_D$spray_management != "control", "yi_RR"])
+
+# Log response ratio 
+PM_dat_D$yi_LR <- log(PM_dat_D$yi_RR)
+hist(PM_dat_D[PM_dat_D$spray_management != "control", "yi_LR"])
+
+# Percent severity conversion
+# define ordinal conversion from scale to proportion
+s1 <- 0
+s2 <- 0.33*0.5
+s3 <- 0.5*0.87
+s4 <- 0.66*0.75
+s5 <- 0.66*0.87
+s6 <- 0.66*1
+s7 <- 0.75*1
+s8 <- 1*0.87
+s9 <- 1*1
+x <- c(s1, s2, s3, s4, s5, s6, s7, s8, s9)
+y <- c(1:9)
+a = data.frame(x,y)
+plot(a)
+
+# fit a curve using a gam with spline value 0.2
+g1 <- gam(x ~ s(y,spar = 0.1))
+
+# View plot of gam
+plot(x = predict(g1, data.frame(y= seq(1,9, by =0.1))), y= seq(1,9, by =0.1))
+points(x,y,col = "red", pch = 16)
+
+# predict values for dataset
+new_sev <- predict(object =  g1, 
+                   newdata = data.frame(y = PM_dat_D[,"PM_final_severity"])
+                   )
+# inspect distribution
+hist(new_sev)
+PM_dat_D$yi_percent <- new_sev
+
+# Conversion of variance
+# Here I add the variance and mean severity and predict the conversion value
+# then subtract the mean severity to obtain the difference as the sample variance
+PM_dat_D$vi_percent  <- predict(object =  g1, 
+                   newdata = data.frame(y = PM_dat_D[,"vi"] + PM_dat_D[,"PM_final_severity"])
+                   ) - PM_dat_D$yi_percent
+
+# campare untransformed variance to transformed variance
+summary(PM_dat_D$vi)
+summary(PM_dat_D$vi_percent)
+PM_dat_D[10:12,]
 ```
 
 <br>  
