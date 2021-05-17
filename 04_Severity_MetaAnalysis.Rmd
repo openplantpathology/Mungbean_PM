@@ -154,8 +154,21 @@ PM_dat_D$yi_percent  <- PM_dat_D$yi_percent * 100
 PM_dat_D$vi_percent  <- PM_dat_D$vi_percent * 100
 
 # scale to 100% 
-PM_dat_D$L_yi_p  <- log(PM_dat_D$yi_percent + 1 )
-PM_dat_D$L_vi_p  <- log(PM_dat_D$vi_percent +1 )
+# create column giving the respective disease severity in the control 
+PM_dat_D$yi_Cp <- unlist(apply(PM_dat_D, 1, function(x1){
+   
+   mean(PM_dat_D[PM_dat_D$trial == x1[["trial"]] &
+               PM_dat_D$spray_management == "control", "yi_percent"])
+}))
+
+
+# calculate response ratio
+PM_dat_D$L_yi_p  <- log((PM_dat_D$yi_percent / PM_dat_D$yi_Cp) + 1)
+
+# transform variance as per Paul et. al 2007
+PM_dat_D <- 
+   PM_dat_D %>%
+   mutate(L_RR_v = vi *(1/replicates * (yi_percent ^ 2) + 1/replicates * (yi_Cp^2)))
 ```
 
 <br>  
@@ -203,15 +216,18 @@ This meta-analysis is more in-line with estimates from the yield meta-analysis. 
 
 Finally lets assess the percent severity
 ```{r Metafor-Sev-analysis, cache=TRUE}
+# remove controls for response ratio meta-analysis
+dat_RR <- PM_dat_D[PM_dat_D$spray_management != "control",]
+
 PMsev_mvPer <- rma.mv(
    yi = L_yi_p,
-   V = L_vi_p,
+   V = L_RR_v,
    mods = ~ spray_management,
    method = "ML",
    random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
-   data = PM_dat_D
+   data = dat_RR
 )
 
 summary(PMsev_mvPer)
