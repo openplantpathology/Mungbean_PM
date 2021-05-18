@@ -134,6 +134,9 @@ points(x,y,col = "red", pch = 16)
 new_sev <- predict(object =  g1, 
                    newdata = data.frame(y = PM_dat_D[,"PM_final_severity"])
                    )
+# one value is a negative, this should be a zero
+new_sev[12] <- 0
+
 # inspect distribution
 hist(new_sev)
 PM_dat_D$yi_percent <- new_sev 
@@ -141,7 +144,7 @@ PM_dat_D$yi_percent <- new_sev
 # Conversion of variance
 # Here I add the variance and mean severity and predict the conversion value
 # then subtract the mean severity to obtain the difference as the sample variance
-PM_dat_D$vi_percent  <- predict(object =  g1, 
+PM_dat_D$vi_percent  <- predict(object =  g1,
                    newdata = data.frame(y = PM_dat_D[,"vi"] + PM_dat_D[,"PM_final_severity"])
                    ) - PM_dat_D$yi_percent
 
@@ -149,9 +152,6 @@ PM_dat_D$vi_percent  <- predict(object =  g1,
 summary(PM_dat_D$vi)
 summary(PM_dat_D$vi_percent)
 
-# scale to 100% 
-PM_dat_D$yi_percent  <- PM_dat_D$yi_percent * 100
-PM_dat_D$vi_percent  <- PM_dat_D$vi_percent * 100
 
 # scale to 100% 
 # create column giving the respective disease severity in the control 
@@ -169,6 +169,20 @@ PM_dat_D$L_yi_p  <- log((PM_dat_D$yi_percent / PM_dat_D$yi_Cp) + 1)
 PM_dat_D <- 
    PM_dat_D %>%
    mutate(L_RR_v = vi *(1/replicates * (yi_percent ^ 2) + 1/replicates * (yi_Cp^2)))
+
+#logit transformed
+PM_dat_D$yi_logit <- log(
+   (PM_dat_D$yi_percent) / 
+      (1 - (PM_dat_D$yi_percent))
+   )
+hist(PM_dat_D$yi_logit)
+PM_dat_D$vi_logit <-
+   (PM_dat_D$vi_percent) /
+   (PM_dat_D$yi_percent * (1 - PM_dat_D$yi_percent)) ^ 2
+   
+# Correct -Inf to zeros
+PM_dat_D[PM_dat_D$yi_logit == -Inf,"yi_logit"] <- 0.001
+PM_dat_D[PM_dat_D$vi_logit == -Inf,"vi_logit"] <- 0.001
 ```
 
 <br>  
@@ -187,7 +201,7 @@ PMsev_mv <- rma.mv(
    method = "ML",
    random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
-   control = list(optimizer = "optim"),
+   #control = list(optimizer = "optim"),
    data = PM_dat_D
 )
 summary(PMsev_mv)
@@ -217,24 +231,38 @@ This meta-analysis is more in-line with estimates from the yield meta-analysis. 
 Finally lets assess the percent severity
 ```{r Metafor-Sev-analysis, cache=TRUE}
 # remove controls for response ratio meta-analysis
-dat_RR <- PM_dat_D[PM_dat_D$spray_management != "control",]
-
 PMsev_mvPer <- rma.mv(
-   yi = L_yi_p,
-   V = L_RR_v,
+   yi = yi_logit,
+   V = yi_logit,
    mods = ~ spray_management,
    method = "ML",
    random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
-   data = dat_RR
+   data = PM_dat_D
 )
 
 summary(PMsev_mvPer)
+
+
+
+#summary(PMsev_mvPer)
 # Intecep <- coef(PMsev_mvPer)[1]
 # ((coef(PMsev_mvPer)[2:6]+ Intecep)/100)* median(PM_dat_D$PM_final_severity) - (Intecep/100*median(PM_dat_D$PM_final_severity))
 ```
 Model does not converge we will proceed with the square transformed severity
+```{r}
+#logit transformed
+PM_dat_D$yi_logit <- log(
+   (PM_dat_D$yi_percent) / 
+      (1 - (PM_dat_D$yi_percent))
+   )
+
+1- LaplacesDemon::invlogit(PMsev_mvPer$b)
+mean(PM_dat_D[PM_dat_D$spray_management == "control","PM_final_severity"])
+mean(PM_dat_D[PM_dat_D$spray_management == "Recommended_plus","PM_final_severity"])
+
+```
 
 <br>  
 <br>  
