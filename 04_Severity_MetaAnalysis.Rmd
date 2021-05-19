@@ -46,6 +46,16 @@ source(here("R/reportP.R"))
 # Data
 PM_dat_D <-
    read.csv("cache/PM_disease_clean_data.csv", stringsAsFactors = FALSE)
+
+# functions
+logit <- function(x){
+   log((x)/(1 - x))
+}
+
+inv_logit <- function(x){
+   exp(x)/(1 + exp(x))
+}
+   
 ```
 
 <br>  
@@ -176,10 +186,8 @@ PM_dat_D <-
    mutate(L_RR_v = vi *(1/replicates * (yi_percent ^ 2) + 1/replicates * (yi_Cp^2)))
 
 #logit transformed percentages
-PM_dat_D$yi_logit <- log(
-   (PM_dat_D$yi_percent) / 
-      (1 - (PM_dat_D$yi_percent))
-   )
+PM_dat_D$yi_logit <- logit(PM_dat_D$yi_percent)
+
 hist(PM_dat_D$yi_logit)
 PM_dat_D$vi_logit <-
    (PM_dat_D$vi_percent) /
@@ -234,8 +242,10 @@ plot(rstandard(PMsev_mvSQ)$z, ylim=c(-3,3), pch=19)
 ```
 This meta-analysis is more in-line with estimates from the yield meta-analysis. `Early` sprays are not effective at reducing powdery mildew severity and two or more sprays had higher efficacy than single sprays. Recommended sprays were the most effective spray timing at reducing disease severity.  
 
+However square severity is not common when evaluating a response that was obtained on a scale.
+Log transformed is a more common method of evaluating non-normal disease severity.
 
-Finally lets assess the logit transformed percent severity
+Lets assess the log transformed percent severity
 ```{r Metafor-Sev-analysis_log, cache=TRUE}
 # remove controls for response ratio meta-analysis
 PMsev_mv_log <- rma.mv(
@@ -250,12 +260,14 @@ PMsev_mv_log <- rma.mv(
 )
 
 summary(PMsev_mv_log)
-plot(rstandard(PMsev_mv_log)$z, ylim=c(-3,3), pch=19)
-data.frame(cbind((1-exp(PMsev_mv_log$b)),
-                              (1-exp(PMsev_mv_log$ci.lb)),
-                              (1-exp(PMsev_mv_log$ci.ub))))
+plot(rstandard(PMsev_mv_log)$z, ylim=c(-3.2,3), pch=19)
+data.frame(Estimates = (1-exp(PMsev_mv_log$b)),
+           lowerCI = (1-exp(PMsev_mv_log$ci.lb)),
+           upperCI = (1-exp(PMsev_mv_log$ci.ub)))
 ```
-
+The plot of the residuals show the model is not normally distributed.
+In addition the estimates don't reflect what can be [observed in the raw data][Disease severity range for each spray schedule].
+Log transformed percent severity is therefore no a suitable transformation
 
 Finally lets assess the logit transformed percent severity
 ```{r Metafor-Sev-analysis_logitP, cache=TRUE}
@@ -272,62 +284,15 @@ PMsev_mvPer <- rma.mv(
 )
 
 summary(PMsev_mvPer)
+
+# plot the model residuals
 plot(rstandard(PMsev_mvPer)$z, ylim=c(-3,3), pch=19)
 
-1- LaplacesDemon::invlogit(PMsev_mvPer$b + PMsev_mvPer$b[1])
-mean(PM_dat_D[PM_dat_D$spray_management == "control","PM_final_severity"])
-mean(PM_dat_D[PM_dat_D$spray_management == "Recommended_plus","PM_final_severity"])
-```
-This produces estimates which are too high and likely incorrect
-
-
-```{r Metafor-Sev-analysis_logit, cache=TRUE}
-#logit transformed 1- 9 values
-PM_dat_D$yi_logit <- log(
-   ((PM_dat_D$PM_final_severity-1)/8) / 
-      (1 - ((PM_dat_D$PM_final_severity-1)/8))
-   )
-
-PM_dat_D$vi_logit <-
-   (PM_dat_D$vi) /
-   (((PM_dat_D$PM_final_severity-1)/8) * (1 -((PM_dat_D$PM_final_severity-1)/8))) ^ 2
-
-# Correct -Inf to zeros
-PM_dat_D[PM_dat_D$yi_logit == -Inf |
-            PM_dat_D$yi_logit == Inf ,"yi_logit"] <- 0
-PM_dat_D[is.na(PM_dat_D$vi_logit == Inf),"vi_logit"] <- 0
-
-PM_dat_D[PM_dat_D$vi_logit <= 0,"vi_logit"] <- 0.001
-# remove controls for response ratio meta-analysis
-PMsev_mvPer <- rma.mv(
-   yi = yi_logit,
-   V = yi_logit,
-   mods = ~ spray_management,
-   method = "ML",
-   random = list( ~ spray_management | trial, ~ 1 | id),
-   struct = "UN",
-   control = list(optimizer = "optim"),
-   data = PM_dat_D
-)
-
-summary(PMsev_mvPer)
+1 - exp(PMsev_mvPer$b + PMsev_mvPer$b[1])/(1+exp(PMsev_mvPer$b + PMsev_mvPer$b[1]))
+logit_estimates <- ifelse(PMsev_mvPer$b == PMsev_mvPer$b[1], PMsev_mvPer$b, PMsev_mvPer$b + PMsev_mvPer$b[1])
+1 - inv_logit(logit_estimates)
 ```
 
-
-```{r}
-#logit transformed
-PM_dat_D$yi_logit <- log(
-   (PM_dat_D$yi_percent) / 
-      (1 - (PM_dat_D$yi_percent))
-   )
-
-
-
-1- LaplacesDemon::invlogit(PMsev_mvPer$b)
-mean(PM_dat_D[PM_dat_D$spray_management == "control","PM_final_severity"])
-mean(PM_dat_D[PM_dat_D$spray_management == "Recommended_plus","PM_final_severity"])
-
-```
 
 <br>  
 <br>  
