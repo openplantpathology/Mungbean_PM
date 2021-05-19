@@ -272,8 +272,9 @@ PMsev_mvPer <- rma.mv(
 )
 
 summary(PMsev_mvPer)
+plot(rstandard(PMsev_mvPer)$z, ylim=c(-3,3), pch=19)
 
-1- LaplacesDemon::invlogit(PMsev_mvPer$b)
+1- LaplacesDemon::invlogit(PMsev_mvPer$b + PMsev_mvPer$b[1])
 mean(PM_dat_D[PM_dat_D$spray_management == "control","PM_final_severity"])
 mean(PM_dat_D[PM_dat_D$spray_management == "Recommended_plus","PM_final_severity"])
 ```
