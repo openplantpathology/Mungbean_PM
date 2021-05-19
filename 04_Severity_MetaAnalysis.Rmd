@@ -152,8 +152,13 @@ PM_dat_D$vi_percent  <- predict(object =  g1,
 summary(PM_dat_D$vi)
 summary(PM_dat_D$vi_percent)
 
+# create log transformed values
+PM_dat_D$yi_log <- log(PM_dat_D$yi_percent)
+PM_dat_D$vi_log <- (PM_dat_D$vi_percent) / (PM_dat_D$replicates * PM_dat_D$yi_percent^2)
 
-# scale to 100% 
+PM_dat_D[PM_dat_D$yi_log == -Inf,"yi_log"] <- 0
+PM_dat_D[PM_dat_D$vi_log == -Inf,"vi_log"] <- 0.001
+
 # create column giving the respective disease severity in the control 
 PM_dat_D$yi_Cp <- unlist(apply(PM_dat_D, 1, function(x1){
    
@@ -170,7 +175,7 @@ PM_dat_D <-
    PM_dat_D %>%
    mutate(L_RR_v = vi *(1/replicates * (yi_percent ^ 2) + 1/replicates * (yi_Cp^2)))
 
-#logit transformed
+#logit transformed percentages
 PM_dat_D$yi_logit <- log(
    (PM_dat_D$yi_percent) / 
       (1 - (PM_dat_D$yi_percent))
@@ -205,6 +210,7 @@ PMsev_mv <- rma.mv(
    data = PM_dat_D
 )
 summary(PMsev_mv)
+plot(rstandard(PMsev_mv)$z, ylim=c(-3,3), pch=19)
 ```
 
 All spray schedules were effective at lowering the disease severity at the end of the season.
@@ -224,12 +230,35 @@ PMsev_mvSQ <- rma.mv(
 )
 
 summary(PMsev_mvSQ)
+plot(rstandard(PMsev_mvSQ)$z, ylim=c(-3,3), pch=19)
 ```
 This meta-analysis is more in-line with estimates from the yield meta-analysis. `Early` sprays are not effective at reducing powdery mildew severity and two or more sprays had higher efficacy than single sprays. Recommended sprays were the most effective spray timing at reducing disease severity.  
 
 
-Finally lets assess the percent severity
-```{r Metafor-Sev-analysis, cache=TRUE}
+Finally lets assess the logit transformed percent severity
+```{r Metafor-Sev-analysis_log, cache=TRUE}
+# remove controls for response ratio meta-analysis
+PMsev_mv_log <- rma.mv(
+   yi = yi_log,
+   V = yi_log,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "US",
+   control = list(optimizer = "optim"),
+   data = PM_dat_D
+)
+
+summary(PMsev_mv_log)
+plot(rstandard(PMsev_mv_log)$z, ylim=c(-3,3), pch=19)
+data.frame(cbind((1-exp(PMsev_mv_log$b)),
+                              (1-exp(PMsev_mv_log$ci.lb)),
+                              (1-exp(PMsev_mv_log$ci.ub))))
+```
+
+
+Finally lets assess the logit transformed percent severity
+```{r Metafor-Sev-analysis_logitP, cache=TRUE}
 # remove controls for response ratio meta-analysis
 PMsev_mvPer <- rma.mv(
    yi = yi_logit,
@@ -244,19 +273,54 @@ PMsev_mvPer <- rma.mv(
 
 summary(PMsev_mvPer)
 
-
-
-#summary(PMsev_mvPer)
-# Intecep <- coef(PMsev_mvPer)[1]
-# ((coef(PMsev_mvPer)[2:6]+ Intecep)/100)* median(PM_dat_D$PM_final_severity) - (Intecep/100*median(PM_dat_D$PM_final_severity))
+1- LaplacesDemon::invlogit(PMsev_mvPer$b)
+mean(PM_dat_D[PM_dat_D$spray_management == "control","PM_final_severity"])
+mean(PM_dat_D[PM_dat_D$spray_management == "Recommended_plus","PM_final_severity"])
 ```
-Model does not converge we will proceed with the square transformed severity
+This produces estimates which are too high and likely incorrect
+
+
+```{r Metafor-Sev-analysis_logit, cache=TRUE}
+#logit transformed 1- 9 values
+PM_dat_D$yi_logit <- log(
+   ((PM_dat_D$PM_final_severity-1)/8) / 
+      (1 - ((PM_dat_D$PM_final_severity-1)/8))
+   )
+
+PM_dat_D$vi_logit <-
+   (PM_dat_D$vi) /
+   (((PM_dat_D$PM_final_severity-1)/8) * (1 -((PM_dat_D$PM_final_severity-1)/8))) ^ 2
+
+# Correct -Inf to zeros
+PM_dat_D[PM_dat_D$yi_logit == -Inf |
+            PM_dat_D$yi_logit == Inf ,"yi_logit"] <- 0
+PM_dat_D[is.na(PM_dat_D$vi_logit == Inf),"vi_logit"] <- 0
+
+PM_dat_D[PM_dat_D$vi_logit <= 0,"vi_logit"] <- 0.001
+# remove controls for response ratio meta-analysis
+PMsev_mvPer <- rma.mv(
+   yi = yi_logit,
+   V = yi_logit,
+   mods = ~ spray_management,
+   method = "ML",
+   random = list( ~ spray_management | trial, ~ 1 | id),
+   struct = "UN",
+   control = list(optimizer = "optim"),
+   data = PM_dat_D
+)
+
+summary(PMsev_mvPer)
+```
+
+
 ```{r}
 #logit transformed
 PM_dat_D$yi_logit <- log(
    (PM_dat_D$yi_percent) / 
       (1 - (PM_dat_D$yi_percent))
    )
+
+
 
 1- LaplacesDemon::invlogit(PMsev_mvPer$b)
 mean(PM_dat_D[PM_dat_D$spray_management == "control","PM_final_severity"])
