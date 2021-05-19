@@ -287,10 +287,37 @@ summary(PMsev_mvPer)
 
 # plot the model residuals
 plot(rstandard(PMsev_mvPer)$z, ylim=c(-3,3), pch=19)
+```
 
+```{r logit_estimates}
 1 - exp(PMsev_mvPer$b + PMsev_mvPer$b[1])/(1+exp(PMsev_mvPer$b + PMsev_mvPer$b[1]))
 logit_estimates <- ifelse(PMsev_mvPer$b == PMsev_mvPer$b[1], PMsev_mvPer$b, PMsev_mvPer$b + PMsev_mvPer$b[1])
 1 - inv_logit(logit_estimates)
+
+backtransform <- function(m, input_only = FALSE, intercept) {
+   if (input_only == FALSE) {
+      intercept <- m$b[1]
+      
+      dat <- data.frame(
+         estimates = 1 - inv_logit(c(intercept, m$b[-1] + intercept)),
+         StdErr = inv_logit(m$se + intercept) - inv_logit(intercept),
+         Zval = c(inv_logit(m$z[1]),
+                  inv_logit(m$z[-1] + m$z[1]) - inv_logit(m$z[1])),
+         Pval = reportP(m$pval, P_prefix = FALSE),
+         CI_lb = 1 - c(inv_logit(m$ci.lb[1]), 
+                       inv_logit(m$ci.lb[-1] + intercept)),
+         CI_ub = 1 - c(inv_logit(m$ci.ub[1]), 
+                       inv_logit(m$ci.ub[-1] + intercept)) 
+      )
+   }
+   if (input_only == TRUE) {
+      if (missing(intercept))
+         stop("'intercept' argument is empty")
+     return( inv_logit(m + intercept) - inv_logit(intercept))
+   }
+   return(dat)
+}
+backtransform(PMsev_mvPer)
 ```
 
 
@@ -309,7 +336,7 @@ intercept <-PMsev_mvSQ$b[1,1]
 z <- PMsev_mvSQ$zval[1]
 
 contrast_Ssum <-
-   simple_summary(summary(glht(PMsev_mvSQ, linfct = cbind(
+   simple_summary(summary(glht(PMsev_mvPer, linfct = cbind(
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 
@@ -327,7 +354,7 @@ contrast_Ssum[6:15,] %>%
 
 ```{r plotsevContrasts}
 par(mar = c(5, 13, 4, 2) + 0.1)
-plot(glht(PMsev_mvSQ, linfct = cbind(contrMat(rep(
+plot(glht(PMsev_mvPer, linfct = cbind(contrMat(rep(
    1, 6
 ), type = "Tukey"))), yaxt = 'n')
 axis(
