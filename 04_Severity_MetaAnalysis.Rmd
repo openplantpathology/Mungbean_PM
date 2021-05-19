@@ -290,10 +290,6 @@ plot(rstandard(PMsev_mvPer)$z, ylim=c(-3,3), pch=19)
 ```
 
 ```{r logit_estimates}
-1 - exp(PMsev_mvPer$b + PMsev_mvPer$b[1])/(1+exp(PMsev_mvPer$b + PMsev_mvPer$b[1]))
-logit_estimates <- ifelse(PMsev_mvPer$b == PMsev_mvPer$b[1], PMsev_mvPer$b, PMsev_mvPer$b + PMsev_mvPer$b[1])
-1 - inv_logit(logit_estimates)
-
 backtransform <- function(m, input_only = FALSE, intercept) {
    if (input_only == FALSE) {
       intercept <- m$b[1]
@@ -307,7 +303,8 @@ backtransform <- function(m, input_only = FALSE, intercept) {
          CI_lb = 1 - c(inv_logit(m$ci.lb[1]), 
                        inv_logit(m$ci.lb[-1] + intercept)),
          CI_ub = 1 - c(inv_logit(m$ci.ub[1]), 
-                       inv_logit(m$ci.ub[-1] + intercept)) 
+                       inv_logit(m$ci.ub[-1] + intercept)), 
+         row.names = colnames(m$G)
       )
    }
    if (input_only == TRUE) {
@@ -317,6 +314,7 @@ backtransform <- function(m, input_only = FALSE, intercept) {
    }
    return(dat)
 }
+
 backtransform(PMsev_mvPer)
 ```
 
