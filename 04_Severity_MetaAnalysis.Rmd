@@ -155,20 +155,20 @@ PM_dat_D$yi_log <- log(PM_dat_D$yi_percent)
 PM_dat_D$vi_log <- (PM_dat_D$vi_percent) / (PM_dat_D$replicates * PM_dat_D$yi_percent^2)
 
 # Correct Inf to 0
-PM_dat_D[PM_dat_D$yi_log == -Inf,"yi_log"] <- 0
+PM_dat_D[is.na(PM_dat_D$yi_log),"yi_log"] <- 0
 PM_dat_D[PM_dat_D$vi_log == -Inf,"vi_log"] <- 0.001
 
 #logit transformed percentages
 PM_dat_D$yi_logit <- logit(PM_dat_D$yi_percent)
 
-hist(PM_dat_D$yi_logit)
+# logit transformed variance
 PM_dat_D$vi_logit <-
    (PM_dat_D$vi_percent) /
    (PM_dat_D$yi_percent * (1 - PM_dat_D$yi_percent)) ^ 2
    
 # Correct -Inf to zeros
-PM_dat_D[PM_dat_D$yi_logit == -Inf,"yi_logit"] <- 0.001
-PM_dat_D[PM_dat_D$vi_logit == -Inf,"vi_logit"] <- 0.001
+PM_dat_D[is.na(PM_dat_D$yi_logit),"yi_logit"] <- 0.000
+
 ```
 
 <br>  
