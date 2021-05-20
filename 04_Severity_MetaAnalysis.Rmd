@@ -75,48 +75,31 @@ PM_dat_D <-
 ```
 
 ### Inspect PM severity for normality
-Given the meta-analysis assumes powdery mildew severity observations to be a univariate normal distubution $Y_i = N(\mu , \sigma)$, with a mean $\mu$ and standard deviation $\sigma$. We need to inspect severity for a normality.
+Given the meta-analysis assumes powdery mildew severity observations to be a univariate normal distribution $Y_i = N(\mu , \sigma)$, with a mean $\mu$ and standard deviation $\sigma$. We need to inspect severity for a normality.
 ```{r sev_hist}
 hist(PM_dat_D$PM_final_severity)
 summary(PM_dat_D$PM_final_severity)
 ```
 We can see here that powdery mildew severity observations are skewed towards the top of the scale, eight and nine in this case.
 
-Traditionally disease severity is `log` transformed due to it being more likely to be skewed to the lower disease severity scores. In this case if we `log()` transformed the response it would increase the skew towards higher disease severity.
-
 We can improve the normality by transforming the effect size, disease severity, by squaring.
 ```{r}
-hist(PM_dat_D$PM_final_severity^2)
-summary(PM_dat_D$PM_final_severity^2)
-```
-
-### Transform severity response
-As variance is proportional to the mean we square the variance as well.
-```{r square_severity}
 PM_dat_D$yi_square <- PM_dat_D$PM_final_severity ^2
 PM_dat_D$vi_square <- (PM_dat_D$vi +1)^2
+# Note: Here I added 1 to the variance before it was squared. This is because squaring numbers below one makes the number smaller or remain zero. This does not change the meta-analysis mean estimates but does increase heterogeneity and tao._  
+
+hist(PM_dat_D$yi_square)
+summary(PM_dat_D$yi_square)
 ```
-_Note: Here I added 1 to the variance before it was squared. This is because squaring numbers below one makes the number smaller or remain zero. This does not change the meta-analysis mean estimates but does increase heterogeneity and tao._  
+
+Another transformation which might be more suitable for a discrete response is either a `log()` or `logit()` transformation. 
+However first we should convert the scale from 1 - 9 to between 0 and 1.
+
+### Transform severity response
 
 Let us also transform the severity onto a percentage scale so we can compare the results of meta-analyses with no transformation, squared severity, and percent severity.
 
 ```{r}
-# Disease response ratio
-# create column giving the respective disease severity in the control 
-PM_dat_D$yi_C <- unlist(apply(PM_dat_D, 1, function(x1){
-   
-   mean(PM_dat_D[PM_dat_D$trial == x1[["trial"]] &
-               PM_dat_D$spray_management == "control", "PM_final_severity"])
-}))
-
-# Calculate response ratio
-PM_dat_D$yi_RR <- PM_dat_D$PM_final_severity/PM_dat_D$yi_C
-hist(PM_dat_D[PM_dat_D$spray_management != "control", "yi_RR"])
-
-# Log response ratio 
-PM_dat_D$yi_LR <- log(PM_dat_D$yi_RR)
-hist(PM_dat_D[PM_dat_D$spray_management != "control", "yi_LR"])
-
 # Percent severity conversion
 # define ordinal conversion from scale to proportion
 s1 <- 0
@@ -132,7 +115,10 @@ x <- c(s1, s2, s3, s4, s5, s6, s7, s8, s9)
 y <- c(1:9)
 a = data.frame(x,y)
 plot(a)
+```
 
+We can fit a gam curve between the 1 - 9 scale and the new scale between 0 and 1
+```{r}
 # fit a curve using a gam with spline value 0.2
 g1 <- gam(x ~ s(y,spar = 0.1))
 
@@ -144,11 +130,16 @@ points(x,y,col = "red", pch = 16)
 new_sev <- predict(object =  g1, 
                    newdata = data.frame(y = PM_dat_D[,"PM_final_severity"])
                    )
-# one value is a negative, this should be a zero
-new_sev[12] <- 0
+# Check fit
+plot(x = new_sev, y = PM_dat_D[,"PM_final_severity"])
+points(x,y,col = "red", pch = 16)
+```
 
-# inspect distribution
-hist(new_sev)
+```{r}
+# one value is a negative, this should be a zero
+# new_sev[12] <- 0
+
+# Allocate new variable percent severity
 PM_dat_D$yi_percent <- new_sev 
 
 # Conversion of variance
@@ -158,32 +149,14 @@ PM_dat_D$vi_percent  <- predict(object =  g1,
                    newdata = data.frame(y = PM_dat_D[,"vi"] + PM_dat_D[,"PM_final_severity"])
                    ) - PM_dat_D$yi_percent
 
-# compare untransformed variance to transformed variance
-summary(PM_dat_D$vi)
-summary(PM_dat_D$vi_percent)
 
 # create log transformed values
 PM_dat_D$yi_log <- log(PM_dat_D$yi_percent)
 PM_dat_D$vi_log <- (PM_dat_D$vi_percent) / (PM_dat_D$replicates * PM_dat_D$yi_percent^2)
 
+# Correct Inf to 0
 PM_dat_D[PM_dat_D$yi_log == -Inf,"yi_log"] <- 0
 PM_dat_D[PM_dat_D$vi_log == -Inf,"vi_log"] <- 0.001
-
-# create column giving the respective disease severity in the control 
-PM_dat_D$yi_Cp <- unlist(apply(PM_dat_D, 1, function(x1){
-   
-   mean(PM_dat_D[PM_dat_D$trial == x1[["trial"]] &
-               PM_dat_D$spray_management == "control", "yi_percent"])
-}))
-
-
-# calculate response ratio
-PM_dat_D$L_yi_p  <- log((PM_dat_D$yi_percent / PM_dat_D$yi_Cp) + 1)
-
-# transform variance as per Paul et. al 2007
-PM_dat_D <- 
-   PM_dat_D %>%
-   mutate(L_RR_v = vi *(1/replicates * (yi_percent ^ 2) + 1/replicates * (yi_Cp^2)))
 
 #logit transformed percentages
 PM_dat_D$yi_logit <- logit(PM_dat_D$yi_percent)
