@@ -357,49 +357,37 @@ k6 <-
    summarise(n()) %>%
    pull()
 
-intercept <- PMsev_mvSQ$b[1,1]
 
-# create data.frame
-results_mv <- data.frame(
-   Moderator = c(
-      "Intercept / No Spray control",
-      "Early",
-      "Late",
-      "Late+",
-      "Recommended",
-      "Recommended+"
+# create data.frame of percent disease severity estimates
+results_mv <- cbind(
+   data.frame(
+      Moderator = c(
+         "Intercept / No Spray control",
+         "Early",
+         "Late",
+         "Late+",
+         "Recommended",
+         "Recommended+"
+      ),
+      N = k5,
+      k = k6
    ),
-   N = k5,
-   k = k6,
-   Effect = ifelse(PMsev_mvSQ$b == intercept, sqrt(intercept),
-                   round(
-                      sqrt(PMsev_mvSQ$b + intercept) - sqrt(intercept), 4
-                   )),
-   se = round(
-      sqrt(
-         ifelse(PMsev_mvSQ$b == intercept, intercept,
-                PMsev_mvSQ$b + intercept) + PMsev_mvSQ$se) -
-         sqrt(
-            ifelse(PMsev_mvSQ$b == intercept, intercept,
-                   PMsev_mvSQ$b + intercept)),
-      4),
-   CI_lower = round(sqrt(PMsev_mvSQ$ci.lb + intercept) - sqrt(intercept), 4),
-   CI_upper = round(sqrt(PMsev_mvSQ$ci.ub + intercept) - sqrt(intercept), 4),
-   z_val = round(PMsev_mvSQ$zval, 4),
-   p_val = reportP(PMsev_mvSQ$pval, AsNumeric = FALSE, P_prefix = FALSE))
+   backtransform(PMsev_mvPer))
+
+# round the numbers
+results_mv[,c(4:6,8:9)] <- round(results_mv[,c(4:6,8:9)], 4)
 
 results_mv <- 
    results_mv %>%
    mutate(
    eff_bar = round(
-      1 - (sqrt(intercept) + Effect) /
-              sqrt(intercept), 
+      1 - estimates, 
       4) * 100,
    eff_CI_high = round(
-      1 - (sqrt(intercept) + CI_upper) / sqrt(intercept)
+      1 - CI_lb
    , 4) * 100,
    eff_CI_low = round(
-      1 - (sqrt(intercept) + CI_lower) / sqrt(intercept)
+      1 - CI_ub
    , 4) * 100
    
 )
@@ -408,42 +396,42 @@ results_mv <-
 results_mv[1,10:12] <- NA
 
 # rename colnames to give table headings
-colnames(results_mv)[c(1:4,6:12 )] <-
+colnames(results_mv)[c(1:12 )] <-
    c("Moderator",
      "N",
      "k",
      "mu",
-     "CI_{L}",
-     "CI_{U}",
+     "se",
      "Z",
      "P",
+     "CI_{L}",
+     "CI_{U}",
      "Efficacy",
      "Eff CI_lower",
      "Eff CI upper")
 
 disease_estimates_table <-
-   flextable(results_mv[c(2,5,6,3,4), c(1:7, 9:12)]) %>%
+   flextable(results_mv[c(2,5,6,3,4), ]) %>%
    align(j = 2:10, align = "center", part = "all") %>%
    fontsize(size = 8, part = "body") %>%
    fontsize(size = 10, part = "header") %>%
    italic(italic = TRUE, part = "header") %>%
    set_caption(
-      "Table 3: Estimated powdery mildew severity mean difference ($u$) to the no spray control (intercept) for each spray schedule treatment. Estimates were back transformed using a square-root from the network meta-analysis of data obtained from grey literature reports of (k) field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
+      "Table 3: Estimated powdery mildew severity for each spray schedule treatment. Estimates were back transformed using a inverse logit from the network meta-analysis of data obtained from grey literature reports of (k) field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
    ) %>%
    autofit() %>%
    footnote(
       i = 1,
-      j = c(2:4,6:11),
+      j = c(2:4,7:12),
       value = as_paragraph(
          c(
             "number of treatment means categorised to each spray schedule",
             "number of trials with the respective spray schedule",
-            "estimated mean yield determined by the meta-analysis",
-            
+            "estimated mean disease severity",
+            "indicates the significance between each respective spray schedule and the no spray control (intercept)",
             "Lower range of the 95% confidence interval",
             "Upper range of the 95% confidence interval",
-            "indicates the significance between each respective spray schedule and the no spray control (intercept)",
-            "Fungicide spray schedule efficacy",
+            "Fungicide spray schedule percent efficacy",
             "Lower range of the 95% confidence interval",
             "Upper range of the 95% confidence interval"
          )
@@ -457,6 +445,7 @@ disease_estimates_table <-
               k = "",
               mu = "Effect Size",
               se = "Effect Size",
+              Z = "Effect Size",
               `CI_{L}` = "Effect Size",
               `CI_{U}` = "Effect Size",
               P  = "Effect Size",
