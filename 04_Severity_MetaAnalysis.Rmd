@@ -167,7 +167,7 @@ PM_dat_D$vi_logit <-
    (PM_dat_D$yi_percent * (1 - PM_dat_D$yi_percent)) ^ 2
    
 # Correct -Inf to zeros
-PM_dat_D[is.na(PM_dat_D$yi_logit),"yi_logit"] <- 0.000
+PM_dat_D[is.na(PM_dat_D$yi_logit),"yi_logit"] <- 0
 
 ```
 
@@ -194,10 +194,9 @@ summary(PMsev_mv)
 plot(rstandard(PMsev_mv)$z, ylim=c(-3,3), pch=19)
 ```
 
-All spray schedules were effective at lowering the disease severity at the end of the season.
-`Recommended_plus` reduced powdery mildew incidence the most, however `Early` sprays are estimated as more effective than single `late` sprays and not significantly different to single `recommended` sprays at reducing powdery mildew severity assessed the end of the season. This does not reflect the results of the yield analysis.  
+This analysis shows the residual are slightly unbalanced and perhaps an effect of time. 
+Does squaring the response improve the residuals?
 
-Next lets assess the square transformed severity
 ```{r Metafor-Sev-analysis, cache=TRUE}
 PMsev_mvSQ <- rma.mv(
    yi = yi_square,
@@ -227,16 +226,13 @@ PMsev_mv_log <- rma.mv(
    mods = ~ spray_management,
    method = "ML",
    random = list( ~ spray_management | trial, ~ 1 | id),
-   struct = "US",
+   struct = "UN",
    control = list(optimizer = "optim"),
    data = PM_dat_D
 )
 
 summary(PMsev_mv_log)
 plot(rstandard(PMsev_mv_log)$z, ylim=c(-3.2,3), pch=19)
-data.frame(Estimates = (1-exp(PMsev_mv_log$b)),
-           lowerCI = (1-exp(PMsev_mv_log$ci.lb)),
-           upperCI = (1-exp(PMsev_mv_log$ci.ub)))
 ```
 The plot of the residuals show the model is not normally distributed.
 In addition the estimates don't reflect what can be [observed in the raw data][Disease severity range for each spray schedule].
@@ -262,20 +258,24 @@ summary(PMsev_mvPer)
 plot(rstandard(PMsev_mvPer)$z, ylim=c(-3,3), pch=19)
 ```
 
+The estimates and significance from this model better reflect the distribution of raw values. 
+In addition the residuals from this model are more evenly distributed.
+Let's back transform the estimates.
+
 ```{r logit_estimates}
 backtransform <- function(m, input_only = FALSE, intercept) {
    if (input_only == FALSE) {
       intercept <- m$b[1]
       
       dat <- data.frame(
-         estimates = 1 - inv_logit(c(intercept, m$b[-1] + intercept)),
+         estimates = inv_logit(c(intercept, m$b[-1] + intercept)),
          StdErr = inv_logit(m$se + intercept) - inv_logit(intercept),
          Zval = c(inv_logit(m$z[1]),
                   inv_logit(m$z[-1] + m$z[1]) - inv_logit(m$z[1])),
          Pval = reportP(m$pval, P_prefix = FALSE),
-         CI_lb = 1 - c(inv_logit(m$ci.lb[1]), 
+         CI_lb = c(inv_logit(m$ci.lb[1]), 
                        inv_logit(m$ci.lb[-1] + intercept)),
-         CI_ub = 1 - c(inv_logit(m$ci.ub[1]), 
+         CI_ub = c(inv_logit(m$ci.ub[1]), 
                        inv_logit(m$ci.ub[-1] + intercept)), 
          row.names = colnames(m$G)
       )
@@ -298,13 +298,13 @@ backtransform(PMsev_mvPer)
 
 ### Disease severity moderator contrasts 
 
-Calculate the treatment contrasts
+Calculate the treatment contrasts without back-transformation.
 
 ```{r sevContrasts}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
 
-intercept <-PMsev_mvSQ$b[1,1]
-z <- PMsev_mvSQ$zval[1]
+intercept <-PMsev_mvPer$b[1,1]
+z <- PMsev_mvPer$zval[1]
 
 contrast_Ssum <-
    simple_summary(summary(glht(PMsev_mvPer, linfct = cbind(
@@ -312,9 +312,6 @@ contrast_Ssum <-
    )), test = adjusted("none")))
 
 contrast_Ssum[6:15,] %>%
-   mutate(coefficients = sqrt(coefficients + intercept) - sqrt(intercept),
-          StdErr = sqrt(StdErr + intercept) - sqrt(intercept),
-          Zvalue = sqrt(Zvalue + z) - sqrt(z))%>%
    flextable()%>%
    autofit()
 ```
