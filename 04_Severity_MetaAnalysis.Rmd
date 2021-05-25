@@ -39,7 +39,8 @@ pacman::p_load(tidyverse,
                multcomp,
                dplyr,
                flextable,
-               gam)
+               gam,
+               clubSandwich)
 
 source(here("R/reportP.R"))
 
@@ -256,6 +257,7 @@ summary(PMsev_mvPer)
 
 # plot the model residuals
 plot(rstandard(PMsev_mvPer)$z, ylim=c(-3,3), pch=19)
+
 ```
 
 The estimates and significance from this model better reflect the distribution of raw values. 
