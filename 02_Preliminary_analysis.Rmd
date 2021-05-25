@@ -20,6 +20,36 @@ load("cache/ImportDataAndSelectTrials01.Rdata")
 
 <br>  
 <br>  
+## Define powdery mildew severity
+Powdery mildew severity was assessed on a 1 - 9 scale.
+```{r disease_scale}
+d_rating_table <-
+   data.frame(
+      Severity_rating = 1:9,
+      Description = c(
+         "No sign of powdery mildew",
+         "Small colonies in the lower 1/3 of canopy with up to 75% of plants infected",
+         "Colonies in lower half of canopy with more than 75% of plants infected",
+         "Colonies in lower 2/3 of canopy with up to 75% of plants infected",
+         "Colonies in lower 2/3 of canopy with more than 75% of plants infected",
+         "Colonies in lower 2/3 of canopy with 100% of plants infected",
+         "Colonies in lower 2/3 of canopy with 100% of plants infected, some plants with colonies in the top 1/3 of the canopy",
+         "Colonies all the way to the top of the plant with more than 75% of plants affected",
+         "Colonies all the way to the top of the plant with severe leaf drop"
+      )
+   ) %>%
+   flextable() %>%
+   autofit() %>%
+   set_header_labels(Severity_rating = "Severity rating") %>%
+   align(j = 1, align = "center")
+d_rating_table
+```
+```{r eval=FALSE, include=FALSE}
+# Save table as a word document
+doc <- officer::read_docx()
+doc <- body_add_flextable(doc, value = d_rating_table)
+print(doc, target = "paper/figures/SeverityTable.docx")
+```
 
 ## Trial summary statistics  
 
