@@ -427,10 +427,10 @@ disease_estimates_table <-
       j = c(2:4,7:12),
       value = as_paragraph(
          c(
-            "number of treatment means categorised to each spray schedule",
-            "number of trials with the respective spray schedule",
-            "estimated mean disease severity",
-            "indicates the significance between each respective spray schedule and the no spray control (intercept)",
+            "Number of treatment means categorised to each spray schedule",
+            "Number of trials with the respective spray schedule",
+            "Estimated mean disease severity",
+            "Indicates the significance between each respective spray schedule and the no spray control (intercept)",
             "Lower range of the 95% confidence interval",
             "Upper range of the 95% confidence interval",
             "Fungicide spray schedule percent efficacy",
