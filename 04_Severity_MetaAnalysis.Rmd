@@ -376,26 +376,34 @@ results_mv <- cbind(
    ),
    backtransform(PMsev_mvPer))
 
+# Calculate mean differences
+Intcpt <- results_mv$estimates[1]
+results_mv <- 
+   results_mv %>%
+   mutate(estimates = estimates - Intcpt,
+          CI_lb = CI_lb - Intcpt,
+          CI_ub = CI_lb - Intcpt)
+
 # round the numbers
 results_mv[,c(4:6,8:9)] <- round(results_mv[,c(4:6,8:9)], 4)
 
-results_mv <- 
-   results_mv %>%
-   mutate(
-   eff_bar = round(
-      1 - estimates, 
-      4) * 100,
-   eff_CI_high = round(
-      1 - CI_lb
-   , 4) * 100,
-   eff_CI_low = round(
-      1 - CI_ub
-   , 4) * 100
-   
-)
+# results_mv <- 
+#    results_mv %>%
+#    mutate(
+#    eff_bar = round(
+#       1 - estimates, 
+#       4) * 100,
+#    eff_CI_high = round(
+#       1 - CI_lb
+#    , 4) * 100,
+#    eff_CI_low = round(
+#       1 - CI_ub
+#    , 4) * 100
+#    
+# )
 
 # remove efficacy in control
-results_mv[1,10:12] <- NA
+#results_mv[1,10:12] <- NA
 
 # rename colnames to give table headings
 colnames(results_mv)[c(1:12 )] <-
@@ -407,24 +415,21 @@ colnames(results_mv)[c(1:12 )] <-
      "Z",
      "P",
      "CI_{L}",
-     "CI_{U}",
-     "Efficacy",
-     "Eff CI_lower",
-     "Eff CI upper")
+     "CI_{U}")
 
 disease_estimates_table <-
-   flextable(results_mv[c(2,5,6,3,4), ]) %>%
-   align(j = 2:10, align = "center", part = "all") %>%
+   results_mv[c(2,5,6,3,4), -6] %>%
+   flextable() %>%
+   align(j = 2:8, align = "center", part = "all") %>%
    fontsize(size = 8, part = "body") %>%
    fontsize(size = 10, part = "header") %>%
    italic(italic = TRUE, part = "header") %>%
    set_caption(
-      "Table 3: Estimated powdery mildew severity for each spray schedule treatment. Estimates were back transformed using a inverse logit from the network meta-analysis of data obtained from grey literature reports of (k) field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
+      "Table 3: Estimated powdery mildew severity mean difference for each spray schedule treatment. Estimates were back transformed using a inverse logit from the network meta-analysis of data obtained from grey literature reports of (k) field trials undertaken in Eastern Australia. P values indicate statistical significance in comparison to the intercept."
    ) %>%
-   autofit() %>%
    footnote(
       i = 1,
-      j = c(2:4,7:12),
+      j = c(2:4,6:8),
       value = as_paragraph(
          c(
             "Number of treatment means categorised to each spray schedule",
@@ -432,30 +437,27 @@ disease_estimates_table <-
             "Estimated mean disease severity",
             "Indicates the significance between each respective spray schedule and the no spray control (intercept)",
             "Lower range of the 95% confidence interval",
-            "Upper range of the 95% confidence interval",
-            "Fungicide spray schedule percent efficacy",
-            "Lower range of the 95% confidence interval",
             "Upper range of the 95% confidence interval"
          )
       ),
       ref_symbols = letters[c(1:7,4,5)],
       part = "header",
       inline = TRUE
-   )%>%
+    )%>%
    add_header(Moderator = "",
               N = "",
               k = "",
               mu = "Effect Size",
               se = "Effect Size",
-              Z = "Effect Size",
               `CI_{L}` = "Effect Size",
               `CI_{U}` = "Effect Size",
-              P  = "Effect Size",
-              Efficacy = "PM control",
-              `Eff CI_lower` = "PM control",
-              `Eff CI upper` = "PM control") %>%
+              P  = "Effect Size") %>%
    merge_h( part = "header")%>%
-   hline_top(part="all", border = officer::fp_border(color = "black", width = 2) )
+   hline_top(part="all", border = officer::fp_border(color = "black", width = 2))%>%
+   width(j = 1, width = 1) %>%
+   width(j = 2, width = 0.3) %>%
+   width(j = 3, width = 0.3) %>%
+   width(j = 4:8, width = 0.6) 
 
 disease_estimates_table
 ```
