@@ -406,7 +406,7 @@ results_mv[,c(4:6,8:9)] <- round(results_mv[,c(4:6,8:9)], 4)
 #results_mv[1,10:12] <- NA
 
 # rename colnames to give table headings
-colnames(results_mv)[c(1:12 )] <-
+colnames(results_mv)[c(1:9 )] <-
    c("Moderator",
      "N",
      "k",
@@ -440,19 +440,19 @@ disease_estimates_table <-
             "Upper range of the 95% confidence interval"
          )
       ),
-      ref_symbols = letters[c(1:7,4,5)],
+      ref_symbols = letters[c(1:6)],
       part = "header",
       inline = TRUE
     )%>%
-   add_header(Moderator = "",
-              N = "",
-              k = "",
-              mu = "Effect Size",
-              se = "Effect Size",
-              `CI_{L}` = "Effect Size",
-              `CI_{U}` = "Effect Size",
-              P  = "Effect Size") %>%
-   merge_h( part = "header")%>%
+   # add_header(Moderator = "",
+   #            N = "",
+   #            k = "",
+   #            mu = "Effect Size",
+   #            se = "Effect Size",
+   #            `CI_{L}` = "Effect Size",
+   #            `CI_{U}` = "Effect Size",
+   #            P  = "Effect Size") %>%
+   # merge_h( part = "header")%>%
    hline_top(part="all", border = officer::fp_border(color = "black", width = 2))%>%
    width(j = 1, width = 1) %>%
    width(j = 2, width = 0.3) %>%
