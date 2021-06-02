@@ -321,7 +321,7 @@ The analysis shows there is still a significant amount of residual heterogeneity
 
 To check the stability in the network analysis we will rerun the chosen model 15 times. 
 Each run, one of the 15 trials will be excluded from the analysis to detect if any estimates varied significantly indicating an unstable network meta-analysis.
-```{r stability}
+```{r stability, cache=TRUE}
 stab_PM_mv <- 
    lapply(unique(PM_dat_Y$trial_ref), function(Trial){
       
@@ -352,11 +352,11 @@ stab_df$Tnum <- rep(1:15, each = 6)
 
 stab_df %>%
    ggplot(aes(Tnum, estimates, colour = treat))+
-   geom_line()
+   geom_line(size = 1)
 
 stab_df %>%
    ggplot(aes(Tnum, p, colour = treat))+
-   geom_line()+
+   geom_line(size = 1)+
    scale_y_log10()
 
 
@@ -368,6 +368,7 @@ stab_df %>%
              minP = min(p),
              medP = median(p),
              maxP= max(p))
+stab_df[Tnum == 9]
 ```
 
 Trial 9 at missen flats changes the estimates the most when excluded due to the high number of reps
