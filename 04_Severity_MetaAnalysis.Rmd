@@ -291,11 +291,12 @@ sensitiviy_df$Tnum <- rep(1:14, each = 6)
 
 sensitiviy_df %>%
    ggplot(aes(Tnum, estimates, colour = treat))+
-   geom_line()
+   geom_line(size = 1)
 
 sensitiviy_df %>%
    ggplot(aes(Tnum, p, colour = treat))+
-   geom_line()
+   geom_line(size = 1)+
+   scale_y_log10()
 
 unique(PM_dat_D$trial_ref)[7]
 sensitiviy_df %>%
