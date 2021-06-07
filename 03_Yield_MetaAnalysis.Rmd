@@ -317,6 +317,82 @@ The analysis shows there is still a significant amount of residual heterogeneity
 
 ******
 
+## Meta-analysis stability test
+
+To check the stability in the network analysis we will rerun the chosen model 15 times. 
+Each run, one of the 15 trials will be excluded from the analysis to detect if any estimates varied significantly indicating an unstable network meta-analysis.
+```{r stability, cache=TRUE}
+stab_PM_mv <- 
+   lapply(unique(PM_dat_Y$trial_ref), function(Trial){
+      
+      #subset to remove a trial
+      dat <- filter(PM_dat_Y, trial_ref != Trial)
+      
+      PM_mv <- rma.mv(
+         yi = grain_yield.t.ha.,
+         V = vi,
+         mods = ~ spray_management,
+         method = "ML",
+         random = list(~ spray_management | trial, ~ 1 | id),
+         struct = "UN",
+         control = list(optimizer = "optim"),
+         data = dat
+      )
+   })
+
+length(stab_PM_mv)
+est <- lapply(stab_PM_mv, function(e1){
+   data.frame(treat = rownames(e1$b),
+              estimates = e1$b,
+              p = as.numeric(reportP(e1$pval, P_prefix = FALSE,AsNumeric = TRUE)))
+   })
+
+stab_df <- data.table::rbindlist(est)
+stab_df$Tnum <- rep(1:15, each = 6)
+
+stab_df %>%
+   ggplot(aes(Tnum, estimates, colour = treat))+
+   geom_line(size = 1)
+
+stab_df %>%
+   ggplot(aes(Tnum, p, colour = treat))+
+   geom_line(size = 1)+
+   scale_y_log10()
+
+
+stab_df %>%
+   group_by(treat) %>%
+   summarise(minEst = min(estimates),
+             medEst = median(estimates),
+             maxEst = max(estimates),
+             minP = min(p),
+             medP = median(p),
+             maxP= max(p))
+stab_df[Tnum == 9]
+```
+
+Trial 9 at missen flats changes the estimates the most when excluded due to the high number of reps
+```{r}
+unique(PM_dat_Y$trial_ref)[9]
+```
+
+
+
+### Between study heterogeneity
+Calculation of I^2
+```{r}
+W <- diag(1/(PM_dat_Y$vi))
+X <- model.matrix(PM_mv)
+P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+100 * sum(PM_mv$sigma2) / (sum(PM_mv$sigma2) + (PM_mv$k-PM_mv$p)/sum(diag(P)))
+
+100 * PM_mv$sigma2 / (sum(PM_mv$sigma2) + (PM_mv$k-PM_mv$p)/sum(diag(P)))
+```
+This indicates that approximate amount of total variance attributed to trials/ clusters is 99%, which is very high. 
+However given that many of the means included in the model contained an accompanying sample variance of zero, this might have been expected.
+
+
+
 ## Meta-analysis results summary
 
 ### Moderator estimates table

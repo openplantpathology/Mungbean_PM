@@ -933,6 +933,9 @@ Goolhi.13D$Inc_33D <-  incidence1
 }
 }
 
+#correct disease data
+Goolhi.13D[Goolhi.13D$Treat == 1 &
+              Goolhi.13D$Rep == 2, "Inc_33D"] <- NA
 
 #_____________________
 # Read in Harvest data
@@ -950,7 +953,6 @@ Goolhi.13Y <- Goolhi.13Y[order(Goolhi.13Y[,1],Goolhi.13Y[,2],Goolhi.13Y[,3],Gool
 
 # Join disease and Yield data
 Goolhi_13 <- left_join(Goolhi.13D, Goolhi.13Y)
-
 ```
 
 
@@ -1028,6 +1030,9 @@ Goolhi_13 <- Goolhi_13 %>%
                        Treat == "10" ~ 2,
                        Treat == "11" ~ 3,
                        TRUE ~ 1))
+
+# correction
+
 
 ```
 
