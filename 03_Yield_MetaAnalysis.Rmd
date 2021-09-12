@@ -33,7 +33,6 @@ if (!require("pacman"))
 pacman::p_load(
    tidyverse,
    kableExtra,
-   bomrang,
    RColorBrewer,
    metafor,
    here,

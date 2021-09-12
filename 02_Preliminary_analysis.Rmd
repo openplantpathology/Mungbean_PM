@@ -5,7 +5,6 @@ if (!require("pacman"))
    install.packages("pacman")
 pacman::p_load(tidyverse,
                lubridate,
-               bomrang,
                openxlsx,
                devtools,
                reshape2,
