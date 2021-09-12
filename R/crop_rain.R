@@ -1,5 +1,6 @@
 library("dplyr")
 library("lubridate")
+remotes::install_github("ropensci/bomrang")
 # Function to run over each line for sum rainfall
 crop_rain <-
    function(location_name,
