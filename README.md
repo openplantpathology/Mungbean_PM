@@ -24,6 +24,10 @@ Determine when is the optimum time to spray fungicide to limit the effect of pow
 
 The preprint is available from agriRxiv: <https://doi.org/10.31220/agriRxiv.2021.00042>.
 
+# Publication
+
+This work has been accepted by the journal Plant Pathology and can be access from:
+
 # Licence
 
 Data: [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/legalcode) International attribution requested in reuse.
