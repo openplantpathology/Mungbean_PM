@@ -198,7 +198,7 @@ plot(rstandard(PMsev_mv)$z, ylim=c(-3,3), pch=19)
 This analysis shows the residual are slightly unbalanced and perhaps an effect of time. 
 Does squaring the response improve the residuals?
 
-```{r Metafor-Sev-analysis, cache=TRUE}
+```{r Metafor-Sev-analysisSQ, cache=TRUE}
 PMsev_mvSQ <- rma.mv(
    yi = yi_square,
    V = vi_square,

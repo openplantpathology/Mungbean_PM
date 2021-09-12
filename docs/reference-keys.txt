@@ -54,6 +54,8 @@ disease-pressure-interaction-with-spray-schedule
 metafor-disease-pressure-interaction
 test-variance-covavriance-matrix-structure
 summarise-pm_mv-model
+meta-analysis-stability-test
+between-study-heterogeneity
 meta-analysis-results-summary
 moderator-estimates-table
 moderator-estimates-plot
@@ -64,6 +66,8 @@ netmeta-estimates-plot
 moderator-netgraph
 powdery-mildew-severity-meta-analysis
 define-trial-1
+inspect-pm-severity-for-normality
+transform-severity-response
 disease-severity-spray-schedule-meta-analysis
 disease-severity-moderator-contrasts
 meta-analysis-summary-table

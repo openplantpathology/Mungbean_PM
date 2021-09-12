@@ -33,3 +33,6 @@ survival
 MASS
 TH.data
 multcomp
+foreach
+gam
+clubSandwich
