@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-# Powdery mildew severity Meta-analysis  
+# Powdery mildew severity meta-analysis  
 
 An additional question to our main aim: does spray schedule have a similar effect on disease severity?
 
