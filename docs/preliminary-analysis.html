@@ -40,7 +40,7 @@
 <li><a class="" href="trials-considered-for-inclusion-in-meta-analysis.html"><span class="header-section-number">2</span> Trials considered for inclusion in meta-analysis</a></li>
 <li><a class="active" href="preliminary-analysis.html"><span class="header-section-number">3</span> Preliminary Analysis</a></li>
 <li><a class="" href="grain-yield-meta-analysis.html"><span class="header-section-number">4</span> Grain yield meta-analysis</a></li>
-<li><a class="" href="powdery-mildew-severity-meta-analysis.html"><span class="header-section-number">5</span> Powdery mildew severity Meta-analysis</a></li>
+<li><a class="" href="powdery-mildew-severity-meta-analysis.html"><span class="header-section-number">5</span> Powdery mildew severity meta-analysis</a></li>
 </ul>
 
         <div class="book-extra">
@@ -57,9 +57,9 @@
    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pacman"</span><span class="op">)</span>
 <span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,
                <span class="va">lubridate</span>,
-               <span class="va">bomrang</span>,
                <span class="va">openxlsx</span>,
                <span class="va">devtools</span>,
+               <span class="va">remotes</span>,
                <span class="va">reshape2</span>,
                <span class="va">lme4</span>,
                <span class="va">kableExtra</span>,
@@ -101,7 +101,7 @@ Powdery mildew severity was assessed on a 1 - 9 scale.</p>
    <span class="fu">align</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span>, align <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">set_caption</span><span class="op">(</span><span class="st">"Table 2: Powdery mildew severity rating scale and calculated percent severity for each ordinal rating"</span><span class="op">)</span>
 <span class="va">d_rating_table</span></code></pre></div>
-<template id="462e86e6-8afc-4652-82a7-b61a678a71ae"><style>
+<template id="7cf34506-7f54-4f08-b30c-4d085a52ea64"><style>
 .tabwid table{
   border-collapse:collapse;
   line-height:1;
@@ -137,68 +137,68 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-1cd639ea{border-collapse:collapse;}.cl-1ccc3b5c{font-family:'Arial';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1ccc3b5d{font-family:'Arial';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1ccc8922{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1ccc8923{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1ccc8924{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1cccfc86{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc87{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc88{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc89{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc8a{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc8b{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc8c{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc8d{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cccfc8e{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-1cd639ea">
+<style>.cl-2b807c68{border-collapse:collapse;}.cl-2b7081b4{font-family:'Arial';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2b7081b5{font-family:'Arial';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2b70cfa2{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b70cfa3{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b70cfa4{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b716b74{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b75{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b76{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b77{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b78{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b79{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b7a{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b7b{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b716b7c{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2b807c68">
 <caption class="Table Caption">
 (#tab:disease_scale)Table 2: Powdery mildew severity rating scale and calculated percent severity for each ordinal rating
 </caption>
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc8e"><p class="cl-1ccc8922"><span class="cl-1ccc3b5c">Severity rating</span></p></td>
-<td class="cl-1cccfc8c"><p class="cl-1ccc8923"><span class="cl-1ccc3b5c">Description</span></p></td>
-<td class="cl-1cccfc8d"><p class="cl-1ccc8922"><span class="cl-1ccc3b5c">Equivalent percent severity</span></p></td>
+<td class="cl-2b716b7c"><p class="cl-2b70cfa2"><span class="cl-2b7081b4">Severity rating</span></p></td>
+<td class="cl-2b716b7a"><p class="cl-2b70cfa3"><span class="cl-2b7081b4">Description</span></p></td>
+<td class="cl-2b716b7b"><p class="cl-2b70cfa2"><span class="cl-2b7081b4">Equivalent percent severity</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">1</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">No sign of powdery mildew</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">0.00</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">1</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">No sign of powdery mildew</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">0.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">2</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Small colonies in the lower 1/3 of canopy with up to 75% of plants infected</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">16.50</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">2</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Small colonies in the lower 1/3 of canopy with up to 75% of plants infected</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">16.50</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">3</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Colonies in lower half of canopy with more than 75% of plants infected</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">43.50</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">3</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Colonies in lower half of canopy with more than 75% of plants infected</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">43.50</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">4</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Colonies in lower 2/3 of canopy with up to 75% of plants infected</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">49.50</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">4</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Colonies in lower 2/3 of canopy with up to 75% of plants infected</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">49.50</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">5</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Colonies in lower 2/3 of canopy with more than 75% of plants infected</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">57.42</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">5</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Colonies in lower 2/3 of canopy with more than 75% of plants infected</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">57.42</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">6</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Colonies in lower 2/3 of canopy with 100% of plants infected</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">66.00</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">6</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Colonies in lower 2/3 of canopy with 100% of plants infected</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">66.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">7</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Colonies in lower 2/3 of canopy with 100% of plants infected, some plants with colonies in the top 1/3 of the canopy</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">75.00</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">7</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Colonies in lower 2/3 of canopy with 100% of plants infected, some plants with colonies in the top 1/3 of the canopy</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">75.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc88"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">8</span></p></td>
-<td class="cl-1cccfc87"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Colonies all the way to the top of the plant with more than 75% of plants affected</span></p></td>
-<td class="cl-1cccfc86"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">87.00</span></p></td>
+<td class="cl-2b716b76"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">8</span></p></td>
+<td class="cl-2b716b75"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Colonies all the way to the top of the plant with more than 75% of plants affected</span></p></td>
+<td class="cl-2b716b74"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">87.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cccfc8b"><p class="cl-1ccc8924"><span class="cl-1ccc3b5d">9</span></p></td>
-<td class="cl-1cccfc89"><p class="cl-1ccc8923"><span class="cl-1ccc3b5d">Colonies all the way to the top of the plant with severe leaf drop</span></p></td>
-<td class="cl-1cccfc8a"><p class="cl-1ccc8922"><span class="cl-1ccc3b5d">100.00</span></p></td>
+<td class="cl-2b716b79"><p class="cl-2b70cfa4"><span class="cl-2b7081b5">9</span></p></td>
+<td class="cl-2b716b77"><p class="cl-2b70cfa3"><span class="cl-2b7081b5">Colonies all the way to the top of the plant with severe leaf drop</span></p></td>
+<td class="cl-2b716b78"><p class="cl-2b70cfa2"><span class="cl-2b7081b5">100.00</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="7e4b28ee-a7ff-4f7d-8079-467e1e9daa90"></div>
+</div></template><div class="flextable-shadow-host" id="8e36950e-5c8b-4c12-8e88-ead729459522"></div>
 <script>
-var dest = document.getElementById("7e4b28ee-a7ff-4f7d-8079-467e1e9daa90");
-var template = document.getElementById("462e86e6-8afc-4652-82a7-b61a678a71ae");
+var dest = document.getElementById("8e36950e-5c8b-4c12-8e88-ead729459522");
+var template = document.getElementById("7cf34506-7f54-4f08-b30c-4d085a52ea64");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -227,7 +227,7 @@ fantome.appendChild(templateContent);
    <span class="fu">group_by</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">summarise</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
    <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<template id="43982209-fff7-4277-b458-b37266252311"><style>
+<template id="41d10cdc-e02d-4052-a3d9-88c53a0822e8"><style>
 .tabwid table{
   border-collapse:collapse;
   line-height:1;
@@ -263,51 +263,51 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-1cf20094{border-collapse:collapse;}.cl-1cea3d96{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1cea64ba{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1cea64bb{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1cea8b84{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cea8b85{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cea8b86{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cea8b87{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cea8b88{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1cea8b89{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-1cf20094">
+<style>.cl-2ba422b2{border-collapse:collapse;}.cl-2b97cf08{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2b97f604{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b97f605{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2b981cec{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b981ced{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b981cee{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b981cef{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b981cf0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2b981cf1{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2ba422b2">
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b89"><p class="cl-1cea64ba"><span class="cl-1cea3d96">year</span></p></td>
-<td class="cl-1cea8b88"><p class="cl-1cea64bb"><span class="cl-1cea3d96">n</span></p></td>
+<td class="cl-2b981cf1"><p class="cl-2b97f604"><span class="cl-2b97cf08">year</span></p></td>
+<td class="cl-2b981cf0"><p class="cl-2b97f605"><span class="cl-2b97cf08">n</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b84"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2011</span></p></td>
-<td class="cl-1cea8b85"><p class="cl-1cea64bb"><span class="cl-1cea3d96">2</span></p></td>
+<td class="cl-2b981cec"><p class="cl-2b97f604"><span class="cl-2b97cf08">2011</span></p></td>
+<td class="cl-2b981ced"><p class="cl-2b97f605"><span class="cl-2b97cf08">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b84"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2012</span></p></td>
-<td class="cl-1cea8b85"><p class="cl-1cea64bb"><span class="cl-1cea3d96">2</span></p></td>
+<td class="cl-2b981cec"><p class="cl-2b97f604"><span class="cl-2b97cf08">2012</span></p></td>
+<td class="cl-2b981ced"><p class="cl-2b97f605"><span class="cl-2b97cf08">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b84"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2013</span></p></td>
-<td class="cl-1cea8b85"><p class="cl-1cea64bb"><span class="cl-1cea3d96">4</span></p></td>
+<td class="cl-2b981cec"><p class="cl-2b97f604"><span class="cl-2b97cf08">2013</span></p></td>
+<td class="cl-2b981ced"><p class="cl-2b97f605"><span class="cl-2b97cf08">4</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b84"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2015</span></p></td>
-<td class="cl-1cea8b85"><p class="cl-1cea64bb"><span class="cl-1cea3d96">1</span></p></td>
+<td class="cl-2b981cec"><p class="cl-2b97f604"><span class="cl-2b97cf08">2015</span></p></td>
+<td class="cl-2b981ced"><p class="cl-2b97f605"><span class="cl-2b97cf08">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b84"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2016</span></p></td>
-<td class="cl-1cea8b85"><p class="cl-1cea64bb"><span class="cl-1cea3d96">2</span></p></td>
+<td class="cl-2b981cec"><p class="cl-2b97f604"><span class="cl-2b97cf08">2016</span></p></td>
+<td class="cl-2b981ced"><p class="cl-2b97f605"><span class="cl-2b97cf08">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b84"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2017</span></p></td>
-<td class="cl-1cea8b85"><p class="cl-1cea64bb"><span class="cl-1cea3d96">2</span></p></td>
+<td class="cl-2b981cec"><p class="cl-2b97f604"><span class="cl-2b97cf08">2017</span></p></td>
+<td class="cl-2b981ced"><p class="cl-2b97f605"><span class="cl-2b97cf08">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b84"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2018</span></p></td>
-<td class="cl-1cea8b85"><p class="cl-1cea64bb"><span class="cl-1cea3d96">1</span></p></td>
+<td class="cl-2b981cec"><p class="cl-2b97f604"><span class="cl-2b97cf08">2018</span></p></td>
+<td class="cl-2b981ced"><p class="cl-2b97f605"><span class="cl-2b97cf08">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1cea8b87"><p class="cl-1cea64ba"><span class="cl-1cea3d96">2019</span></p></td>
-<td class="cl-1cea8b86"><p class="cl-1cea64bb"><span class="cl-1cea3d96">2</span></p></td>
+<td class="cl-2b981cef"><p class="cl-2b97f604"><span class="cl-2b97cf08">2019</span></p></td>
+<td class="cl-2b981cee"><p class="cl-2b97f605"><span class="cl-2b97cf08">2</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="1bb9b3c8-38f8-4218-8a97-4a5688f69eb0"></div>
+</div></template><div class="flextable-shadow-host" id="3ffb1b51-2f09-46b5-80e9-94a5e03bad6d"></div>
 <script>
-var dest = document.getElementById("1bb9b3c8-38f8-4218-8a97-4a5688f69eb0");
-var template = document.getElementById("43982209-fff7-4277-b458-b37266252311");
+var dest = document.getElementById("3ffb1b51-2f09-46b5-80e9-94a5e03bad6d");
+var template = document.getElementById("41d10cdc-e02d-4052-a3d9-88c53a0822e8");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -331,7 +331,7 @@ fantome.appendChild(templateContent);
    <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">summarise</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
    <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<template id="79abf9b4-d4ec-438b-b508-045ecbdf420b"><style>
+<template id="d12cf94f-5d17-44e9-baf5-4f930e42b542"><style>
 .tabwid table{
   border-collapse:collapse;
   line-height:1;
@@ -367,55 +367,55 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-1d099754{border-collapse:collapse;}.cl-1d022262{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1d024972{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1d024973{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1d0295b2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d0295b3{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d0295b4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d0295b5{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d0295b6{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d0295b7{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-1d099754">
+<style>.cl-2bc43ee4{border-collapse:collapse;}.cl-2bbaa87a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2bbacf76{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2bbacf77{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2bbb1d64{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bbb1d65{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bbb1d66{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bbb1d67{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bbb1d68{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bbb1d69{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2bc43ee4">
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b6"><p class="cl-1d024972"><span class="cl-1d022262">location</span></p></td>
-<td class="cl-1d0295b7"><p class="cl-1d024973"><span class="cl-1d022262">n</span></p></td>
+<td class="cl-2bbb1d68"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">location</span></p></td>
+<td class="cl-2bbb1d69"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">n</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Gatton</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">1</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Gatton</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Goolhi</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">1</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Goolhi</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Hermitage</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">6</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Hermitage</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">6</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Kingaroy</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">3</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Kingaroy</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">3</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Marys Mount</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">1</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Marys Mount</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Millmerran</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">1</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Millmerran</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Missen Flats</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">1</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Missen Flats</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b2"><p class="cl-1d024972"><span class="cl-1d022262">Premer</span></p></td>
-<td class="cl-1d0295b3"><p class="cl-1d024973"><span class="cl-1d022262">1</span></p></td>
+<td class="cl-2bbb1d64"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Premer</span></p></td>
+<td class="cl-2bbb1d65"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d0295b4"><p class="cl-1d024972"><span class="cl-1d022262">Wellcamp</span></p></td>
-<td class="cl-1d0295b5"><p class="cl-1d024973"><span class="cl-1d022262">1</span></p></td>
+<td class="cl-2bbb1d66"><p class="cl-2bbacf76"><span class="cl-2bbaa87a">Wellcamp</span></p></td>
+<td class="cl-2bbb1d67"><p class="cl-2bbacf77"><span class="cl-2bbaa87a">1</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="2fef9935-242c-458f-ae98-4668da355940"></div>
+</div></template><div class="flextable-shadow-host" id="d99982e8-f9ac-46d3-ac6b-ea4ae26c950d"></div>
 <script>
-var dest = document.getElementById("2fef9935-242c-458f-ae98-4668da355940");
-var template = document.getElementById("79abf9b4-d4ec-438b-b508-045ecbdf420b");
+var dest = document.getElementById("d99982e8-f9ac-46d3-ac6b-ea4ae26c950d");
+var template = document.getElementById("d12cf94f-5d17-44e9-baf5-4f930e42b542");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -510,7 +510,7 @@ fantome.appendChild(templateContent);
       ref_symbols <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>
 
 <span class="va">Sev_yield_table</span></code></pre></div>
-<template id="198c4bb3-4b95-410b-afd0-be621b10b8cc"><style>
+<template id="8d747610-9494-4ea1-9ec4-0319bc936fc3"><style>
 .tabwid table{
   border-collapse:collapse;
   line-height:1;
@@ -546,226 +546,226 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-1d3f359e{border-collapse:collapse;}.cl-1d352a86{font-family:'Arial';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1d352a87{font-family:'Arial';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1d352a88{font-family:'Arial';font-size:4.8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:2.4pt;}.cl-1d352a89{font-family:'Arial';font-size:6.6pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3.3pt;}.cl-1d352a8a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1d355178{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1d355179{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1d35c658{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c659{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c65a{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c65b{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c65c{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c65d{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c65e{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c65f{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c660{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c661{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35c662{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed5e{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed5f{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed60{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed61{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed62{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed63{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed64{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed65{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed66{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed67{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d35ed68{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d36143c{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d36143d{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d36143e{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d36143f{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d361440{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d361441{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d361442{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d361443{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d361444{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d361445{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d361446{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1d363b4c{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-1d3f359e">
+<style>.cl-2c0c394c{border-collapse:collapse;}.cl-2bfbb66c{font-family:'Arial';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2bfbb66d{font-family:'Arial';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2bfbb66e{font-family:'Arial';font-size:4.8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:2.4pt;}.cl-2bfbb66f{font-family:'Arial';font-size:6.6pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3.3pt;}.cl-2bfbb670{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2bfbdd68{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2bfbdd69{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2bfc5248{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc5249{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc524a{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc524b{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc524c{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc524d{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc524e{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc524f{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc5250{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc5251{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc5252{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc793a{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc793b{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc793c{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc793d{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc793e{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc793f{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc7940{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc7941{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc7942{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc7943{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfc7944{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca02c{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca02d{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca02e{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca02f{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca030{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca031{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca032{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca033{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca034{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca035{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfca036{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2bfcc71e{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2c0c394c">
 <caption class="Table Caption">
 (#tab:Full_Trial_Summary_table)Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset date, number of treatments per trial (n), PM median plot severity of the non-fungicide treated plots and the severity range in fungicide treatments, bracketed numbers refer to the number of pooled control treatments summarised; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare
 </caption>
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-1d361444"><p class="cl-1d355178"><span class="cl-1d352a86">Trial code</span></p></td>
-<td class="cl-1d361443"><p class="cl-1d355178"><span class="cl-1d352a86">Location</span></p></td>
-<td class="cl-1d361446"><p class="cl-1d355179"><span class="cl-1d352a86">Year</span></p></td>
-<td class="cl-1d361440"><p class="cl-1d355179"><span class="cl-1d352a86">Sowing date</span></p></td>
-<td class="cl-1d361440"><p class="cl-1d355179"><span class="cl-1d352a86">PM onset</span></p></td>
-<td class="cl-1d36143f"><p class="cl-1d355179"><span class="cl-1d352a86">n</span></p></td>
-<td class="cl-1d361445"><p class="cl-1d355179"><span class="cl-1d352a86">Control median<br>PM severity</span></p></td>
-<td class="cl-1d363b4c"><p class="cl-1d355179"><span class="cl-1d352a86">PM severity<br>range</span></p></td>
-<td class="cl-1d361441"><p class="cl-1d355179"><span class="cl-1d352a86">Control<br>median yield</span></p></td>
-<td class="cl-1d361442"><p class="cl-1d355179"><span class="cl-1d352a86">Yield range<br>(t / ha)</span></p></td>
+<td class="cl-2bfca034"><p class="cl-2bfbdd68"><span class="cl-2bfbb66c">Trial code</span></p></td>
+<td class="cl-2bfca033"><p class="cl-2bfbdd68"><span class="cl-2bfbb66c">Location</span></p></td>
+<td class="cl-2bfca036"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">Year</span></p></td>
+<td class="cl-2bfca030"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">Sowing date</span></p></td>
+<td class="cl-2bfca030"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">PM onset</span></p></td>
+<td class="cl-2bfca02f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">n</span></p></td>
+<td class="cl-2bfca035"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">Control median<br>PM severity</span></p></td>
+<td class="cl-2bfcc71e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">PM severity<br>range</span></p></td>
+<td class="cl-2bfca031"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">Control<br>median yield</span></p></td>
+<td class="cl-2bfca032"><p class="cl-2bfbdd69"><span class="cl-2bfbb66c">Yield range<br>(t / ha)</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1011/01</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Hermitage</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2011</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2011-01-24</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2011-03-28</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">4</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">4.83 (2)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">2 - 2.33</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">1.525</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">1.544 - 1.769</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1011/01</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Hermitage</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2011</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2011-01-24</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2011-03-28</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4.83 (2)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2 - 2.33</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.525</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.544 - 1.769</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1011/02</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Kingaroy</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2011</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2011-02-02</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2011-03-22</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">6</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">7.83 (2)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">3.33 - 5.33</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.798</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">0.73 - 1.059</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1011/02</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Kingaroy</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2011</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2011-02-02</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2011-03-22</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">6</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7.83 (2)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">3.33 - 5.33</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.798</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.73 - 1.059</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1112/01</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Gatton</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2012</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2012-02-20</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2012-04-02</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">7</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">7.5 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">2 - 6.3</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.738</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">0.81 - 0.948</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1112/01</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Gatton</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012-02-20</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012-04-02</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7.5 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2 - 6.3</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.738</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.81 - 0.948</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1112/02</span><span class="cl-1d352a88">a</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Kingaroy</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2012</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2012-02-03</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2012-03-12</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">7</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">8 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">1.7 - 8</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.751</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">1.036 - 1.323</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1112/02</span><span class="cl-2bfbb66e">a</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Kingaroy</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012-02-03</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012-03-12</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">8 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.7 - 8</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.751</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.036 - 1.323</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">AM1303</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Premer</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2013</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2012-12-28</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2013-02-28</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">4</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">8 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">2 - 7.83</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">1.422</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">1.334 - 1.45</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">AM1303</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Premer</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012-12-28</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013-02-28</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">8 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2 - 7.83</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.422</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.334 - 1.45</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">AM1304</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Marys Mount</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2013</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2012-12-24</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2013-03-16</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">2</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">3 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">3.17 - 3.17</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">1.094</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">1.265 - 1.265</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">AM1304</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Marys Mount</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2012-12-24</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013-03-16</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">3 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">3.17 - 3.17</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.094</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.265 - 1.265</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">AM1305</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Goolhi</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2013</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2013-01-23</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2013-03-25</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">4</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">9 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">1 - 3.75</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.694</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">0.604 - 0.722</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">AM1305</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Goolhi</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013-01-23</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013-03-25</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">9 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1 - 3.75</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.694</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.604 - 0.722</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">BB1305</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Millmerran</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2013</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2013-01-12</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2013-03-13</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">4</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">8 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">1.62 - 8</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.802</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">0.744 - 0.803</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">BB1305</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Millmerran</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013-01-12</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2013-03-13</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">8 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.62 - 8</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.802</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.744 - 0.803</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1415/01</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Hermitage</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2015</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2015-01-19</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2015-03-16</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">5</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">7.8 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">5.4 - 6.6</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">2.045</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">2.018 - 2.176</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1415/01</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Hermitage</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2015</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2015-01-19</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2015-03-16</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">5</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7.8 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">5.4 - 6.6</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2.045</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2.018 - 2.176</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1516/01</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Hermitage</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2016</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2016-02-03</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2016-03-08</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">7</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">8 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">3 - 7.5</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">1.803</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">2.141 - 2.37</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1516/01</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Hermitage</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2016</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2016-02-03</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2016-03-08</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">8 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">3 - 7.5</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.803</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2.141 - 2.37</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1516/02</span><span class="cl-1d352a88">b</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Kingaroy</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2016</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2016-02-11</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2016-03-09</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">7</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">8.25 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">2.25 - 7.75</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.811</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">0.873 - 1.034</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1516/02</span><span class="cl-2bfbb66e">b</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Kingaroy</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2016</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2016-02-11</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2016-03-09</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">8.25 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2.25 - 7.75</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.811</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.873 - 1.034</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1617/01</span><span class="cl-1d352a88">b</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Hermitage</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2017</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2017-02-13</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2017-03-24</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">39</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">8 (9)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">5.33 - 8</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.474</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">0.327 - 0.683</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1617/01</span><span class="cl-2bfbb66e">b</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Hermitage</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2017</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2017-02-13</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2017-03-24</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">39</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">8 (9)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">5.33 - 8</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.474</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.327 - 0.683</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1617/02</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Missen Flats</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2017</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2017-01-27</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2017-03-07</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">39</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">9 (9)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">7.67 - 9</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">1.505</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">1.13 - 2.526</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1617/02</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Missen Flats</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2017</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2017-01-27</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2017-03-07</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">39</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">9 (9)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7.67 - 9</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.505</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.13 - 2.526</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1718/01</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Wellcamp</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2018</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2018-02-13</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2018-03-21</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">18</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">8.17 (6)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">5.67 - 7.67</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">1.091</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">1.084 - 1.69</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1718/01</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Wellcamp</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2018</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2018-02-13</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2018-03-21</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">18</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">8.17 (6)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">5.67 - 7.67</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.091</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">1.084 - 1.69</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35c65b"><p class="cl-1d355178"><span class="cl-1d352a87">1819/01</span></p></td>
-<td class="cl-1d35c659"><p class="cl-1d355178"><span class="cl-1d352a87">Hermitage</span></p></td>
-<td class="cl-1d35c65f"><p class="cl-1d355179"><span class="cl-1d352a87">2019</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2018-02-04</span></p></td>
-<td class="cl-1d35c65c"><p class="cl-1d355179"><span class="cl-1d352a87">2018-04-12</span></p></td>
-<td class="cl-1d35c658"><p class="cl-1d355179"><span class="cl-1d352a87">4</span></p></td>
-<td class="cl-1d35c65e"><p class="cl-1d355179"><span class="cl-1d352a87">7.5 (1)</span></p></td>
-<td class="cl-1d35c65d"><p class="cl-1d355179"><span class="cl-1d352a87">5 - 7.17</span></p></td>
-<td class="cl-1d35c660"><p class="cl-1d355179"><span class="cl-1d352a87">0.587</span></p></td>
-<td class="cl-1d35c65a"><p class="cl-1d355179"><span class="cl-1d352a87">0.543 - 0.571</span></p></td>
+<td class="cl-2bfc524b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1819/01</span></p></td>
+<td class="cl-2bfc5249"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Hermitage</span></p></td>
+<td class="cl-2bfc524f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2019</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2018-02-04</span></p></td>
+<td class="cl-2bfc524c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2018-04-12</span></p></td>
+<td class="cl-2bfc5248"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4</span></p></td>
+<td class="cl-2bfc524e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7.5 (1)</span></p></td>
+<td class="cl-2bfc524d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">5 - 7.17</span></p></td>
+<td class="cl-2bfc5250"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.587</span></p></td>
+<td class="cl-2bfc524a"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.543 - 0.571</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-1d35ed5f"><p class="cl-1d355178"><span class="cl-1d352a87">1819/02</span></p></td>
-<td class="cl-1d35ed5e"><p class="cl-1d355178"><span class="cl-1d352a87">Hermitage</span></p></td>
-<td class="cl-1d35ed64"><p class="cl-1d355179"><span class="cl-1d352a87">2019</span></p></td>
-<td class="cl-1d35ed61"><p class="cl-1d355179"><span class="cl-1d352a87">2018-02-18</span></p></td>
-<td class="cl-1d35ed61"><p class="cl-1d355179"><span class="cl-1d352a87">2018-04-12</span></p></td>
-<td class="cl-1d35ed60"><p class="cl-1d355179"><span class="cl-1d352a87">4</span></p></td>
-<td class="cl-1d35c662"><p class="cl-1d355179"><span class="cl-1d352a87">7.83 (1)</span></p></td>
-<td class="cl-1d35ed62"><p class="cl-1d355179"><span class="cl-1d352a87">4.6 - 7.33</span></p></td>
-<td class="cl-1d35ed63"><p class="cl-1d355179"><span class="cl-1d352a87">0.289</span></p></td>
-<td class="cl-1d35c661"><p class="cl-1d355179"><span class="cl-1d352a87">0.276 - 0.312</span></p></td>
+<td class="cl-2bfc793b"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">1819/02</span></p></td>
+<td class="cl-2bfc793a"><p class="cl-2bfbdd68"><span class="cl-2bfbb66d">Hermitage</span></p></td>
+<td class="cl-2bfc7940"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2019</span></p></td>
+<td class="cl-2bfc793d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2018-02-18</span></p></td>
+<td class="cl-2bfc793d"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">2018-04-12</span></p></td>
+<td class="cl-2bfc793c"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4</span></p></td>
+<td class="cl-2bfc5252"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">7.83 (1)</span></p></td>
+<td class="cl-2bfc793e"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">4.6 - 7.33</span></p></td>
+<td class="cl-2bfc793f"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.289</span></p></td>
+<td class="cl-2bfc5251"><p class="cl-2bfbdd69"><span class="cl-2bfbb66d">0.276 - 0.312</span></p></td>
 </tr>
 </tbody>
 <tfoot>
-<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-1d35ed66"><p class="cl-1d355178"><span class="cl-1d352a89">a</span><span class="cl-1d352a8a">Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;</span></p></td></tr>
-<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-1d35ed66"><p class="cl-1d355178"><span class="cl-1d352a89">b</span><span class="cl-1d352a8a">Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-2bfc7942"><p class="cl-2bfbdd68"><span class="cl-2bfbb66f">a</span><span class="cl-2bfbb670">Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-2bfc7942"><p class="cl-2bfbdd68"><span class="cl-2bfbb66f">b</span><span class="cl-2bfbb670">Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis</span></p></td></tr>
 </tfoot>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="518c8c50-11ba-448f-9224-d33d0a7b1c23"></div>
+</div></template><div class="flextable-shadow-host" id="1fce724a-6eee-445e-a2d4-9450c6a4c320"></div>
 <script>
-var dest = document.getElementById("518c8c50-11ba-448f-9224-d33d0a7b1c23");
-var template = document.getElementById("198c4bb3-4b95-410b-afd0-be621b10b8cc");
+var dest = document.getElementById("1fce724a-6eee-445e-a2d4-9450c6a4c320");
+var template = document.getElementById("8d747610-9494-4ea1-9ec4-0319bc936fc3");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1101,7 +1101,7 @@ Based on the 2016 GRDC report by Sue Thompson <span class="citation">(<a href="p
           <span class="va">percent</span>,
           <span class="va">Diff</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<template id="f5466c1a-25f6-4124-a00b-51a088ca52bc"><style>
+<template id="ef794ea0-34bc-47c4-8458-81d4b4841f2e"><style>
 .tabwid table{
   border-collapse:collapse;
   line-height:1;
@@ -1137,42 +1137,42 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-204eae54{border-collapse:collapse;}.cl-2041e5d4{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-20420cd0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-20420cd1{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-204233c2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-204233c3{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-204233c4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-20425ab4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-20425ab5{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-20425ab6{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-204eae54">
+<style>.cl-2f772790{border-collapse:collapse;}.cl-2f674da2{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2f677494{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2f677495{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2f67b99a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2f67b99b{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2f67b99c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2f67b99d{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2f67b99e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2f67b99f{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2f772790">
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-20425ab6"><p class="cl-20420cd0"><span class="cl-2041e5d4">trial_ref</span></p></td>
-<td class="cl-20425ab6"><p class="cl-20420cd0"><span class="cl-2041e5d4">location</span></p></td>
-<td class="cl-20425ab6"><p class="cl-20420cd0"><span class="cl-2041e5d4">year</span></p></td>
-<td class="cl-20425ab5"><p class="cl-20420cd1"><span class="cl-2041e5d4">control_yield</span></p></td>
-<td class="cl-20425ab5"><p class="cl-20420cd1"><span class="cl-2041e5d4">FungicideTreated_yield</span></p></td>
-<td class="cl-20425ab5"><p class="cl-20420cd1"><span class="cl-2041e5d4">percent</span></p></td>
-<td class="cl-20425ab5"><p class="cl-20420cd1"><span class="cl-2041e5d4">Diff</span></p></td>
+<td class="cl-2f67b99f"><p class="cl-2f677494"><span class="cl-2f674da2">trial_ref</span></p></td>
+<td class="cl-2f67b99f"><p class="cl-2f677494"><span class="cl-2f674da2">location</span></p></td>
+<td class="cl-2f67b99f"><p class="cl-2f677494"><span class="cl-2f674da2">year</span></p></td>
+<td class="cl-2f67b99e"><p class="cl-2f677495"><span class="cl-2f674da2">control_yield</span></p></td>
+<td class="cl-2f67b99e"><p class="cl-2f677495"><span class="cl-2f674da2">FungicideTreated_yield</span></p></td>
+<td class="cl-2f67b99e"><p class="cl-2f677495"><span class="cl-2f674da2">percent</span></p></td>
+<td class="cl-2f67b99e"><p class="cl-2f677495"><span class="cl-2f674da2">Diff</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-204233c3"><p class="cl-20420cd0"><span class="cl-2041e5d4">mung1516/01</span></p></td>
-<td class="cl-204233c3"><p class="cl-20420cd0"><span class="cl-2041e5d4">Hermitage</span></p></td>
-<td class="cl-204233c3"><p class="cl-20420cd0"><span class="cl-2041e5d4">2016</span></p></td>
-<td class="cl-204233c2"><p class="cl-20420cd1"><span class="cl-2041e5d4">1.8029</span></p></td>
-<td class="cl-204233c2"><p class="cl-20420cd1"><span class="cl-2041e5d4">2.2821833</span></p></td>
-<td class="cl-204233c2"><p class="cl-20420cd1"><span class="cl-2041e5d4">21.00109</span></p></td>
-<td class="cl-204233c2"><p class="cl-20420cd1"><span class="cl-2041e5d4">0.4792833</span></p></td>
+<td class="cl-2f67b99b"><p class="cl-2f677494"><span class="cl-2f674da2">mung1516/01</span></p></td>
+<td class="cl-2f67b99b"><p class="cl-2f677494"><span class="cl-2f674da2">Hermitage</span></p></td>
+<td class="cl-2f67b99b"><p class="cl-2f677494"><span class="cl-2f674da2">2016</span></p></td>
+<td class="cl-2f67b99a"><p class="cl-2f677495"><span class="cl-2f674da2">1.8029</span></p></td>
+<td class="cl-2f67b99a"><p class="cl-2f677495"><span class="cl-2f674da2">2.2821833</span></p></td>
+<td class="cl-2f67b99a"><p class="cl-2f677495"><span class="cl-2f674da2">21.00109</span></p></td>
+<td class="cl-2f67b99a"><p class="cl-2f677495"><span class="cl-2f674da2">0.4792833</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-20425ab4"><p class="cl-20420cd0"><span class="cl-2041e5d4">mung1516/02</span></p></td>
-<td class="cl-20425ab4"><p class="cl-20420cd0"><span class="cl-2041e5d4">Kingaroy</span></p></td>
-<td class="cl-20425ab4"><p class="cl-20420cd0"><span class="cl-2041e5d4">2016</span></p></td>
-<td class="cl-204233c4"><p class="cl-20420cd1"><span class="cl-2041e5d4">0.8107</span></p></td>
-<td class="cl-204233c4"><p class="cl-20420cd1"><span class="cl-2041e5d4">0.9541167</span></p></td>
-<td class="cl-204233c4"><p class="cl-20420cd1"><span class="cl-2041e5d4">15.03136</span></p></td>
-<td class="cl-204233c4"><p class="cl-20420cd1"><span class="cl-2041e5d4">0.1434167</span></p></td>
+<td class="cl-2f67b99d"><p class="cl-2f677494"><span class="cl-2f674da2">mung1516/02</span></p></td>
+<td class="cl-2f67b99d"><p class="cl-2f677494"><span class="cl-2f674da2">Kingaroy</span></p></td>
+<td class="cl-2f67b99d"><p class="cl-2f677494"><span class="cl-2f674da2">2016</span></p></td>
+<td class="cl-2f67b99c"><p class="cl-2f677495"><span class="cl-2f674da2">0.8107</span></p></td>
+<td class="cl-2f67b99c"><p class="cl-2f677495"><span class="cl-2f674da2">0.9541167</span></p></td>
+<td class="cl-2f67b99c"><p class="cl-2f677495"><span class="cl-2f674da2">15.03136</span></p></td>
+<td class="cl-2f67b99c"><p class="cl-2f677495"><span class="cl-2f674da2">0.1434167</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="051545c5-942a-46ce-a56a-925034912276"></div>
+</div></template><div class="flextable-shadow-host" id="59f4e304-915f-4f56-a5b1-11fb41f9cc1e"></div>
 <script>
-var dest = document.getElementById("051545c5-942a-46ce-a56a-925034912276");
-var template = document.getElementById("f5466c1a-25f6-4124-a00b-51a088ca52bc");
+var dest = document.getElementById("59f4e304-915f-4f56-a5b1-11fb41f9cc1e");
+var template = document.getElementById("ef794ea0-34bc-47c4-8458-81d4b4841f2e");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1339,6 +1339,9 @@ It is worth noting there was not sufficient variation in the control plot diseas
           longitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lon</span>,
           first_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">planting_date</span>,
           last_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">harvest_date</span><span class="op">)</span>
+
+<span class="co"># Due to the Bureau of Meteorology in Australia blocking requests using the </span>
+<span class="co">#  R package `bomrang` this code has been changed to import the cached values</span>
 
 <span class="co"># plot yield vs rainfall</span>
 <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>

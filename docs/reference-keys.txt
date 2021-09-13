@@ -71,3 +71,4 @@ transform-severity-response
 disease-severity-spray-schedule-meta-analysis
 disease-severity-moderator-contrasts
 meta-analysis-summary-table
+define-powdery-mildew-severity
