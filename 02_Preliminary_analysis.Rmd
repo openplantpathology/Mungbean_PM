@@ -693,6 +693,9 @@ PM_MB_dat$sum_rain <-
           first_day = PM_MB_dat$planting_date,
           last_day = PM_MB_dat$harvest_date)
 
+# Due to the Bureau of Meteorology in Australia blocking requests using the 
+#  R package `bomrang` this code has been changed to import the cached values
+
 # plot yield vs rainfall
 PM_MB_dat %>%
    ggplot(aes(y = grain_yield.t.ha., x = sum_rain)) + 

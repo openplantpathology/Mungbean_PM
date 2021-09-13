@@ -1,6 +1,6 @@
 library("dplyr")
 library("lubridate")
-remotes::install_github("ropensci/bomrang")
+
 # Function to run over each line for sum rainfall
 crop_rain <-
    function(location_name,
@@ -12,37 +12,40 @@ crop_rain <-
       input_data <- data.frame(location_name, latitude, longitude)
       trials <- unique(input_data)
       
+# Commented due to problems with bomrang package, see github page for more details
+# https://github.com/ropensci/bomrang
+      # # Download trial data
+      # trials$station_file <-
+      #    apply(trials, 1, function(LL) {
+      #       stat_sweep <-
+      #          bomrang::sweep_for_stations(as.numeric(c(LL["latitude"], LL["longitude"])))
+      #       
+      #       # Remove banned stations
+      #       banned_stations <-
+      #          c("055286") # stations don't report rain
+      #       stat_sweep <-
+      #          stat_sweep[site != banned_stations, ]
+      #       
+      #       statID <-
+      #          paste(stat_sweep[1, "name"], stat_sweep[1, "site"], sep = "_")
+      #       stat_file <-
+      #          paste("cache/weather/", statID, ".csv",sep = "", collapse = " ")
+      #       
+      #       if (stat_file %in% paste0("cache/weather/", list.files(here::here("cache/weather/")))) {
+      #          #weather <- read.csv(stat_file, stringsAsFactors = FALSE)
+      #          return(stat_file)
+      #       } else{
+      #          weather <-
+      #             bomrang::get_historical(stationid = stat_sweep[1, "site"], type = "rain")
+      #          write.csv(weather, file = stat_file, row.names = FALSE)
+      #          return(stat_file)
+      #       }
+      #    })
+      # 
+      # 
+      # input_data <- full_join(input_data,trials, by = c("location_name", "latitude", "longitude"))
       
-      # Download trial data
-      trials$station_file <-
-         apply(trials, 1, function(LL) {
-            stat_sweep <-
-               bomrang::sweep_for_stations(as.numeric(c(LL["latitude"], LL["longitude"])))
-            
-            # Remove banned stations
-            banned_stations <-
-               c("055286") # stations don't report rain
-            stat_sweep <-
-               stat_sweep[site != banned_stations, ]
-            
-            statID <-
-               paste(stat_sweep[1, "name"], stat_sweep[1, "site"], sep = "_")
-            stat_file <-
-               paste("cache/weather/", statID, ".csv",sep = "", collapse = " ")
-            
-            if (stat_file %in% paste0("cache/weather/", list.files(here::here("cache/weather/")))) {
-               #weather <- read.csv(stat_file, stringsAsFactors = FALSE)
-               return(stat_file)
-            } else{
-               weather <-
-                  bomrang::get_historical(stationid = stat_sweep[1, "site"], type = "rain")
-               write.csv(weather, file = stat_file, row.names = FALSE)
-               return(stat_file)
-            }
-         })
-
-
-      input_data <- full_join(input_data,trials, by = c("location_name", "latitude", "longitude"))
+      input_data <- read.csv("cache/weather/station_metadata.csv")
       
       input_data$start <- first_day
       input_data$end <- last_day
