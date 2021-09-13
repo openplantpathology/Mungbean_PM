@@ -40,7 +40,7 @@ jobs:
          # Artifact name
          name: _book # optional
          # Destination path
-         path: _docs # optional
+         path: _docs/ # optional
      - name: Deploy to GitHub Pages
        uses: Cecilapp/GitHub-Pages-deploy@v2
        env:
