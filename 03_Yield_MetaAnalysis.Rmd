@@ -484,7 +484,7 @@ print(doc, target = "paper/figures/Table2_yield_estimates.docx")
 
 View the moderator comparisons in a plot.
 
-```{r metafor_plot_yied}
+```{r metafor_plot_yield}
 results_mv %>%
    filter(Treatment != "control") %>%
    mutate(Treatment = factor(Treatment, levels = rev(
