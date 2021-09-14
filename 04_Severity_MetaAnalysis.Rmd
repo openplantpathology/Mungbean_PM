@@ -93,11 +93,13 @@ summary(PM_dat_D$yi_square)
 ```
 
 Another transformation which might be more suitable for a discrete response is either a `log()` or `logit()` transformation. 
-However first we should convert the scale from 1 - 9 to between 0 and 1.
+However, first we should convert the scale from 1 - 9 to between 0 and 1.
 
 ### Transform severity response
 
 Let us also transform the severity onto a percentage scale so we can compare the results of meta-analyses with no transformation, squared severity, and percent severity.
+
+This conversion from ordinal scale to a severity rating is described in Table 2 of the paper.
 
 ```{r}
 # Percent severity conversion
@@ -178,7 +180,7 @@ PM_dat_D[is.na(PM_dat_D$yi_logit),"yi_logit"] <- 0
 *****
 
 ## Disease severity spray schedule meta-analysis  
-First lets look at the results of the meta-analysis without transformation
+First let's look at the results of the meta-analysis without transformation
 ```{r Metafor-Sev-analysis, cache=TRUE}
 PMsev_mv <- rma.mv(
    yi = PM_final_severity,
@@ -217,7 +219,7 @@ This meta-analysis is more in-line with estimates from the yield meta-analysis. 
 However square severity is not common when evaluating a response that was obtained on a scale.
 Log transformed is a more common method of evaluating non-normal disease severity.
 
-Lets assess the log transformed percent severity
+Let's assess the log transformed percent severity
 ```{r Metafor-Sev-analysis_log, cache=TRUE}
 # remove controls for response ratio meta-analysis
 PMsev_mv_log <- rma.mv(
@@ -238,7 +240,7 @@ The plot of the residuals show the model is not normally distributed.
 In addition the estimates don't reflect what can be [observed in the raw data][Disease severity range for each spray schedule].
 Log transformed percent severity is therefore no a suitable transformation
 
-Finally lets assess the logit transformed percent severity
+Finally let's assess the logit transformed percent severity
 ```{r Metafor-Sev-analysis_logitP, cache=TRUE}
 # remove controls for response ratio meta-analysis
 PMsev_mvPer <- rma.mv(
