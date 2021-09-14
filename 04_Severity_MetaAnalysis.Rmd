@@ -140,9 +140,6 @@ points(x,y,col = "red", pch = 16)
 ```
 
 ```{r}
-# one value is a negative, this should be a zero
-# new_sev[12] <- 0
-
 # Allocate new variable percent severity
 PM_dat_D$yi_percent <- new_sev 
 
