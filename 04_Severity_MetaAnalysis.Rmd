@@ -10,7 +10,7 @@ An additional question to our main aim: does spray schedule have a similar effec
 
 This model will be similar to the grain yield meta-analysis and use the main variables:
 
-   - *Powdery mildew severity* the response variable (1-9 scale)
+   - *Powdery mildew severity*, the response variable (1-9 scale)
 
    - *Trial*, which resolves combinations of categorical random variables: 
       i) year  
@@ -18,14 +18,12 @@ This model will be similar to the grain yield meta-analysis and use the main var
       iii) row spacing  
       iv) cultivar  
       
-   - *spray_management* a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
+   - *spray_management*, a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
    
-   - *id* random variable indicating each treatment is independent
+   - *id*, random variable indicating each treatment is independent
 
+Load libraries and data.
 
-<br>  
-
-Load libraries and data  
 ```{r MEsummary_Libraries2, echo=TRUE,results='hide'}
 if (!require("pacman"))
    install.packages("pacman")
