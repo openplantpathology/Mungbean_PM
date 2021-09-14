@@ -74,6 +74,8 @@ PM_dat_D <-
                         sep = "_")) 
 ```
 
+<!--- I would remove from this line, 77 to line 96 as we shouldn't be promoting the idea of analysing an ordinal scale directly, just go straight to the severity conversion step and describe it and why it's done (i.e., you can't analyse an ordinal scale like this, though I found a cool presentation on how to analyse an ordinal scale using metanalysis for future reference, https://methods.cochrane.org/sites/methods.cochrane.org.statistics/files/public/uploads/SMG_training_course_cardiff/2010_SMG_training_cardiff_day1_session2_lewis.pdf) -->
+
 ### Inspect PM severity for normality
 Given the meta-analysis assumes powdery mildew severity observations to be a univariate normal distribution $Y_i = N(\mu , \sigma)$, with a mean $\mu$ and standard deviation $\sigma$. We need to inspect severity for a normality.
 ```{r sev_hist}
