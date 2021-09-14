@@ -463,7 +463,7 @@ PM_MB_dat <-
 
 ## Identify variance
 We need variance accompanying the mean observations for each treatment to successfully undertake a meta-analysis.
-Lets investigate which of the included trials included variance for both response variables of interest, yield and disease severity.
+Let's investigate which of the included trials included variance for both response variables of interest, yield and disease severity.
 
 ```{r Trials_For_Inclusion}
 PM_MB_dat %>%
