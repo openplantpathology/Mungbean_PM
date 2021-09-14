@@ -121,14 +121,16 @@ a = data.frame(x,y)
 plot(a)
 ```
 
-We can fit a gam curve between the 1 - 9 scale and the new scale between 0 and 1
+We can fit a GAM curve between the 1 - 9 scale and the new scale between 0 and 1.
+
 ```{r}
-# fit a curve using a gam with spline value 0.2
-g1 <- gam(x ~ s(y,spar = 0.1))
+# fit a curve using a gam with spline value 0.01
+g1 <- gam(x ~ s(y, spar = 0.1), family = gaussian)
 
 # View plot of gam
-plot(x = predict(g1, data.frame(y= seq(1,9, by =0.1))), y= seq(1,9, by =0.1))
-points(x,y,col = "red", pch = 16)
+plot(x = predict(g1,
+                 data.frame(y = seq(1, 9, by = 0.1))), y = seq(1, 9, by = 0.1))
+points(x, y, col = "red", pch = 16)
 
 # predict values for dataset
 new_sev <- predict(object =  g1, 
