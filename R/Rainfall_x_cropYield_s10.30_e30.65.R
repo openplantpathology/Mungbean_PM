@@ -17,7 +17,6 @@ end2 <- 64
 
 
 library(tidyverse)
-library(theme.usq)
 library(bomrang)
 library(parallel)
 source("R/import_data.R")
