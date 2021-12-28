@@ -9,13 +9,17 @@ editor_options:
 An additional question to our main aim: does spray schedule have a similar effect on disease severity?
 
 This model will be similar to the grain yield meta-analysis and use the main variables:
+
    - *Powdery mildew severity*, the response variable (1-9 scale)
+
    - *Trial*, which resolves combinations of categorical random variables: 
-      i) year
-      ii) location
-      iii) row spacing
-      iv) cultivar
+      i) year  
+      ii) location  
+      iii) row spacing  
+      iv) cultivar  
+      
    - *spray_management*, a moderator to evaluate the difference in effect size attributed to fungicide application timing.  
+   
    - *id*, random variable indicating each treatment is independent
 
 Load libraries and data.
@@ -52,8 +56,11 @@ inv_logit <- function(x){
    
 ```
 
-### Define Trial
+<br>  
+<br>  
 
+
+### Define Trial
 ```{r define_trial}
 PM_dat_D <-
    PM_dat_D %>%
@@ -65,73 +72,92 @@ PM_dat_D <-
                         sep = "_")) 
 ```
 
+<!--- I would remove from this line, 77 to line 96 as we shouldn't be promoting the idea of analysing an ordinal scale directly, just go straight to the severity conversion step and describe it and why it's done (i.e., you can't analyse an ordinal scale like this, though I found a cool presentation on how to analyse an ordinal scale using metanalysis for future reference, https://methods.cochrane.org/sites/methods.cochrane.org.statistics/files/public/uploads/SMG_training_course_cardiff/2010_SMG_training_cardiff_day1_session2_lewis.pdf) -->
+
+### Inspect PM severity for normality
+Given the meta-analysis assumes powdery mildew severity observations to be a univariate normal distribution $Y_i = N(\mu , \sigma)$, with a mean $\mu$ and standard deviation $\sigma$. We need to inspect severity for a normality.
+```{r sev_hist}
+hist(PM_dat_D$PM_final_severity)
+summary(PM_dat_D$PM_final_severity)
+```
+We can see here that powdery mildew severity observations are skewed towards the top of the scale, eight and nine in this case.
+
+We can improve the normality by transforming the effect size, disease severity, by squaring.
+```{r}
+PM_dat_D$yi_square <- PM_dat_D$PM_final_severity ^2
+PM_dat_D$vi_square <- (PM_dat_D$vi +1)^2
+# Note: Here I added 1 to the variance before it was squared. This is because squaring numbers below one makes the number smaller or remain zero. This does not change the meta-analysis mean estimates but does increase heterogeneity and tao._  
+
+hist(PM_dat_D$yi_square)
+summary(PM_dat_D$yi_square)
+```
+
+Another transformation which might be more suitable for a discrete response is either a `log()` or `logit()` transformation. 
+However, first we should convert the scale from 1 - 9 to between 0 and 1.
+
 ### Transform severity response
 
-Because the data were taken on an ordinal scale, we need to transform this to a numeric value to perform the analysis, _i.e._
-
-> For ordinal measurements (e.g., disease rating on a 0 to 3 scale designating the ordinal degree of symptoms), nonparametric methods based on ranks should generally be used for hypothesis testing. See Shah and Madden (2004) for recommendations on the treatment of ordinal data. As an alternative, parametric proportional-odds models may be used for ordinal data, if there are sufficiently large numbers of observations for each experimental unit. If ordinal rating scores are used for ranges of disease severity (e.g., Horsfall-Barratt [where, for instance, a “2” corresponds to a severity range from 3 to 6%, and a “3” corresponds to a range of 6 to 12%]), each score should be converted to the midpoint of the corresponding disease severity range prior to use of a parametric analytical technique.
-
-- From <https://apsjournals.apsnet.org/page/authorinformation>
+Let us also transform the severity onto a percentage scale so we can compare the results of meta-analyses with no transformation, squared severity, and percent severity.
 
 This conversion from ordinal scale to a severity rating is described in Table 2 of the paper.
 
-```{r ord-to-perc}
+```{r}
 # Percent severity conversion
 # define ordinal conversion from scale to proportion
 s1 <- 0
-s2 <- 0.33 * 0.5
-s3 <- 0.5 * 0.87
-s4 <- 0.66 * 0.75
-s5 <- 0.66 * 0.87
-s6 <- 0.66 * 1
-s7 <- 0.75 * 1
-s8 <- 1 * 0.87
-s9 <- 1
+s2 <- 0.33*0.5
+s3 <- 0.5*0.87
+s4 <- 0.66*0.75
+s5 <- 0.66*0.87
+s6 <- 0.66*1
+s7 <- 0.75*1
+s8 <- 1*0.87
+s9 <- 1*1
 x <- c(s1, s2, s3, s4, s5, s6, s7, s8, s9)
 y <- c(1:9)
-a = data.frame(x, y)
+a = data.frame(x,y)
 plot(a)
 ```
 
 We can fit a GAM curve between the 1 - 9 scale and the new scale between 0 and 1.
 
-```{r fit-gam}
+```{r}
 # fit a curve using a gam with spline value 0.01
 g1 <- gam(x ~ s(y, spar = 0.1), family = gaussian)
 
-# View plot of the GAM
+# View plot of gam
 plot(x = predict(g1,
-                 data.frame(y = seq(1, 9, by = 0.1))),
-     y = seq(1, 9, by = 0.1))
+                 data.frame(y = seq(1, 9, by = 0.1))), y = seq(1, 9, by = 0.1))
 points(x, y, col = "red", pch = 16)
 
 # predict values for dataset
-new_sev <- predict(object =  g1,
-                   newdata = data.frame(y = PM_dat_D[, "PM_final_severity"]))
+new_sev <- predict(object =  g1, 
+                   newdata = data.frame(y = PM_dat_D[,"PM_final_severity"])
+                   )
 # Check fit
-plot(x = new_sev, y = PM_dat_D[, "PM_final_severity"])
-points(x, y, col = "red", pch = 16)
+plot(x = new_sev, y = PM_dat_D[,"PM_final_severity"])
+points(x,y,col = "red", pch = 16)
 ```
 
 ```{r}
 # Allocate new variable percent severity
-PM_dat_D$yi_percent <- new_sev
+PM_dat_D$yi_percent <- new_sev 
 
 # Conversion of variance
 # Here I add the variance and mean severity and predict the conversion value
 # then subtract the mean severity to obtain the difference as the sample variance
 PM_dat_D$vi_percent  <- predict(object =  g1,
-                                newdata = data.frame(y = PM_dat_D[, "vi"] + PM_dat_D[, "PM_final_severity"])) - PM_dat_D$yi_percent
+                   newdata = data.frame(y = PM_dat_D[,"vi"] + PM_dat_D[,"PM_final_severity"])
+                   ) - PM_dat_D$yi_percent
 
 
 # create log transformed values
 PM_dat_D$yi_log <- log(PM_dat_D$yi_percent)
-PM_dat_D$vi_log <-
-   (PM_dat_D$vi_percent) / (PM_dat_D$replicates * PM_dat_D$yi_percent ^ 2)
+PM_dat_D$vi_log <- (PM_dat_D$vi_percent) / (PM_dat_D$replicates * PM_dat_D$yi_percent^2)
 
 # Correct Inf to 0
-PM_dat_D[is.na(PM_dat_D$yi_log), "yi_log"] <- 0
-PM_dat_D[PM_dat_D$vi_log == -Inf, "vi_log"] <- 0.001
+PM_dat_D[is.na(PM_dat_D$yi_log),"yi_log"] <- 0
+PM_dat_D[PM_dat_D$vi_log == -Inf,"vi_log"] <- 0.001
 
 #logit transformed percentages
 PM_dat_D$yi_logit <- logit(PM_dat_D$yi_percent)
@@ -140,100 +166,88 @@ PM_dat_D$yi_logit <- logit(PM_dat_D$yi_percent)
 PM_dat_D$vi_logit <-
    (PM_dat_D$vi_percent) /
    (PM_dat_D$yi_percent * (1 - PM_dat_D$yi_percent)) ^ 2
-
+   
 # Correct -Inf to zeros
-PM_dat_D[is.na(PM_dat_D$yi_logit), "yi_logit"] <- 0
+PM_dat_D[is.na(PM_dat_D$yi_logit),"yi_logit"] <- 0
 
 ```
 
+<br>  
+<br>  
+<br>  
+
 *****
 
-## Disease severity spray schedule meta-analysis
-
+## Disease severity spray schedule meta-analysis  
 First let's look at the results of the meta-analysis without transformation
-
-```{r Metafor-Sev-analysis, cache=FALSE}
+```{r Metafor-Sev-analysis, cache=TRUE}
 PMsev_mv <- rma.mv(
    yi = PM_final_severity,
    vi,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    #control = list(optimizer = "optim"),
    data = PM_dat_D
 )
 summary(PMsev_mv)
-plot(rstandard(PMsev_mv)$z, ylim = c(-3, 3), pch = 19)
+plot(rstandard(PMsev_mv)$z, ylim=c(-3,3), pch=19)
 ```
 
-This analysis shows the residual are slightly unbalanced and perhaps an effect of time.
+This analysis shows the residual are slightly unbalanced and perhaps an effect of time. 
 Does squaring the response improve the residuals?
 
-```{r Metafor-Sev-analysisSQ, cache=FALSE}
-# create transformations
-PM_dat_D$yi_square <- PM_dat_D$PM_final_severity ^ 2
-PM_dat_D$vi_square <- (PM_dat_D$vi + 1) ^ 2
-
+```{r Metafor-Sev-analysisSQ, cache=TRUE}
 PMsev_mvSQ <- rma.mv(
    yi = yi_square,
    V = vi_square,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
    data = PM_dat_D
 )
 
 summary(PMsev_mvSQ)
-plot(rstandard(PMsev_mvSQ)$z,
-     ylim = c(-3, 3),
-     pch = 19)
+plot(rstandard(PMsev_mvSQ)$z, ylim=c(-3,3), pch=19)
 ```
-
-This meta-analysis is more in-line with estimates from the yield meta-analysis.
-`Early` sprays are not effective at reducing powdery mildew severity and two or more sprays had higher efficacy than single sprays.
-Recommended sprays were the most effective spray timing at reducing disease severity.  
+This meta-analysis is more in-line with estimates from the yield meta-analysis. `Early` sprays are not effective at reducing powdery mildew severity and two or more sprays had higher efficacy than single sprays. Recommended sprays were the most effective spray timing at reducing disease severity.  
 
 However square severity is not common when evaluating a response that was obtained on a scale.
 Log transformed is a more common method of evaluating non-normal disease severity.
 
-Let's assess the log transformed percent severity.
-
-```{r Metafor-Sev-analysis_log, cache=FALSE}
+Let's assess the log transformed percent severity
+```{r Metafor-Sev-analysis_log, cache=TRUE}
 # remove controls for response ratio meta-analysis
 PMsev_mv_log <- rma.mv(
    yi = yi_log,
    V = yi_log,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
    data = PM_dat_D
 )
 
 summary(PMsev_mv_log)
-plot(rstandard(PMsev_mv_log)$z,
-     ylim = c(-3.2, 3),
-     pch = 19)
+plot(rstandard(PMsev_mv_log)$z, ylim=c(-3.2,3), pch=19)
 ```
-
 The plot of the residuals show the model is not normally distributed.
 In addition the estimates don't reflect what can be [observed in the raw data][Disease severity range for each spray schedule].
-Log transformed percent severity is therefore no a suitable transformation.
+Log transformed percent severity is therefore no a suitable transformation
 
-Finally let's assess the logit transformed percent severity.
-
-```{r Metafor-Sev-analysis_logitP, cache=FALSE}
+Finally let's assess the logit transformed percent severity
+```{r Metafor-Sev-analysis_logitP, cache=TRUE}
 # remove controls for response ratio meta-analysis
 PMsev_mvPer <- rma.mv(
    yi = yi_logit,
    V = yi_logit,
    mods = ~ spray_management,
    method = "ML",
-   random = list(~ spray_management | trial, ~ 1 | id),
+   random = list( ~ spray_management | trial, ~ 1 | id),
    struct = "UN",
    control = list(optimizer = "optim"),
    data = PM_dat_D
@@ -242,14 +256,14 @@ PMsev_mvPer <- rma.mv(
 summary(PMsev_mvPer)
 
 # plot the model residuals
-plot(rstandard(PMsev_mvPer)$z,
-     ylim = c(-3, 3),
-     pch = 19)
+plot(rstandard(PMsev_mvPer)$z, ylim=c(-3,3), pch=19)
+
 ```
 
-```{r Sensitivity_logitP, cache=FALSE}
-s_analysis <-
+```{r Sensitivity_logitP, cache=TRUE}
+s_analysis <- 
    lapply(unique(PM_dat_D$trial_ref), function(Trial) {
+      
       dat <- filter(PM_dat_D, trial_ref != Trial)
       # remove controls for response ratio meta-analysis
       rma.mv(
@@ -257,7 +271,7 @@ s_analysis <-
          V = yi_logit,
          mods = ~ spray_management,
          method = "ML",
-         random = list( ~ spray_management | trial, ~ 1 | id),
+         random = list(~ spray_management | trial, ~ 1 | id),
          struct = "UN",
          control = list(optimizer = "optim"),
          data = dat
@@ -266,46 +280,37 @@ s_analysis <-
    })
 
 length(s_analysis)
-est <- lapply(s_analysis, function(e1) {
-   data.frame(
-      treat = rownames(e1$b),
-      estimates = e1$b,
-      p = as.numeric(reportP(
-         e1$pval, P_prefix = FALSE, AsNumeric = TRUE
-      ))
-   )
-})
+est <- lapply(s_analysis, function(e1){
+   data.frame(treat = rownames(e1$b),
+              estimates = e1$b,
+              p = as.numeric(reportP(e1$pval, P_prefix = FALSE,AsNumeric = TRUE)))
+   })
 
 sensitiviy_df <- data.table::rbindlist(est)
 sensitiviy_df$Tnum <- rep(1:14, each = 6)
 
 sensitiviy_df %>%
-   ggplot(aes(Tnum, estimates, colour = treat)) +
+   ggplot(aes(Tnum, estimates, colour = treat))+
    geom_line(size = 1)
 
-
 sensitiviy_df %>%
-   ggplot(aes(Tnum, p, colour = treat)) +
-   geom_line(size = 1) +
+   ggplot(aes(Tnum, p, colour = treat))+
+   geom_line(size = 1)+
    scale_y_log10()
 
 unique(PM_dat_D$trial_ref)[7]
 sensitiviy_df %>%
    group_by(treat) %>%
-   summarise(
-      minEst = min(estimates),
-      medEst = median(estimates),
-      maxEst = max(estimates),
-      minP = min(p),
-      medP = median(p),
-      maxP = max(p)
-   )
+   summarise(minEst = min(estimates),
+             medEst = median(estimates),
+             maxEst = max(estimates),
+             minP = min(p),
+             medP = median(p),
+             maxP= max(p))
 ```
-
 While estimates and P values remained the mostly same when each trial was dropped from the analysis. Estimates changed the most when Trial 1617/02 at Missen Flats in 2017 was ommited from the analysis.
 
-Calculation of I^2.
-
+Calculation of I^2
 ```{r}
 W <- diag(1/(PM_dat_D$vi_logit+0.0001))
 X <- model.matrix(PMsev_mvPer)
@@ -314,7 +319,6 @@ P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
 
 100 * PMsev_mvPer$sigma2 / (sum(PMsev_mvPer$sigma2) + (PMsev_mvPer$k-PMsev_mvPer$p)/sum(diag(P)))
 ```
-
 This indicates that approximate amount of total variance attributed to trials/ clusters is 99%, which is very high. 
 However given that many of the means included in the model contained an accompanying sample variance of zero, this might have been expected.
 
@@ -333,23 +337,28 @@ backtransform <- function(m, input_only = FALSE, intercept) {
          Zval = c(inv_logit(m$z[1]),
                   inv_logit(m$z[-1] + m$z[1]) - inv_logit(m$z[1])),
          Pval = reportP(m$pval, P_prefix = FALSE),
-         CI_lb = c(inv_logit(m$ci.lb[1]),
-                   inv_logit(m$ci.lb[-1] + intercept)),
-         CI_ub = c(inv_logit(m$ci.ub[1]),
-                   inv_logit(m$ci.ub[-1] + intercept)),
+         CI_lb = c(inv_logit(m$ci.lb[1]), 
+                       inv_logit(m$ci.lb[-1] + intercept)),
+         CI_ub = c(inv_logit(m$ci.ub[1]), 
+                       inv_logit(m$ci.ub[-1] + intercept)), 
          row.names = colnames(m$G)
       )
    }
    if (input_only == TRUE) {
       if (missing(intercept))
          stop("'intercept' argument is empty")
-      return(inv_logit(m + intercept) - inv_logit(intercept))
+     return( inv_logit(m + intercept) - inv_logit(intercept))
    }
    return(dat)
 }
 
 backtransform(PMsev_mvPer)
 ```
+
+
+<br>  
+<br>  
+<br>  
 
 ### Disease severity moderator contrasts 
 
@@ -358,7 +367,7 @@ Calculate the treatment contrasts without back-transformation.
 ```{r sevContrasts}
 source("R/simple_summary.R") #function to provide a table that includes the treatment names in the contrasts
 
-intercept <- PMsev_mvPer$b[1, 1]
+intercept <-PMsev_mvPer$b[1,1]
 z <- PMsev_mvPer$zval[1]
 
 contrast_Ssum <-
@@ -366,10 +375,14 @@ contrast_Ssum <-
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 
-contrast_Ssum[6:15, ] %>%
-   flextable() %>%
+contrast_Ssum[6:15,] %>%
+   flextable()%>%
    autofit()
 ```
+
+<br>  
+<br>  
+<br>  
 
 ```{r plotsevContrasts}
 par(mar = c(5, 13, 4, 2) + 0.1)
@@ -387,11 +400,13 @@ axis(
 
 `Recommended_plus` limited disease severity significantly better than any other spray treatment. 
 Early sprays were not effective in decreasing disease severity.
-Two spray treatments were significantly better than a single application, but the timing of the fungicide application was more critical.
+Two spray treatments were significantly better than a single application, but the timing of the fungicide application was more critical.  
 
+<br>  
+<br>  
+<br>  
 
 ### Meta-analysis summary table
-
 ```{r metafor_results}
 # obtain number of treatments included in each moderator variable
 k5 <-
@@ -408,35 +423,52 @@ k6 <-
 
 
 # create data.frame of percent disease severity estimates
-results_mv <- cbind(data.frame(
-   Moderator = c(
-      "Intercept / No Spray control",
-      "Early",
-      "Late",
-      "Late+",
-      "Recommended",
-      "Recommended+"
+results_mv <- cbind(
+   data.frame(
+      Moderator = c(
+         "Intercept / No Spray control",
+         "Early",
+         "Late",
+         "Late+",
+         "Recommended",
+         "Recommended+"
+      ),
+      N = k5,
+      k = k6
    ),
-   N = k5,
-   k = k6
-),
-backtransform(PMsev_mvPer))
+   backtransform(PMsev_mvPer))
 
 # Calculate mean differences
 Intcpt <- results_mv$estimates[1]
-results_mv <-
+results_mv <- 
    results_mv %>%
-   mutate(
-      estimates = estimates - Intcpt,
-      CI_lb = CI_lb - Intcpt,
-      CI_ub = CI_lb - Intcpt
-   )
+   mutate(estimates = estimates - Intcpt,
+          CI_lb = CI_lb - Intcpt,
+          CI_ub = CI_lb - Intcpt)
 
 # round the numbers
-results_mv[, c(4:6, 8:9)] <- round(results_mv[, c(4:6, 8:9)], 4)
+results_mv[,c(4:6,8:9)] <- round(results_mv[,c(4:6,8:9)], 4)
+
+# results_mv <- 
+#    results_mv %>%
+#    mutate(
+#    eff_bar = round(
+#       1 - estimates, 
+#       4) * 100,
+#    eff_CI_high = round(
+#       1 - CI_lb
+#    , 4) * 100,
+#    eff_CI_low = round(
+#       1 - CI_ub
+#    , 4) * 100
+#    
+# )
+
+# remove efficacy in control
+#results_mv[1,10:12] <- NA
 
 # rename colnames to give table headings
-colnames(results_mv)[c(1:9)] <-
+colnames(results_mv)[c(1:9 )] <-
    c("Moderator",
      "N",
      "k",
@@ -448,7 +480,7 @@ colnames(results_mv)[c(1:9)] <-
      "CI_{U}")
 
 disease_estimates_table <-
-   results_mv[c(2, 5, 6, 3, 4), -6] %>%
+   results_mv[c(2,5,6,3,4), -6] %>%
    flextable() %>%
    align(j = 2:8, align = "center", part = "all") %>%
    fontsize(size = 8, part = "body") %>%
@@ -459,7 +491,7 @@ disease_estimates_table <-
    ) %>%
    footnote(
       i = 1,
-      j = c(2:4, 6:8),
+      j = c(2:4,6:8),
       value = as_paragraph(
          c(
             "Number of treatment means categorised to each spray schedule",
@@ -473,16 +505,16 @@ disease_estimates_table <-
       ref_symbols = letters[c(1:6)],
       part = "header",
       inline = TRUE
-   ) %>%
-   hline_top(part = "all",
-             border = officer::fp_border(color = "black", width = 2)) %>%
+    )%>%
+   hline_top(part="all", border = officer::fp_border(color = "black", width = 2))%>%
    width(j = 1, width = 1) %>%
    width(j = 2, width = 0.3) %>%
    width(j = 3, width = 0.3) %>%
-   width(j = 4:8, width = 0.6)
+   width(j = 4:8, width = 0.6) 
 
 disease_estimates_table
 ```
+
 
 ```{r eval=FALSE, include=FALSE}
 # Save table as a word document
