@@ -2,6 +2,9 @@ p.caption {
   color: #777;
   margin-top: 10px;
 }
+p {
+   margin:12 6 3 3px;
+}
 p code {
   white-space: inherit;
 }
@@ -12,8 +15,6 @@ pre {
 pre code {
   white-space: inherit;
 }
-
-
 .inline-figure {
   margin-bottom: 1rem; /* to match <p> */
 }

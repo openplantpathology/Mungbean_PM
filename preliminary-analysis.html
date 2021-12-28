@@ -6,17 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 3 Preliminary Analysis | A meta-analysis of fungicide effects on mungbean powdery mildew</title>
 <meta name="author" content="Paul Melloy, Emerson Del Ponte and Adam H. Sparks">
-<meta name="description" content='if (!require("pacman"))  install.packages("pacman") ## Loading required package: pacman pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,       ...'>
+<meta name="description" content='if (!require("pacman"))  install.packages("pacman") pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,        reshape2,        lme4,        kableExtra,  ...'>
 <meta name="generator" content="bookdown 0.24 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Preliminary Analysis | A meta-analysis of fungicide effects on mungbean powdery mildew">
 <meta property="og:type" content="book">
-<meta property="og:description" content='if (!require("pacman"))  install.packages("pacman") ## Loading required package: pacman pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,       ...'>
+<meta property="og:description" content='if (!require("pacman"))  install.packages("pacman") pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,        reshape2,        lme4,        kableExtra,  ...'>
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 3 Preliminary Analysis | A meta-analysis of fungicide effects on mungbean powdery mildew">
-<meta name="twitter:description" content='if (!require("pacman"))  install.packages("pacman") ## Loading required package: pacman pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,       ...'>
+<meta name="twitter:description" content='if (!require("pacman"))  install.packages("pacman") pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,        reshape2,        lme4,        kableExtra,  ...'>
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.0/transition.js"></script><script src="libs/bs3compat-0.3.0/tabs.js"></script><script src="libs/bs3compat-0.3.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
 <script src="libs/leaflet-1.3.1/leaflet.js"></script><link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
@@ -60,12 +60,10 @@
 <h1>
 <span class="header-section-number">3</span> Preliminary Analysis<a class="anchor" aria-label="anchor" href="#preliminary-analysis"><i class="fas fa-link"></i></a>
 </h1>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/trinker/pacman">"pacman"</a></span><span class="op">)</span><span class="op">)</span>
-   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pacman"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Loading required package: pacman</code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,
+   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pacman"</span><span class="op">)</span>
+<span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,
                <span class="va">lubridate</span>,
                <span class="va">openxlsx</span>,
                <span class="va">devtools</span>,
@@ -75,38 +73,13 @@
                <span class="va">kableExtra</span>,
                <span class="va">flextable</span>,
                <span class="va">here</span>,
-               <span class="va">gridExtra</span><span class="op">)</span></code></pre></div>
-<pre><code>## Installing package into '/Users/runner/work/_temp/Library'
-## (as 'lib' is unspecified)</code></pre>
-<pre><code>## also installing the dependency 'zip'</code></pre>
-<pre><code>## 
-## openxlsx installed</code></pre>
-<pre><code>## Installing package into '/Users/runner/work/_temp/Library'
-## (as 'lib' is unspecified)</code></pre>
-<pre><code>## also installing the dependencies 'credentials', 'gitcreds', 'ini', 'diffobj', 'gert', 'gh', 'whisker', 'cachem', 'xopen', 'brew', 'commonmark', 'praise', 'waldo', 'usethis', 'desc', 'memoise', 'pkgbuild', 'pkgload', 'rcmdcheck', 'roxygen2', 'rversions', 'sessioninfo', 'testthat'</code></pre>
-<pre><code>## 
-## devtools installed</code></pre>
-<pre><code>## Installing package into '/Users/runner/work/_temp/Library'
-## (as 'lib' is unspecified)</code></pre>
-<pre><code>## also installing the dependency 'plyr'</code></pre>
-<pre><code>## 
-## reshape2 installed</code></pre>
-<pre><code>## Installing package into '/Users/runner/work/_temp/Library'
-## (as 'lib' is unspecified)</code></pre>
-<pre><code>## also installing the dependencies 'minqa', 'nloptr', 'RcppEigen'</code></pre>
-<pre><code>## 
-## lme4 installed</code></pre>
-<pre><code>## Installing package into '/Users/runner/work/_temp/Library'
-## (as 'lib' is unspecified)</code></pre>
-<pre><code>## also installing the dependencies 'officer', 'gdtools'</code></pre>
-<pre><code>## 
-## flextable installed</code></pre>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"cache/ImportDataAndSelectTrials01.Rdata"</span><span class="op">)</span></code></pre></div>
+               <span class="va">gridExtra</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"cache/ImportDataAndSelectTrials01.Rdata"</span><span class="op">)</span></code></pre></div>
 <p><br><br><br><br>
 ## Define powdery mildew severity
 Powdery mildew severity was assessed on a 1 - 9 scale.</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_rating_table</span> <span class="op">&lt;-</span>
    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
       Severity_rating <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span>,
@@ -136,7 +109,7 @@ Powdery mildew severity was assessed on a 1 - 9 scale.</p>
    <span class="fu">align</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span>, align <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">set_caption</span><span class="op">(</span><span class="st">"Table 2: Powdery mildew severity rating scale and calculated percent severity for each ordinal rating"</span><span class="op">)</span>
 <span class="va">d_rating_table</span></code></pre></div>
-<template id="fc2e5c9c-530c-4e55-9573-184d543e530e"><style>
+<template id="5af03807-ce19-49b2-a02e-d75cbd3aa395"><style>
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -172,68 +145,68 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-d10cc544{}.cl-d103a2ca{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d103a2fc{font-family:'Helvetica';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d103c746{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d103c7dc{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d103c7f0{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d1043794{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d10437bc{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d10437c6{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d10437d0{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d10437da{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d10437e4{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d10437ee{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d10437f8{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1043802{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d104380c{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1043816{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1043820{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-d10cc544">
+<style>.cl-2d2d889e{}.cl-2d26f326{font-family:'DejaVu Sans';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d26f33a{font-family:'DejaVu Sans';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d270d02{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d270d0c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d270d16{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d275280{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d275294{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d27529e{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d27529f{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d2752a8{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d2752a9{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d2752b2{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d2752b3{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d2752bc{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2d2d889e">
 <caption class="Table Caption">
-(#tab:disease_scale)Table 2: Powdery mildew severity rating scale and calculated percent severity for each ordinal rating
+<p>(#tab:disease_scale)Table 2: Powdery mildew severity rating scale and calculated percent severity for each ordinal rating</p>
 </caption>
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-d1043820"><p class="cl-d103c746"><span class="cl-d103a2ca">Severity rating</span></p></td>
-<td class="cl-d104380c"><p class="cl-d103c7dc"><span class="cl-d103a2ca">Description</span></p></td>
-<td class="cl-d1043816"><p class="cl-d103c746"><span class="cl-d103a2ca">Equivalent percent severity</span></p></td>
+<td class="cl-2d2752bc"><p class="cl-2d270d02"><span class="cl-2d26f326">Severity rating</span></p></td>
+<td class="cl-2d2752b2"><p class="cl-2d270d0c"><span class="cl-2d26f326">Description</span></p></td>
+<td class="cl-2d2752b3"><p class="cl-2d270d02"><span class="cl-2d26f326">Equivalent percent severity</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437c6"><p class="cl-d103c7f0"><span class="cl-d103a2fc">1</span></p></td>
-<td class="cl-d10437bc"><p class="cl-d103c7dc"><span class="cl-d103a2fc">No sign of powdery mildew</span></p></td>
-<td class="cl-d1043794"><p class="cl-d103c746"><span class="cl-d103a2fc">0.00</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">1</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">No sign of powdery mildew</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">0.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437da"><p class="cl-d103c7f0"><span class="cl-d103a2fc">2</span></p></td>
-<td class="cl-d10437e4"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Small colonies in the lower 1/3 of canopy with up to 75% of plants infected</span></p></td>
-<td class="cl-d10437d0"><p class="cl-d103c746"><span class="cl-d103a2fc">16.50</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">2</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Small colonies in the lower 1/3 of canopy with up to 75% of plants infected</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">16.50</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437da"><p class="cl-d103c7f0"><span class="cl-d103a2fc">3</span></p></td>
-<td class="cl-d10437e4"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Colonies in lower half of canopy with more than 75% of plants infected</span></p></td>
-<td class="cl-d10437d0"><p class="cl-d103c746"><span class="cl-d103a2fc">43.50</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">3</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Colonies in lower half of canopy with more than 75% of plants infected</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">43.50</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437da"><p class="cl-d103c7f0"><span class="cl-d103a2fc">4</span></p></td>
-<td class="cl-d10437e4"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Colonies in lower 2/3 of canopy with up to 75% of plants infected</span></p></td>
-<td class="cl-d10437d0"><p class="cl-d103c746"><span class="cl-d103a2fc">49.50</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">4</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Colonies in lower 2/3 of canopy with up to 75% of plants infected</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">49.50</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437da"><p class="cl-d103c7f0"><span class="cl-d103a2fc">5</span></p></td>
-<td class="cl-d10437e4"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Colonies in lower 2/3 of canopy with more than 75% of plants infected</span></p></td>
-<td class="cl-d10437d0"><p class="cl-d103c746"><span class="cl-d103a2fc">57.42</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">5</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Colonies in lower 2/3 of canopy with more than 75% of plants infected</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">57.42</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437da"><p class="cl-d103c7f0"><span class="cl-d103a2fc">6</span></p></td>
-<td class="cl-d10437e4"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Colonies in lower 2/3 of canopy with 100% of plants infected</span></p></td>
-<td class="cl-d10437d0"><p class="cl-d103c746"><span class="cl-d103a2fc">66.00</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">6</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Colonies in lower 2/3 of canopy with 100% of plants infected</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">66.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437da"><p class="cl-d103c7f0"><span class="cl-d103a2fc">7</span></p></td>
-<td class="cl-d10437e4"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Colonies in lower 2/3 of canopy with 100% of plants infected, some plants with colonies in the top 1/3 of the canopy</span></p></td>
-<td class="cl-d10437d0"><p class="cl-d103c746"><span class="cl-d103a2fc">75.00</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">7</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Colonies in lower 2/3 of canopy with 100% of plants infected, some plants with colonies in the top 1/3 of the canopy</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">75.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d10437da"><p class="cl-d103c7f0"><span class="cl-d103a2fc">8</span></p></td>
-<td class="cl-d10437e4"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Colonies all the way to the top of the plant with more than 75% of plants affected</span></p></td>
-<td class="cl-d10437d0"><p class="cl-d103c746"><span class="cl-d103a2fc">87.00</span></p></td>
+<td class="cl-2d27529e"><p class="cl-2d270d16"><span class="cl-2d26f33a">8</span></p></td>
+<td class="cl-2d275294"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Colonies all the way to the top of the plant with more than 75% of plants affected</span></p></td>
+<td class="cl-2d275280"><p class="cl-2d270d02"><span class="cl-2d26f33a">87.00</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1043802"><p class="cl-d103c7f0"><span class="cl-d103a2fc">9</span></p></td>
-<td class="cl-d10437ee"><p class="cl-d103c7dc"><span class="cl-d103a2fc">Colonies all the way to the top of the plant with severe leaf drop</span></p></td>
-<td class="cl-d10437f8"><p class="cl-d103c746"><span class="cl-d103a2fc">100.00</span></p></td>
+<td class="cl-2d2752a9"><p class="cl-2d270d16"><span class="cl-2d26f33a">9</span></p></td>
+<td class="cl-2d27529f"><p class="cl-2d270d0c"><span class="cl-2d26f33a">Colonies all the way to the top of the plant with severe leaf drop</span></p></td>
+<td class="cl-2d2752a8"><p class="cl-2d270d02"><span class="cl-2d26f33a">100.00</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="39723722-c8e3-4962-ad83-43a19b978f65"></div>
+</div></template><div class="flextable-shadow-host" id="7986dcad-5a4d-49ae-b138-60d7fd2dead8"></div>
 <script>
-var dest = document.getElementById("39723722-c8e3-4962-ad83-43a19b978f65");
-var template = document.getElementById("fc2e5c9c-530c-4e55-9573-184d543e530e");
+var dest = document.getElementById("7986dcad-5a4d-49ae-b138-60d7fd2dead8");
+var template = document.getElementById("5af03807-ce19-49b2-a02e-d75cbd3aa395");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -249,20 +222,19 @@ fantome.appendChild(templateContent);
 <span class="header-section-number">3.1</span> Trial summary statistics<a class="anchor" aria-label="anchor" href="#trial-summary-statistics"><i class="fas fa-link"></i></a>
 </h2>
 <p>The data explored in the <code>PM_MB_dat</code> data frame is a clean data frame focusing on trials which met the selection criteria testing DMI fungicides (tebuconazole / propiconazole) or no spray controls.</p>
-<p><br></p>
 <div id="trial-seasons" class="section level3">
 <h3>
 <span class="header-section-number">3.1.1</span> Trial seasons<a class="anchor" aria-label="anchor" href="#trial-seasons"><i class="fas fa-link"></i></a>
 </h3>
 <p>How many trials were undertaken each season.</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu">distinct</span><span class="op">(</span><span class="va">trial_ref</span>, <span class="va">location</span>, <span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">arrange</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">group_by</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">summarise</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
    <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<template id="56b1e5bb-1baf-4905-ad96-1bfc145ce293"><style>
+<template id="ec87880d-ae77-4fa2-b5cb-a7c1baa7e86c"><style>
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -298,51 +270,51 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-d1241672{}.cl-d11bd35e{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d11be9f2{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d11bea1a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d11c3236{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d11c325e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d11c3268{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d11c3272{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d11c327c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d11c3286{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-d1241672">
+<style>.cl-2d3dcb64{}.cl-2d384950{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d3859d6{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d3859ea{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d388d3e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d388d48{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d388d52{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d388d5c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d388d66{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d388d67{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2d3dcb64">
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3286"><p class="cl-d11be9f2"><span class="cl-d11bd35e">year</span></p></td>
-<td class="cl-d11c327c"><p class="cl-d11bea1a"><span class="cl-d11bd35e">n</span></p></td>
+<td class="cl-2d388d67"><p class="cl-2d3859d6"><span class="cl-2d384950">year</span></p></td>
+<td class="cl-2d388d66"><p class="cl-2d3859ea"><span class="cl-2d384950">n</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3236"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2011</span></p></td>
-<td class="cl-d11c325e"><p class="cl-d11bea1a"><span class="cl-d11bd35e">2</span></p></td>
+<td class="cl-2d388d3e"><p class="cl-2d3859d6"><span class="cl-2d384950">2011</span></p></td>
+<td class="cl-2d388d48"><p class="cl-2d3859ea"><span class="cl-2d384950">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3236"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2012</span></p></td>
-<td class="cl-d11c325e"><p class="cl-d11bea1a"><span class="cl-d11bd35e">2</span></p></td>
+<td class="cl-2d388d3e"><p class="cl-2d3859d6"><span class="cl-2d384950">2012</span></p></td>
+<td class="cl-2d388d48"><p class="cl-2d3859ea"><span class="cl-2d384950">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3236"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2013</span></p></td>
-<td class="cl-d11c325e"><p class="cl-d11bea1a"><span class="cl-d11bd35e">4</span></p></td>
+<td class="cl-2d388d3e"><p class="cl-2d3859d6"><span class="cl-2d384950">2013</span></p></td>
+<td class="cl-2d388d48"><p class="cl-2d3859ea"><span class="cl-2d384950">4</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3236"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2015</span></p></td>
-<td class="cl-d11c325e"><p class="cl-d11bea1a"><span class="cl-d11bd35e">1</span></p></td>
+<td class="cl-2d388d3e"><p class="cl-2d3859d6"><span class="cl-2d384950">2015</span></p></td>
+<td class="cl-2d388d48"><p class="cl-2d3859ea"><span class="cl-2d384950">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3236"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2016</span></p></td>
-<td class="cl-d11c325e"><p class="cl-d11bea1a"><span class="cl-d11bd35e">2</span></p></td>
+<td class="cl-2d388d3e"><p class="cl-2d3859d6"><span class="cl-2d384950">2016</span></p></td>
+<td class="cl-2d388d48"><p class="cl-2d3859ea"><span class="cl-2d384950">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3236"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2017</span></p></td>
-<td class="cl-d11c325e"><p class="cl-d11bea1a"><span class="cl-d11bd35e">2</span></p></td>
+<td class="cl-2d388d3e"><p class="cl-2d3859d6"><span class="cl-2d384950">2017</span></p></td>
+<td class="cl-2d388d48"><p class="cl-2d3859ea"><span class="cl-2d384950">2</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3236"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2018</span></p></td>
-<td class="cl-d11c325e"><p class="cl-d11bea1a"><span class="cl-d11bd35e">1</span></p></td>
+<td class="cl-2d388d3e"><p class="cl-2d3859d6"><span class="cl-2d384950">2018</span></p></td>
+<td class="cl-2d388d48"><p class="cl-2d3859ea"><span class="cl-2d384950">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d11c3272"><p class="cl-d11be9f2"><span class="cl-d11bd35e">2019</span></p></td>
-<td class="cl-d11c3268"><p class="cl-d11bea1a"><span class="cl-d11bd35e">2</span></p></td>
+<td class="cl-2d388d5c"><p class="cl-2d3859d6"><span class="cl-2d384950">2019</span></p></td>
+<td class="cl-2d388d52"><p class="cl-2d3859ea"><span class="cl-2d384950">2</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="d6ed0485-bca3-4bcc-9a62-ade229b5efc7"></div>
+</div></template><div class="flextable-shadow-host" id="186b543f-0d81-4daa-a822-0e799a05d686"></div>
 <script>
-var dest = document.getElementById("d6ed0485-bca3-4bcc-9a62-ade229b5efc7");
-var template = document.getElementById("56b1e5bb-1baf-4905-ad96-1bfc145ce293");
+var dest = document.getElementById("186b543f-0d81-4daa-a822-0e799a05d686");
+var template = document.getElementById("ec87880d-ae77-4fa2-b5cb-a7c1baa7e86c");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -353,20 +325,20 @@ if(caption) {
 var fantome = dest.attachShadow({mode: 'open'});
 var templateContent = template.content;
 fantome.appendChild(templateContent);
-</script><p><br><br><br></p>
+</script>
 </div>
 <div id="trial-locations" class="section level3">
 <h3>
 <span class="header-section-number">3.1.2</span> Trial locations<a class="anchor" aria-label="anchor" href="#trial-locations"><i class="fas fa-link"></i></a>
 </h3>
 <p>The location of the trials including DMI fungicides.</p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu">distinct</span><span class="op">(</span><span class="va">trial_ref</span>, <span class="va">location</span>, <span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">summarise</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
    <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<template id="d51d451a-ba7f-4ce8-a4b5-16e88d0bcf4f"><style>
+<template id="010628c6-6b6e-4378-9da9-d2da4595a3d7"><style>
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -402,55 +374,55 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-d13f8862{}.cl-d131fa4e{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d1320f98{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d1320fb6{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d1325836{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d132585e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1325868{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1325872{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d132587c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1325886{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-d13f8862">
+<style>.cl-2d4d5250{}.cl-2d47de24{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d47ef04{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d47ef0e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d4821d6{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d4821ea{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d4821f4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d4821fe{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d482208{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d482209{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2d4d5250">
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-d132587c"><p class="cl-d1320f98"><span class="cl-d131fa4e">location</span></p></td>
-<td class="cl-d1325886"><p class="cl-d1320fb6"><span class="cl-d131fa4e">n</span></p></td>
+<td class="cl-2d482208"><p class="cl-2d47ef04"><span class="cl-2d47de24">location</span></p></td>
+<td class="cl-2d482209"><p class="cl-2d47ef0e"><span class="cl-2d47de24">n</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Gatton</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">1</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Gatton</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Goolhi</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">1</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Goolhi</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Hermitage</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">6</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Hermitage</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">6</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Kingaroy</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">3</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Kingaroy</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">3</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Marys Mount</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">1</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Marys Mount</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Millmerran</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">1</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Millmerran</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Missen Flats</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">1</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Missen Flats</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325836"><p class="cl-d1320f98"><span class="cl-d131fa4e">Premer</span></p></td>
-<td class="cl-d132585e"><p class="cl-d1320fb6"><span class="cl-d131fa4e">1</span></p></td>
+<td class="cl-2d4821d6"><p class="cl-2d47ef04"><span class="cl-2d47de24">Premer</span></p></td>
+<td class="cl-2d4821ea"><p class="cl-2d47ef0e"><span class="cl-2d47de24">1</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1325868"><p class="cl-d1320f98"><span class="cl-d131fa4e">Wellcamp</span></p></td>
-<td class="cl-d1325872"><p class="cl-d1320fb6"><span class="cl-d131fa4e">1</span></p></td>
+<td class="cl-2d4821f4"><p class="cl-2d47ef04"><span class="cl-2d47de24">Wellcamp</span></p></td>
+<td class="cl-2d4821fe"><p class="cl-2d47ef0e"><span class="cl-2d47de24">1</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="02e9798b-7ae6-459a-bae6-5ad450a36b87"></div>
+</div></template><div class="flextable-shadow-host" id="578ec042-1312-4402-a09d-32654d9f3efc"></div>
 <script>
-var dest = document.getElementById("02e9798b-7ae6-459a-bae6-5ad450a36b87");
-var template = document.getElementById("d51d451a-ba7f-4ce8-a4b5-16e88d0bcf4f");
+var dest = document.getElementById("578ec042-1312-4402-a09d-32654d9f3efc");
+var template = document.getElementById("010628c6-6b6e-4378-9da9-d2da4595a3d7");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -461,14 +433,14 @@ if(caption) {
 var fantome = dest.attachShadow({mode: 'open'});
 var templateContent = template.content;
 fantome.appendChild(templateContent);
-</script><p><br><br><br></p>
+</script>
 </div>
 <div id="powdery-mildew-severity-and-mungbean-grain-yield-summary-per-trial" class="section level3">
 <h3>
 <span class="header-section-number">3.1.3</span> Powdery mildew severity and mungbean grain yield summary per trial<a class="anchor" aria-label="anchor" href="#powdery-mildew-severity-and-mungbean-grain-yield-summary-per-trial"><i class="fas fa-link"></i></a>
 </h3>
 <p>Show a summary of both <code>powdery mildew severity</code> and mungbean <code>grain yield</code> means and ranges for all trials including DMI fungicides.</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Sev_yield_table</span> <span class="op">&lt;-</span>
    <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu">mutate</span><span class="op">(</span>PM_sev_control <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">PM_final_severity</span>,
@@ -500,8 +472,8 @@ fantome.appendChild(templateContent);
    <span class="fu">mutate</span><span class="op">(</span>PM_sev_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">min_PM_sev</span>, <span class="va">max_PM_sev</span>, sep <span class="op">=</span> <span class="st">" - "</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">mutate</span><span class="op">(</span>yield_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">min_PM_yield</span>, <span class="va">max_PM_yield</span>, sep <span class="op">=</span> <span class="st">" - "</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">mutate</span><span class="op">(</span>m_PM_sev_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">m_PM_sev_control</span>, <span class="st">" ("</span>, <span class="va">n_controls</span>, <span class="st">")"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">min_PM_sev</span>, <span class="va">max_PM_sev</span>, <span class="va">min_PM_yield</span>, <span class="va">max_PM_yield</span>, <span class="va">n_controls</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu">select</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, <span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># order columns</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">min_PM_sev</span>, <span class="va">max_PM_sev</span>, <span class="va">min_PM_yield</span>, <span class="va">max_PM_yield</span>, <span class="va">n_controls</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, <span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># order columns</span>
    <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">set_header_labels</span><span class="op">(</span>
       trial_ref <span class="op">=</span> <span class="st">"Trial code"</span>,
@@ -518,7 +490,6 @@ fantome.appendChild(templateContent);
    <span class="fu">fontsize</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, part <span class="op">=</span> <span class="st">"body"</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">fontsize</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span>, part <span class="op">=</span> <span class="st">"header"</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">align</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">10</span>, align <span class="op">=</span> <span class="st">"center"</span>, part <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="co">#autofit() %&gt;%</span>
    <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span>, width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">2</span>, width <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">3</span>, width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -535,17 +506,25 @@ fantome.appendChild(templateContent);
       i <span class="op">=</span> <span class="fl">4</span>,
       j <span class="op">=</span> <span class="fl">1</span>,
       value <span class="op">=</span> <span class="fu">as_paragraph</span><span class="op">(</span>
-         <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;"</span><span class="op">)</span><span class="op">)</span>,
-      ref_symbols <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+         <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+            <span class="st">"Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;"</span>
+         <span class="op">)</span>
+      <span class="op">)</span>,
+      ref_symbols <span class="op">=</span> <span class="st">"a"</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">footnote</span><span class="op">(</span>
-      i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">11</span>,<span class="fl">12</span><span class="op">)</span>,
+      i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">12</span><span class="op">)</span>,
       j <span class="op">=</span> <span class="fl">1</span>,
       value <span class="op">=</span> <span class="fu">as_paragraph</span><span class="op">(</span>
-         <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis"</span><span class="op">)</span><span class="op">)</span>,
-      ref_symbols <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>
+         <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+            <span class="st">"Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis"</span>
+         <span class="op">)</span>
+      <span class="op">)</span>,
+      ref_symbols <span class="op">=</span> <span class="st">"b"</span>
+   <span class="op">)</span>
 
 <span class="va">Sev_yield_table</span></code></pre></div>
-<template id="d26234b6-0129-4daa-9fa6-001b5e7c8a12"><style>
+<template id="3a918930-9db4-4683-96b5-7de62cb053d3"><style>
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -581,226 +560,226 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-d18638d4{}.cl-d177c588{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d177c5c4{font-family:'Helvetica';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d177c5ce{font-family:'Helvetica';font-size:4.8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:2.4pt;}.cl-d177c5d8{font-family:'Helvetica';font-size:6.6pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3.3pt;}.cl-d177c60a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d177dec4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d177dee2{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d1788c52{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788c84{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788c98{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788ca2{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788cac{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788cb6{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788cca{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788cd4{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788cde{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788ce8{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788cf2{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788cfc{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d06{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d10{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d1a{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d24{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d2e{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d38{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d42{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d4c{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d56{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d60{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d6a{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d74{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d7e{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d88{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d92{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788d9c{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788da6{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788da7{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788db0{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788dba{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788dc4{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d1788dce{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-d18638d4">
+<style>.cl-2d7f29e2{}.cl-2d7579ba{font-family:'DejaVu Sans';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d7579ce{font-family:'DejaVu Sans';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d7579d8{font-family:'DejaVu Sans';font-size:4.8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:2.4pt;}.cl-2d7579e2{font-family:'DejaVu Sans';font-size:6.6pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3.3pt;}.cl-2d7579e3{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2d758c34{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d758c3e{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2d77812e{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778142{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778143{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77814c{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77814d{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778156{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778160{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77816a{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77816b{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77817e{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77817f{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778180{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778188{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778192{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778193{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d778194{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77819c{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d77819d{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781a6{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781a7{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781b0{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781b1{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781ba{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781bb{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781c4{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781c5{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781c6{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781ce{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781cf{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781d0{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781d8{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781d9{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781e2{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2d7781e3{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2d7f29e2">
 <caption class="Table Caption">
-(#tab:Full_Trial_Summary_table)Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset date, number of treatments per trial (n), PM median plot severity of the non-fungicide treated plots and the severity range in fungicide treatments, bracketed numbers refer to the number of pooled control treatments summarised; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare
+<p>(#tab:Full_Trial_Summary_table)Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset date, number of treatments per trial (n), PM median plot severity of the non-fungicide treated plots and the severity range in fungicide treatments, bracketed numbers refer to the number of pooled control treatments summarised; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare</p>
 </caption>
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-d1788db0"><p class="cl-d177dec4"><span class="cl-d177c588">Trial code</span></p></td>
-<td class="cl-d1788da7"><p class="cl-d177dec4"><span class="cl-d177c588">Location</span></p></td>
-<td class="cl-d1788dc4"><p class="cl-d177dee2"><span class="cl-d177c588">Year</span></p></td>
-<td class="cl-d1788d92"><p class="cl-d177dee2"><span class="cl-d177c588">Sowing date</span></p></td>
-<td class="cl-d1788d92"><p class="cl-d177dee2"><span class="cl-d177c588">PM onset</span></p></td>
-<td class="cl-d1788d88"><p class="cl-d177dee2"><span class="cl-d177c588">n</span></p></td>
-<td class="cl-d1788dba"><p class="cl-d177dee2"><span class="cl-d177c588">Control median<br>PM severity</span></p></td>
-<td class="cl-d1788dce"><p class="cl-d177dee2"><span class="cl-d177c588">PM severity<br>range</span></p></td>
-<td class="cl-d1788d9c"><p class="cl-d177dee2"><span class="cl-d177c588">Control<br>median yield</span></p></td>
-<td class="cl-d1788da6"><p class="cl-d177dee2"><span class="cl-d177c588">Yield range<br>(t / ha)</span></p></td>
+<td class="cl-2d7781d8"><p class="cl-2d758c34"><span class="cl-2d7579ba">Trial code</span></p></td>
+<td class="cl-2d7781d0"><p class="cl-2d758c34"><span class="cl-2d7579ba">Location</span></p></td>
+<td class="cl-2d7781e2"><p class="cl-2d758c3e"><span class="cl-2d7579ba">Year</span></p></td>
+<td class="cl-2d7781c6"><p class="cl-2d758c3e"><span class="cl-2d7579ba">Sowing date</span></p></td>
+<td class="cl-2d7781c6"><p class="cl-2d758c3e"><span class="cl-2d7579ba">PM onset</span></p></td>
+<td class="cl-2d7781c5"><p class="cl-2d758c3e"><span class="cl-2d7579ba">n</span></p></td>
+<td class="cl-2d7781d9"><p class="cl-2d758c3e"><span class="cl-2d7579ba">Control median<br>PM severity</span></p></td>
+<td class="cl-2d7781e3"><p class="cl-2d758c3e"><span class="cl-2d7579ba">PM severity<br>range</span></p></td>
+<td class="cl-2d7781ce"><p class="cl-2d758c3e"><span class="cl-2d7579ba">Control<br>median yield</span></p></td>
+<td class="cl-2d7781cf"><p class="cl-2d758c3e"><span class="cl-2d7579ba">Yield range<br>(t / ha)</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1011/01</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Hermitage</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2011</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2011-01-24</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2011-03-28</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">4</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">4.83 (2)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">2 - 2.33</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.525</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.544 - 1.769</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1011/01</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Hermitage</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2011</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2011-01-24</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2011-03-28</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4.83 (2)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2 - 2.33</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.525</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.544 - 1.769</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1011/02</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Kingaroy</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2011</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2011-02-02</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2011-03-22</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">6</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">7.83 (2)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">3.33 - 5.33</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.798</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.73 - 1.059</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1011/02</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Kingaroy</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2011</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2011-02-02</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2011-03-22</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">6</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7.83 (2)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">3.33 - 5.33</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.798</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.73 - 1.059</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1112/01</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Gatton</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012-02-20</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012-04-02</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">7</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">7.5 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">2 - 6.3</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.738</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.81 - 0.948</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1112/01</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Gatton</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012-02-20</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012-04-02</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7.5 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2 - 6.3</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.738</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.81 - 0.948</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1112/02</span><span class="cl-d177c5ce">a</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Kingaroy</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012-02-03</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012-03-12</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">7</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">8 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.7 - 8</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.751</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.036 - 1.323</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1112/02</span><span class="cl-2d7579d8">a</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Kingaroy</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012-02-03</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012-03-12</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">8 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.7 - 8</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.751</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.036 - 1.323</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">AM1303</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Premer</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012-12-28</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013-02-28</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">4</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">8 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">2 - 7.83</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.422</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.334 - 1.45</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">AM1303</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Premer</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012-12-28</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013-02-28</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">8 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2 - 7.83</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.422</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.334 - 1.45</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">AM1304</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Marys Mount</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2012-12-24</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013-03-16</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">2</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">3 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">3.17 - 3.17</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.094</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.265 - 1.265</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">AM1304</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Marys Mount</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2012-12-24</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013-03-16</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">3 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">3.17 - 3.17</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.094</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.265 - 1.265</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">AM1305</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Goolhi</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013-01-23</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013-03-25</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">4</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">9 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">1 - 3.75</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.694</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.604 - 0.722</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">AM1305</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Goolhi</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013-01-23</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013-03-25</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">9 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1 - 3.75</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.694</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.604 - 0.722</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">BB1305</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Millmerran</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013-01-12</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2013-03-13</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">4</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">8 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.62 - 8</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.802</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.744 - 0.803</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">BB1305</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Millmerran</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013-01-12</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2013-03-13</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">8 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.62 - 8</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.802</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.744 - 0.803</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1415/01</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Hermitage</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2015</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2015-01-19</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2015-03-16</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">5</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">7.8 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">5.4 - 6.6</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">2.045</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">2.018 - 2.176</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1415/01</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Hermitage</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2015</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2015-01-19</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2015-03-16</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">5</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7.8 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">5.4 - 6.6</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2.045</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2.018 - 2.176</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1516/01</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Hermitage</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2016</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2016-02-03</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2016-03-08</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">7</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">8 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">3 - 7.5</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.803</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">2.141 - 2.37</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1516/01</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Hermitage</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2016</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2016-02-03</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2016-03-08</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">8 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">3 - 7.5</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.803</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2.141 - 2.37</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1516/02</span><span class="cl-d177c5ce">b</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Kingaroy</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2016</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2016-02-11</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2016-03-09</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">7</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">8.25 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">2.25 - 7.75</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.811</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.873 - 1.034</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1516/02</span><span class="cl-2d7579d8">b</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Kingaroy</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2016</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2016-02-11</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2016-03-09</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">8.25 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2.25 - 7.75</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.811</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.873 - 1.034</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1617/01</span><span class="cl-d177c5ce">b</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Hermitage</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2017</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2017-02-13</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2017-03-24</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">39</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">8 (9)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">5.33 - 8</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.474</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.327 - 0.683</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1617/01</span><span class="cl-2d7579d8">b</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Hermitage</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2017</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2017-02-13</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2017-03-24</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">39</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">8 (9)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">5.33 - 8</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.474</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.327 - 0.683</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1617/02</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Missen Flats</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2017</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2017-01-27</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2017-03-07</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">39</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">9 (9)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">7.67 - 9</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.505</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.13 - 2.526</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1617/02</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Missen Flats</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2017</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2017-01-27</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2017-03-07</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">39</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">9 (9)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7.67 - 9</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.505</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.13 - 2.526</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1718/01</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Wellcamp</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2018</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2018-02-13</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2018-03-21</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">18</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">8.17 (6)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">5.67 - 7.67</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.091</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">1.084 - 1.69</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1718/01</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Wellcamp</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2018</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2018-02-13</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2018-03-21</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">18</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">8.17 (6)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">5.67 - 7.67</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.091</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">1.084 - 1.69</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788ca2"><p class="cl-d177dec4"><span class="cl-d177c5c4">1819/01</span></p></td>
-<td class="cl-d1788c84"><p class="cl-d177dec4"><span class="cl-d177c5c4">Hermitage</span></p></td>
-<td class="cl-d1788cd4"><p class="cl-d177dee2"><span class="cl-d177c5c4">2019</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2018-02-04</span></p></td>
-<td class="cl-d1788cac"><p class="cl-d177dee2"><span class="cl-d177c5c4">2018-04-12</span></p></td>
-<td class="cl-d1788c52"><p class="cl-d177dee2"><span class="cl-d177c5c4">4</span></p></td>
-<td class="cl-d1788cca"><p class="cl-d177dee2"><span class="cl-d177c5c4">7.5 (1)</span></p></td>
-<td class="cl-d1788cb6"><p class="cl-d177dee2"><span class="cl-d177c5c4">5 - 7.17</span></p></td>
-<td class="cl-d1788cde"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.587</span></p></td>
-<td class="cl-d1788c98"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.543 - 0.571</span></p></td>
+<td class="cl-2d77814c"><p class="cl-2d758c34"><span class="cl-2d7579ce">1819/01</span></p></td>
+<td class="cl-2d778142"><p class="cl-2d758c34"><span class="cl-2d7579ce">Hermitage</span></p></td>
+<td class="cl-2d77816a"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2019</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2018-02-04</span></p></td>
+<td class="cl-2d77814d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2018-04-12</span></p></td>
+<td class="cl-2d77812e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4</span></p></td>
+<td class="cl-2d778160"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7.5 (1)</span></p></td>
+<td class="cl-2d778156"><p class="cl-2d758c3e"><span class="cl-2d7579ce">5 - 7.17</span></p></td>
+<td class="cl-2d77816b"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.587</span></p></td>
+<td class="cl-2d778143"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.543 - 0.571</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d1788d06"><p class="cl-d177dec4"><span class="cl-d177c5c4">1819/02</span></p></td>
-<td class="cl-d1788cfc"><p class="cl-d177dec4"><span class="cl-d177c5c4">Hermitage</span></p></td>
-<td class="cl-d1788d38"><p class="cl-d177dee2"><span class="cl-d177c5c4">2019</span></p></td>
-<td class="cl-d1788d1a"><p class="cl-d177dee2"><span class="cl-d177c5c4">2018-02-18</span></p></td>
-<td class="cl-d1788d1a"><p class="cl-d177dee2"><span class="cl-d177c5c4">2018-04-12</span></p></td>
-<td class="cl-d1788d10"><p class="cl-d177dee2"><span class="cl-d177c5c4">4</span></p></td>
-<td class="cl-d1788cf2"><p class="cl-d177dee2"><span class="cl-d177c5c4">7.83 (1)</span></p></td>
-<td class="cl-d1788d24"><p class="cl-d177dee2"><span class="cl-d177c5c4">4.6 - 7.33</span></p></td>
-<td class="cl-d1788d2e"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.289</span></p></td>
-<td class="cl-d1788ce8"><p class="cl-d177dee2"><span class="cl-d177c5c4">0.276 - 0.312</span></p></td>
+<td class="cl-2d778188"><p class="cl-2d758c34"><span class="cl-2d7579ce">1819/02</span></p></td>
+<td class="cl-2d778180"><p class="cl-2d758c34"><span class="cl-2d7579ce">Hermitage</span></p></td>
+<td class="cl-2d77819d"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2019</span></p></td>
+<td class="cl-2d778193"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2018-02-18</span></p></td>
+<td class="cl-2d778193"><p class="cl-2d758c3e"><span class="cl-2d7579ce">2018-04-12</span></p></td>
+<td class="cl-2d778192"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4</span></p></td>
+<td class="cl-2d77817f"><p class="cl-2d758c3e"><span class="cl-2d7579ce">7.83 (1)</span></p></td>
+<td class="cl-2d778194"><p class="cl-2d758c3e"><span class="cl-2d7579ce">4.6 - 7.33</span></p></td>
+<td class="cl-2d77819c"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.289</span></p></td>
+<td class="cl-2d77817e"><p class="cl-2d758c3e"><span class="cl-2d7579ce">0.276 - 0.312</span></p></td>
 </tr>
 </tbody>
 <tfoot>
-<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-d1788d4c"><p class="cl-d177dec4"><span class="cl-d177c5d8">a</span><span class="cl-d177c60a">Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;</span></p></td></tr>
-<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-d1788d4c"><p class="cl-d177dec4"><span class="cl-d177c5d8">b</span><span class="cl-d177c60a">Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-2d7781a7"><p class="cl-2d758c34"><span class="cl-2d7579e2">a</span><span class="cl-2d7579e3">Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-2d7781a7"><p class="cl-2d758c34"><span class="cl-2d7579e2">b</span><span class="cl-2d7579e3">Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis</span></p></td></tr>
 </tfoot>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="d9377622-7d3b-4eaa-9058-5a3a6590da7c"></div>
+</div></template><div class="flextable-shadow-host" id="9d1bbdb2-19b2-40d6-99b2-cb17f542c984"></div>
 <script>
-var dest = document.getElementById("d9377622-7d3b-4eaa-9058-5a3a6590da7c");
-var template = document.getElementById("d26234b6-0129-4daa-9fa6-001b5e7c8a12");
+var dest = document.getElementById("9d1bbdb2-19b2-40d6-99b2-cb17f542c984");
+var template = document.getElementById("3a918930-9db4-4683-96b5-7de62cb053d3");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -811,7 +790,7 @@ if(caption) {
 var fantome = dest.attachShadow({mode: 'open'});
 var templateContent = template.content;
 fantome.appendChild(templateContent);
-</script><p><br><br><br></p>
+</script>
 </div>
 <div id="summary-plots" class="section level3">
 <h3>
@@ -821,30 +800,32 @@ fantome.appendChild(templateContent);
 <h4>
 <span class="header-section-number">3.1.4.1</span> Seasonal disease pressure in the control<a class="anchor" aria-label="anchor" href="#seasonal-disease-pressure-in-the-control"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sev_control_plot</span> <span class="op">&lt;-</span> 
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sev_control_plot</span> <span class="op">&lt;-</span>
    <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">PM_final_severity</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">geom_boxplot</span><span class="op">(</span>outlier.alpha <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-   <span class="fu">geom_jitter</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span>, colour <span class="op">=</span> <span class="st">"cadetblue"</span>,alpha <span class="op">=</span> <span class="fl">0.4</span>,width <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span> <span class="op">+</span>
-   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">7</span>,<span class="fl">9</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>,<span class="fl">9.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-   <span class="fu">ylab</span><span class="op">(</span><span class="st">"PM severity (1 -9)"</span><span class="op">)</span><span class="op">+</span>
-   <span class="co"># xlab("Crop season")+</span>
-   <span class="co"># theme(axis.title.x=element_blank(),</span>
-   <span class="co">#      axis.text.x=element_blank(),</span>
-   <span class="co">#      axis.ticks.x=element_blank())+</span>
+   <span class="fu">geom_jitter</span><span class="op">(</span>
+      size <span class="op">=</span> <span class="fl">2</span>,
+      colour <span class="op">=</span> <span class="st">"cadetblue"</span>,
+      alpha <span class="op">=</span> <span class="fl">0.4</span>,
+      width <span class="op">=</span> <span class="fl">0.15</span>
+   <span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span>,
+                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">9.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"PM severity (1 -9)"</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span> <span class="op">+</span>
-   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span>
+   <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">sev_control_plot</span>      </code></pre></div>
-<p><img src="livro_files/figure-html/bwplot_sev-1.png" width="672"><br><br><br></p>
+<span class="va">sev_control_plot</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/bwplot_sev-1.png" width="672"></div>
 </div>
 <div id="disease-severity-range-for-each-spray-schedule" class="section level4">
 <h4>
 <span class="header-section-number">3.1.4.2</span> Disease severity range for each spray schedule<a class="anchor" aria-label="anchor" href="#disease-severity-range-for-each-spray-schedule"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sev_schedule_plot</span> <span class="op">&lt;-</span>
    <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">spray_management</span>, y <span class="op">=</span> <span class="va">PM_final_severity</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -855,7 +836,8 @@ fantome.appendChild(templateContent);
       alpha <span class="op">=</span> <span class="fl">0.4</span>,
       width <span class="op">=</span> <span class="fl">0.15</span>
    <span class="op">)</span> <span class="op">+</span>
-   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">9.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span>,
+                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">9.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
       <span class="st">"control"</span>,
       <span class="st">"early"</span>,
@@ -866,18 +848,17 @@ fantome.appendChild(templateContent);
    <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">ylab</span><span class="op">(</span><span class="st">"PM severity (1 -9)"</span><span class="op">)</span> <span class="op">+</span>
    <span class="co"># xlab("Spray Schedule")+</span>
-   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span><span class="op">+</span>
-   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span>
-   
+   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span>
+
 <span class="va">sev_schedule_plot</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/bwplot_yield-1.png" width="672"></div>
-<p><br><br><br></p>
 </div>
 <div id="seasonal-grain-yield-in-the-control" class="section level4">
 <h4>
 <span class="header-section-number">3.1.4.3</span> Seasonal grain yield in the control<a class="anchor" aria-label="anchor" href="#seasonal-grain-yield-in-the-control"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Y_control_plot</span> <span class="op">&lt;-</span>
    <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -898,13 +879,12 @@ fantome.appendChild(templateContent);
 
 <span class="va">Y_control_plot</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/bwplot_yield_year-1.png" width="672"></div>
-<p><br><br><br></p>
 </div>
 <div id="mungbean-yield-for-each-spray-schedule" class="section level4">
 <h4>
 <span class="header-section-number">3.1.4.4</span> Mungbean yield for each spray schedule<a class="anchor" aria-label="anchor" href="#mungbean-yield-for-each-spray-schedule"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Y_schedule_plot</span> <span class="op">&lt;-</span> 
    <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">spray_management</span>, y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -926,7 +906,7 @@ fantome.appendChild(templateContent);
    <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="co">#ylab(bquote('Mungbean grain yield ' *  ~  ~ t ~ ha ^ -1 * "")) +</span>
    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Spray schedule"</span><span class="op">)</span><span class="op">+</span>
-   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+   <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
    <span class="fu">theme</span><span class="op">(</span>axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,
          axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">20</span>, hjust <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span><span class="op">)</span>
 
@@ -935,7 +915,6 @@ fantome.appendChild(templateContent);
 <div class="figure">
 <img src="paper/figures/Fig1_boxplots_yield&amp;sev.png" alt=""><p class="caption">Box plots of the unsprayed control treatments means for both PM severity (top) and crop yield (bottom), indicating within-season variation (A), and trial treatment means for each spray schedule (B).</p>
 </div>
-<p><br><br><br><br><br><br><br></p>
 <hr>
 </div>
 </div>
@@ -966,7 +945,6 @@ A quick inspection of the following factors were done to examine the possible in
 </li>
 </ol>
 <p>The data plotted below are from 16 field trials between (2011 - 2019) of which the details are described in the <a href="trials-considered-for-inclusion-in-meta-analysis.html#trials-considered-for-inclusion-in-meta-analysis">Trials considered for inclusion in meta-analysis</a>.</p>
-<p><br></p>
 <div id="fungicide-type" class="section level3">
 <h3>
 <span class="header-section-number">3.2.1</span> Fungicide type<a class="anchor" aria-label="anchor" href="#fungicide-type"><i class="fas fa-link"></i></a>
@@ -975,7 +953,7 @@ A quick inspection of the following factors were done to examine the possible in
 <h4>
 <span class="header-section-number">3.2.1.1</span> Powdery mildew severity<a class="anchor" aria-label="anchor" href="#powdery-mildew-severity"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">n_C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span>
 <span class="va">n_P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span>
 <span class="va">n_T</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span><span class="op">)</span>
@@ -989,13 +967,12 @@ A quick inspection of the following factors were done to examine the possible in
                         <span class="st">"; Tebuconazole n:"</span>, <span class="va">n_T</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/TebuVPropi_sev-1.png" width="672"></div>
-<p><br><br><br></p>
 </div>
 <div id="yield-effect" class="section level4">
 <h4>
 <span class="header-section-number">3.2.1.2</span> Yield effect<a class="anchor" aria-label="anchor" href="#yield-effect"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">fungicide_ai</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Fungicide treatment"</span><span class="op">)</span> <span class="op">+</span>
@@ -1005,7 +982,6 @@ A quick inspection of the following factors were done to examine the possible in
                         <span class="st">"; Tebuconazole n:"</span>, <span class="va">n_T</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/TebuVPropi_Yi-1.png" width="672"></div>
-<p><br><br><br><br><br></p>
 </div>
 </div>
 <div id="fungicide-doses" class="section level3">
@@ -1014,7 +990,7 @@ A quick inspection of the following factors were done to examine the possible in
 </h3>
 <p>This analysis focuses only the DMI fungicides, tebuconazole and propiconazole, which were trialled the most often.</p>
 <p>We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span> <span class="op">|</span>
              <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1027,7 +1003,7 @@ A quick inspection of the following factors were done to examine the possible in
 Dose of the active ingredient ranged from 62.35 g per hectare to 60 g per hectare.</p>
 <p>Doses for propiconazole range from 62.5 g to 125 g, a large variation.<br>
 Let’s inspect the difference in yields for each dose.</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">dose_ai.ha</span><span class="op">)</span>, <span class="st">"62.5"</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -1039,9 +1015,8 @@ Let’s inspect the difference in yields for each dose.</p>
    <span class="fu">facet_grid</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">total_fungicide</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/PropiDoseEffect-1.png" width="672"></div>
 <p>This dose effect should be investigated in the meta-analysis.</p>
-<p><br><br><br></p>
 <p>How many treatments of each dose have been investigated per trial?</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">[</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span>,<span class="op">]</span><span class="op">$</span><span class="va">trial_ref</span><span class="op">)</span>,
       <span class="va">PM_MB_dat</span><span class="op">[</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span>,<span class="op">]</span><span class="op">$</span><span class="va">dose_ai.ha</span><span class="op">)</span></code></pre></div>
 <pre><code>##              
@@ -1055,14 +1030,13 @@ Let’s inspect the difference in yields for each dose.</p>
 ##   mung1617/01    0  15
 ##   mung1617/02    0  15
 ##   mung1718/01    0   6</code></pre>
-<p><br><br><br></p>
 </div>
 <div id="number-of-fungicide-sprays" class="section level3">
 <h3>
 <span class="header-section-number">3.2.3</span> Number of fungicide sprays<a class="anchor" aria-label="anchor" href="#number-of-fungicide-sprays"><i class="fas fa-link"></i></a>
 </h3>
 <p>Inspect the frequency of sprays per fungicide.</p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span>, <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">total_fungicide</span><span class="op">)</span></code></pre></div>
 <pre><code>##                
 ##                  0  1  2  3
@@ -1070,7 +1044,6 @@ Let’s inspect the difference in yields for each dose.</p>
 ##   propiconazole  0 26 25  3
 ##   tebuconazole   0 34 32  2</code></pre>
 <p>Very few treatments were sprayed more than three times and only in AM1305, AM1303, BB1305, mung1516/01, mung1516/02</p>
-<p><br><br><br></p>
 </div>
 <div id="mungbean-cultivars" class="section level3">
 <h3>
@@ -1087,7 +1060,7 @@ Let’s inspect the difference in yields for each dose.</p>
 </li>
 </ul>
 <p>Let’s view a stacked bar plot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span> <span class="op">|</span>
              <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1106,14 +1079,18 @@ Let’s inspect the difference in yields for each dose.</p>
 <h4>
 <span class="header-section-number">3.2.4.1</span> Yield loss in cultivar Jade<a class="anchor" aria-label="anchor" href="#yield-loss-in-cultivar-jade"><i class="fas fa-link"></i></a>
 </h4>
-<p>Cultivar Jade shows the best quantitative resistance to powdery mildew.<br>
+<p>Cultivar Jade shows the best quantitative resistance to powdery mildew.
 Based on the 2016 GRDC report by Sue Thompson <span class="citation">(<a href="powdery-mildew-severity-meta-analysis.html#ref-SueThompson2016" role="doc-biblioref">2016</a>)</span> we want to know what is the possible yield loss for this moderately susceptible cultivar.</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="st">"2016"</span>,
           <span class="va">host_genotype</span> <span class="op">==</span> <span class="st">"Jade"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu">mutate</span><span class="op">(</span>Treatment <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="st">"control_yield"</span>,
-                                <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"FungicideTreated_yield"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>
+      Treatment <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span>
+         <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="st">"control_yield"</span>,
+         <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"FungicideTreated_yield"</span>
+      <span class="op">)</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span>, <span class="va">Treatment</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">summarise</span><span class="op">(</span>
       trial_ref <span class="op">=</span> <span class="va">trial_ref</span>,
@@ -1126,15 +1103,15 @@ Based on the 2016 GRDC report by Sue Thompson <span class="citation">(<a href="p
    <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">Treatment</span>, values_from <span class="op">=</span> <span class="va">Yield</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">mutate</span><span class="op">(</span>Diff <span class="op">=</span> <span class="va">FungicideTreated_yield</span> <span class="op">-</span> <span class="va">control_yield</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">mutate</span><span class="op">(</span>percent <span class="op">=</span> <span class="op">(</span><span class="va">Diff</span> <span class="op">/</span> <span class="va">FungicideTreated_yield</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu">select</span><span class="op">(</span><span class="va">trial_ref</span>,
-          <span class="va">location</span>,
-          <span class="va">year</span>,
-          <span class="va">control_yield</span>,
-          <span class="va">FungicideTreated_yield</span>,
-          <span class="va">percent</span>,
-          <span class="va">Diff</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">trial_ref</span>,
+                 <span class="va">location</span>,
+                 <span class="va">year</span>,
+                 <span class="va">control_yield</span>,
+                 <span class="va">FungicideTreated_yield</span>,
+                 <span class="va">percent</span>,
+                 <span class="va">Diff</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<template id="478cb8af-78ad-463c-8138-547eb2155265"><style>
+<template id="926955f1-04aa-4448-ab19-6e2c15d7b3f1"><style>
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -1170,42 +1147,42 @@ background-color: transparent;
 }
 </style>
 <div class="tabwid">
-<style>.cl-d60aa642{}.cl-d603018a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d603159e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d60315bc{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d60357c0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d60357de{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d60357e8{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d60357f2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d60357fc{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d6035806{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<div class="inline-table"><table class="cl-d60aa642">
+<style>.cl-2fa9ccae{}.cl-2fa42402{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2fa43500{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2fa4350a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2fa46a7a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2fa46a84{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2fa46a8e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2fa46a98{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2fa46a99{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2fa46aa2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-2fa9ccae">
 <thead><tr style="overflow-wrap:break-word;">
-<td class="cl-d6035806"><p class="cl-d603159e"><span class="cl-d603018a">trial_ref</span></p></td>
-<td class="cl-d6035806"><p class="cl-d603159e"><span class="cl-d603018a">location</span></p></td>
-<td class="cl-d6035806"><p class="cl-d603159e"><span class="cl-d603018a">year</span></p></td>
-<td class="cl-d60357fc"><p class="cl-d60315bc"><span class="cl-d603018a">control_yield</span></p></td>
-<td class="cl-d60357fc"><p class="cl-d60315bc"><span class="cl-d603018a">FungicideTreated_yield</span></p></td>
-<td class="cl-d60357fc"><p class="cl-d60315bc"><span class="cl-d603018a">percent</span></p></td>
-<td class="cl-d60357fc"><p class="cl-d60315bc"><span class="cl-d603018a">Diff</span></p></td>
+<td class="cl-2fa46aa2"><p class="cl-2fa43500"><span class="cl-2fa42402">trial_ref</span></p></td>
+<td class="cl-2fa46aa2"><p class="cl-2fa43500"><span class="cl-2fa42402">location</span></p></td>
+<td class="cl-2fa46aa2"><p class="cl-2fa43500"><span class="cl-2fa42402">year</span></p></td>
+<td class="cl-2fa46a99"><p class="cl-2fa4350a"><span class="cl-2fa42402">control_yield</span></p></td>
+<td class="cl-2fa46a99"><p class="cl-2fa4350a"><span class="cl-2fa42402">FungicideTreated_yield</span></p></td>
+<td class="cl-2fa46a99"><p class="cl-2fa4350a"><span class="cl-2fa42402">percent</span></p></td>
+<td class="cl-2fa46a99"><p class="cl-2fa4350a"><span class="cl-2fa42402">Diff</span></p></td>
 </tr></thead>
 <tbody>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d60357de"><p class="cl-d603159e"><span class="cl-d603018a">mung1516/01</span></p></td>
-<td class="cl-d60357de"><p class="cl-d603159e"><span class="cl-d603018a">Hermitage</span></p></td>
-<td class="cl-d60357de"><p class="cl-d603159e"><span class="cl-d603018a">2016</span></p></td>
-<td class="cl-d60357c0"><p class="cl-d60315bc"><span class="cl-d603018a">1.8029</span></p></td>
-<td class="cl-d60357c0"><p class="cl-d60315bc"><span class="cl-d603018a">2.2821833</span></p></td>
-<td class="cl-d60357c0"><p class="cl-d60315bc"><span class="cl-d603018a">21.00109</span></p></td>
-<td class="cl-d60357c0"><p class="cl-d60315bc"><span class="cl-d603018a">0.4792833</span></p></td>
+<td class="cl-2fa46a84"><p class="cl-2fa43500"><span class="cl-2fa42402">mung1516/01</span></p></td>
+<td class="cl-2fa46a84"><p class="cl-2fa43500"><span class="cl-2fa42402">Hermitage</span></p></td>
+<td class="cl-2fa46a84"><p class="cl-2fa43500"><span class="cl-2fa42402">2016</span></p></td>
+<td class="cl-2fa46a7a"><p class="cl-2fa4350a"><span class="cl-2fa42402">1.8029</span></p></td>
+<td class="cl-2fa46a7a"><p class="cl-2fa4350a"><span class="cl-2fa42402">2.2821833</span></p></td>
+<td class="cl-2fa46a7a"><p class="cl-2fa4350a"><span class="cl-2fa42402">21.00109</span></p></td>
+<td class="cl-2fa46a7a"><p class="cl-2fa4350a"><span class="cl-2fa42402">0.4792833</span></p></td>
 </tr>
 <tr style="overflow-wrap:break-word;">
-<td class="cl-d60357f2"><p class="cl-d603159e"><span class="cl-d603018a">mung1516/02</span></p></td>
-<td class="cl-d60357f2"><p class="cl-d603159e"><span class="cl-d603018a">Kingaroy</span></p></td>
-<td class="cl-d60357f2"><p class="cl-d603159e"><span class="cl-d603018a">2016</span></p></td>
-<td class="cl-d60357e8"><p class="cl-d60315bc"><span class="cl-d603018a">0.8107</span></p></td>
-<td class="cl-d60357e8"><p class="cl-d60315bc"><span class="cl-d603018a">0.9541167</span></p></td>
-<td class="cl-d60357e8"><p class="cl-d60315bc"><span class="cl-d603018a">15.03136</span></p></td>
-<td class="cl-d60357e8"><p class="cl-d60315bc"><span class="cl-d603018a">0.1434167</span></p></td>
+<td class="cl-2fa46a98"><p class="cl-2fa43500"><span class="cl-2fa42402">mung1516/02</span></p></td>
+<td class="cl-2fa46a98"><p class="cl-2fa43500"><span class="cl-2fa42402">Kingaroy</span></p></td>
+<td class="cl-2fa46a98"><p class="cl-2fa43500"><span class="cl-2fa42402">2016</span></p></td>
+<td class="cl-2fa46a8e"><p class="cl-2fa4350a"><span class="cl-2fa42402">0.8107</span></p></td>
+<td class="cl-2fa46a8e"><p class="cl-2fa4350a"><span class="cl-2fa42402">0.9541167</span></p></td>
+<td class="cl-2fa46a8e"><p class="cl-2fa4350a"><span class="cl-2fa42402">15.03136</span></p></td>
+<td class="cl-2fa46a8e"><p class="cl-2fa4350a"><span class="cl-2fa42402">0.1434167</span></p></td>
 </tr>
 </tbody>
 </table></div>
-</div></template><div class="flextable-shadow-host" id="55b145ca-3e2d-4f1c-9af1-91a854c22a3c"></div>
+</div></template><div class="flextable-shadow-host" id="79c0f64b-2826-4769-aecf-91ef30a79c5d"></div>
 <script>
-var dest = document.getElementById("55b145ca-3e2d-4f1c-9af1-91a854c22a3c");
-var template = document.getElementById("478cb8af-78ad-463c-8138-547eb2155265");
+var dest = document.getElementById("79c0f64b-2826-4769-aecf-91ef30a79c5d");
+var template = document.getElementById("926955f1-04aa-4448-ab19-6e2c15d7b3f1");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1216,7 +1193,7 @@ if(caption) {
 var fantome = dest.attachShadow({mode: 'open'});
 var templateContent = template.content;
 fantome.appendChild(templateContent);
-</script><p><br><br><br></p>
+</script>
 </div>
 </div>
 <div id="row-spacing" class="section level3">
@@ -1226,7 +1203,7 @@ fantome.appendChild(templateContent);
 <p>Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease as well as fungicide timing and efficacy.
 The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly.
 This finding has also been shown by several other researchers’ work in Queensland and New South Wales as well.</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span> <span class="op">|</span>
              <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1243,18 +1220,11 @@ This finding has also been shown by several other researchers’ work in Queensl
    <span class="fu">scale_fill_discrete</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Fungicide AI"</span><span class="op">)</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by 'fungicide_ai', 'row_spacing'. You can override using the `.groups` argument.</code></pre>
 <div class="inline-figure"><img src="livro_files/figure-html/row_spacing.m-1.png" width="672"></div>
-<p><br><br><br></p>
-<p>Will plotting row spacing treatments show differences for the response variables, <em>yield</em> and <em>disease severity</em>.<br>
-The main questions are:</p>
-<ul>
-<li>
-<p>Were there any statistical differences for mungbean <em>yield</em> or <em>powdery mildew severity</em> between row spacing treatments?</p>
-<ul>
-<li>If not, can we pool certain row spacing that have no significant difference?</li>
-</ul>
-</li>
-</ul>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<p>Will plotting row spacing treatments show differences for the response variables, <em>yield</em> and <em>disease severity</em>.
+The main questions are:
+* Were there any statistical differences for mungbean <em>yield</em> or <em>powdery mildew severity</em> between row spacing treatments?
+* If not, can we pool certain row spacing that have no significant difference?</p>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Which row spacing leads to the higher disease severity</span>
 <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2017</span> <span class="op">|</span>
@@ -1267,7 +1237,7 @@ The main questions are:</p>
    <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Powdery mildew severity between different row spacing across all trials"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/RS_severity-1.png" width="672"></div>
 <p>There is little difference here between the row spacing treatments, Let’s look if there is a trial location effect as disease pressure lead to varying results.</p>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Does trial year and location interact between row spacing and disease severity</span>
 <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2017</span> <span class="op">|</span>
@@ -1280,9 +1250,8 @@ The main questions are:</p>
    <span class="fu">ylab</span><span class="op">(</span><span class="st">"Final severity rating"</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Row spacing (m)"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/RS_severity_x_trial-1.png" width="672"></div>
-<p><br></p>
 <p>In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.</p>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Which row spacing leads to the higher yield potential</span>
 <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2017</span> <span class="op">|</span>
@@ -1296,21 +1265,20 @@ The main questions are:</p>
    <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Grain yield results for different row spacing at three locations"</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Row spacing (m)"</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">ylab</span><span class="op">(</span><span class="st">"Grain yield (t/ha)"</span><span class="op">)</span><span class="op">+</span>
-   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+   <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/RS_yield-1.png" width="672"></div>
 <p>The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial.
 However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.</p>
 <p>Overall row spacing may influence both powdery mildew severity and yield.
 However, in the trial reports, no significant interaction was found between row spacing, powdery mildew severity and yield.
 That is, with narrower row spacing appeared to increase yield even if the amount of powdery mildew increased and no relationship could be detected between an interaction of the three.</p>
-<p><br><br><br></p>
 </div>
 <div id="disease-pressure" class="section level3">
 <h3>
 <span class="header-section-number">3.2.6</span> Disease pressure<a class="anchor" aria-label="anchor" href="#disease-pressure"><i class="fas fa-link"></i></a>
 </h3>
 <p>The amount of disease pressure between seasons is another variable which could impact mungbean yield meta-analysis effect size.</p>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Assess the effect of yield pressure on the spray schedule efficacy</span>
 <span class="co"># Use quantiles to separate disease pressure into High, Medium and low disease pressure categories</span>
 <span class="va">DP33</span> <span class="op">&lt;-</span> 
@@ -1324,9 +1292,6 @@ That is, with narrower row spacing appeared to increase yield even if the amount
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">pull</span><span class="op">(</span><span class="va">PM_final_severity</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="fl">0.6666</span><span class="op">)</span>
-
-
-   
 
 <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
    <span class="fu">mutate</span><span class="op">(</span>yc <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">grain_yield.t.ha.</span>,
@@ -1351,7 +1316,6 @@ That is, with narrower row spacing appeared to increase yield even if the amount
 <div class="inline-figure"><img src="livro_files/figure-html/D_pres-1.png" width="672"></div>
 <p>From these plots it is difficult to determine if there is an interaction between disease pressure and the yield saved, or if no interaction exists and fungicide efficacy in general has greater potential to save yield when disease pressure is higher.
 It is worth noting there was not sufficient variation in the control plot disease severity to produce a <code>medium</code> disease severity category.</p>
-<p><br><br><br><br><br><br></p>
 </div>
 <div id="in-crop-rainfall" class="section level3">
 <h3>
@@ -1363,7 +1327,7 @@ It is worth noting there was not sufficient variation in the control plot diseas
 </h4>
 <p>In season rainfall is known to contribute significantly to crop yields, however the timing of rainfall is likely important.</p>
 <p>First an inspection of all rainfall within the season</p>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/add_lat_longs.R"</span><span class="op">)</span> <span class="co"># code adds the latitude- and longitude to PM_MB_dat</span>
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/crop_rain.R"</span><span class="op">)</span>
 
@@ -1384,7 +1348,7 @@ It is worth noting there was not sufficient variation in the control plot diseas
    <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Removed 20 rows containing missing values (geom_point).</code></pre>
 <div class="inline-figure"><img src="livro_files/figure-html/season_rainfall-1.png" width="672"></div>
-<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">sum_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -1405,7 +1369,6 @@ It is worth noting there was not sufficient variation in the control plot diseas
 ##   (20 observations deleted due to missingness)
 ## Multiple R-squared:  0.04192,    Adjusted R-squared:  0.03502 
 ## F-statistic: 6.081 on 1 and 139 DF,  p-value: 0.01488</code></pre>
-<p><br><br><br></p>
 </div>
 <div id="early-season-rainfall" class="section level4">
 <h4>
@@ -1413,7 +1376,7 @@ It is worth noting there was not sufficient variation in the control plot diseas
 </h4>
 <p>Here we only look at the effect of rainfall between the <em>planting date</em> and <em>first sign of disease</em>.
 We are choosing first sign of disease as a mid point in the crop maturity.</p>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">early_rain</span> <span class="op">&lt;-</span>
    <span class="fu">crop_rain</span><span class="op">(</span>location_name <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">location</span>,
           latitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lat</span>,
@@ -1425,7 +1388,7 @@ We are choosing first sign of disease as a mid point in the crop maturity.</p>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="va">early_rain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
    <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/early_season_rain-1.png" width="672"></div>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">early_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -1446,14 +1409,13 @@ We are choosing first sign of disease as a mid point in the crop maturity.</p>
 ## Multiple R-squared:  0.1166, Adjusted R-squared:  0.111 
 ## F-statistic: 20.98 on 1 and 159 DF,  p-value: 9.308e-06</code></pre>
 <p>There is a significant negative association here, indicating rain fall early in the crop development negatively affects mungbean yields. However the very low R-squared value indicates it is no a strong one.</p>
-<p><br><br><br></p>
 </div>
 <div id="late-season-rainfall" class="section level4">
 <h4>
 <span class="header-section-number">3.2.7.3</span> Late-season rainfall<a class="anchor" aria-label="anchor" href="#late-season-rainfall"><i class="fas fa-link"></i></a>
 </h4>
 <p>Here we only look at the effect of rainfall between the <em>first sign of disease</em> and <em>crop harvest</em>.</p>
-<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">late_rain</span> <span class="op">&lt;-</span>
    <span class="fu">crop_rain</span><span class="op">(</span>location_name <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">location</span>,
           latitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lat</span>,
@@ -1467,7 +1429,7 @@ We are choosing first sign of disease as a mid point in the crop maturity.</p>
    <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Removed 20 rows containing missing values (geom_point).</code></pre>
 <div class="inline-figure"><img src="livro_files/figure-html/late_rain-1.png" width="672"></div>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">late_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -1489,14 +1451,13 @@ We are choosing first sign of disease as a mid point in the crop maturity.</p>
 ## Multiple R-squared:  0.0171, Adjusted R-squared:  0.01003 
 ## F-statistic: 2.418 on 1 and 139 DF,  p-value: 0.1222</code></pre>
 <p>There is a significant positive association here, indicating rainfall after disease commences is likely to lead to increased yield. However the very low R-squared value indicates it is no a strong one.</p>
-<p><br><br><br></p>
 </div>
 <div id="mid-season-rainfall" class="section level4">
 <h4>
 <span class="header-section-number">3.2.7.4</span> Mid-season rainfall<a class="anchor" aria-label="anchor" href="#mid-season-rainfall"><i class="fas fa-link"></i></a>
 </h4>
 <p>Here we only look at the effect of rainfall between the 20 days after planting and 80 days after planting.</p>
-<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">mid_rain</span> <span class="op">&lt;-</span>
    <span class="fu">crop_rain</span><span class="op">(</span>location_name <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">location</span>,
           latitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lat</span>,
@@ -1509,7 +1470,7 @@ We are choosing first sign of disease as a mid point in the crop maturity.</p>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="va">mid_rain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
    <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="livro_files/figure-html/mid_rain-1.png" width="672"></div>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">mid_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -1532,8 +1493,7 @@ We are choosing first sign of disease as a mid point in the crop maturity.</p>
 <p>There is no association with mid season rain and crop yields.</p>
 <p>From the plots shown here we can draw the conclusion that we lack sufficient information.
 Most likely available soil water between trials along with other unobserved variables influence of rainfall on mungbean crops and therefore we will not investigate any further.</p>
-<p><br><br><br><br>
-******</p>
+<hr>
 </div>
 </div>
 <div id="fao-mungbean-data" class="section level3">
@@ -1542,7 +1502,7 @@ Most likely available soil water between trials along with other unobserved vari
 </h3>
 <p>An important consideration for why to carry out work on mungbean diseases is the value the crop provides.
 Let’s pull in data from the FAOSTAT website for the area of mungbean crops harvested.</p>
-<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">beans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/FAOSTAT_data_7-6-2020.csv"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">beans</span><span class="op">)</span></code></pre></div>
@@ -1562,11 +1522,11 @@ Let’s pull in data from the FAOSTAT website for the area of mungbean crops har
 ##  $ Flag            : chr  "" "Fc" "" "" ...
 ##  $ Flag.Description: chr  "Official data" "Calculated data" "Official data" "Official data" ...
 ##  $ Note            : logi  NA NA NA NA NA NA ...</code></pre>
-<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">beans</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Item</span> <span class="op">==</span> <span class="st">"Beans, dry"</span>,
           <span class="va">Element</span> <span class="op">==</span> <span class="st">"Area harvested"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu">select</span><span class="op">(</span><span class="va">Year</span>, <span class="va">Value</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">Value</span><span class="op">)</span> <span class="op">%&gt;%</span>
    <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">Value</span>, x <span class="op">=</span> <span class="va">Year</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
    <span class="fu">geom_smooth</span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -1619,7 +1579,7 @@ Let’s pull in data from the FAOSTAT website for the area of mungbean crops har
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>A meta-analysis of fungicide effects on mungbean powdery mildew</strong>" was written by Paul Melloy, Emerson Del Ponte and Adam H. Sparks. It was last built on 14 September, 2021.</p>
+    <p>"<strong>A meta-analysis of fungicide effects on mungbean powdery mildew</strong>" was written by Paul Melloy, Emerson Del Ponte and Adam H. Sparks. It was last built on 28 December, 2021.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
