@@ -1,4 +1,3 @@
-base
 pacman
 tidyverse
 ggplot2
@@ -14,11 +13,10 @@ leaflet
 htmltools
 lubridate
 here
-theme.usq
-bomrang
 openxlsx
 usethis
 devtools
+remotes
 reshape2
 Matrix
 lme4

@@ -105,10 +105,7 @@ if (!require("pacman"))
   install.packages("pacman")
 pacman::p_load(tidyverse, kableExtra, here, english, pander, lubridate)
 
-if (!require("theme.usq"))
-  remotes::install_github("adamhsparks/theme.usq")
-library(theme.usq)
-theme_set(theme_usq())
+theme_set(theme_classic())
 
 # Data
 PM_Mdat <- read.csv(here("cache/PM_MB_updated.csv"))

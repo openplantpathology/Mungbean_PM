@@ -11,10 +11,16 @@ github-repo: OpenPlantPathology/Mungbean_PM
 description: "A meta-analysis of fungicide use in mungbean to control for yield loss due to powdery mildew."
 ---
 # About
-## Background  
-A common practice for managing powdery mildew in mungbean is to couple fungicide with an insecticide spray early in the development of the crop, usually before the disease is detected. This is despite the current recommendations that the best yield protection is achieved when the fungicide is first applied at the first sign of the disease. These recommendations were based on individual studies, many of which lacked sufficient power to draw significant conclusions. We undertook a meta-analysis to determine, when should the first fungicide spray be applied on mungbean to maximise yield protection.  
+
+## Background
+
+A common practice for managing powdery mildew in mungbean is to couple fungicide with an insecticide spray early in the development of the crop, usually before the disease is detected.
+This is despite the current recommendations that the best yield protection is achieved when the fungicide is first applied at the first sign of the disease.
+These recommendations were based on individual studies, many of which lacked sufficient power to draw significant conclusions.
+We undertook a meta-analysis to determine, when should the first fungicide spray be applied on mungbean to maximise yield protection.  
 
 ## Compendium contents
+
 This research compendium details importing and summarising the raw data, application of the selection criteria, defining moderator variables for fungicide spray timing, and the statistical analysis methods for this meta-analysis of fungicide efficacy trials for controlling powdery mildew in mungbean.
 The meta-analysis's main aim is to determine:
 
@@ -38,4 +44,4 @@ These sections detail the methods and process we undertook during this meta-anal
 The preprint is available from agriRxiv: <https://doi.org/10.31220/agriRxiv.2021.00042>.
 
 ## Acknowledgments  
-This meta-analysis was carried out with the funding assistance of the Grains Research and Development Corporation in Australia and the Western Australia Agriculture Authority. Raw data for this work were contributed by the University of Southern Queensland, Queensland Department of Agriculture, Fisheries and Forestry (DAF), and the Northern Grower Alliance. Additional thanks to Malcolm Riley, Sue Thompson and Lawrie Price.
+This meta-analysis was carried out with the funding assistance of the Grains Research and Development Corporation in Australia and the Western Australia Agriculture Authority. Raw data for this work were contributed by the University of Southern Queensland, Queensland Department of Agriculture, Fisheries and Forestry (DAF), and the Northern Grower Alliance. Additional thanks to Prof. Malcolm Riley, Dr. Sue Thompson and Lawrie Price.

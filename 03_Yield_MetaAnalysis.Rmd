@@ -41,7 +41,6 @@ pacman::p_load(
    flextable
 )
 
-
 source(here("R/reportP.R"))
 
 # Data
@@ -64,10 +63,6 @@ PM_dat_Y <-
                         sep = "_")) 
 ```
 
-
-<br>  
-<br>  
-<br>  
 
 ## Spray schedule meta-analysis  
 
@@ -93,13 +88,9 @@ PM_mv <- rma.mv(
 )
 ```
 
-<br>  
-<br>  
-<br>  
-
 *****
 
-### Disease onset interaction with spray schedule  
+### Disease onset interaction with spray schedule
 
 To determine if the time at which disease occurs in the cropping season influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `early` or `late` disease onset.
 
@@ -139,9 +130,6 @@ PM_dat_Y %>%
 `early_onset` contains `r nrow(PM_dat_Y[PM_dat_Y$onset == "early_onset",])` treatments and,  
 `late_onset` contains `r nrow(PM_dat_Y[PM_dat_Y$onset == "late_onset",])` treatments.  
 
-<br>  
-<br>  
-
 ******
 
 #### metafor onset analysis
@@ -168,10 +156,6 @@ anova(PM_mv, PM_mv_onset)
 This comparison tells us the meta-analysis including `onset` explained more residual heterogeneity, as shown by the lower QE value, and has a better fit, indicated by the higher log-likelihood with the additional `onset` parameters.
 However the higher AIC indicates in the model with the additional `onset` parameters does not sufficiently improve the model fit to warrant including these parameters and therefore the 'reduced' model is a better option.
 This inference is also reflected by the the chi-squared test, which is uncertain that the `onset` model is significantly better as indicated by the ANOVA `pval` `r round(anova(PM_mv, PM_mv_onset)$pval,3)`.
-
-<br>  
-<br>  
-<br>  
 
 ******  
 
@@ -209,12 +193,7 @@ PM_dat_Y %>%
    geom_vline(xintercept = 8)
 ```
 
-<br>  
-<br>  
-<br>  
-
 ******  
-
 
 #### metafor disease pressure interaction
 
@@ -237,12 +216,11 @@ PM_mv_dp <- rma.mv(
 anova(PM_mv, PM_mv_dp)
 ```
 This comparison tells us the meta-analysis including `d_pressure` explained more residual heterogeneity, as shown by the lower QE value, and has a better fit, indicated by the higher log-likelihood with the additional `d_pressure` parameter.
-However the lower AIC in the 'Full' model indicates that retaining the model including the additional `d_pressure` variables could be a reasonable decision.
+However, the lower AIC in the 'Full' model indicates that retaining the model including the additional `d_pressure` variables could be a reasonable decision.
 In addition the chi-squared test indicates that the `d_pressure` model is better as indicated by the `pval` 0.0468.  
 
 However it is worth noting that there were no Late plus schedules that experienced low disease pressure. 
 Even though the disease pressure interaction on the moderators could be deemed significant (P = 0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky. More data is needed to explore this possible effect.
-
 
 ```{r}
 # show the division of spray schedules by the d_pressure moderator

@@ -131,8 +131,8 @@ Sev_yield_table <-
    mutate(PM_sev_range = paste(min_PM_sev, max_PM_sev, sep = " - ")) %>%
    mutate(yield_range = paste(min_PM_yield, max_PM_yield, sep = " - ")) %>%
    mutate(m_PM_sev_control = paste(m_PM_sev_control, " (", n_controls, ")", sep = "")) %>%
-   select(-c(min_PM_sev, max_PM_sev, min_PM_yield, max_PM_yield, n_controls)) %>%
-   select(c(1:7, 9, 8, 10)) %>% # order columns
+   dplyr::select(-c(min_PM_sev, max_PM_sev, min_PM_yield, max_PM_yield, n_controls)) %>%
+   dplyr::select(c(1:7, 9, 8, 10)) %>% # order columns
    flextable() %>%
    set_header_labels(
       trial_ref = "Trial code",
@@ -149,7 +149,6 @@ Sev_yield_table <-
    fontsize(size = 8, part = "body") %>%
    fontsize(size = 10, part = "header") %>%
    align(j = 3:10, align = "center", part = "all") %>%
-   #autofit() %>%
    width(j = 1, width = 0.6) %>%
    width(j = 2, width = 0.8) %>%
    width(j = 3, width = 0.5) %>%
@@ -166,14 +165,22 @@ Sev_yield_table <-
       i = 4,
       j = 1,
       value = as_paragraph(
-         c("Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;")),
-      ref_symbols = "a") %>%
+         c(
+            "Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;"
+         )
+      ),
+      ref_symbols = "a"
+   ) %>%
    footnote(
-      i = c(11,12),
+      i = c(11, 12),
       j = 1,
       value = as_paragraph(
-         c("Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis")),
-      ref_symbols = "b")
+         c(
+            "Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis"
+         )
+      ),
+      ref_symbols = "b"
+   )
 
 Sev_yield_table
 ```
@@ -193,25 +200,25 @@ print(doc, target = "paper/figures/Severity&yield_SummaryTable.docx")
 #### Seasonal disease pressure in the control  
 
 ```{r bwplot_sev}
-sev_control_plot <- 
+sev_control_plot <-
    PM_MB_dat %>%
    filter(fungicide_ai == "control") %>%
    ggplot(aes(x = year, y = PM_final_severity)) +
    geom_boxplot(outlier.alpha = 0) +
-   geom_jitter(size = 2, colour = "cadetblue",alpha = 0.4,width = 0.15) +
-   scale_y_continuous(breaks = c(1,3,5,7,9), limits = c(0.9,9.1)) +
-   ylab("PM severity (1 -9)")+
-   # xlab("Crop season")+
-   # theme(axis.title.x=element_blank(),
-   #      axis.text.x=element_blank(),
-   #      axis.ticks.x=element_blank())+
+   geom_jitter(
+      size = 2,
+      colour = "cadetblue",
+      alpha = 0.4,
+      width = 0.15
+   ) +
+   scale_y_continuous(breaks = c(1, 3, 5, 7, 9),
+                      limits = c(0.9, 9.1)) +
+   ylab("PM severity (1 -9)") +
    ggtitle("A") +
    theme_minimal()
 
-sev_control_plot      
+sev_control_plot
 ```
-<br>  
-<br>  
 
 #### Disease severity range for each spray schedule  
 
@@ -226,7 +233,8 @@ sev_schedule_plot <-
       alpha = 0.4,
       width = 0.15
    ) +
-   scale_y_continuous(breaks = c(1, 3, 5, 7, 9), limits = c(0.9, 9.1)) +
+   scale_y_continuous(breaks = c(1, 3, 5, 7, 9),
+                      limits = c(0.9, 9.1)) +
    scale_x_discrete(labels = c(
       "control",
       "early",
@@ -237,9 +245,9 @@ sev_schedule_plot <-
    )) +
    ylab("PM severity (1 -9)") +
    # xlab("Spray Schedule")+
-   ggtitle("B")+
+   ggtitle("B") +
    theme_minimal()
-   
+
 sev_schedule_plot
 ```
 
@@ -488,17 +496,21 @@ PM_MB_dat %>%
 ```
 
 
-#### Yield loss in cultivar Jade  
+#### Yield loss in cultivar Jade
 
-Cultivar Jade shows the best quantitative resistance to powdery mildew.  
+Cultivar Jade shows the best quantitative resistance to powdery mildew.
 Based on the 2016 GRDC report by Sue Thompson [-@SueThompson2016] we want to know what is the possible yield loss for this moderately susceptible cultivar.
 
 ```{r JadeYieldLoss}
 PM_MB_dat %>%
    filter(year == "2016",
           host_genotype == "Jade") %>%
-   mutate(Treatment = case_when(fungicide_ai == "control" ~ "control_yield",
-                                TRUE ~ "FungicideTreated_yield")) %>%
+   mutate(
+      Treatment = case_when(
+         fungicide_ai == "control" ~ "control_yield",
+         TRUE ~ "FungicideTreated_yield"
+      )
+   ) %>%
    group_by(location, Treatment) %>%
    summarise(
       trial_ref = trial_ref,
@@ -511,21 +523,18 @@ PM_MB_dat %>%
    pivot_wider(names_from = Treatment, values_from = Yield) %>%
    mutate(Diff = FungicideTreated_yield - control_yield) %>%
    mutate(percent = (Diff / FungicideTreated_yield) * 100) %>%
-   select(trial_ref,
-          location,
-          year,
-          control_yield,
-          FungicideTreated_yield,
-          percent,
-          Diff) %>%
+   dplyr::select(trial_ref,
+                 location,
+                 year,
+                 control_yield,
+                 FungicideTreated_yield,
+                 percent,
+                 Diff) %>%
    flextable()
 ```
 
-<br>  
-<br>  
 
-
-### Row spacing  
+### Row spacing
 
 Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease as well as fungicide timing and efficacy.
 The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly.
@@ -792,7 +801,7 @@ Most likely available soil water between trials along with other unobserved vari
 
 ### FAO mungbean data
 
-An important consideration for why to carry out work on mungbean diseases is the value the crop provides. 
+An important consideration for why to carry out work on mungbean diseases is the value the crop provides.
 Let's pull in data from the FAOSTAT website for the area of mungbean crops harvested.
 
 ```{r FAO_data_inquiry}
@@ -803,7 +812,7 @@ str(beans)
 beans %>%
    filter(Item == "Beans, dry",
           Element == "Area harvested") %>%
-   select(Year, Value) %>%
+   dplyr::select(Year, Value) %>%
    ggplot(aes(y = Value, x = Year)) +
    geom_point() +
    geom_smooth()

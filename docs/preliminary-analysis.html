@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 3 Preliminary Analysis | A meta-analysis of fungicide effects on mungbean powdery mildew</title>
+<meta name="author" content="Paul Melloy, Emerson Del Ponte and Adam H. Sparks">
+<meta name="description" content='if (!require("pacman"))  install.packages("pacman") pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,        reshape2,        lme4,        kableExtra,  ...'>
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 3 Preliminary Analysis | A meta-analysis of fungicide effects on mungbean powdery mildew">
+<meta property="og:type" content="book">
+<meta property="og:description" content='if (!require("pacman"))  install.packages("pacman") pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,        reshape2,        lme4,        kableExtra,  ...'>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 3 Preliminary Analysis | A meta-analysis of fungicide effects on mungbean powdery mildew">
+<meta name="twitter:description" content='if (!require("pacman"))  install.packages("pacman") pacman::p_load(tidyverse,        lubridate,        openxlsx,        devtools,        remotes,        reshape2,        lme4,        kableExtra,  ...'>
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="libs/leaflet-1.3.1/leaflet.js"></script><link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="libs/proj4-2.6.2/proj4.min.js"></script><script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script><link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script><script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script><script src="libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script><link href="libs/tabwid-1.0.0/tabwid.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">A meta-analysis of fungicide effects on mungbean powdery mildew</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
+<li><a class="" href="trials-considered-for-inclusion-in-meta-analysis.html"><span class="header-section-number">2</span> Trials considered for inclusion in meta-analysis</a></li>
+<li><a class="active" href="preliminary-analysis.html"><span class="header-section-number">3</span> Preliminary Analysis</a></li>
+<li><a class="" href="grain-yield-meta-analysis.html"><span class="header-section-number">4</span> Grain yield meta-analysis</a></li>
+<li><a class="" href="powdery-mildew-severity-meta-analysis.html"><span class="header-section-number">5</span> Powdery mildew severity meta-analysis</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="preliminary-analysis" class="section level1" number="3">
+<h1>
+<span class="header-section-number">3</span> Preliminary Analysis<a class="anchor" aria-label="anchor" href="#preliminary-analysis"><i class="fas fa-link"></i></a>
+</h1>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/trinker/pacman">"pacman"</a></span><span class="op">)</span><span class="op">)</span>
+   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pacman"</span><span class="op">)</span>
+<span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,
+               <span class="va">lubridate</span>,
+               <span class="va">openxlsx</span>,
+               <span class="va">devtools</span>,
+               <span class="va">remotes</span>,
+               <span class="va">reshape2</span>,
+               <span class="va">lme4</span>,
+               <span class="va">kableExtra</span>,
+               <span class="va">flextable</span>,
+               <span class="va">here</span>,
+               <span class="va">gridExtra</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"cache/ImportDataAndSelectTrials01.Rdata"</span><span class="op">)</span></code></pre></div>
+<p><br><br><br><br>
+## Define powdery mildew severity
+Powdery mildew severity was assessed on a 1 - 9 scale.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d_rating_table</span> <span class="op">&lt;-</span>
+   <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+      Severity_rating <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span>,
+      Description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+         <span class="st">"No sign of powdery mildew"</span>,
+         <span class="st">"Small colonies in the lower 1/3 of canopy with up to 75% of plants infected"</span>,
+         <span class="st">"Colonies in lower half of canopy with more than 75% of plants infected"</span>,
+         <span class="st">"Colonies in lower 2/3 of canopy with up to 75% of plants infected"</span>,
+         <span class="st">"Colonies in lower 2/3 of canopy with more than 75% of plants infected"</span>,
+         <span class="st">"Colonies in lower 2/3 of canopy with 100% of plants infected"</span>,
+         <span class="st">"Colonies in lower 2/3 of canopy with 100% of plants infected, some plants with colonies in the top 1/3 of the canopy"</span>,
+         <span class="st">"Colonies all the way to the top of the plant with more than 75% of plants affected"</span>,
+         <span class="st">"Colonies all the way to the top of the plant with severe leaf drop"</span>
+      <span class="op">)</span>,
+      percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.33</span> <span class="op">*</span> <span class="fl">0.5</span>, <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.87</span>, <span class="fl">0.66</span><span class="op">*</span><span class="fl">0.75</span>, <span class="fl">0.66</span> <span class="op">*</span> <span class="fl">0.87</span>,
+                  <span class="fl">0.66</span>, <span class="fl">0.75</span>, <span class="fl">0.87</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">*</span><span class="fl">100</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">fontsize</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, part <span class="op">=</span> <span class="st">"body"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">fontsize</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span>, part <span class="op">=</span> <span class="st">"header"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">autofit</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">set_header_labels</span><span class="op">(</span>Severity_rating <span class="op">=</span> <span class="st">"Severity rating"</span>,
+                     percent <span class="op">=</span> <span class="st">"Equivalent percent severity"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span>, width <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">2</span>, width <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">3</span>, width <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">align</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span>, align <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">set_caption</span><span class="op">(</span><span class="st">"Table 2: Powdery mildew severity rating scale and calculated percent severity for each ordinal rating"</span><span class="op">)</span>
+<span class="va">d_rating_table</span></code></pre></div>
+<template id="c76d64d5-391d-490a-8691-a21fe82c4731"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style>
+<div class="tabwid">
+<style>.cl-4b3396bc{}.cl-4b3103e8{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b3103f2{font-family:'Helvetica';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b310a78{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b310aa0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b310aa1{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b312328{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b312332{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b312333{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b312382{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b31238c{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b31238d{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b31238e{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b31238f{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b3123aa{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b3123ab{width:288pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b3123b4{width:86.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b3123b5{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-4b3396bc">
+<caption class="Table Caption">
+<p>(#tab:disease_scale)Table 2: Powdery mildew severity rating scale and calculated percent severity for each ordinal rating</p>
+</caption>
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-4b3123b5"><p class="cl-4b310a78"><span class="cl-4b3103e8">Severity rating</span></p></td>
+<td class="cl-4b3123ab"><p class="cl-4b310aa0"><span class="cl-4b3103e8">Description</span></p></td>
+<td class="cl-4b3123b4"><p class="cl-4b310a78"><span class="cl-4b3103e8">Equivalent percent severity</span></p></td>
+</tr></thead>
+<tbody>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b312333"><p class="cl-4b310aa1"><span class="cl-4b3103f2">1</span></p></td>
+<td class="cl-4b312332"><p class="cl-4b310aa0"><span class="cl-4b3103f2">No sign of powdery mildew</span></p></td>
+<td class="cl-4b312328"><p class="cl-4b310a78"><span class="cl-4b3103f2">0.00</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b31238c"><p class="cl-4b310aa1"><span class="cl-4b3103f2">2</span></p></td>
+<td class="cl-4b31238d"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Small colonies in the lower 1/3 of canopy with up to 75% of plants infected</span></p></td>
+<td class="cl-4b312382"><p class="cl-4b310a78"><span class="cl-4b3103f2">16.50</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b31238c"><p class="cl-4b310aa1"><span class="cl-4b3103f2">3</span></p></td>
+<td class="cl-4b31238d"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Colonies in lower half of canopy with more than 75% of plants infected</span></p></td>
+<td class="cl-4b312382"><p class="cl-4b310a78"><span class="cl-4b3103f2">43.50</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b31238c"><p class="cl-4b310aa1"><span class="cl-4b3103f2">4</span></p></td>
+<td class="cl-4b31238d"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Colonies in lower 2/3 of canopy with up to 75% of plants infected</span></p></td>
+<td class="cl-4b312382"><p class="cl-4b310a78"><span class="cl-4b3103f2">49.50</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b31238c"><p class="cl-4b310aa1"><span class="cl-4b3103f2">5</span></p></td>
+<td class="cl-4b31238d"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Colonies in lower 2/3 of canopy with more than 75% of plants infected</span></p></td>
+<td class="cl-4b312382"><p class="cl-4b310a78"><span class="cl-4b3103f2">57.42</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b31238c"><p class="cl-4b310aa1"><span class="cl-4b3103f2">6</span></p></td>
+<td class="cl-4b31238d"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Colonies in lower 2/3 of canopy with 100% of plants infected</span></p></td>
+<td class="cl-4b312382"><p class="cl-4b310a78"><span class="cl-4b3103f2">66.00</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b31238c"><p class="cl-4b310aa1"><span class="cl-4b3103f2">7</span></p></td>
+<td class="cl-4b31238d"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Colonies in lower 2/3 of canopy with 100% of plants infected, some plants with colonies in the top 1/3 of the canopy</span></p></td>
+<td class="cl-4b312382"><p class="cl-4b310a78"><span class="cl-4b3103f2">75.00</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b31238c"><p class="cl-4b310aa1"><span class="cl-4b3103f2">8</span></p></td>
+<td class="cl-4b31238d"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Colonies all the way to the top of the plant with more than 75% of plants affected</span></p></td>
+<td class="cl-4b312382"><p class="cl-4b310a78"><span class="cl-4b3103f2">87.00</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b3123aa"><p class="cl-4b310aa1"><span class="cl-4b3103f2">9</span></p></td>
+<td class="cl-4b31238e"><p class="cl-4b310aa0"><span class="cl-4b3103f2">Colonies all the way to the top of the plant with severe leaf drop</span></p></td>
+<td class="cl-4b31238f"><p class="cl-4b310a78"><span class="cl-4b3103f2">100.00</span></p></td>
+</tr>
+</tbody>
+</table></div>
+</div></template><div class="flextable-shadow-host" id="2615d5fc-9f8c-4dc2-a27a-dfcf0f6270d8"></div>
+<script>
+var dest = document.getElementById("2615d5fc-9f8c-4dc2-a27a-dfcf0f6270d8");
+var template = document.getElementById("c76d64d5-391d-490a-8691-a21fe82c4731");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><div id="trial-summary-statistics" class="section level2" number="3.1">
+<h2>
+<span class="header-section-number">3.1</span> Trial summary statistics<a class="anchor" aria-label="anchor" href="#trial-summary-statistics"><i class="fas fa-link"></i></a>
+</h2>
+<p>The data explored in the <code>PM_MB_dat</code> data frame is a clean data frame focusing on trials which met the selection criteria testing DMI fungicides (tebuconazole / propiconazole) or no spray controls.</p>
+<p><br></p>
+<div id="trial-seasons" class="section level3" number="3.1.1">
+<h3>
+<span class="header-section-number">3.1.1</span> Trial seasons<a class="anchor" aria-label="anchor" href="#trial-seasons"><i class="fas fa-link"></i></a>
+</h3>
+<p>How many trials were undertaken each season.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">distinct</span><span class="op">(</span><span class="va">trial_ref</span>, <span class="va">location</span>, <span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">arrange</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">group_by</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">summarise</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
+   <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<template id="3b942f99-ab4a-4c6b-af67-98802e12a7a9"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style>
+<div class="tabwid">
+<style>.cl-4b3b4056{}.cl-4b38d7da{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b38de24{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b38de2e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b38f24c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b38f256{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b38f260{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b38f261{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b38f262{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b38f26a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-4b3b4056">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f26a"><p class="cl-4b38de24"><span class="cl-4b38d7da">year</span></p></td>
+<td class="cl-4b38f262"><p class="cl-4b38de2e"><span class="cl-4b38d7da">n</span></p></td>
+</tr></thead>
+<tbody>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f24c"><p class="cl-4b38de24"><span class="cl-4b38d7da">2011</span></p></td>
+<td class="cl-4b38f256"><p class="cl-4b38de2e"><span class="cl-4b38d7da">2</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f24c"><p class="cl-4b38de24"><span class="cl-4b38d7da">2012</span></p></td>
+<td class="cl-4b38f256"><p class="cl-4b38de2e"><span class="cl-4b38d7da">2</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f24c"><p class="cl-4b38de24"><span class="cl-4b38d7da">2013</span></p></td>
+<td class="cl-4b38f256"><p class="cl-4b38de2e"><span class="cl-4b38d7da">4</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f24c"><p class="cl-4b38de24"><span class="cl-4b38d7da">2015</span></p></td>
+<td class="cl-4b38f256"><p class="cl-4b38de2e"><span class="cl-4b38d7da">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f24c"><p class="cl-4b38de24"><span class="cl-4b38d7da">2016</span></p></td>
+<td class="cl-4b38f256"><p class="cl-4b38de2e"><span class="cl-4b38d7da">2</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f24c"><p class="cl-4b38de24"><span class="cl-4b38d7da">2017</span></p></td>
+<td class="cl-4b38f256"><p class="cl-4b38de2e"><span class="cl-4b38d7da">2</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f24c"><p class="cl-4b38de24"><span class="cl-4b38d7da">2018</span></p></td>
+<td class="cl-4b38f256"><p class="cl-4b38de2e"><span class="cl-4b38d7da">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b38f261"><p class="cl-4b38de24"><span class="cl-4b38d7da">2019</span></p></td>
+<td class="cl-4b38f260"><p class="cl-4b38de2e"><span class="cl-4b38d7da">2</span></p></td>
+</tr>
+</tbody>
+</table></div>
+</div></template><div class="flextable-shadow-host" id="aa21aba0-3b51-4073-8674-35baadfce4bd"></div>
+<script>
+var dest = document.getElementById("aa21aba0-3b51-4073-8674-35baadfce4bd");
+var template = document.getElementById("3b942f99-ab4a-4c6b-af67-98802e12a7a9");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><p><br><br><br></p>
+</div>
+<div id="trial-locations" class="section level3" number="3.1.2">
+<h3>
+<span class="header-section-number">3.1.2</span> Trial locations<a class="anchor" aria-label="anchor" href="#trial-locations"><i class="fas fa-link"></i></a>
+</h3>
+<p>The location of the trials including DMI fungicides.</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">distinct</span><span class="op">(</span><span class="va">trial_ref</span>, <span class="va">location</span>, <span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">summarise</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
+   <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<template id="c4f16197-8012-45f6-af9a-b5ddf00e4478"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style>
+<div class="tabwid">
+<style>.cl-4b42378a{}.cl-4b3fe84a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b3fee6c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b3fee76{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b40046a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b40047e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b400488{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b400489{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b400492{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b400493{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-4b42378a">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-4b400492"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">location</span></p></td>
+<td class="cl-4b400493"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">n</span></p></td>
+</tr></thead>
+<tbody>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Gatton</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Goolhi</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Hermitage</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">6</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Kingaroy</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">3</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Marys Mount</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Millmerran</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Missen Flats</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b40046a"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Premer</span></p></td>
+<td class="cl-4b40047e"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">1</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b400488"><p class="cl-4b3fee6c"><span class="cl-4b3fe84a">Wellcamp</span></p></td>
+<td class="cl-4b400489"><p class="cl-4b3fee76"><span class="cl-4b3fe84a">1</span></p></td>
+</tr>
+</tbody>
+</table></div>
+</div></template><div class="flextable-shadow-host" id="851cad43-368b-4a45-9271-e3fb3f62742a"></div>
+<script>
+var dest = document.getElementById("851cad43-368b-4a45-9271-e3fb3f62742a");
+var template = document.getElementById("c4f16197-8012-45f6-af9a-b5ddf00e4478");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><p><br><br><br></p>
+</div>
+<div id="powdery-mildew-severity-and-mungbean-grain-yield-summary-per-trial" class="section level3" number="3.1.3">
+<h3>
+<span class="header-section-number">3.1.3</span> Powdery mildew severity and mungbean grain yield summary per trial<a class="anchor" aria-label="anchor" href="#powdery-mildew-severity-and-mungbean-grain-yield-summary-per-trial"><i class="fas fa-link"></i></a>
+</h3>
+<p>Show a summary of both <code>powdery mildew severity</code> and mungbean <code>grain yield</code> means and ranges for all trials including DMI fungicides.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Sev_yield_table</span> <span class="op">&lt;-</span>
+   <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>PM_sev_control <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">PM_final_severity</span>,
+                                     <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>PM_sev_treat <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">!=</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">PM_final_severity</span>,
+                                   <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>PM_y_control <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">grain_yield.t.ha.</span>,
+                                   <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>PM_y_treat <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">!=</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">grain_yield.t.ha.</span>,
+                                 <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>trial_ref <span class="op">=</span> <span class="fu">str_remove</span><span class="op">(</span><span class="va">trial_ref</span>, <span class="st">"mung"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># remove "mung" prefix from trial_ref</span>
+   <span class="fu">group_by</span><span class="op">(</span><span class="va">trial_ref</span>,
+            <span class="va">location</span>,
+            <span class="va">year</span>,
+            <span class="va">planting_date</span>,
+            <span class="va">first_sign_disease</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">summarise</span><span class="op">(</span>
+      n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,
+      m_PM_sev_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">PM_sev_control</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
+      n_controls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">PM_sev_control</span><span class="op">)</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span>,
+      min_PM_sev <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">PM_sev_treat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
+      max_PM_sev <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">PM_sev_treat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
+      m_PM_yield_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">PM_y_control</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
+      min_PM_yield <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">PM_y_treat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
+      max_PM_yield <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">PM_y_treat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
+      .groups <span class="op">=</span> <span class="st">"drop"</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">arrange</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>PM_sev_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">min_PM_sev</span>, <span class="va">max_PM_sev</span>, sep <span class="op">=</span> <span class="st">" - "</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>yield_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">min_PM_yield</span>, <span class="va">max_PM_yield</span>, sep <span class="op">=</span> <span class="st">" - "</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>m_PM_sev_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">m_PM_sev_control</span>, <span class="st">" ("</span>, <span class="va">n_controls</span>, <span class="st">")"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">min_PM_sev</span>, <span class="va">max_PM_sev</span>, <span class="va">min_PM_yield</span>, <span class="va">max_PM_yield</span>, <span class="va">n_controls</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, <span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># order columns</span>
+   <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">set_header_labels</span><span class="op">(</span>
+      trial_ref <span class="op">=</span> <span class="st">"Trial code"</span>,
+      location <span class="op">=</span> <span class="st">"Location"</span>,
+      year <span class="op">=</span> <span class="st">"Year"</span>,
+      planting_date <span class="op">=</span> <span class="st">"Sowing date"</span>,
+      first_sign_disease <span class="op">=</span> <span class="st">"PM onset"</span>,
+      n <span class="op">=</span> <span class="st">"n"</span>,
+      m_PM_sev_control <span class="op">=</span> <span class="st">"Control median\nPM severity"</span>,
+      PM_sev_range <span class="op">=</span> <span class="st">"PM severity\nrange"</span>,
+      m_PM_yield_control <span class="op">=</span> <span class="st">"Control\nmedian yield"</span>,
+      yield_range <span class="op">=</span> <span class="st">"Yield range\n(t / ha)"</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">fontsize</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span>, part <span class="op">=</span> <span class="st">"body"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">fontsize</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span>, part <span class="op">=</span> <span class="st">"header"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">align</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">10</span>, align <span class="op">=</span> <span class="st">"center"</span>, part <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">1</span>, width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">2</span>, width <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">3</span>, width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, width <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">6</span>, width <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">7</span>, width <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">8</span>, width <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">9</span>, width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">width</span><span class="op">(</span>j <span class="op">=</span> <span class="fl">10</span>, width <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">set_caption</span><span class="op">(</span>
+      <span class="st">"Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset date, number of treatments per trial (n), PM median plot severity of the non-fungicide treated plots and the severity range in fungicide treatments, bracketed numbers refer to the number of pooled control treatments summarised; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare"</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">footnote</span><span class="op">(</span>
+      i <span class="op">=</span> <span class="fl">4</span>,
+      j <span class="op">=</span> <span class="fl">1</span>,
+      value <span class="op">=</span> <span class="fu">as_paragraph</span><span class="op">(</span>
+         <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+            <span class="st">"Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;"</span>
+         <span class="op">)</span>
+      <span class="op">)</span>,
+      ref_symbols <span class="op">=</span> <span class="st">"a"</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">footnote</span><span class="op">(</span>
+      i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">12</span><span class="op">)</span>,
+      j <span class="op">=</span> <span class="fl">1</span>,
+      value <span class="op">=</span> <span class="fu">as_paragraph</span><span class="op">(</span>
+         <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+            <span class="st">"Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis"</span>
+         <span class="op">)</span>
+      <span class="op">)</span>,
+      ref_symbols <span class="op">=</span> <span class="st">"b"</span>
+   <span class="op">)</span>
+
+<span class="va">Sev_yield_table</span></code></pre></div>
+<template id="db1dffd7-3e72-4002-9a9d-b8428069ad56"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style>
+<div class="tabwid">
+<style>.cl-4b55e1d6{}.cl-4b52adf4{font-family:'Helvetica';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b52adfe{font-family:'Helvetica';font-size:8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b52ae08{font-family:'Helvetica';font-size:4.8pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:2.4pt;}.cl-4b52ae09{font-family:'Helvetica';font-size:6.6pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;position: relative;bottom:3.3pt;}.cl-4b52ae0a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b52b4a2{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b52b4a3{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b52e26a{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e274{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e275{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e276{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e277{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e27e{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e27f{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e280{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e288{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e289{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e28a{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e292{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e293{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e294{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e295{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e296{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e29c{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e29d{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2a6{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2a7{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2a8{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2b0{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2b1{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2b2{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2e2{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2ec{width:21.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2ed{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e2ee{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e300{width:72pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e30a{width:57.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e30b{width:43.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e30c{width:64.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e314{width:36pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b52e315{width:50.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-4b55e1d6">
+<caption class="Table Caption">
+<p>(#tab:Full_Trial_Summary_table)Table 1: Mean yield and severity for trials included in the meta-analysis. Powdery mildew (PM) onset date, number of treatments per trial (n), PM median plot severity of the non-fungicide treated plots and the severity range in fungicide treatments, bracketed numbers refer to the number of pooled control treatments summarised; Mean yield in non-fungicide treated control and the range of yields in the fungicide treatments in tonnes per hectare</p>
+</caption>
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e30b"><p class="cl-4b52b4a2"><span class="cl-4b52adf4">Trial code</span></p></td>
+<td class="cl-4b52e30a"><p class="cl-4b52b4a2"><span class="cl-4b52adf4">Location</span></p></td>
+<td class="cl-4b52e314"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">Year</span></p></td>
+<td class="cl-4b52e2ed"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">Sowing date</span></p></td>
+<td class="cl-4b52e2ed"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">PM onset</span></p></td>
+<td class="cl-4b52e2ec"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">n</span></p></td>
+<td class="cl-4b52e30c"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">Control median<br>PM severity</span></p></td>
+<td class="cl-4b52e315"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">PM severity<br>range</span></p></td>
+<td class="cl-4b52e2ee"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">Control<br>median yield</span></p></td>
+<td class="cl-4b52e300"><p class="cl-4b52b4a3"><span class="cl-4b52adf4">Yield range<br>(t / ha)</span></p></td>
+</tr></thead>
+<tbody>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1011/01</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Hermitage</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2011</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2011-01-24</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2011-03-28</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4.83 (2)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2 - 2.33</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.525</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.544 - 1.769</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1011/02</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Kingaroy</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2011</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2011-02-02</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2011-03-22</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">6</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7.83 (2)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">3.33 - 5.33</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.798</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.73 - 1.059</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1112/01</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Gatton</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012-02-20</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012-04-02</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7.5 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2 - 6.3</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.738</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.81 - 0.948</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1112/02</span><span class="cl-4b52ae08">a</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Kingaroy</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012-02-03</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012-03-12</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">8 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.7 - 8</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.751</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.036 - 1.323</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">AM1303</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Premer</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012-12-28</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013-02-28</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">8 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2 - 7.83</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.422</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.334 - 1.45</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">AM1304</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Marys Mount</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2012-12-24</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013-03-16</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">3 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">3.17 - 3.17</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.094</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.265 - 1.265</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">AM1305</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Goolhi</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013-01-23</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013-03-25</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">9 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1 - 3.75</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.694</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.604 - 0.722</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">BB1305</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Millmerran</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013-01-12</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2013-03-13</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">8 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.62 - 8</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.802</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.744 - 0.803</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1415/01</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Hermitage</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2015</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2015-01-19</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2015-03-16</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">5</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7.8 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">5.4 - 6.6</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2.045</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2.018 - 2.176</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1516/01</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Hermitage</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2016</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2016-02-03</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2016-03-08</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">8 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">3 - 7.5</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.803</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2.141 - 2.37</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1516/02</span><span class="cl-4b52ae08">b</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Kingaroy</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2016</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2016-02-11</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2016-03-09</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">8.25 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2.25 - 7.75</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.811</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.873 - 1.034</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1617/01</span><span class="cl-4b52ae08">b</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Hermitage</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2017</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2017-02-13</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2017-03-24</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">39</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">8 (9)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">5.33 - 8</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.474</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.327 - 0.683</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1617/02</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Missen Flats</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2017</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2017-01-27</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2017-03-07</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">39</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">9 (9)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7.67 - 9</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.505</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.13 - 2.526</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1718/01</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Wellcamp</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2018</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2018-02-13</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2018-03-21</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">18</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">8.17 (6)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">5.67 - 7.67</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.091</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">1.084 - 1.69</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e276"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1819/01</span></p></td>
+<td class="cl-4b52e274"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Hermitage</span></p></td>
+<td class="cl-4b52e280"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2019</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2018-02-04</span></p></td>
+<td class="cl-4b52e277"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2018-04-12</span></p></td>
+<td class="cl-4b52e26a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4</span></p></td>
+<td class="cl-4b52e27f"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7.5 (1)</span></p></td>
+<td class="cl-4b52e27e"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">5 - 7.17</span></p></td>
+<td class="cl-4b52e288"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.587</span></p></td>
+<td class="cl-4b52e275"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.543 - 0.571</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4b52e293"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">1819/02</span></p></td>
+<td class="cl-4b52e292"><p class="cl-4b52b4a2"><span class="cl-4b52adfe">Hermitage</span></p></td>
+<td class="cl-4b52e29d"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2019</span></p></td>
+<td class="cl-4b52e295"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2018-02-18</span></p></td>
+<td class="cl-4b52e295"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">2018-04-12</span></p></td>
+<td class="cl-4b52e294"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4</span></p></td>
+<td class="cl-4b52e28a"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">7.83 (1)</span></p></td>
+<td class="cl-4b52e296"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">4.6 - 7.33</span></p></td>
+<td class="cl-4b52e29c"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.289</span></p></td>
+<td class="cl-4b52e289"><p class="cl-4b52b4a3"><span class="cl-4b52adfe">0.276 - 0.312</span></p></td>
+</tr>
+</tbody>
+<tfoot>
+<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-4b52e2a7"><p class="cl-4b52b4a2"><span class="cl-4b52ae09">a</span><span class="cl-4b52ae0a">Trials which reported PM severity variance and not yield variance and therefore excluded in the yield protection meta-analysis;</span></p></td></tr>
+<tr style="overflow-wrap:break-word;"><td colspan="10" class="cl-4b52e2a7"><p class="cl-4b52b4a2"><span class="cl-4b52ae09">b</span><span class="cl-4b52ae0a">Trials which did not report powdery mildew (PM) severity variance and therefore excluded in the PM severity meta-analysis</span></p></td></tr>
+</tfoot>
+</table></div>
+</div></template><div class="flextable-shadow-host" id="1f358afb-2b9e-4267-9a0a-8d4b6c378f6b"></div>
+<script>
+var dest = document.getElementById("1f358afb-2b9e-4267-9a0a-8d4b6c378f6b");
+var template = document.getElementById("db1dffd7-3e72-4002-9a9d-b8428069ad56");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script><p><br><br><br></p>
+</div>
+<div id="summary-plots" class="section level3" number="3.1.4">
+<h3>
+<span class="header-section-number">3.1.4</span> Summary plots<a class="anchor" aria-label="anchor" href="#summary-plots"><i class="fas fa-link"></i></a>
+</h3>
+<div id="seasonal-disease-pressure-in-the-control" class="section level4" number="3.1.4.1">
+<h4>
+<span class="header-section-number">3.1.4.1</span> Seasonal disease pressure in the control<a class="anchor" aria-label="anchor" href="#seasonal-disease-pressure-in-the-control"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sev_control_plot</span> <span class="op">&lt;-</span>
+   <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">PM_final_severity</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span>outlier.alpha <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_jitter</span><span class="op">(</span>
+      size <span class="op">=</span> <span class="fl">2</span>,
+      colour <span class="op">=</span> <span class="st">"cadetblue"</span>,
+      alpha <span class="op">=</span> <span class="fl">0.4</span>,
+      width <span class="op">=</span> <span class="fl">0.15</span>
+   <span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span>,
+                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">9.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"PM severity (1 -9)"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">sev_control_plot</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/bwplot_sev-1.png" width="672"></div>
+</div>
+<div id="disease-severity-range-for-each-spray-schedule" class="section level4" number="3.1.4.2">
+<h4>
+<span class="header-section-number">3.1.4.2</span> Disease severity range for each spray schedule<a class="anchor" aria-label="anchor" href="#disease-severity-range-for-each-spray-schedule"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sev_schedule_plot</span> <span class="op">&lt;-</span>
+   <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">spray_management</span>, y <span class="op">=</span> <span class="va">PM_final_severity</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span>outlier.alpha <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_jitter</span><span class="op">(</span>
+      size <span class="op">=</span> <span class="fl">2</span>,
+      colour <span class="op">=</span> <span class="st">"cadetblue"</span>,
+      alpha <span class="op">=</span> <span class="fl">0.4</span>,
+      width <span class="op">=</span> <span class="fl">0.15</span>
+   <span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span>,
+                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">9.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+      <span class="st">"control"</span>,
+      <span class="st">"early"</span>,
+      <span class="st">"late"</span>,
+      <span class="st">"late+"</span>,
+      <span class="st">"recommended"</span>,
+      <span class="st">"recomended+"</span>
+   <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"PM severity (1 -9)"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="co"># xlab("Spray Schedule")+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">sev_schedule_plot</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/bwplot_yield-1.png" width="672"></div>
+<p><br><br><br></p>
+</div>
+<div id="seasonal-grain-yield-in-the-control" class="section level4" number="3.1.4.3">
+<h4>
+<span class="header-section-number">3.1.4.3</span> Seasonal grain yield in the control<a class="anchor" aria-label="anchor" href="#seasonal-grain-yield-in-the-control"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Y_control_plot</span> <span class="op">&lt;-</span>
+   <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_jitter</span><span class="op">(</span>
+      size <span class="op">=</span> <span class="fl">2</span>,
+      colour <span class="op">=</span> <span class="st">"coral"</span>,
+      alpha <span class="op">=</span> <span class="fl">0.4</span>,
+      width <span class="op">=</span> <span class="fl">0.15</span>
+   <span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.5</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/bquote.html">bquote</a></span><span class="op">(</span><span class="st">'Mungbean grain yield '</span> <span class="op">*</span>  <span class="op">~</span>  <span class="op">~</span> <span class="va">t</span> <span class="op">~</span> <span class="va">ha</span> <span class="op">^</span> <span class="op">-</span><span class="fl">1</span> <span class="op">*</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Crop season"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">20</span>, hjust <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span>,
+         plot.margin <span class="op">=</span> <span class="fu">margin</span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0</span>, <span class="fl">0.71</span>, <span class="fl">0</span>, <span class="st">"cm"</span><span class="op">)</span>,
+         axis.title.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>vjust <span class="op">=</span> <span class="op">-</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">Y_control_plot</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/bwplot_yield_year-1.png" width="672"></div>
+<p><br><br><br></p>
+</div>
+<div id="mungbean-yield-for-each-spray-schedule" class="section level4" number="3.1.4.4">
+<h4>
+<span class="header-section-number">3.1.4.4</span> Mungbean yield for each spray schedule<a class="anchor" aria-label="anchor" href="#mungbean-yield-for-each-spray-schedule"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Y_schedule_plot</span> <span class="op">&lt;-</span> 
+   <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">spray_management</span>, y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span>outlier.alpha <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_jitter</span><span class="op">(</span>
+      size <span class="op">=</span> <span class="fl">2</span>,
+      colour <span class="op">=</span> <span class="st">"coral"</span>,
+      alpha <span class="op">=</span> <span class="fl">0.4</span>,
+      width <span class="op">=</span> <span class="fl">0.15</span>
+   <span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.5</span>, by <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+      <span class="st">"control"</span>,
+      <span class="st">"early"</span>,
+      <span class="st">"late"</span>,
+      <span class="st">"late+"</span>,
+      <span class="st">"recommended"</span>,
+      <span class="st">"recomended+"</span>
+   <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="co">#ylab(bquote('Mungbean grain yield ' *  ~  ~ t ~ ha ^ -1 * "")) +</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Spray schedule"</span><span class="op">)</span><span class="op">+</span>
+   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+   <span class="fu">theme</span><span class="op">(</span>axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,
+         axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">20</span>, hjust <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">Y_schedule_plot</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/bwplot_yield_sched-1.png" width="672"></div>
+<div class="figure">
+<img src="paper/figures/Fig1_boxplots_yield&amp;sev.png" alt=""><p class="caption">Box plots of the unsprayed control treatments means for both PM severity (top) and crop yield (bottom), indicating within-season variation (A), and trial treatment means for each spray schedule (B).</p>
+</div>
+<p><br><br><br><br><br><br><br></p>
+<hr>
+</div>
+</div>
+</div>
+<div id="treatment-focused-summaries" class="section level2" number="3.2">
+<h2>
+<span class="header-section-number">3.2</span> Treatment focused summaries<a class="anchor" aria-label="anchor" href="#treatment-focused-summaries"><i class="fas fa-link"></i></a>
+</h2>
+<p>Various factors have been studied in the collated trials which may influence the subsequent meta-analysis.
+A quick inspection of the following factors were done to examine the possible influence these variables may have on on mungbean grain yield and/or powdery mildew mean plot severity.</p>
+<ol style="list-style-type: decimal">
+<li>
+<a href="preliminary-analysis.html#fungicide-type">Fungicide type</a> (propiconazole and tebuconazole)<br>
+</li>
+<li><a href="preliminary-analysis.html#fungicide-doses">Fungicide Doses</a></li>
+<li>
+<a href="preliminary-analysis.html#number-of-fungicide-sprays">Number of fungicide sprays</a><br>
+</li>
+<li>
+<a href="preliminary-analysis.html#mungbean-cultivars">Host cultivar</a> (probably is a co-variate with season due to changing cultivars over time)<br>
+</li>
+<li>
+<a href="preliminary-analysis.html#row-spacing">Row spacing</a><br>
+</li>
+<li><a href="preliminary-analysis.html#disease-pressure">Final disease rating / disease pressure</a></li>
+<li><a href="preliminary-analysis.html#in-crop-rainfall">Moisture availability for the crop</a></li>
+</ol>
+<p>The data plotted below are from 16 field trials between (2011 - 2019) of which the details are described in the <a href="trials-considered-for-inclusion-in-meta-analysis.html#trials-considered-for-inclusion-in-meta-analysis">Trials considered for inclusion in meta-analysis</a>.</p>
+<p><br></p>
+<div id="fungicide-type" class="section level3" number="3.2.1">
+<h3>
+<span class="header-section-number">3.2.1</span> Fungicide type<a class="anchor" aria-label="anchor" href="#fungicide-type"><i class="fas fa-link"></i></a>
+</h3>
+<div id="powdery-mildew-severity" class="section level4" number="3.2.1.1">
+<h4>
+<span class="header-section-number">3.2.1.1</span> Powdery mildew severity<a class="anchor" aria-label="anchor" href="#powdery-mildew-severity"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">n_C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span>
+<span class="va">n_P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span>
+<span class="va">n_T</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span><span class="op">)</span>
+
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">PM_final_severity</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">fungicide_ai</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Fungicide treatment"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Powdery mildew severity for each fungicide active ingredient"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">labs</span><span class="op">(</span>caption <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Control n:"</span>, <span class="va">n_C</span>,
+                        <span class="st">"; Propiconazole n:"</span>, <span class="va">n_P</span>,
+                        <span class="st">"; Tebuconazole n:"</span>, <span class="va">n_T</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/TebuVPropi_sev-1.png" width="672"></div>
+<p><br><br><br></p>
+</div>
+<div id="yield-effect" class="section level4" number="3.2.1.2">
+<h4>
+<span class="header-section-number">3.2.1.2</span> Yield effect<a class="anchor" aria-label="anchor" href="#yield-effect"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">fungicide_ai</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Fungicide treatment"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Grain yield for each fungicide active ingredient"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">labs</span><span class="op">(</span>caption <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Control n:"</span>, <span class="va">n_C</span>,
+                        <span class="st">"; Propiconazole n:"</span>, <span class="va">n_P</span>,
+                        <span class="st">"; Tebuconazole n:"</span>, <span class="va">n_T</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/TebuVPropi_Yi-1.png" width="672"></div>
+<p><br><br><br><br><br></p>
+</div>
+</div>
+<div id="fungicide-doses" class="section level3" number="3.2.2">
+<h3>
+<span class="header-section-number">3.2.2</span> Fungicide Doses<a class="anchor" aria-label="anchor" href="#fungicide-doses"><i class="fas fa-link"></i></a>
+</h3>
+<p>This analysis focuses only the DMI fungicides, tebuconazole and propiconazole, which were trialled the most often.</p>
+<p>We should check that all fungicide doses that were used were roughly the same, if we are to compare between trials where dose might be different.</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span> <span class="op">|</span>
+             <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">dose_ai.ha</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">fungicide_ai</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Dose (g ai/ha)"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Total number of treatments for each respective tebuconazole\nor propiconazole dose"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_bar</span><span class="op">(</span><span class="op">)</span> </code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/tebuAndPropi_dose-1.png" width="672"></div>
+<p>All trials that used tebuconazole used approximately the same dose.
+Dose of the active ingredient ranged from 62.35 g per hectare to 60 g per hectare.</p>
+<p>Doses for propiconazole range from 62.5 g to 125 g, a large variation.<br>
+Let’s inspect the difference in yields for each dose.</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">dose_ai.ha</span><span class="op">)</span>, <span class="st">"62.5"</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Dose (g ai/ha)"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">labs</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Yield for each respective propiconazole dose"</span>,
+        caption <span class="op">=</span> <span class="st">"Facets indicate the number of applications"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"grey"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"Grain yield t / ha"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">facet_grid</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">total_fungicide</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/PropiDoseEffect-1.png" width="672"></div>
+<p>This dose effect should be investigated in the meta-analysis.</p>
+<p><br><br><br></p>
+<p>How many treatments of each dose have been investigated per trial?</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">[</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span>,<span class="op">]</span><span class="op">$</span><span class="va">trial_ref</span><span class="op">)</span>,
+      <span class="va">PM_MB_dat</span><span class="op">[</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span>,<span class="op">]</span><span class="op">$</span><span class="va">dose_ai.ha</span><span class="op">)</span></code></pre></div>
+<pre><code>##              
+##               62.5 125
+##   AM1303         3   0
+##   AM1304         1   0
+##   AM1305         3   0
+##   BB1305         3   0
+##   mung1112/01    2   2
+##   mung1112/02    2   2
+##   mung1617/01    0  15
+##   mung1617/02    0  15
+##   mung1718/01    0   6</code></pre>
+<p><br><br><br></p>
+</div>
+<div id="number-of-fungicide-sprays" class="section level3" number="3.2.3">
+<h3>
+<span class="header-section-number">3.2.3</span> Number of fungicide sprays<a class="anchor" aria-label="anchor" href="#number-of-fungicide-sprays"><i class="fas fa-link"></i></a>
+</h3>
+<p>Inspect the frequency of sprays per fungicide.</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">fungicide_ai</span>, <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">total_fungicide</span><span class="op">)</span></code></pre></div>
+<pre><code>##                
+##                  0  1  2  3
+##   control       39  0  0  0
+##   propiconazole  0 26 25  3
+##   tebuconazole   0 34 32  2</code></pre>
+<p>Very few treatments were sprayed more than three times and only in AM1305, AM1303, BB1305, mung1516/01, mung1516/02</p>
+<p><br><br><br></p>
+</div>
+<div id="mungbean-cultivars" class="section level3" number="3.2.4">
+<h3>
+<span class="header-section-number">3.2.4</span> Mungbean cultivars<a class="anchor" aria-label="anchor" href="#mungbean-cultivars"><i class="fas fa-link"></i></a>
+</h3>
+<p>Australian mungbean varieties have the following resistance to powdery mildew.</p>
+<ul>
+<li><p>Berken: Highly susceptible</p></li>
+<li><p>Crystal: Susceptible</p></li>
+<li><p>Jade: Moderately susceptible</p></li>
+</ul>
+<p>Let’s view a stacked bar plot of the number of sprays for both demethylation inhibitors, tebuconazole and propiconazole against each cultivar.</p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span> <span class="op">|</span>
+             <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">group_by</span><span class="op">(</span><span class="va">host_genotype</span>, <span class="va">fungicide_ai</span>, <span class="va">trial_ref</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">summarise</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">count</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">rename</span><span class="op">(</span>Treatments <span class="op">=</span> <span class="va">n</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">host_genotype</span>, y <span class="op">=</span> <span class="va">Treatments</span>, fill <span class="op">=</span> <span class="va">fungicide_ai</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Cultivar"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"N Trials"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Cultivars used in either tebuconazole or propiconazole trials"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_fill_discrete</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Fungicide AI"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/Host_genotype-1.png" width="672"></div>
+<div id="yield-loss-in-cultivar-jade" class="section level4" number="3.2.4.1">
+<h4>
+<span class="header-section-number">3.2.4.1</span> Yield loss in cultivar Jade<a class="anchor" aria-label="anchor" href="#yield-loss-in-cultivar-jade"><i class="fas fa-link"></i></a>
+</h4>
+<p>Cultivar Jade shows the best quantitative resistance to powdery mildew.
+Based on the 2016 GRDC report by Sue Thompson <span class="citation">(<a href="powdery-mildew-severity-meta-analysis.html#ref-SueThompson2016" role="doc-biblioref">2016</a>)</span> we want to know what is the possible yield loss for this moderately susceptible cultivar.</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="st">"2016"</span>,
+          <span class="va">host_genotype</span> <span class="op">==</span> <span class="st">"Jade"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>
+      Treatment <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span>
+         <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="st">"control_yield"</span>,
+         <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"FungicideTreated_yield"</span>
+      <span class="op">)</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">group_by</span><span class="op">(</span><span class="va">location</span>, <span class="va">Treatment</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">summarise</span><span class="op">(</span>
+      trial_ref <span class="op">=</span> <span class="va">trial_ref</span>,
+      location <span class="op">=</span> <span class="va">location</span>,
+      year <span class="op">=</span> <span class="va">year</span>,
+      Yield <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+      .groups <span class="op">=</span> <span class="st">"drop"</span>
+   <span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">Treatment</span>, values_from <span class="op">=</span> <span class="va">Yield</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>Diff <span class="op">=</span> <span class="va">FungicideTreated_yield</span> <span class="op">-</span> <span class="va">control_yield</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>percent <span class="op">=</span> <span class="op">(</span><span class="va">Diff</span> <span class="op">/</span> <span class="va">FungicideTreated_yield</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">trial_ref</span>,
+                 <span class="va">location</span>,
+                 <span class="va">year</span>,
+                 <span class="va">control_yield</span>,
+                 <span class="va">FungicideTreated_yield</span>,
+                 <span class="va">percent</span>,
+                 <span class="va">Diff</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">flextable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<template id="ef39081d-f1a2-4926-aa17-0ac32e57deee"><style>
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+</style>
+<div class="tabwid">
+<style>.cl-4ca563b8{}.cl-4ca28c9c{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4ca293b8{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4ca293cc{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4ca2ab0a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ca2ab14{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ca2ab15{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ca2ab16{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ca2ab28{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ca2ab32{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<div class="inline-table"><table class="cl-4ca563b8">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-4ca2ab32"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">trial_ref</span></p></td>
+<td class="cl-4ca2ab32"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">location</span></p></td>
+<td class="cl-4ca2ab32"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">year</span></p></td>
+<td class="cl-4ca2ab28"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">control_yield</span></p></td>
+<td class="cl-4ca2ab28"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">FungicideTreated_yield</span></p></td>
+<td class="cl-4ca2ab28"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">percent</span></p></td>
+<td class="cl-4ca2ab28"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">Diff</span></p></td>
+</tr></thead>
+<tbody>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4ca2ab14"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">mung1516/01</span></p></td>
+<td class="cl-4ca2ab14"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">Hermitage</span></p></td>
+<td class="cl-4ca2ab14"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">2016</span></p></td>
+<td class="cl-4ca2ab0a"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">1.8029</span></p></td>
+<td class="cl-4ca2ab0a"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">2.2821833</span></p></td>
+<td class="cl-4ca2ab0a"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">21.00109</span></p></td>
+<td class="cl-4ca2ab0a"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">0.4792833</span></p></td>
+</tr>
+<tr style="overflow-wrap:break-word;">
+<td class="cl-4ca2ab16"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">mung1516/02</span></p></td>
+<td class="cl-4ca2ab16"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">Kingaroy</span></p></td>
+<td class="cl-4ca2ab16"><p class="cl-4ca293b8"><span class="cl-4ca28c9c">2016</span></p></td>
+<td class="cl-4ca2ab15"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">0.8107</span></p></td>
+<td class="cl-4ca2ab15"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">0.9541167</span></p></td>
+<td class="cl-4ca2ab15"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">15.03136</span></p></td>
+<td class="cl-4ca2ab15"><p class="cl-4ca293cc"><span class="cl-4ca28c9c">0.1434167</span></p></td>
+</tr>
+</tbody>
+</table></div>
+</div></template><div class="flextable-shadow-host" id="dcec596e-f55f-4ec3-8491-2d90b7303371"></div>
+<script>
+var dest = document.getElementById("dcec596e-f55f-4ec3-8491-2d90b7303371");
+var template = document.getElementById("ef39081d-f1a2-4926-aa17-0ac32e57deee");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+</script>
+</div>
+</div>
+<div id="row-spacing" class="section level3" number="3.2.5">
+<h3>
+<span class="header-section-number">3.2.5</span> Row spacing<a class="anchor" aria-label="anchor" href="#row-spacing"><i class="fas fa-link"></i></a>
+</h3>
+<p>Some experiments were designed to investigate the effect of row spacing and plant density on powdery mildew disease as well as fungicide timing and efficacy.
+The results showed that the row spacing had no statistically significant effect on powdery mildew, but narrower rows in most cases increased yield significantly.
+This finding has also been shown by several other researchers’ work in Queensland and New South Wales as well.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"tebuconazole"</span> <span class="op">|</span>
+             <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"propiconazole"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">group_by</span><span class="op">(</span><span class="va">fungicide_ai</span>, <span class="va">row_spacing</span>, <span class="va">trial_ref</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">summarise</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">count</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">rename</span><span class="op">(</span>Trials <span class="op">=</span> <span class="va">n</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">row_spacing</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">Trials</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Row Spacing (m)"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"N Trials"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Trial row spacing using tebuconazole"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_col</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>fill <span class="op">=</span> <span class="va">fungicide_ai</span><span class="op">)</span>,
+            position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">scale_fill_discrete</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Fungicide AI"</span><span class="op">)</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by 'fungicide_ai', 'row_spacing'. You can override using the `.groups` argument.</code></pre>
+<div class="inline-figure"><img src="livro_files/figure-html/row_spacing.m-1.png" width="672"></div>
+<p><br><br><br></p>
+<p>Will plotting row spacing treatments show differences for the response variables, <em>yield</em> and <em>disease severity</em>.<br>
+The main questions are:</p>
+<ul>
+<li><p>Were there any statistical differences for mungbean <em>yield</em> or <em>powdery mildew severity</em> between row spacing treatments?</p></li>
+<li><p>If not, can we pool certain row spacing that have no significant difference?</p></li>
+</ul>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Which row spacing leads to the higher disease severity</span>
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2017</span> <span class="op">|</span>
+             <span class="va">year</span> <span class="op">==</span> <span class="fl">2018</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">PM_final_severity</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">row_spacing</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"Final severity rating"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Row spacing (m)"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Powdery mildew severity between different row spacing across all trials"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/RS_severity-1.png" width="672"></div>
+<p>There is little difference here between the row spacing treatments, Let’s look if there is a trial location effect as disease pressure lead to varying results.</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Does trial year and location interact between row spacing and disease severity</span>
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2017</span> <span class="op">|</span>
+             <span class="va">year</span> <span class="op">==</span> <span class="fl">2018</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">PM_final_severity</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">row_spacing</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">facet_grid</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">location</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Powdery mildew variation between different row spacing"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"Final severity rating"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Row spacing (m)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/RS_severity_x_trial-1.png" width="672"></div>
+<p><br></p>
+<p>In the Wellcamp site, wider row spacing reduces PM severity, the other sites it seems there was not enough variation to make a distinction between row spacing treatments.</p>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Which row spacing leads to the higher yield potential</span>
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2017</span> <span class="op">|</span>
+             <span class="va">year</span> <span class="op">==</span> <span class="fl">2018</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>
+      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span><span class="op">)</span>,
+      x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">row_spacing</span><span class="op">)</span>,
+      colour <span class="op">=</span> <span class="va">location</span>
+   <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_jitter</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Grain yield results for different row spacing at three locations"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Row spacing (m)"</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">ylab</span><span class="op">(</span><span class="st">"Grain yield (t/ha)"</span><span class="op">)</span><span class="op">+</span>
+   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/RS_yield-1.png" width="672"></div>
+<p>The plots seem to imply when yield is limited, presumably by other abiotic factors, there is no effect of row spacing on yield, like in the Hermitage trial.
+However, if the average yield is more than approximately 1 t/ha then smaller row spacing has the potential to provide greater yield per hectare.</p>
+<p>Overall row spacing may influence both powdery mildew severity and yield.
+However, in the trial reports, no significant interaction was found between row spacing, powdery mildew severity and yield.
+That is, with narrower row spacing appeared to increase yield even if the amount of powdery mildew increased and no relationship could be detected between an interaction of the three.</p>
+<p><br><br><br></p>
+</div>
+<div id="disease-pressure" class="section level3" number="3.2.6">
+<h3>
+<span class="header-section-number">3.2.6</span> Disease pressure<a class="anchor" aria-label="anchor" href="#disease-pressure"><i class="fas fa-link"></i></a>
+</h3>
+<p>The amount of disease pressure between seasons is another variable which could impact mungbean yield meta-analysis effect size.</p>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Assess the effect of yield pressure on the spray schedule efficacy</span>
+<span class="co"># Use quantiles to separate disease pressure into High, Medium and low disease pressure categories</span>
+<span class="va">DP33</span> <span class="op">&lt;-</span> 
+   <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">pull</span><span class="op">(</span><span class="va">PM_final_severity</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="fl">0.3333</span><span class="op">)</span>
+
+<span class="va">DP66</span> <span class="op">&lt;-</span> 
+   <span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">pull</span><span class="op">(</span><span class="va">PM_final_severity</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="fl">0.6666</span><span class="op">)</span>
+
+
+   
+
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>yc <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">grain_yield.t.ha.</span>,
+                         <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
+   <span class="fu">group_by</span><span class="op">(</span><span class="va">trial_ref</span><span class="op">)</span><span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>yc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">yc</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>yield_saved <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">!=</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">grain_yield.t.ha.</span> <span class="op">-</span> <span class="va">yc</span>,
+                    <span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>dc <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">fungicide_ai</span> <span class="op">==</span> <span class="st">"control"</span> <span class="op">~</span> <span class="va">PM_final_severity</span>,
+                         <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>dc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dc</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
+   <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>disease_pressure <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">dc</span> <span class="op">&lt;=</span> <span class="va">DP33</span> <span class="op">~</span> <span class="st">"low"</span>,
+                                 <span class="va">dc</span> <span class="op">&lt;=</span> <span class="va">DP66</span> <span class="op">&amp;</span>
+                                 <span class="va">dc</span> <span class="op">&gt;</span> <span class="va">DP33</span> <span class="op">~</span> <span class="st">"medium"</span>,
+                                 <span class="va">dc</span> <span class="op">&gt;</span> <span class="va">DP66</span> <span class="op">~</span> <span class="st">"high"</span>,
+                                 <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span><span class="op">)</span><span class="op">)</span><span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">spray_management</span> <span class="op">!=</span> <span class="st">"control"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">disease_pressure</span>, <span class="va">yield_saved</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+   <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span> 
+   <span class="fu">facet_grid</span><span class="op">(</span><span class="va">.</span> <span class="op">~</span> <span class="va">spray_management</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/D_pres-1.png" width="672"></div>
+<p>From these plots it is difficult to determine if there is an interaction between disease pressure and the yield saved, or if no interaction exists and fungicide efficacy in general has greater potential to save yield when disease pressure is higher.
+It is worth noting there was not sufficient variation in the control plot disease severity to produce a <code>medium</code> disease severity category.</p>
+<p><br><br><br><br><br><br></p>
+</div>
+<div id="in-crop-rainfall" class="section level3" number="3.2.7">
+<h3>
+<span class="header-section-number">3.2.7</span> In-crop rainfall<a class="anchor" aria-label="anchor" href="#in-crop-rainfall"><i class="fas fa-link"></i></a>
+</h3>
+<div id="whole-season" class="section level4" number="3.2.7.1">
+<h4>
+<span class="header-section-number">3.2.7.1</span> Whole season<a class="anchor" aria-label="anchor" href="#whole-season"><i class="fas fa-link"></i></a>
+</h4>
+<p>In season rainfall is known to contribute significantly to crop yields, however the timing of rainfall is likely important.</p>
+<p>First an inspection of all rainfall within the season</p>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/add_lat_longs.R"</span><span class="op">)</span> <span class="co"># code adds the latitude- and longitude to PM_MB_dat</span>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/crop_rain.R"</span><span class="op">)</span>
+
+<span class="co"># Obtain rainfall from bomrang</span>
+<span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">sum_rain</span> <span class="op">&lt;-</span>
+   <span class="fu">crop_rain</span><span class="op">(</span>location_name <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">location</span>,
+          latitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lat</span>,
+          longitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lon</span>,
+          first_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">planting_date</span>,
+          last_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">harvest_date</span><span class="op">)</span>
+
+<span class="co"># Due to the Bureau of Meteorology in Australia blocking requests using the </span>
+<span class="co">#  R package `bomrang` this code has been changed to import the cached values</span>
+
+<span class="co"># plot yield vs rainfall</span>
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="va">sum_rain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: Removed 20 rows containing missing values (geom_point).</code></pre>
+<div class="inline-figure"><img src="livro_files/figure-html/season_rainfall-1.png" width="672"></div>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">sum_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = grain_yield.t.ha. ~ sum_rain, data = PM_MB_dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.19469 -0.55873 -0.03576  0.57633  1.37833 
+## 
+## Coefficients:
+##               Estimate Std. Error t value           Pr(&gt;|t|)    
+## (Intercept)  1.6762255  0.2009508   8.341 0.0000000000000649 ***
+## sum_rain    -0.0017944  0.0007276  -2.466             0.0149 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6295 on 139 degrees of freedom
+##   (20 observations deleted due to missingness)
+## Multiple R-squared:  0.04192,    Adjusted R-squared:  0.03502 
+## F-statistic: 6.081 on 1 and 139 DF,  p-value: 0.01488</code></pre>
+<p><br><br><br></p>
+</div>
+<div id="early-season-rainfall" class="section level4" number="3.2.7.2">
+<h4>
+<span class="header-section-number">3.2.7.2</span> Early-season rainfall<a class="anchor" aria-label="anchor" href="#early-season-rainfall"><i class="fas fa-link"></i></a>
+</h4>
+<p>Here we only look at the effect of rainfall between the <em>planting date</em> and <em>first sign of disease</em>.
+We are choosing first sign of disease as a mid point in the crop maturity.</p>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">early_rain</span> <span class="op">&lt;-</span>
+   <span class="fu">crop_rain</span><span class="op">(</span>location_name <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">location</span>,
+          latitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lat</span>,
+          longitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lon</span>,
+          first_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">planting_date</span>,
+          last_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">first_sign_disease</span><span class="op">)</span>
+
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="va">early_rain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/early_season_rain-1.png" width="672"></div>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">early_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = grain_yield.t.ha. ~ early_rain, data = PM_MB_dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.02549 -0.54188  0.01965  0.52195  1.18905 
+## 
+## Coefficients:
+##               Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept)  1.6187927  0.1084723  14.924 &lt; 0.0000000000000002 ***
+## early_rain  -0.0033201  0.0007248  -4.581           0.00000931 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.573 on 159 degrees of freedom
+## Multiple R-squared:  0.1166, Adjusted R-squared:  0.111 
+## F-statistic: 20.98 on 1 and 159 DF,  p-value: 0.000009308</code></pre>
+<p>There is a significant negative association here, indicating rain fall early in the crop development negatively affects mungbean yields. However the very low R-squared value indicates it is no a strong one.</p>
+<p><br><br><br></p>
+</div>
+<div id="late-season-rainfall" class="section level4" number="3.2.7.3">
+<h4>
+<span class="header-section-number">3.2.7.3</span> Late-season rainfall<a class="anchor" aria-label="anchor" href="#late-season-rainfall"><i class="fas fa-link"></i></a>
+</h4>
+<p>Here we only look at the effect of rainfall between the <em>first sign of disease</em> and <em>crop harvest</em>.</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">late_rain</span> <span class="op">&lt;-</span>
+   <span class="fu">crop_rain</span><span class="op">(</span>location_name <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">location</span>,
+          latitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lat</span>,
+          longitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lon</span>,
+          first_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">first_sign_disease</span>,
+          last_day <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">harvest_date</span><span class="op">)</span>
+
+
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="va">late_rain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: Removed 20 rows containing missing values (geom_point).</code></pre>
+<div class="inline-figure"><img src="livro_files/figure-html/late_rain-1.png" width="672"></div>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">late_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = grain_yield.t.ha. ~ late_rain, data = PM_MB_dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.92828 -0.64258  0.03875  0.49696  1.23659 
+## 
+## Coefficients:
+##              Estimate Std. Error t value            Pr(&gt;|t|)    
+## (Intercept) 1.0467776  0.1112158   9.412 &lt;0.0000000000000002 ***
+## late_rain   0.0011816  0.0007598   1.555               0.122    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6376 on 139 degrees of freedom
+##   (20 observations deleted due to missingness)
+## Multiple R-squared:  0.0171, Adjusted R-squared:  0.01003 
+## F-statistic: 2.418 on 1 and 139 DF,  p-value: 0.1222</code></pre>
+<p>There is a significant positive association here, indicating rainfall after disease commences is likely to lead to increased yield. However the very low R-squared value indicates it is no a strong one.</p>
+<p><br><br><br></p>
+</div>
+<div id="mid-season-rainfall" class="section level4" number="3.2.7.4">
+<h4>
+<span class="header-section-number">3.2.7.4</span> Mid-season rainfall<a class="anchor" aria-label="anchor" href="#mid-season-rainfall"><i class="fas fa-link"></i></a>
+</h4>
+<p>Here we only look at the effect of rainfall between the 20 days after planting and 80 days after planting.</p>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">mid_rain</span> <span class="op">&lt;-</span>
+   <span class="fu">crop_rain</span><span class="op">(</span>location_name <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">location</span>,
+          latitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lat</span>,
+          longitude <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">lon</span>,
+          first_day <span class="op">=</span> <span class="fu">ymd</span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">planting_date</span><span class="op">)</span> <span class="op">+</span> <span class="fu">days</span><span class="op">(</span><span class="fl">45</span><span class="op">)</span>,
+          last_day <span class="op">=</span> <span class="fu">ymd</span><span class="op">(</span><span class="va">PM_MB_dat</span><span class="op">$</span><span class="va">planting_date</span><span class="op">)</span> <span class="op">+</span> <span class="fu">days</span><span class="op">(</span><span class="fl">75</span><span class="op">)</span>
+   <span class="op">)</span>
+
+<span class="va">PM_MB_dat</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">grain_yield.t.ha.</span>, x <span class="op">=</span> <span class="va">mid_rain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="livro_files/figure-html/mid_rain-1.png" width="672"></div>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">grain_yield.t.ha.</span> <span class="op">~</span> <span class="va">mid_rain</span>, data <span class="op">=</span> <span class="va">PM_MB_dat</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = grain_yield.t.ha. ~ mid_rain, data = PM_MB_dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.91273 -0.58233 -0.00342  0.39919  1.30604 
+## 
+## Coefficients:
+##              Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) 0.9047111  0.0841268  10.754 &lt; 0.0000000000000002 ***
+## mid_rain    0.0025537  0.0006853   3.726             0.000269 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.5846 on 159 degrees of freedom
+## Multiple R-squared:  0.08032,    Adjusted R-squared:  0.07454 
+## F-statistic: 13.89 on 1 and 159 DF,  p-value: 0.0002694</code></pre>
+<p>There is no association with mid season rain and crop yields.</p>
+<p>From the plots shown here we can draw the conclusion that we lack sufficient information.
+Most likely available soil water between trials along with other unobserved variables influence of rainfall on mungbean crops and therefore we will not investigate any further.</p>
+<p><br><br><br><br>
+******</p>
+</div>
+</div>
+<div id="fao-mungbean-data" class="section level3" number="3.2.8">
+<h3>
+<span class="header-section-number">3.2.8</span> FAO mungbean data<a class="anchor" aria-label="anchor" href="#fao-mungbean-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>An important consideration for why to carry out work on mungbean diseases is the value the crop provides.
+Let’s pull in data from the FAOSTAT website for the area of mungbean crops harvested.</p>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">beans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data/FAOSTAT_data_7-6-2020.csv"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">beans</span><span class="op">)</span></code></pre></div>
+<pre><code>## 'data.frame':    473 obs. of  15 variables:
+##  $ Domain.Code     : chr  "QC" "QC" "QC" "QC" ...
+##  $ Domain          : chr  "Crops" "Crops" "Crops" "Crops" ...
+##  $ Area.Code       : int  10 10 10 10 10 10 10 10 10 10 ...
+##  $ Area            : chr  "Australia" "Australia" "Australia" "Australia" ...
+##  $ Element.Code    : int  5312 5419 5510 5312 5419 5510 5312 5419 5510 5312 ...
+##  $ Element         : chr  "Area harvested" "Yield" "Production" "Area harvested" ...
+##  $ Item.Code       : int  176 176 176 176 176 176 176 176 176 176 ...
+##  $ Item            : chr  "Beans, dry" "Beans, dry" "Beans, dry" "Beans, dry" ...
+##  $ Year.Code       : int  1961 1961 1961 1962 1962 1962 1963 1963 1963 1964 ...
+##  $ Year            : int  1961 1961 1961 1962 1962 1962 1963 1963 1963 1964 ...
+##  $ Unit            : chr  "ha" "hg/ha" "tonnes" "ha" ...
+##  $ Value           : int  809 5525 447 809 11001 890 2023 5151 1042 1214 ...
+##  $ Flag            : chr  "" "Fc" "" "" ...
+##  $ Flag.Description: chr  "Official data" "Calculated data" "Official data" "Official data" ...
+##  $ Note            : logi  NA NA NA NA NA NA ...</code></pre>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">beans</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Item</span> <span class="op">==</span> <span class="st">"Beans, dry"</span>,
+          <span class="va">Element</span> <span class="op">==</span> <span class="st">"Area harvested"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">Value</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">Value</span>, x <span class="op">=</span> <span class="va">Year</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu">geom_smooth</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = 'loess' and formula 'y ~ x'</code></pre>
+<div class="inline-figure"><img src="livro_files/figure-html/FAO_data_inquiry-1.png" width="672"></div>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="trials-considered-for-inclusion-in-meta-analysis.html"><span class="header-section-number">2</span> Trials considered for inclusion in meta-analysis</a></div>
+<div class="next"><a href="grain-yield-meta-analysis.html"><span class="header-section-number">4</span> Grain yield meta-analysis</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#preliminary-analysis"><span class="header-section-number">3</span> Preliminary Analysis</a></li>
+<li>
+<a class="nav-link" href="#trial-summary-statistics"><span class="header-section-number">3.1</span> Trial summary statistics</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#trial-seasons"><span class="header-section-number">3.1.1</span> Trial seasons</a></li>
+<li><a class="nav-link" href="#trial-locations"><span class="header-section-number">3.1.2</span> Trial locations</a></li>
+<li><a class="nav-link" href="#powdery-mildew-severity-and-mungbean-grain-yield-summary-per-trial"><span class="header-section-number">3.1.3</span> Powdery mildew severity and mungbean grain yield summary per trial</a></li>
+<li><a class="nav-link" href="#summary-plots"><span class="header-section-number">3.1.4</span> Summary plots</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#treatment-focused-summaries"><span class="header-section-number">3.2</span> Treatment focused summaries</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#fungicide-type"><span class="header-section-number">3.2.1</span> Fungicide type</a></li>
+<li><a class="nav-link" href="#fungicide-doses"><span class="header-section-number">3.2.2</span> Fungicide Doses</a></li>
+<li><a class="nav-link" href="#number-of-fungicide-sprays"><span class="header-section-number">3.2.3</span> Number of fungicide sprays</a></li>
+<li><a class="nav-link" href="#mungbean-cultivars"><span class="header-section-number">3.2.4</span> Mungbean cultivars</a></li>
+<li><a class="nav-link" href="#row-spacing"><span class="header-section-number">3.2.5</span> Row spacing</a></li>
+<li><a class="nav-link" href="#disease-pressure"><span class="header-section-number">3.2.6</span> Disease pressure</a></li>
+<li><a class="nav-link" href="#in-crop-rainfall"><span class="header-section-number">3.2.7</span> In-crop rainfall</a></li>
+<li><a class="nav-link" href="#fao-mungbean-data"><span class="header-section-number">3.2.8</span> FAO mungbean data</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>A meta-analysis of fungicide effects on mungbean powdery mildew</strong>" was written by Paul Melloy, Emerson Del Ponte and Adam H. Sparks. It was last built on 28 December, 2021.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
