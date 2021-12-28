@@ -14,11 +14,7 @@ if (!require("pacman"))
    install.packages("pacman")
 
 pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, lubridate, here)
-
 ```
-
-<br>  
-<br>  
 
 ## Criteria for inclusion in meta-analysis  
 
@@ -36,8 +32,10 @@ pacman::p_load(tidyverse, kableExtra, leaflet, htmltools, lubridate, here)
 <br>  
 <br>  
 
-## Import data  
-**Import data from trials which the raw data was available**  
+## Import data
+
+**Import data from trials which the raw data was available**
+
 ```{r import_dataRAW}
 PM_MB_raw <-
    rbind(
@@ -45,12 +43,14 @@ PM_MB_raw <-
          here("cache/2010 PMmung Hermitage means.csv"),
          stringsAsFactors = FALSE
       ),
-      read.csv(here("cache/2011 PMmung Herm means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/2011 PMmung Herm means.csv"),
+               stringsAsFactors = FALSE),
       read.csv(
          here("cache/2011 PMmung Kingaroy means.csv"),
          stringsAsFactors = FALSE
       ),
-      read.csv(here("cache/AM1305_Goolhi_means.csv"), stringsAsFactors = FALSE),
+      read.csv(here("cache/AM1305_Goolhi_means.csv"),
+               stringsAsFactors = FALSE),
       read.csv(
          here("cache/AM1304-MarysMount_means.csv"),
          stringsAsFactors = FALSE
@@ -63,12 +63,18 @@ PM_MB_raw <-
          here("cache/BB1305_Millmerran_means.csv"),
          stringsAsFactors = FALSE
       ),
-      read.csv(here("cache/Herm_16_means.csv"), stringsAsFactors = FALSE),
-      read.csv(here("cache/King_16_means.csv"), stringsAsFactors = FALSE),
-      read.csv(here("cache/Fogerty_17_mean.csv"), stringsAsFactors = FALSE),
-      read.csv(here("cache/Hermitage_17_mean.csv"), stringsAsFactors = FALSE),
-      read.csv(here("cache/Wellcamp_18_mean.csv"), stringsAsFactors = FALSE),
-      read.csv(here("cache/Hermitage_19_mean.csv"), stringsAsFactors = FALSE)
+      read.csv(here("cache/Herm_16_means.csv"),
+               stringsAsFactors = FALSE),
+      read.csv(here("cache/King_16_means.csv"),
+               stringsAsFactors = FALSE),
+      read.csv(here("cache/Fogerty_17_mean.csv"),
+               stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_17_mean.csv"),
+               stringsAsFactors = FALSE),
+      read.csv(here("cache/Wellcamp_18_mean.csv"),
+               stringsAsFactors = FALSE),
+      read.csv(here("cache/Hermitage_19_mean.csv"),
+               stringsAsFactors = FALSE)
    )
 write.csv(
    PM_MB_raw,
@@ -93,9 +99,6 @@ PM_MB_dat <-
    rbind(PM_MB_raw,
          PM_MB_man)
 ```
-
-<br>  
-<br>  
 
 
 ## Summary of all trials  
@@ -137,11 +140,9 @@ PM_MB_dat %>%
    scroll_box(height = "500px") 
 ```
 
-<br>
+### Experiment locations
 
-### Experiment locations  
-
-Trial locations occurring in the GRDC Northern Grains Region.  
+Trial locations occurring in the GRDC Northern Grains Region.
 
 ```{r Experiment_locations, echo=FALSE}
 experiment_sites <- data.frame(
@@ -202,10 +203,6 @@ leaflet(experiment_sites) %>%
    )
 ```
 
-<br>
-<br>
-<br>
-
 
 ## Subset data to selection criteria  
 
@@ -218,10 +215,11 @@ All trials identified for this meta-analysis reported:
 
 Therefore no trials need to be removed to satisfy these criteria.  
 
-<br>
 
-**Retain trials including: Yield**  
+### Retain trials including: Yield
+
 Three trials omitted due to not reporting yields  
+
 ```{r TrialWithoutYield}
 PM_MB_dat %>%
    filter(is.na(grain_yield.t.ha.)) %>%
@@ -231,10 +229,10 @@ PM_MB_dat <- PM_MB_dat %>%
    filter(!is.na(grain_yield.t.ha.))
 ```
 
-<br>
+###Retain trials including: Disease severity
 
-**Retain trials including: Disease severity**  
 One more was trial removed as it did not report disease severity.  
+
 ```{r TrialsWithotDisease}
 PM_MB_dat %>%
    filter(is.na(PM_final_severity)) %>%
@@ -243,13 +241,10 @@ PM_MB_dat %>%
 PM_MB_dat <- PM_MB_dat %>%
    filter(!is.na(PM_final_severity))
 ```
+### Retain trials including: fungicide application dates
 
-<br>
-<br>
-<br>
+No trials from our subset need to be removed for not reporting fungicide application dates.
 
-**Retain trials including: fungicide application dates**  
-No trials from our subset need to be removed for not reporting fungicide application dates.  
 ```{r FungicideApplicationDates}
 PM_MB_dat %>%
    group_by(trial_ref) %>%
@@ -258,12 +253,10 @@ PM_MB_dat %>%
    filter(No_Record_Of_Fungicide_Application_Dates)
 ```
 
-<br>
-<br>
-<br>
+### Retain trials including: fungicide dose
 
-**Retain trials including: fungicide dose**  
-No trials from our subset need to be removed for not reporting fungicide dose.  
+No trials from our subset need to be removed for not reporting fungicide dose.
+
 ```{r FungicideDoseTrials}
 PM_MB_dat %>%
    group_by(trial_ref) %>%
@@ -272,13 +265,11 @@ PM_MB_dat %>%
    filter(No_Record_Of_Fungicide_Dose)
 ```
 
-<br>
-<br>
-<br>
+### Exclude fungicides tested in too few trials
 
-**Exclude fungicides tested in too few trials**  
 The meta-analysis should be focused on fungicides with the same mode of action.
 Fungicides from the best represented group will be retained.
+
 ```{r Fungicides}
 PM_MB_dat %>%
    group_by(fungicide_ai, trial_ref) %>%
@@ -290,7 +281,8 @@ PM_MB_dat %>%
    ylab("N Trials") +
    geom_col() +
    ggtitle(label = "Number of trials in which the\nspecified fungicide was used") +
-   coord_flip()
+   coord_flip() +
+   theme_classic()
 ```
 
 The demethylation inhibitors (DMI), tebuconazole and propiconazole, are used in the highest frequencies.
@@ -298,11 +290,9 @@ The DMIs have the same fungicide mode of action and are good candidates to be po
 
 Amistar Xtra and Custodia both contain strobilurin and triazole, however, because they contain differing dose ratios (inverted) pooling may not be appropriate therefore they will be removed.  
 
-<br>
-<br>
-<br>
 
-**Retain only fungicides with DMI action**
+### Retain only fungicides with DMI action
+
 ```{r filterDMI_trials}
 DMI_Trials <-
    PM_MB_dat %>%
@@ -315,7 +305,8 @@ PM_MB_dat <-
    PM_MB_dat[PM_MB_dat$trial_ref %in% DMI_Trials, ]
 ```
 
-Now remove any non-DMI treatments or controls  
+Now remove any non-DMI treatments or controls.
+
 ```{r KeepOnlyDMI}
 PM_MB_dat <-
    PM_MB_dat %>%
@@ -327,7 +318,7 @@ PM_MB_dat <-
 ```
 
 
-### Classify dataset variables  
+### Classify dataset variables
 
 Importantly, the class of each variable in the data should be defined, retaining only the variables relevant to the analysis. 
 
@@ -340,13 +331,9 @@ PM_MB_dat <-
 
 ```
 
-<br>  
-<br>  
-
-
 ## Defining spray schedule variable  
 
-First are going to calculate the time between the first sign of disease and the fungicide applications.  
+First are going to calculate the time between the first sign of disease and the fungicide applications.
 
 ```{r clustered_fungicide_applications}
 # collective data
@@ -359,14 +346,10 @@ PM_MB_dat %<>%
 
 To ensure sufficient number of replicates, treatments were binned by the first fungicide application date into three categorical variables relating to when the first fungicide application was made, relative to the first sign of disease.  
 
-<br>  
-
 These categorical variables are named:  
    - **Early**: First fungicide application was prior to first sign of disease.  
    - **Recommended**: First fungicide application was applied on the day powdery mildew was observed, or within three days of first sign.  
    - **Late**: First fungicide application was four or more days after first sign of disease being observed.  
-
-<br>  
 
 The number of follow-up sprays need also be defined.
 
@@ -432,7 +415,6 @@ Now to view the number break-down of the `spray_management` treatments in the *y
 table(PM_MB_dat$spray_management)
 ```
 
-
 'Early_plus' treatments are few in number, these treatments will have too few comparisons with other treatments in the meta-analysis to provide accurate results. Therefore we will remove 'Early_plus' from the analysis.
 
 ```{r simpler_clusters_remove}
@@ -456,8 +438,8 @@ PM_MB_dat <-
    )
 ```
 
-
 ## Identify variance
+
 We need variance accompanying the mean observations for each treatment to successfully undertake a meta-analysis.
 Let's investigate which of the included trials included variance for both response variables of interest, yield and disease severity.
 
@@ -477,6 +459,7 @@ PM_MB_dat %>%
 ```
 
 Remove one trial in Emerald which did not report disease variance or yield variance.
+
 ```{r remove_nil_var}
 # Remove trials without variance for both Disease and yield for data_set `PM_MB_dat
 PM_MB_dat <- 
@@ -492,7 +475,8 @@ PM_MB_dat <-
 Following an inspection of the yield and disease variance we determined imputation was not suitable and therefore we must exclude trials that did not report variance.
 For each analysis, yield and disease severity a separate data-set will be created, including only trials that report variance for the respective response variable
 
-One trial will be removed from the yield data set `PM_dat_Y` for not reporting yield variance.  
+One trial will be removed from the yield data set `PM_dat_Y` for not reporting yield variance.
+
 ```{r TrialsWithVariance}
 PM_MB_dat %>%
    mutate(No_Var = is.na(yield_error)) %>%
@@ -509,6 +493,7 @@ PM_dat_Y <-
 ```
 
 Two more trials will be removed for our disease severity data set `PM_dat_D` for not reporting yield variance.
+
 ```{r TrialsWithVariance_D}
 PM_MB_dat %>%
    mutate(No_Var = is.na(disease_error)) %>%
@@ -527,10 +512,11 @@ PM_dat_D <-
 
 ## Standardise Variance
 
-All the variance types need to be converted to sample variance. 
+All the variance types need to be converted to sample variance.
 First we will start by standardising yield variance according to the method reported by [Ngugi et.al (2011)](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-08-10-0221).
 
-### Yield variance standardisation
+## Yield variance standardisation
+
 ```{r StandardiseYieldVariance}
 PM_dat_Y <-
    PM_dat_Y %>%
@@ -549,7 +535,8 @@ PM_dat_Y <-
 
 ```
 
-### Disease severity variance standardisation
+## Disease severity variance standardisation
+
 ```{r StandardiseSeverityVariance}
 PM_dat_D <-
    PM_dat_D %>%
@@ -568,12 +555,14 @@ PM_dat_D <-
 
 ```
 
-#### Save the cleaned data
+## Save the cleaned data
 
 ```{r saveData01}
 write.csv(PM_dat_Y, file = "cache/PM_yield_clean_data.csv", row.names = FALSE)
 write.csv(PM_dat_D, file = "cache/PM_disease_clean_data.csv", row.names = FALSE)
 write.csv(PM_MB_dat, file = "cache/PM_MB_clean_data.csv", row.names = FALSE)
-save(PM_MB_dat, PM_dat_D, PM_dat_Y, file = here("cache/ImportDataAndSelectTrials01.Rdata"))
+save(PM_MB_dat,
+     PM_dat_D,
+     PM_dat_Y,
+     file = here("cache/ImportDataAndSelectTrials01.Rdata"))
 ```
-
