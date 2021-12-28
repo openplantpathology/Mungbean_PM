@@ -3,6 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: inline
 ---
+
 # Grain yield meta-analysis
 
 Let's get started with the analysis by first finding the best fitting model which answers our research question.
@@ -49,9 +50,8 @@ PM_dat_Y <-
    )
 ```
 
-
-
 ### Define Trial
+
 ```{r Yield_define_trial}
 PM_dat_Y <-
    PM_dat_Y %>%
@@ -95,6 +95,7 @@ PM_mv <- rma.mv(
 To determine if the time at which disease occurs in the cropping season influences the efficacy at which fungicide applications protect yield we will create a categorical variable defining `early` or `late` disease onset.
 
 `early` and `late` categories should be divided by a number close to the median days after sowing when signs of the disease were first observed to ensure roughly even numbers in each category.
+
 ```{r median onset}
 PM_dat_Y %>%
    mutate(first_sign_days = lubridate::ymd(first_sign_disease) -
@@ -104,7 +105,7 @@ PM_dat_Y %>%
 ```
 
 We will choose 42 days as this is the average days to flowering in mungbean. 
-In addition, Kelly et. al. [-@Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.
+In addition, Kelly et al. [-@Kelly2017a] noted that yield losses are higher in cultivar Berken when disease establishes before flowering.
 
 Now let's define a continuous variable`first_sign_days` and a categorical variable `onset`.
 
@@ -213,14 +214,17 @@ PM_mv_dp <- rma.mv(
 ```
 
 ```{r}
-anova(PM_mv, PM_mv_dp)
+mod <- anova(PM_mv, PM_mv_dp)
+mod
 ```
+
 This comparison tells us the meta-analysis including `d_pressure` explained more residual heterogeneity, as shown by the lower QE value, and has a better fit, indicated by the higher log-likelihood with the additional `d_pressure` parameter.
 However, the lower AIC in the 'Full' model indicates that retaining the model including the additional `d_pressure` variables could be a reasonable decision.
-In addition the chi-squared test indicates that the `d_pressure` model is better as indicated by the `pval` 0.0468.  
+In addition the chi-squared test indicates that the `d_pressure` model is better as indicated by the `pval` $`r mod$pval`$.  
 
 However it is worth noting that there were no Late plus schedules that experienced low disease pressure. 
-Even though the disease pressure interaction on the moderators could be deemed significant (P = 0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky. More data is needed to explore this possible effect.
+Even though the disease pressure interaction on the moderators could be deemed significant (P = 0.0468), the division of schedules due to disease pressure (reducing k) makes drawing conclusions risky.
+More data is needed to explore this possible effect.
 
 ```{r}
 # show the division of spray schedules by the d_pressure moderator
@@ -234,10 +238,6 @@ PM_dat_Y %>%
 ```{r}
 summary(PM_mv_dp)
 ```
-
-<br>  
-<br>  
-<br>  
 
 ******  
 
@@ -264,7 +264,6 @@ Again `PM_mv` (Full) prevails as the better model (p = 0.0014; AIC = -45.4359) a
 
  > Therefore the model `PM_mv`, is the preffered model with this data.
 
-
 ## Summarise PM_mv model
 
 ```{r PM_mv_summary}
@@ -288,20 +287,16 @@ However the other treatments are significantly different from the no-spray contr
 The $Q_M$ [omnibus test](http://www.metafor-project.org/doku.php/tips:models_with_or_without_intercept?s[]=anova) of moderators, shows the moderators significantly influence the model ($Q_M =$ `r PM_mv$QM` $,df =$ `r PM_mv$m`, `r reportP(PM_mv$QMp)`) and we can reject the null hypothesis ($H_0 : \beta_1 = \beta_2 = \beta_3 =\beta_4 = 0$) that there is no difference between the moderators [@Viechtbauer2010].
 The analysis shows there is still a significant amount of residual heterogeneity ($Q_E =$ `r PM_mv$QE` $,df=$ `r PM_mv$k - PM_mv$m`, `r reportP(PM_mv$QEp)` ) not captured by the spray management moderator indicating other possible moderators which might influence grain yield.  
 
-<br>
-<br>
-<br>
-
 ******
 
 ## Meta-analysis stability test
 
 To check the stability in the network analysis we will rerun the chosen model 15 times. 
 Each run, one of the 15 trials will be excluded from the analysis to detect if any estimates varied significantly indicating an unstable network meta-analysis.
+
 ```{r stability, cache=TRUE}
-stab_PM_mv <- 
-   lapply(unique(PM_dat_Y$trial_ref), function(Trial){
-      
+stab_PM_mv <-
+   lapply(unique(PM_dat_Y$trial_ref), function(Trial) {
       #subset to remove a trial
       dat <- filter(PM_dat_Y, trial_ref != Trial)
       
@@ -310,7 +305,7 @@ stab_PM_mv <-
          V = vi,
          mods = ~ spray_management,
          method = "ML",
-         random = list(~ spray_management | trial, ~ 1 | id),
+         random = list( ~ spray_management | trial, ~ 1 | id),
          struct = "UN",
          control = list(optimizer = "optim"),
          data = dat
@@ -318,45 +313,51 @@ stab_PM_mv <-
    })
 
 length(stab_PM_mv)
-est <- lapply(stab_PM_mv, function(e1){
-   data.frame(treat = rownames(e1$b),
-              estimates = e1$b,
-              p = as.numeric(reportP(e1$pval, P_prefix = FALSE,AsNumeric = TRUE)))
-   })
+est <- lapply(stab_PM_mv, function(e1) {
+   data.frame(
+      treat = rownames(e1$b),
+      estimates = e1$b,
+      p = as.numeric(reportP(
+         e1$pval, P_prefix = FALSE, AsNumeric = TRUE
+      ))
+   )
+})
 
 stab_df <- data.table::rbindlist(est)
 stab_df$Tnum <- rep(1:15, each = 6)
 
 stab_df %>%
-   ggplot(aes(Tnum, estimates, colour = treat))+
+   ggplot(aes(Tnum, estimates, colour = treat)) +
    geom_line(size = 1)
 
 stab_df %>%
-   ggplot(aes(Tnum, p, colour = treat))+
-   geom_line(size = 1)+
+   ggplot(aes(Tnum, p, colour = treat)) +
+   geom_line(size = 1) +
    scale_y_log10()
-
 
 stab_df %>%
    group_by(treat) %>%
-   summarise(minEst = min(estimates),
-             medEst = median(estimates),
-             maxEst = max(estimates),
-             minP = min(p),
-             medP = median(p),
-             maxP= max(p))
+   summarise(
+      minEst = min(estimates),
+      medEst = median(estimates),
+      maxEst = max(estimates),
+      minP = min(p),
+      medP = median(p),
+      maxP = max(p)
+   )
 stab_df[Tnum == 9]
 ```
 
 Trial 9 at missen flats changes the estimates the most when excluded due to the high number of reps
+
 ```{r}
 unique(PM_dat_Y$trial_ref)[9]
 ```
 
-
-
 ### Between study heterogeneity
+
 Calculation of I^2
+
 ```{r}
 W <- diag(1/(PM_dat_Y$vi))
 X <- model.matrix(PM_mv)
@@ -365,10 +366,9 @@ P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
 
 100 * PM_mv$sigma2 / (sum(PM_mv$sigma2) + (PM_mv$k-PM_mv$p)/sum(diag(P)))
 ```
+
 This indicates that approximate amount of total variance attributed to trials/ clusters is 99%, which is very high. 
 However given that many of the means included in the model contained an accompanying sample variance of zero, this might have been expected.
-
-
 
 ## Meta-analysis results summary
 
@@ -455,9 +455,6 @@ doc <- body_add_flextable(doc, value = yield_estimates_table)
 print(doc, target = "paper/figures/Table2_yield_estimates.docx")
 ```
 
-<br>  
-<br>  
-
 ### Moderator estimates plot  
 
 View the moderator comparisons in a plot.
@@ -475,14 +472,12 @@ results_mv %>%
       )
    ))) %>%
    ggplot(aes(Treatment, mu)) +
-   geom_hline(
-      yintercept = seq(-0.05, 0.3, by = 0.05),
-      linetype = 3
-   ) +
+   geom_hline(yintercept = seq(-0.05, 0.3, by = 0.05),
+              linetype = 3) +
    geom_point(aes(size = 1 / se), shape = 15) +
    geom_linerange(aes(ymin = `CI_{L}`, ymax = `CI_{U}`)) +
    coord_flip() +
-   labs(caption = "Bars indicate 95% confidence intervals")+
+   labs(caption = "Bars indicate 95% confidence intervals") +
    ylab(expression(paste(
       "Mean yield difference to control (t ha" ^ -1, ")", sep = ""
    ))) +
@@ -501,9 +496,6 @@ ggsave("paper/figures/Fig2_means_difference.png",
        dpi = 500)
 ```
 
-<br>  
-<br>  
-
 ### Moderator contrasts
 
 Calculate treatment contrasts
@@ -518,9 +510,8 @@ contrast_Ssum <-
       contrMat(rep(1, 6), type = "Tukey")
    )), test = adjusted("none")))
 contrast_Ssum %>%
-   flextable()%>%
+   flextable() %>%
    autofit()
-
 ```
 
 These contrasts can be viewed in a plot.
@@ -538,8 +529,6 @@ axis(
    cex.axis = 0.8
 )
 ```
-
-
 
 ### Profile plots
 
@@ -616,9 +605,6 @@ forest(
    small.values = "bad"
 )
 ```
-<br>  
-<br>  
-<br>  
 
 ******  
 
@@ -643,9 +629,6 @@ netgraph(
 )
 ```
 
-<br>  
-<br>  
-<br>  
 
 ******  
 
@@ -669,12 +652,9 @@ text(nm1$meanpath, nm1$minpar, names(nm1$meanpath), cex = 0.8)
 ```
 
 
-
 ```{r Save_meta_data, eval=FALSE}
 save(PM_dat_Y,
      PM_mv,
      contrast_Ssum,
      file = here("cache/Meta-analysisData.Rdata"))
 ```
-
-
