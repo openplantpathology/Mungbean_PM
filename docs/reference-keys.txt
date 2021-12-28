@@ -71,3 +71,9 @@ transform-severity-response
 disease-severity-spray-schedule-meta-analysis
 disease-severity-moderator-contrasts
 meta-analysis-summary-table
+retain-trials-including-yield
+retain-trials-including-fungicide-application-dates
+retain-trials-including-fungicide-dose
+exclude-fungicides-tested-in-too-few-trials
+retain-only-fungicides-with-dmi-action
+define-powdery-mildew-severity
