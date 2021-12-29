@@ -71,6 +71,7 @@ netmeta-estimates-plot
 moderator-netgraph
 powdery-mildew-severity-meta-analysis
 define-trial-1
+inspect-pm-severity-for-normality
 transform-severity-response
 disease-severity-spray-schedule-meta-analysis
 disease-severity-moderator-contrasts
